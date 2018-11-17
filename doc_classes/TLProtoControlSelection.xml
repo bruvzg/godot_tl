@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLProtoControlSelection" inherits="Reference" category="Core" version="3.1">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+	</methods>
+	<members>
+		<member name="caret_offset" type="int" setter="set_caret_offset" getter="get_caret_offset">
+		</member>
+		<member name="caret_para" type="int" setter="set_caret_para" getter="get_caret_para">
+		</member>
+		<member name="end_offset" type="int" setter="set_end_offset" getter="get_end_offset">
+		</member>
+		<member name="end_para" type="int" setter="set_end_para" getter="get_end_para">
+		</member>
+		<member name="start_offset" type="int" setter="set_start_offset" getter="get_start_offset">
+		</member>
+		<member name="start_para" type="int" setter="set_start_para" getter="get_start_para">
+		</member>
+	</members>
+	<signals>
+		<signal name="selection_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

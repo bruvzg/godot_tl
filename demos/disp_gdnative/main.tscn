@@ -1,0 +1,1143 @@
+[gd_scene load_steps=16 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Control
+
+const TLICUDataLoader = preload(\"res://addons/libgdtl/classes/tl_icu_data_loader.gdns\")
+
+func _on_item_selected(ID):
+	for c in range($demos.get_child_count()):
+		if ID == c:
+			$demos.get_child(c).show()
+			$source_view.text = $demos.get_child(c).get_script().source_code
+		else:
+			$demos.get_child(c).hide()
+
+func _ready():
+	var data_loader = TLICUDataLoader.new()
+	data_loader.load(\"res://icudt63l.dat\")
+
+	for c in $demos.get_children():
+		$demos_opt.add_item(\"Demo: \" + c.get_full_name())
+		c.init()
+	$source_view.text = $demos.get_child(0).get_script().source_code"
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var sstring1
+
+func get_full_name():
+	return \"libgdtl\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+	#font1.set_face()
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_font_size(72)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"libgdtl (gdnative)\")
+
+func _draw():
+	var w = (700 - sstring1.get_width()) / 2
+	var h = (500 - sstring1.get_height()) / 2
+	sstring1.draw(get_canvas_item(), Vector2(w, h + sstring1.get_ascent()), Color(0, 0, 0))
+"
+
+[sub_resource type="GDScript" id=3]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var sstring1
+
+func get_full_name():
+	return \"Font substitution: no substitution\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(20)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"Ξεσκεπάζω τὴν ψυχοφθόρα βδελυγμία.\")
+
+func _draw():
+	sstring1.draw(get_canvas_item(), Vector2(20, sstring1.get_ascent() + 20), Color(0, 0, 0))
+"
+
+[sub_resource type="GDScript" id=4]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var sstring1
+
+func get_full_name():
+	return \"Font substitution: substitution using fallback font\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+	
+	var face2 = TLDynamicFontFace.new()
+	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
+	face1.set_fallback(face2)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(20)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"Ξεσκεπάζω τὴν ψυχοφθόρα βδελυγμία.\")
+
+func _draw():
+	sstring1.draw(get_canvas_item(), Vector2(20, sstring1.get_ascent() + 20), Color(0, 0, 0))
+"
+
+[sub_resource type="GDScript" id=5]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var sstring1
+
+func get_full_name():
+	return \"Font substitution: substitution using script linking\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	var face2 = TLDynamicFontFace.new()
+	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
+	
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+	font1.set_liked_face_for_script(\"Default\", \"GREK\", face2)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(20)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"Ξεσκεπάζω τὴν ψυχοφθόρα βδελυγμία.\")
+
+func _draw():
+	sstring1.draw(get_canvas_item(), Vector2(20, sstring1.get_ascent() + 20), Color(0, 0, 0))
+"
+
+[sub_resource type="GDScript" id=6]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+var sstring2
+
+func get_full_name():
+	return \"Drawing shaped string - Dynamic font\" 
+
+func init():
+	var face1en = TLDynamicFontFace.new()
+	face1en.load(\"res://fonts/NotoSans-Regular.ttf\")
+
+	var face1ar = TLDynamicFontFace.new()
+	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1en)
+	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"OpenType Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+	sstring2 = TLShapedString.new()
+	sstring2.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring2.set_base_font(font1)
+	sstring2.set_base_font_size(24)
+	sstring2.set_base_font_style(\"Default\")
+	sstring2.set_text(\"OpenType Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+func _draw():
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring1.get_descent() + sstring2.get_ascent() + 20
+	sstring2.draw(get_canvas_item(), Vector2(20, ofs), Color(1, 0, 0))"
+
+[sub_resource type="GDScript" id=15]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+var sstring2
+
+func get_full_name():
+	return \"Drawing shaped string - Dynamic font (Graphite2)\" 
+
+func init():
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/AwamiNastaliq-Regular.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	if face1.has_graphite():
+		sstring1.set_text(\"Graphite Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	else:
+		sstring1.set_text(\"[Graphite not supported] حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+	sstring2 = TLShapedString.new()
+	sstring2.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring2.set_base_font(font1)
+	sstring2.set_base_font_size(24)
+	sstring2.set_base_font_style(\"Default\")
+	if face1.has_graphite():
+		sstring2.set_text(\"Graphite Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	else:
+		sstring2.set_text(\"[Graphite not supported] حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+func _draw():
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring1.get_descent() + sstring2.get_ascent() + 20
+	sstring2.draw(get_canvas_item(), Vector2(20, ofs), Color(1, 0, 0))"
+
+[sub_resource type="GDScript" id=7]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLBitmapFontFace = preload(\"res://addons/libgdtl/classes/tl_bitmap_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+var sstring2
+
+func get_full_name():
+	return \"Drawing shaped string - Bitmap font\" 
+
+func init():
+	var face1en = TLBitmapFontFace.new()
+	face1en.load(\"res://fonts/NotoSansRegular.fnt\")
+	face1en.set_texture_flags(Texture.FLAG_MIPMAPS | Texture.FLAG_FILTER | Texture.FLAG_ANISOTROPIC_FILTER)
+
+	var face1ar = TLBitmapFontFace.new()
+	face1ar.load(\"res://fonts/NotoNaskhArabicUI.fnt\")
+	face1ar.set_texture_flags(Texture.FLAG_MIPMAPS | Texture.FLAG_FILTER | Texture.FLAG_ANISOTROPIC_FILTER)
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1en)
+	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(32)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"OpenType Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+	sstring2 = TLShapedString.new()
+	sstring2.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring2.set_base_font(font1)
+	sstring2.set_base_font_size(32)
+	sstring2.set_base_font_style(\"Default\")
+	sstring2.set_text(\"OpenType Test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+func _draw():
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring1.get_descent() + sstring2.get_ascent() + 20
+	sstring2.draw(get_canvas_item(), Vector2(20, ofs), Color(1, 0, 0))"
+
+[sub_resource type="GDScript" id=8]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+var spara1 = []
+
+func get_full_name():
+	return \"Line breaking and justification\"
+
+func init():
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/NotoSerifThai-Regular.ttf\")
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(16)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"สอนของพระพุทธเจ้าเป็นภาษาอันศักดิ์สิทธิ์และเป็นมงคล เมื่อคนไทยต้องการตั้งชื่อประเทศว่า\")
+	var bounds = sstring1.break_lines(200, TLConstants.TextBreak.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+
+	var prev = 0
+	for b in bounds:
+		var line = sstring1.substr(prev, b, TLConstants.TextTrimMode.TEXT_TRIM_BREAK_AND_WHITESPACE)
+		line.extend_to_width(200, TLConstants.TextJustification.TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE)
+		spara1.push_back(line)
+		prev = b
+
+func _draw():
+	draw_line(Vector2(20, 40), Vector2(20, 500), Color(1, 0, 1))
+	draw_line(Vector2(220, 40), Vector2(220, 500), Color(1, 0, 1))
+	var line_spacing = 2
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, 20), Color(0, 0, 1))
+	ofs += sstring1.get_descent() + line_spacing
+	for line in spara1:
+		ofs += line.get_ascent()
+		line.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 0))
+		ofs += line.get_descent() + line_spacing"
+
+[sub_resource type="GDScript" id=9]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+var spara1 = []
+var sstring2
+var spara2 = []
+var sstring3
+var spara3 = []
+
+func get_full_name():
+	return \"Line breaking modes\" 
+
+func init():
+	var face1en = TLDynamicFontFace.new()
+	face1en.load(\"res://fonts/NotoSans-Regular.ttf\")
+
+	var face1ar = TLDynamicFontFace.new()
+	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1en)
+	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"Looooooooongword test\\n test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	var bounds = sstring1.break_lines(200, TLConstants.TextBreak.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+
+	var prev = 0
+	for b in bounds:
+		var line = sstring1.substr(prev, b, TLConstants.TextTrimMode.TEXT_TRIM_BREAK_AND_WHITESPACE)
+		spara1.push_back(line)
+		prev = b
+
+	sstring2 = TLShapedString.new()
+	sstring2.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring2.set_base_font(font1)
+	sstring2.set_base_font_size(24)
+	sstring2.set_base_font_style(\"Default\")
+	sstring2.set_text(\"Looooooooongword test\\n test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	bounds = sstring2.break_lines(200, TLConstants.TextBreak.TEXT_BREAK_MANDATORY_AND_ANYWHERE)
+
+	prev = 0
+	for b in bounds:
+		var line = sstring2.substr(prev, b, TLConstants.TextTrimMode.TEXT_TRIM_BREAK_AND_WHITESPACE)
+		spara2.push_back(line)
+		prev = b
+
+	sstring3 = TLShapedString.new()
+	sstring3.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring3.set_base_font(font1)
+	sstring3.set_base_font_size(24)
+	sstring3.set_base_font_style(\"Default\")
+	sstring3.set_text(\"Looooooooongword test\\n test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	bounds = sstring3.break_lines(200, TLConstants.TextBreak.TEXT_BREAK_MANDATORY)
+
+	prev = 0
+	for b in bounds:
+		var line = sstring3.substr(prev, b, TLConstants.TextTrimMode.TEXT_TRIM_BREAK_AND_WHITESPACE)
+		spara3.push_back(line)
+		prev = b
+
+func _draw():
+	draw_line(Vector2(20, 20), Vector2(20, 500), Color(1, 0, 1))
+	draw_line(Vector2(220, 20), Vector2(220, 500), Color(1, 0, 1))
+	var line_spacing = 2
+	var ofs = 20
+	for line in spara1:
+		ofs += line.get_ascent()
+		line.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 1, 0))
+		ofs += line.get_descent() + line_spacing
+	ofs += 20
+	for line in spara2:
+		ofs += line.get_ascent()
+		line.draw(get_canvas_item(), Vector2(20, ofs), Color(1, 0, 0))
+		ofs += line.get_descent() + line_spacing
+	ofs += 20
+	for line in spara3:
+		ofs += line.get_ascent()
+		line.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+		ofs += line.get_descent() + line_spacing"
+
+[sub_resource type="GDScript" id=10]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var font2
+
+var sstring1
+var sstring2
+var sstring3
+var sstring4
+var sstring5
+var sstring6
+
+func get_full_name():
+	return \"Justification modes\" 
+
+func init():
+	var face1en = TLDynamicFontFace.new()
+	face1en.load(\"res://fonts/NotoSans-Regular.ttf\")
+
+	var face1ar = TLDynamicFontFace.new()
+	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1en)
+	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+
+	var face2ar = TLDynamicFontFace.new()
+	face2ar.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
+
+	font2 = TLFontFamily.new()
+	font2.set_face(\"Default\", face1en)
+	font2.set_liked_face_for_script(\"Default\", \"ARAB\", face2ar)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"KS & WS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring1.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE)
+
+	sstring2 = TLShapedString.new()
+	sstring2.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring2.set_base_font(font2)
+	sstring2.set_base_font_size(24)
+	sstring2.set_base_font_style(\"Default\")
+	sstring2.set_text(\"KS & WS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring2.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE)
+	
+	sstring3 = TLShapedString.new()
+	sstring3.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring3.set_base_font(font1)
+	sstring3.set_base_font_size(24)
+	sstring3.set_base_font_style(\"Default\")
+	sstring3.set_text(\"KS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring3.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_KASHIDA_ONLY)
+
+	sstring4 = TLShapedString.new()
+	sstring4.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring4.set_base_font(font2)
+	sstring4.set_base_font_size(24)
+	sstring4.set_base_font_style(\"Default\")
+	sstring4.set_text(\"KS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring4.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_KASHIDA_ONLY)
+
+	sstring5 = TLShapedString.new()
+	sstring5.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring5.set_base_font(font1)
+	sstring5.set_base_font_size(24)
+	sstring5.set_base_font_style(\"Default\")
+	sstring5.set_text(\"WS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring5.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_WHITESPACE_ONLY)
+
+	sstring6 = TLShapedString.new()
+	sstring6.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring6.set_base_font(font2)
+	sstring6.set_base_font_size(24)
+	sstring6.set_base_font_style(\"Default\")
+	sstring6.set_text(\"WS حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+	sstring6.extend_to_width(600, TLConstants.TextJustification.TEXT_JUSTIFICATION_WHITESPACE_ONLY)
+
+func _draw():
+	draw_line(Vector2(20, 20), Vector2(20, 500), Color(1, 0, 1))
+	draw_line(Vector2(620, 20), Vector2(620, 500), Color(1, 0, 1))
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring1.get_descent() + sstring2.get_ascent() + 20
+	sstring2.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring2.get_descent() + sstring3.get_ascent() + 20
+	sstring3.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring3.get_descent() + sstring4.get_ascent() + 20
+	sstring4.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring4.get_descent() + sstring5.get_ascent() + 20
+	sstring5.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+	ofs +=sstring5.get_descent() + sstring6.get_ascent() + 20
+	sstring6.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))
+"
+
+[sub_resource type="GDScript" id=11]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+
+func get_full_name():
+	return \"OpenType features\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_RTL)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"Small caps, Small caps, 1234567890, 1234567890\")
+	sstring1.set_features(\"+smcp[0:10]=1,+onum[24:35]=1\")
+
+func _draw():
+	var ofs = sstring1.get_ascent() + 20
+	sstring1.draw(get_canvas_item(), Vector2(20, ofs), Color(0, 0, 1))"
+
+[sub_resource type="GDScript" id=12]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedAttributedString = preload(\"res://addons/libgdtl/classes/tl_shaped_attributed_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var font2
+var font3
+
+var image1 = preload(\"res://icon.png\")
+
+var sastring1
+
+func get_full_name():
+	return \"Drawing attributed shaped string\" 
+
+func init():
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	var face2 = TLDynamicFontFace.new()
+	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
+	font2 = TLFontFamily.new()
+	font2.set_face(\"Default\", face2)
+
+	var face3 = TLDynamicFontFace.new()
+	face3.load(\"res://fonts/NotoColorEmoji-subset.ttf\")
+	font3 = TLFontFamily.new()
+	font3.set_face(\"Default\", face3)
+
+	#note: On Windows Godot sting unable to handle characters outside BMP, using raw UTF-16 string instead.
+	#text: Attrib Test - 123 - Test [emote] Test
+
+	var bytes = PoolByteArray([0x41, 0x00, 0x74, 0x00, 0x74, 0x00, 0x72, 0x00, 0x69, 0x00, 0x62, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x3D, 0xD8, 0x04, 0xDE, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00])
+ 
+	sastring1 = TLShapedAttributedString.new()
+	sastring1.set_base_font(font1)
+	sastring1.set_base_font_size(20)
+	sastring1.set_base_font_style(\"Default\")
+	sastring1.set_utf16(bytes)
+	bytes.resize(0) #cleanup fix to https://github.com/GodotNativeTools/godot-cpp/issues/223
+
+	#set custom font and colors
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT, font2, 7, 11)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_COLOR, Color(0, 1, 0), 0, 4)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OUTLINE_COLOR, Color(0, 0, 1), 2, 6)
+
+	#lines
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_UNDERLINE_COLOR, Color(0, 0, 1), 1, 6)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, 2, 2, 4)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, Color(1, 0, 0), 0, 1)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, 3, 0, 1)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OVERLINE_COLOR, Color(0, 1, 0), 4, 9)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OVERLINE_WIDTH, 2, 4, 7)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, Color(1, 1, 0), 10, 14)
+
+	#embed images
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 14, 15)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_TOP, 14, 15)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 15, 16)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_CENTER, 15, 16)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 16, 17)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_BOTTOM, 16, 17)
+
+	#set emoji font
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT, font3, 24, 26)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT_SIZE, 64, 24, 26)
+	#note: this emoji occupies two codepoints, it's character code is U+1F604, in UTF-16 it is encoded as 0xD83D 0xDE04 surrogate pair
+
+func _draw():
+	sastring1.draw(get_canvas_item(), Vector2(20, sastring1.get_ascent() + 20), Color(0, 0, 0))"
+
+[sub_resource type="GDScript" id=13]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedString = preload(\"res://addons/libgdtl/classes/tl_shaped_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+
+var sstring1
+
+var x = -1;
+var x_end = -1;
+var crect = Rect2() 
+var crect_lead
+var cursors = []
+var cursors_end = []
+var selection_rects = []
+
+func get_full_name():
+	return \"Hit test, cursors, selection and cluster info (plain string)\" 
+
+func init():
+	set_focus_mode(FOCUS_ALL);
+
+	var face1en = TLDynamicFontFace.new()
+	face1en.load(\"res://fonts/NotoSans-Regular.ttf\")
+
+	var face1ar = TLDynamicFontFace.new()
+	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
+
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1en)
+	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+
+	sstring1 = TLShapedString.new()
+	sstring1.set_base_direction(TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+	sstring1.set_base_font(font1)
+	sstring1.set_base_font_size(24)
+	sstring1.set_base_font_style(\"Default\")
+	sstring1.set_text(\"maintained in their own test حسنِ مہ گرچہ بہ ہنگامِ کمال اچّھا ہے\")
+
+func _draw():
+	#draw selection
+	for r in selection_rects:
+		draw_rect(Rect2(r.position + Vector2(20, 20), r.size), Color(1, 1, 0), true)
+
+	#draw string
+	sstring1.draw(get_canvas_item(), Vector2(20, sstring1.get_ascent() + 20), Color(0, 0, 0.4))
+	
+	#draw cursors
+	for c in cursors:
+		draw_line(Vector2(20 + c, 20), Vector2(20 + c, sstring1.get_height() + 20), Color(1, 0, 0, 0.4), 2)
+	for c in cursors_end:
+		draw_line(Vector2(20 + c, 20), Vector2(20 + c, sstring1.get_height() + 20), Color(1, 0, 1, 0.4), 2)
+
+	#draw cluster bounding rect
+	if crect != Rect2() :
+		draw_rect(Rect2(crect.position + Vector2(20, sstring1.get_ascent() + 20), crect.size), Color(0, 1, 0, 0.5), false)
+		draw_circle(Vector2(20 + crect_lead, crect.position.y + sstring1.get_ascent() + 20 + crect.size.y), 3, Color(1, 0, 1))
+
+func _on_hit_test_gui_input(event):
+	if event is InputEventMouseMotion:
+		#cluster bounding rect
+		crect = Rect2()
+		if (event.position.y >= 20) and (event.position.y < 20 + sstring1.get_height()):
+			var y = sstring1.hit_test_cluster(event.position.x - 20)
+			crect = sstring1.get_cluster_rect(y)
+			crect_lead = sstring1.get_cluster_leading_edge(y)
+			$info.text = \"Cluster: %d of %d, Codepoint positions: %d...%d of %d, Ascent: %f, Descent: %f\" % [y, sstring1.clusters(), sstring1.get_cluster_start(y), sstring1.get_cluster_end(y), sstring1.length(), sstring1.get_cluster_ascent(y), sstring1.get_cluster_descent(y)]
+
+	if event is InputEventMouseButton:
+		if event.get_shift():
+			#selection end
+			cursors_end.clear()
+			x_end = - 1
+			if (event.position.y >= 20) and (event.position.y < 20 + sstring1.get_height()):
+				x_end = sstring1.hit_test(event.position.x - 20)
+				cursors_end = sstring1.get_cursor_positions(x_end, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+		else:
+			#selection start / cursor
+			cursors.clear()
+			cursors_end.clear()
+			x = - 1
+			x_end = - 1
+			if (event.position.y >= 20) and (event.position.y < 20 + sstring1.get_height()):
+				x = sstring1.hit_test(event.position.x - 20)
+				cursors = sstring1.get_cursor_positions(x, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+		selection_rects.clear()
+
+	if event is InputEventKey:
+		if event.is_pressed():
+			if event.get_shift():
+				cursors_end.clear()
+				if event.scancode == KEY_LEFT:
+					if x_end == -1:
+						x_end = x
+					if x_end > 0:
+						x_end -= 1
+				if event.scancode == KEY_RIGHT:
+					if x_end == -1:
+						x_end = x
+					if x_end < sstring1.length():
+						x_end += 1
+				cursors_end = sstring1.get_cursor_positions(x_end, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+			else:
+				cursors.clear()
+				cursors_end.clear()
+				x_end = - 1
+				if event.scancode == KEY_LEFT:
+					if x > 0:
+						x -= 1
+				if event.scancode == KEY_RIGHT:
+					if x < sstring1.length():
+						x += 1
+				cursors = sstring1.get_cursor_positions(x, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+
+	if (x != -1) and (x_end != -1):
+		#capture selection rects
+		selection_rects = sstring1.get_highlight_shapes(min(x, x_end), max(x, x_end))
+	else:
+		selection_rects = []
+		
+	accept_event()
+	update()
+"
+
+[sub_resource type="GDScript" id=14]
+
+script/source = "extends ColorRect
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+const TLShapedAttributedString = preload(\"res://addons/libgdtl/classes/tl_shaped_attributed_string.gdns\")
+const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
+
+var font1
+var font2
+var font3
+
+var image1 = preload(\"res://icon.png\")
+
+var sastring1
+
+var x = -1;
+var x_end = -1;
+var crect = Rect2() 
+var crect_lead
+var cursors = []
+var cursors_end = []
+var selection_rects = []
+
+func get_full_name():
+	return \"Hit test, cursors, selection and cluster info (attributed string)\" 
+
+func init():
+	set_focus_mode(FOCUS_ALL);
+
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/Montserrat-Black.ttf\")
+	font1 = TLFontFamily.new()
+	font1.set_face(\"Default\", face1)
+
+	var face2 = TLDynamicFontFace.new()
+	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
+	font2 = TLFontFamily.new()
+	font2.set_face(\"Default\", face2)
+
+	var face3 = TLDynamicFontFace.new()
+	face3.load(\"res://fonts/NotoColorEmoji-subset.ttf\")
+	font3 = TLFontFamily.new()
+	font3.set_face(\"Default\", face3)
+
+	#note: On Windows Godot sting unable to handle characters outside BMP, using raw UTF-16 string instead.
+	#text: Attrib Test - 123 - Test [emote] Test
+
+	var bytes = PoolByteArray([0x41, 0x00, 0x74, 0x00, 0x74, 0x00, 0x72, 0x00, 0x69, 0x00, 0x62, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x3D, 0xD8, 0x04, 0xDE, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00])
+
+	sastring1 = TLShapedAttributedString.new()
+	sastring1.set_base_font(font1)
+	sastring1.set_base_font_size(20)
+	sastring1.set_base_font_style(\"Default\")
+	sastring1.set_utf16(bytes)
+	bytes.resize(0) #cleanup to fix https://github.com/GodotNativeTools/godot-cpp/issues/223
+
+	#set custom font and colors
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT, font2, 7, 11)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_COLOR, Color(0, 1, 0), 0, 4)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OUTLINE_COLOR, Color(0, 0, 1), 2, 6)
+
+	#lines
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_UNDERLINE_COLOR, Color(0, 0, 1), 1, 6)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, 2, 2, 4)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, Color(1, 0, 0), 0, 1)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, 3, 0, 1)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OVERLINE_COLOR, Color(0, 1, 0), 4, 9)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_OVERLINE_WIDTH, 2, 4, 7)
+
+	#embed images
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 14, 15)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_TOP, 14, 15)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 15, 16)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_CENTER, 15, 16)
+
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, image1, 16, 17)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLConstants.TextVAlign.TEXT_VALIGN_BOTTOM, 16, 17)
+
+	#set emoji font
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT, font3, 24, 26)
+	sastring1.add_attribute(TLConstants.TextAttribute.TEXT_ATTRIBUTE_FONT_SIZE, 26, 24, 26)
+	#note: this emoji occupies two codepoints, it's character code is U+1F604, in UTF-16 it is encoded as 0xD83D 0xDE04 surrogate pair
+
+func _draw():
+	#draw selection
+	for r in selection_rects:
+		draw_rect(Rect2(r.position + Vector2(20, 20), r.size), Color(1, 1, 0), true)
+
+	#draw string
+	sastring1.draw(get_canvas_item(), Vector2(20, sastring1.get_ascent() + 20), Color(0, 0, 0))
+	
+	#draw cursors
+	for c in cursors:
+		draw_line(Vector2(20 + c, 20), Vector2(20 + c, sastring1.get_height() + 20), Color(1, 0, 0, 0.4), 2)
+	for c in cursors_end:
+		draw_line(Vector2(20 + c, 20), Vector2(20 + c, sastring1.get_height() + 20), Color(1, 0, 1, 0.4), 2)
+
+	#draw cluster bounding rect
+	if crect != Rect2() :
+		draw_rect(Rect2(crect.position + Vector2(20, sastring1.get_ascent() + 20), crect.size), Color(0, 1, 0, 0.5), false)
+		draw_circle(Vector2(20 + crect_lead, crect.position.y + sastring1.get_ascent() + 20 + crect.size.y), 3, Color(1, 0, 1))
+
+func _on_hit_test_gui_input(event):
+	if event is InputEventMouseMotion:
+		#cluster bounding rect
+		crect = Rect2()
+		if (event.position.y >= 20) and (event.position.y < 20 + sastring1.get_height()):
+			var y = sastring1.hit_test_cluster(event.position.x - 20)
+			crect = sastring1.get_cluster_rect(y)
+			crect_lead = sastring1.get_cluster_leading_edge(y)
+			$info.text = \"Cluster: %d of %d, Codepoint positions: %d...%d of %d, Ascent: %f, Descent: %f\" % [y, sastring1.clusters(), sastring1.get_cluster_start(y), sastring1.get_cluster_end(y), sastring1.length(), sastring1.get_cluster_ascent(y), sastring1.get_cluster_descent(y)]
+
+	if event is InputEventMouseButton:
+		if event.get_shift():
+			#selection end
+			cursors_end.clear()
+			x_end = - 1
+			if (event.position.y >= 20) and (event.position.y < 20 + sastring1.get_height()):
+				x_end = sastring1.hit_test(event.position.x - 20)
+				cursors_end = sastring1.get_cursor_positions(x_end, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+		else:
+			#selection start / cursor
+			cursors.clear()
+			cursors_end.clear()
+			x = - 1
+			x_end = - 1
+			if (event.position.y >= 20) and (event.position.y < 20 + sastring1.get_height()):
+				x = sastring1.hit_test(event.position.x - 20)
+				cursors = sastring1.get_cursor_positions(x, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+		selection_rects.clear()
+
+	if event is InputEventKey:
+		if event.is_pressed():
+			if event.get_shift():
+				cursors_end.clear()
+				if event.scancode == KEY_LEFT:
+					if x_end == -1:
+						x_end = x
+					if x_end > 0:
+						x_end -= 1
+				if event.scancode == KEY_RIGHT:
+					if x_end == -1:
+						x_end = x
+					if x_end < sastring1.length():
+						x_end += 1
+				cursors_end = sastring1.get_cursor_positions(x_end, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+			else:
+				cursors.clear()
+				cursors_end.clear()
+				x_end = - 1
+				if event.scancode == KEY_LEFT:
+					if x > 0:
+						x -= 1
+				if event.scancode == KEY_RIGHT:
+					if x < sastring1.length():
+						x += 1
+				cursors = sastring1.get_cursor_positions(x, TLConstants.TextDirection.TEXT_DIRECTION_LTR)
+
+	if (x != -1) and (x_end != -1):
+		#capture selection rects
+		selection_rects = sastring1.get_highlight_shapes(min(x, x_end), max(x, x_end))
+	else:
+		selection_rects = []
+		
+	accept_event()
+	update()"
+
+[node name="root" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+
+[node name="demos_opt" type="OptionButton" parent="."]
+margin_left = 80.0
+margin_top = 20.0
+margin_right = 710.0
+margin_bottom = 50.0
+
+[node name="label" type="Label" parent="."]
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 70.0
+margin_bottom = 50.0
+text = "Demo:"
+valign = 1
+
+[node name="demos" type="Control" parent="."]
+margin_left = 10.0
+margin_top = 70.0
+margin_right = 710.0
+margin_bottom = 600.0
+
+[node name="intro" type="ColorRect" parent="demos"]
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 2 )
+
+[node name="no_sub" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 3 )
+
+[node name="fb_sub" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 4 )
+
+[node name="lnk_sub" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 5 )
+
+[node name="shaped_str_dyn" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 6 )
+
+[node name="shaped_str_dyn_graphite" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 15 )
+
+[node name="shaped_str_bmp" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 7 )
+
+[node name="line_brk" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 8 )
+
+[node name="line_brk_modes" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 9 )
+
+[node name="line_just" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 10 )
+
+[node name="ot_feat" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 11 )
+
+[node name="attrib" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 12 )
+
+[node name="hit_test" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 13 )
+
+[node name="info" type="Label" parent="demos/hit_test"]
+margin_left = 10.0
+margin_top = 480.0
+margin_right = 690.0
+margin_bottom = 494.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+
+[node name="controls" type="Label" parent="demos/hit_test"]
+margin_left = 10.0
+margin_top = 350.0
+margin_right = 690.0
+margin_bottom = 432.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Instructions:
+
+ - Click / Shift+Click or use arrow keys to move cursor and make selection.
+ - Move mouse cursor over text to view cluster info and boundig box."
+
+[node name="hit_test_att" type="ColorRect" parent="demos"]
+visible = false
+margin_right = 700.0
+margin_bottom = 500.0
+script = SubResource( 14 )
+
+[node name="info" type="Label" parent="demos/hit_test_att"]
+margin_left = 10.0
+margin_top = 480.0
+margin_right = 690.0
+margin_bottom = 494.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+
+[node name="controls" type="Label" parent="demos/hit_test_att"]
+margin_left = 10.0
+margin_top = 350.0
+margin_right = 690.0
+margin_bottom = 432.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Instructions:
+
+ - Click / Shift+Click or use arrow keys to move cursor and make selection.
+ - Move mouse cursor over text to view cluster info and boundig box."
+
+[node name="source_view" type="TextEdit" parent="."]
+margin_left = 720.0
+margin_top = 20.0
+margin_right = 1390.0
+margin_bottom = 570.0
+readonly = true
+syntax_highlighting = true
+
+[connection signal="item_selected" from="demos_opt" to="." method="_on_item_selected"]
+[connection signal="gui_input" from="demos/hit_test" to="demos/hit_test" method="_on_hit_test_gui_input"]
+[connection signal="gui_input" from="demos/hit_test_att" to="demos/hit_test_att" method="_on_hit_test_gui_input"]

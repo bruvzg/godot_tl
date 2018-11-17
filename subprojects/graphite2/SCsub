@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+
+Import('env')
+Import('env_modules')
+
+from compat import isbasestring
+
+env_graphite2 = env_modules.Clone()
+
+# Thirdparty source files
+sources = [
+    'src/gr_char_info.cpp',
+    'src/gr_face.cpp',
+    'src/gr_features.cpp',
+    'src/gr_font.cpp',
+    'src/gr_logging.cpp',
+    'src/gr_segment.cpp',
+    'src/gr_slot.cpp',
+    'src/CmapCache.cpp',
+    'src/Code.cpp',
+    'src/Collider.cpp',
+    'src/Decompressor.cpp',
+    'src/Face.cpp',
+    'src/FeatureMap.cpp',
+    'src/Font.cpp',
+    'src/GlyphCache.cpp',
+    'src/GlyphFace.cpp',
+    'src/Intervals.cpp',
+    'src/Justifier.cpp',
+    'src/NameTable.cpp',
+    'src/Pass.cpp',
+    'src/Position.cpp',
+    'src/Segment.cpp',
+    'src/Silf.cpp',
+    'src/Slot.cpp',
+    'src/Sparse.cpp',
+    'src/TtfUtil.cpp',
+    'src/UtfCodec.cpp',
+    'src/FileFace.cpp',
+    'src/json.cpp'
+]
+
+env_graphite2.Append(CPPPATH=['src', 'include'])
+
+env_graphite2.Append(CCFLAGS=[
+    '-DGRAPHITE2_STATIC',
+    '-DGRAPHITE2_NTRACING',
+    '-DGRAPHITE2_NFILEFACE'
+])
+
+if (not env_graphite2.msvc):
+    env_graphite2.Append(CXXFLAGS=[
+        '-std=c++11',
+        '-fno-rtti',
+        '-fno-exceptions'
+    ])
+    sources += ['src/direct_machine.cpp']
+else:
+    sources += ['src/call_machine.cpp']
+
+env_graphite2.disable_warnings()
+
+env_thirdparty = env_graphite2.Clone()
+env_thirdparty.disable_warnings()
+lib = env_thirdparty.add_library("graphite2_builtin", sources)
+
+# Needs to be appended to arrive after libscene in the linker call,
+# but we don't want it to arrive *after* system libs, so manual hack
+# LIBS contains first SCons Library objects ("SCons.Node.FS.File object")
+# and then plain strings for system library. We insert between the two.
+inserted = False
+for idx, linklib in enumerate(env["LIBS"]):
+    if isbasestring(linklib): # first system lib such as "X11", otherwise SCons lib object
+        env["LIBS"].insert(idx, lib)
+        inserted = True
+        break
+if not inserted:
+    env.Append(LIBS=[lib])

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLShapedAttributedString" inherits="TLShapedString" category="Core" version="3.1">
+	<brief_description>
+		Golds shaped line of text with associated attributes.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="add_attribute">
+			<return type="void">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="value" type="Variant">
+			</argument>
+			<argument index="2" name="start" type="int">
+			</argument>
+			<argument index="3" name="end" type="int">
+			</argument>
+			<description>
+				Sets [code]attribute[/code] attribute to [code]value[/code] for specified text range.
+			</description>
+		</method>
+		<method name="clear_attributes">
+			<return type="void">
+			</return>
+			<description>
+				Removes all attributes.
+			</description>
+		</method>
+		<method name="get_attribute" qualifiers="const">
+			<return type="Variant">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+				Returns [code]attribute[/code] attribute value for specified text position.
+			</description>
+		</method>
+		<method name="get_attribute_end" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+				Returns last position of [code]attribute[/code] attribute run enclosing specified position.
+			</description>
+		</method>
+		<method name="get_attribute_start" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+				Returns first position of [code]attribute[/code] attribute run enclosing specified position.
+			</description>
+		</method>
+		<method name="get_embedded_rects">
+			<return type="Array">
+			</return>
+			<description>
+				Returns bounding rects of embedded objects ([code]TEXT_ATTRIBUTE_REPLACEMENT_RECT[/code] attributes).
+			</description>
+		</method>
+		<method name="has_attribute" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+				Returns [code]true[/code] if spceified position has [code]attribute[/code] attribute set.
+			</description>
+		</method>
+		<method name="load_attributes_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="array" type="Array">
+			</argument>
+			<description>
+				Loads attributes from [Array] of [Dictionary].
+			</description>
+		</method>
+		<method name="remove_attribute">
+			<return type="void">
+			</return>
+			<argument index="0" name="attribute" type="int">
+			</argument>
+			<argument index="1" name="start" type="int">
+			</argument>
+			<argument index="2" name="end" type="int">
+			</argument>
+			<description>
+				Removes [code]attribute[/code] attribute for specified text range.
+			</description>
+		</method>
+		<method name="remove_attributes">
+			<return type="void">
+			</return>
+			<argument index="0" name="start" type="int">
+			</argument>
+			<argument index="1" name="end" type="int">
+			</argument>
+			<description>
+				Removes all attributes for specified text range.
+			</description>
+		</method>
+		<method name="save_attributes_dict" qualifiers="const">
+			<return type="Array">
+			</return>
+			<description>
+				Stores string attributes into [Array] of [Dictionary].
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="TEXT_ATTRIBUTE_FONT" value="1" enum="TextAttribute">
+			Font family. Attribute type: [TLFontFamily]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_FONT_STYLE" value="2" enum="TextAttribute">
+			Font style (Regular, Bold, Italic, Oblique etc.). Attribute type: [String]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_FONT_SIZE" value="3" enum="TextAttribute">
+			Font size. Attribute type: [code]int[/code]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_FONT_FEATURES" value="4" enum="TextAttribute">
+			Comma separated list of OpenType feature tags. More info: <link>https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags</link>. Attribute type: [String]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_LANGUAGE" value="5" enum="TextAttribute">
+			Language code. Attribute type: [String]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_REPLACEMENT_IMAGE" value="6" enum="TextAttribute">
+			Embedded image. Attribute type: [Texture]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_REPLACEMENT_RECT" value="7" enum="TextAttribute">
+			Reserved space for custom embedded object. Attribute type: [Vector2]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_REPLACEMENT_ID" value="8" enum="TextAttribute">
+			Embedded object id key. Attribute type: [Variant]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_REPLACEMENT_VALIGN" value="9" enum="TextAttribute">
+			Embedded image/object inline alignment. Attribute type: [code]TEXT_VALIGN_*[/code]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_COLOR" value="31" enum="TextAttribute">
+			Text color. Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_OUTLINE_COLOR" value="32" enum="TextAttribute">
+			Text outline color. Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_UNDERLINE_COLOR" value="41" enum="TextAttribute">
+			Underline color. Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_UNDERLINE_WIDTH" value="42" enum="TextAttribute">
+			Underline width. Attribute type: [code]int[/code]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR" value="51" enum="TextAttribute">
+			Strikethrough line color. Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH" value="52" enum="TextAttribute">
+			Strikethrough line widht. Attribute type: [code]int[/code]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_OVERLINE_COLOR" value="61" enum="TextAttribute">
+			Overline color/ Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_OVERLINE_WIDTH" value="62" enum="TextAttribute">
+			Overline width. Attribute type: [code]int[/code]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_HIGHLIGHT_COLOR" value="71" enum="TextAttribute">
+			Highlight color. Attribute type: [Color]
+		</constant>
+		<constant name="TEXT_ATTRIBUTE_META" value="100" enum="TextAttribute">
+			User defined data, use [code]TEXT_ATTRIBUTE_META + x[/code] to define moultiple user attributes. Attribute type: [Variant]
+		</constant>
+		<constant name="TEXT_VALIGN_TOP" value="0" enum="TextVAlign">
+			Inline vertical top alignment
+		</constant>
+		<constant name="TEXT_VALIGN_CENTER" value="1" enum="TextVAlign">
+			Inline vertical center alignment
+		</constant>
+		<constant name="TEXT_VALIGN_BOTTOM" value="2" enum="TextVAlign">
+			Inline vertical bottom alignment
+		</constant>
+	</constants>
+</class>

@@ -1,0 +1,17 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="gdtl_"
+
+[entry]
+
+Windows.32="res://addons/libgdtl/bin/windows.x86/libgdtl.dll"
+Windows.64="res://addons/libgdtl/bin/windows.x86_64/libgdtl.dll"
+OSX="res://addons/libgdtl/bin/darwin.x86_64/libgdtl.dylib"
+X11.x86="res://addons/libgdtl/bin/linux.x86/libgdtl.so"
+X11.x86_64="res://addons/libgdtl/bin/linux.x86_64/libgdtl.so"
+X11.armv7="res://addons/libgdtl/bin/linux.armv7/libgdtl.so"
+X11.arm64="res://addons/libgdtl/bin/linux.arm64/libgdtl.so"
+
+[dependencies]

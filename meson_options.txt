@@ -1,0 +1,4 @@
+option('godot-cpp-lib-name', type : 'string', value : 'libgodot-cpp', description : 'GDNative C++ bindings static library name')
+option('static-runtime', type : 'boolean', value : false, description : 'Link libraries statically for better portability')
+option('builtin-runtime', type : 'boolean', value : false, description : 'Use the built-in libraries')
+option('use-graphite2', type : 'boolean', value : true, description : 'Enable Graphite2 complementary shaper')

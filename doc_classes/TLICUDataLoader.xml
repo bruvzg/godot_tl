@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLICUDataLoader" inherits="Resource" category="Core" version="3.1">
+	<brief_description>
+		Helper class that handles ICU data loading.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="load">
+			<return type="bool">
+			</return>
+			<argument index="0" name="resource_path" type="String">
+			</argument>
+			<description>
+				Loads ICU data file, should be done at most once in a process, before the first ICU operation. Returns [code]true[/code] if function succeeds.
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

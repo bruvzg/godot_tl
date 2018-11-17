@@ -1,0 +1,9 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://addons/libgdtl/libgdtl.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+
+resource_name = "TLFontFace"
+class_name = "TLFontFace"
+library = ExtResource( 1 )

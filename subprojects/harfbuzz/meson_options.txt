@@ -1,0 +1,1 @@
+option('use-graphite2', type : 'boolean', value : false, description : 'Enable Graphite2 complementary shaper')

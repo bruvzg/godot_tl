@@ -1,0 +1,13 @@
+.vscode/*
+.import/*
+.toolchains/*
+_buildcmd
+_build*
+*.import
+*.so
+*.dylib
+*.dll
+*.a
+*.dex
+*.pyc
+*.o

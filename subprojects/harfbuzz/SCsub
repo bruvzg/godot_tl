@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+
+Import('env')
+Import('env_modules')
+
+from compat import isbasestring
+
+env_harfbuzz = env_modules.Clone()
+
+# Thirdparty source files
+sources = [
+    'src/hb-aat-layout.cc',
+    'src/hb-aat-map.cc',
+    'src/hb-blob.cc',
+    'src/hb-buffer.cc',
+    'src/hb-buffer-serialize.cc',
+    'src/hb-common.cc',
+    'src/hb-face.cc',
+    'src/hb-fallback-shape.cc',
+    'src/hb-font.cc',
+    'src/hb-ft.cc',
+    'src/hb-icu.cc',
+    'src/hb-map.cc',
+    'src/hb-ot-color.cc',
+    'src/hb-ot-face.cc',
+    'src/hb-ot-font.cc',
+    'src/hb-ot-layout.cc',
+    'src/hb-ot-map.cc',
+    'src/hb-ot-math.cc',
+    'src/hb-ot-name-language.cc',
+    'src/hb-ot-name.cc',
+    'src/hb-ot-shape-complex-arabic.cc',
+    'src/hb-ot-shape-complex-default.cc',
+    'src/hb-ot-shape-complex-hangul.cc',
+    'src/hb-ot-shape-complex-hebrew.cc',
+    'src/hb-ot-shape-complex-indic-table.cc',
+    'src/hb-ot-shape-complex-indic.cc',
+    'src/hb-ot-shape-complex-khmer.cc',
+    'src/hb-ot-shape-complex-myanmar.cc',
+    'src/hb-ot-shape-complex-thai.cc',
+    'src/hb-ot-shape-complex-use-table.cc',
+    'src/hb-ot-shape-complex-use.cc',
+    'src/hb-ot-shape-complex-vowel-constraints.cc',
+    'src/hb-ot-shape-fallback.cc',
+    'src/hb-ot-shape-normalize.cc',
+    'src/hb-ot-shape.cc',
+    'src/hb-ot-tag.cc',
+    'src/hb-ot-var.cc',
+    'src/hb-set.cc',
+    'src/hb-shape-plan.cc',
+    'src/hb-shape.cc',
+    'src/hb-shaper.cc',
+    'src/hb-static.cc',
+    'src/hb-subset-glyf.cc',
+    'src/hb-subset-input.cc',
+    'src/hb-subset-plan.cc',
+    'src/hb-subset.cc',
+    'src/hb-unicode.cc',
+    'src/hb-warning.cc'
+]
+
+env_harfbuzz.Append(CPPPATH=['src', '../graphite2/include', '../icu4c/source/common/'])
+env_harfbuzz.Append(CPPPATH=["#thirdparty/freetype/include"])
+
+env_harfbuzz.Append(CCFLAGS=[
+    '-DHAVE_OT',
+    '-DHAVE_ICU_BUILTIN',
+    '-DHAVE_ICU',
+    '-DHAVE_FREETYPE',
+    '-DHAVE_FT_FACE_GETCHARVARIANTINDEX'
+])
+
+if (not env_harfbuzz.msvc):
+    env_harfbuzz.Append(CXXFLAGS=["-std=c++11"])
+
+if env['use_graphite2']:
+    sources += ['src/hb-graphite2.cc']
+    env_harfbuzz.Append(CCFLAGS=[
+        '-DHAVE_GRAPHITE2',
+        '-DGRAPHITE2_STATIC'
+    ])
+
+env_harfbuzz.disable_warnings()
+
+env_thirdparty = env_harfbuzz.Clone()
+env_thirdparty.disable_warnings()
+lib = env_thirdparty.add_library("harfbuzz_builtin", sources)
+
+# Needs to be appended to arrive after libscene in the linker call,
+# but we don't want it to arrive *after* system libs, so manual hack
+# LIBS contains first SCons Library objects ("SCons.Node.FS.File object")
+# and then plain strings for system library. We insert between the two.
+inserted = False
+for idx, linklib in enumerate(env["LIBS"]):
+    if isbasestring(linklib): # first system lib such as "X11", otherwise SCons lib object
+        env["LIBS"].insert(idx, lib)
+        inserted = True
+        break
+if not inserted:
+    env.Append(LIBS=[lib])

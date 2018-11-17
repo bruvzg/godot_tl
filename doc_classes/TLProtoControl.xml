@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLProtoControl" inherits="Control" category="Core" version="3.1">
+	<brief_description>
+		Rich text input control prototype.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="add_attribute">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="attribute" type="int">
+			</argument>
+			<argument index="2" name="value" type="Variant">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_caret_position">
+			<return type="Vector2">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_paragraph" qualifiers="const">
+			<return type="TLShapedParagraph">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_paragraphs">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_selection" qualifiers="const">
+			<return type="TLProtoControlSelection">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="insert_paragraph">
+			<return type="int">
+			</return>
+			<argument index="0" name="para" type="TLShapedParagraph">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_attribute">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="attribute" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_attributes">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_paragraph">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="replace_sstring">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="text" type="TLShapedString">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="replace_text">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="text" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="replace_utf16">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="text" type="PoolByteArray">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="replace_utf32">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="text" type="PoolByteArray">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="replace_utf8">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="text" type="PoolByteArray">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph">
+			<return type="void">
+			</return>
+			<argument index="0" name="para" type="TLShapedParagraph">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_back_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="bcolor" type="Color">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_brk_flags">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="flags" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_halign">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="halign" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_indent">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="indent" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_jst_flags">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="flags" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_line_spacing">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="line_spacing" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_paragraph_width">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<argument index="1" name="width" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_selection">
+			<return type="void">
+			</return>
+			<argument index="0" name="selection" type="TLProtoControlSelection">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color">
+		</member>
+		<member name="paragraph_spacing" type="float" setter="set_paragraph_spacing" getter="get_paragraph_spacing">
+		</member>
+		<member name="readonly" type="bool" setter="set_readonly" getter="get_readonly">
+		</member>
+		<member name="selectable" type="bool" setter="set_selectable" getter="get_selectable">
+		</member>
+	</members>
+	<signals>
+		<signal name="cursor_changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="paragraph_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

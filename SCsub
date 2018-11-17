@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+Import('env')
+Import('env_modules')
+
+from compat import isbasestring
+
+SConscript('src/SCsub')
+
+if env['builtin_runtime']:
+	SConscript('subprojects/harfbuzz/SCsub')
+	SConscript('subprojects/icu4c/SCsub')
+	if env['use_graphite2']:
+		SConscript('subprojects/graphite2/SCsub')
+else:
+	pass

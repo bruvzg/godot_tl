@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLShapedParagraph" inherits="Resource" category="Core" version="3.1">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="copy_properties">
+			<return type="void">
+			</return>
+			<argument index="0" name="source" type="TLShapedParagraph">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_line" qualifiers="const">
+			<return type="TLShapedAttributedString">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_line_bounds" qualifiers="const">
+			<return type="Array">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_lines" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_size" qualifiers="const">
+			<return type="Vector2">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_word_bounds" qualifiers="const">
+			<return type="Array">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color">
+		</member>
+		<member name="brk_flags" type="int" setter="set_brk_flags" getter="get_brk_flags">
+		</member>
+		<member name="halign" type="int" setter="set_halign" getter="get_halign">
+		</member>
+		<member name="indent" type="float" setter="set_indent" getter="get_indent">
+		</member>
+		<member name="jst_flags" type="int" setter="set_jst_flags" getter="get_jst_flags">
+		</member>
+		<member name="line_spacing" type="float" setter="set_line_spacing" getter="get_line_spacing">
+		</member>
+		<member name="string" type="TLShapedAttributedString" setter="set_string" getter="get_string">
+		</member>
+		<member name="width" type="float" setter="set_width" getter="get_width">
+		</member>
+	</members>
+	<signals>
+		<signal name="paragraph_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="PARA_HALIGN_LEFT" value="0" enum="ParaHAlign">
+		</constant>
+		<constant name="PARA_HALIGN_CENTER" value="1" enum="ParaHAlign">
+		</constant>
+		<constant name="PARA_HALIGN_RIGHT" value="2" enum="ParaHAlign">
+		</constant>
+		<constant name="PARA_HALIGN_FILL" value="3" enum="ParaHAlign">
+		</constant>
+	</constants>
+</class>

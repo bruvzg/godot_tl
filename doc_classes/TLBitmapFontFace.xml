@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLBitmapFontFace" inherits="TLFontFace" category="Core" version="3.1">
+	<brief_description>
+		An AngelCode Bitmap Font Generator bitmap font for drawing text.
+	</brief_description>
+	<description>
+		TLBitmapFontFace have limited shaping support.
+		TLBitmapFontFace doesn't support OpenType features.
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+	</methods>
+	<constants>
+	</constants>
+</class>

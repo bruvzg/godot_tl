@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+Import('env')
+Import('env_modules')
+
+from compat import isbasestring
+
+env_godot_tl = env_modules.Clone()
+
+sources = [
+	'tl_core.cpp',
+	'resources/tl_font.cpp',
+	'resources/tl_bitmap_font.cpp',
+	'resources/tl_dynamic_font.cpp',
+	'resources/tl_font_family.cpp',
+	'resources/tl_shaped_string.cpp',
+	'resources/tl_shaped_attributed_string.cpp',
+	'resources/tl_shaped_paragraph.cpp',
+	'resources/tl_icu_data_loader.cpp',
+	'controls/tl_proto_control.cpp'
+]
+
+env_godot_tl.Append(CPPPATH=['.', '../subprojects/graphite2/include', '../subprojects/harfbuzz/src', '../subprojects/icu4c/source/common', "#thirdparty/freetype/include"])
+
+env_godot_tl.Append(CXXFLAGS=[
+	'-DGODOT_MODULE'
+])
+
+if (not env_godot_tl.msvc):
+    env_godot_tl.Append(CXXFLAGS=["-std=c++14"])
+
+env_thirdparty = env_godot_tl.Clone()
+lib = env_thirdparty.add_library("godot_tl_builtin", sources)
+
+# Needs to be appended to arrive after libscene in the linker call,
+# but we don't want it to arrive *after* system libs, so manual hack
+# LIBS contains first SCons Library objects ("SCons.Node.FS.File object")
+# and then plain strings for system library. We insert between the two.
+inserted = False
+for idx, linklib in enumerate(env["LIBS"]):
+    if isbasestring(linklib): # first system lib such as "X11", otherwise SCons lib object
+        env["LIBS"].insert(idx, lib)
+        inserted = True
+        break
+if not inserted:
+    env.Append(LIBS=[lib])

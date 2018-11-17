@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLFontFamily" inherits="Resource" category="Core" version="3.1">
+	<brief_description>
+		A set of fonts that make up a font family.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="get_face" qualifiers="const">
+			<return type="TLFontFace">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<description>
+				Returns main font face of specified style.
+			</description>
+		</method>
+		<method name="get_liked_face_for_script" qualifiers="const">
+			<return type="TLFontFace">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="script" type="String">
+			</argument>
+			<description>
+				Returns substitution font face of specified style and script.
+			</description>
+		</method>
+		<method name="has_style" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<description>
+				Returns [code]true[/code] if font family has specified style.
+			</description>
+		</method>
+		<method name="remove_style">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<description>
+				Removes all font faces of specified style from family.
+			</description>
+		</method>
+		<method name="set_face">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="ref" type="TLFontFace">
+			</argument>
+			<description>
+				Sets main font face of specified style.
+			</description>
+		</method>
+		<method name="set_liked_face_for_script">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="script" type="String">
+			</argument>
+			<argument index="2" name="ref" type="TLFontFace">
+			</argument>
+			<description>
+				Sets substitution font face of specified style and script.
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

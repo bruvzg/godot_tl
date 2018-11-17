@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLDynamicFontFace" inherits="TLFontFace" category="Core" version="3.1">
+	<brief_description>
+		A TrueType, OpenType or Graphite font for drawing text.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<demos>
+	</demos>
+	<methods>
+		<method name="has_graphite" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+				Returns [code]true[/code] if module is built with SIL Graphite 2 shaper support.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="force_autohinter" type="bool" setter="set_force_autohinter" getter="get_force_autohinter">
+			If [code]true[/code], prefers FreeType auto-hinter over the font's native hinter. Default: [code]false[/code]
+		</member>
+		<member name="hinting" type="int" setter="set_hinting" getter="get_hinting">
+			The font hinting mode used by FreeType auto-hinter. Default: [code]DF_HINTING_NONE[/code]
+		</member>
+		<member name="oversampling" type="float" setter="set_oversampling" getter="get_oversampling">
+			Font oversampling factor. Default: [code]1.0[/code]
+		</member>
+	</members>
+	<constants>
+		<constant name="DF_HINTING_NONE" value="0" enum="DynamicFaceHinting">
+			Disable font hinting (smoother but less crisp)
+		</constant>
+		<constant name="DF_HINTING_LIGHT" value="1" enum="DynamicFaceHinting">
+			Use the light font hinting mode
+		</constant>
+		<constant name="DF_HINTING_NORMAL" value="2" enum="DynamicFaceHinting">
+			Use the default font hinting mode (crisper but less smooth)
+		</constant>
+	</constants>
+</class>

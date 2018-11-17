@@ -1,0 +1,1348 @@
+[gd_scene load_steps=47 format=2]
+
+[ext_resource path="res://icons/ic_font_download_black_18dp.png" type="Texture" id=1]
+[ext_resource path="res://icons/ic_format_size_black_18dp.png" type="Texture" id=2]
+[ext_resource path="res://icons/ic_format_bold_black_18dp.png" type="Texture" id=3]
+[ext_resource path="res://icons/ic_format_italic_black_18dp.png" type="Texture" id=4]
+[ext_resource path="res://icons/ic_format_underlined_black_18dp.png" type="Texture" id=5]
+[ext_resource path="res://icons/ic_format_overlined_black_18dp.png" type="Texture" id=6]
+[ext_resource path="res://icons/ic_strikethrough_s_black_18dp.png" type="Texture" id=7]
+[ext_resource path="res://icons/ic_format_align_left_black_18dp.png" type="Texture" id=8]
+[ext_resource path="res://icons/ic_format_align_center_black_18dp.png" type="Texture" id=9]
+[ext_resource path="res://icons/ic_format_align_right_black_18dp.png" type="Texture" id=10]
+[ext_resource path="res://icons/ic_format_align_justify_black_18dp.png" type="Texture" id=11]
+[ext_resource path="res://icons/ic_format_color_reset_black_18dp.png" type="Texture" id=12]
+[ext_resource path="res://icons/ic_cancel_18pt.png" type="Texture" id=13]
+[ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=14]
+[ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=15]
+[ext_resource path="res://icons/ic_save_black_18dp.png" type="Texture" id=16]
+[ext_resource path="res://icons/ic_format_indent_increase_black_18dp.png" type="Texture" id=17]
+[ext_resource path="res://icons/ic_format_indent_decrease_black_18dp.png" type="Texture" id=18]
+[ext_resource path="res://icons/ic_wallpaper_black_18dp.png" type="Texture" id=19]
+[ext_resource path="res://icons/ic_format_line_spacing_black_18dp.png" type="Texture" id=20]
+[ext_resource path="res://icons/ic_format_textdirection_l_to_r_black_18dp.png" type="Texture" id=21]
+[ext_resource path="res://icons/ic_wrap_text_black_18dp.png" type="Texture" id=22]
+[ext_resource path="res://icons/ic_vertical_align_top_black_18dp.png" type="Texture" id=23]
+[ext_resource path="res://icons/ic_vertical_align_center_black_18dp.png" type="Texture" id=24]
+[ext_resource path="res://icons/ic_vertical_align_bottom_black_18dp.png" type="Texture" id=25]
+[ext_resource path="res://icons/ic_bookmark_border_black_18dp.png" type="Texture" id=26]
+[ext_resource path="res://icons/ic_photo_size_select_large_black_18dp.png" type="Texture" id=27]
+[ext_resource path="res://icons/ic_language_black_18dp.png" type="Texture" id=28]
+[ext_resource path="res://icons/ic_format_color_text_black_18dp.png" type="Texture" id=29]
+[ext_resource path="res://icons/ic_border_color_black_18dp.png" type="Texture" id=30]
+[ext_resource path="res://icons/ic_format_color_outline_black_18dp.png" type="Texture" id=31]
+[ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=32]
+[ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=33]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Control
+
+# Called when the node enters the scene tree for the first time.
+var font_fml = []
+
+func _onresize():
+	if (get_viewport_rect().size.x < 1150):
+		OS.window_size.x = 1150
+		
+	if (get_viewport_rect().size.y < 400):
+		OS.window_size.y = 400
+
+	get_node(\"FormatToolbar\").rect_size.x = get_viewport_rect().size.x
+	get_node(\"StatBar\").rect_size.x = get_viewport_rect().size.x
+	get_node(\"TLProtoControl\").rect_size.x = get_viewport_rect().size.x - 20
+	get_node(\"TLProtoControl\").rect_size.y = get_viewport_rect().size.y - 20 - get_node(\"FormatToolbar\").rect_size.y - get_node(\"StatBar\").rect_size.y
+	get_node(\"StatBar\").rect_position.y =  get_viewport_rect().size.y - get_node(\"StatBar\").rect_size.y
+
+func _cursorchange():
+	var p = get_node(\"TLProtoControl\").get_selection().get_caret_para();
+	var o = get_node(\"TLProtoControl\").get_selection().get_caret_offset();
+	
+	get_node(\"StatBar/P\").text = \"Paragraph: %d of %d\" % [p + 1, get_node(\"TLProtoControl\").get_paragraphs()]
+	get_node(\"StatBar/W\").text = \"%d words, %d lines, %d characters\" % [get_node(\"TLProtoControl\").get_paragraph(p).get_word_bounds().size() + 1, get_node(\"TLProtoControl\").get_paragraph(p).get_line_bounds().size(), get_node(\"TLProtoControl\").get_paragraph(p).get_string().length()]
+
+	var f = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) else get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_base_font()
+	for i in range(font_fml.size()):
+		if f == font_fml[i]:
+			get_node(\"FormatToolbar/FontFamily\").select(i)
+
+	var s = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) else get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_base_font_size()
+	for i in range(get_node(\"FormatToolbar/FontSize\").get_item_count()):
+		if get_node(\"FormatToolbar/FontSize\").get_item_text(i).to_int() == s:
+			get_node(\"FormatToolbar/FontSize\").select(i)
+
+	var st = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) else get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_base_font_style()
+	get_node(\"FormatToolbar/StyleItalic\").pressed = (st == \"Italic\") or (st == \"BoldItalic\")
+	get_node(\"FormatToolbar/StyleBold\").pressed = (st == \"Bold\") or (st == \"BoldItalic\")
+
+	get_node(\"FormatToolbar/FontFtr\").text = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) else \"\"
+	get_node(\"FormatToolbar/Lang\").text = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) else \"\"
+
+	get_node(\"FormatToolbar/StyleUnderline\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 0) > 0
+	get_node(\"FormatToolbar/StyleUnderline/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) else Color(0, 0, 1)
+	get_node(\"FormatToolbar/StyleUnderline/SpinBox\").value = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 1
+
+	get_node(\"FormatToolbar/StyleOver\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 0) > 0
+	get_node(\"FormatToolbar/StyleOver/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) else Color(0, 0, 1)
+	get_node(\"FormatToolbar/StyleOver/SpinBox\").value = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 1
+
+	get_node(\"FormatToolbar/StyleStrike\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 0) > 0
+	get_node(\"FormatToolbar/StyleStrike/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) else Color(0, 0, 1)
+	get_node(\"FormatToolbar/StyleStrike/SpinBox\").value = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 1
+
+	get_node(\"FormatToolbar/TextCol/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) else Color(0, 0, 0)
+	get_node(\"FormatToolbar/HlColor/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) else Color(1, 1, 0)
+	get_node(\"FormatToolbar/OutColor/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) else Color(1, 1, 1, 0)
+
+	get_node(\"FormatToolbar/BackColor/ColorPickerButton\").color = get_node(\"TLProtoControl\").get_paragraph(p).get_back_color()
+
+	get_node(\"FormatToolbar/Width\").value = get_node(\"TLProtoControl\").get_paragraph(p).get_width()
+	get_node(\"FormatToolbar/Dir\").select(get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_base_direction())
+	get_node(\"FormatToolbar/JstMode\").select(get_node(\"TLProtoControl\").get_paragraph(p).get_jst_flags() - 1)
+	get_node(\"FormatToolbar/BrkMode\").select(get_node(\"TLProtoControl\").get_paragraph(p).get_brk_flags() - 1)
+
+	get_node(\"FormatToolbar/LineSpace\").value = get_node(\"TLProtoControl\").get_paragraph(p).get_line_spacing()
+
+	get_node(\"FormatToolbar/HalL\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_LEFT
+	get_node(\"FormatToolbar/HalC\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_CENTER
+	get_node(\"FormatToolbar/HalR\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_RIGHT
+	get_node(\"FormatToolbar/HalJ\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_FILL
+	
+	get_node(\"FormatToolbar/ValT\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_TOP
+	get_node(\"FormatToolbar/ValC\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_CENTER
+	get_node(\"FormatToolbar/ValB\").pressed = (get_node(\"TLProtoControl\").get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if get_node(\"TLProtoControl\").get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_BOTTOM
+
+func _ready():
+	var data_loader = TLICUDataLoader.new()
+	data_loader.load(\"res://icudt63l.dat\")
+
+	get_tree().get_root().connect(\"size_changed\", self, \"_onresize\")
+	get_node(\"TLProtoControl\").connect(\"cursor_changed\", self, \"_cursorchange\")
+	_onresize()
+
+	var ms_rg = TLDynamicFontFace.new()
+	ms_rg.load(\"res://fonts/Montserrat-Regular.ttf\")
+	var ms_it = TLDynamicFontFace.new()
+	ms_it.load(\"res://fonts/Montserrat-Italic.ttf\")
+	var ms_bl = TLDynamicFontFace.new()
+	ms_bl.load(\"res://fonts/Montserrat-Black.ttf\")
+	var ms_bi = TLDynamicFontFace.new()
+	ms_bi.load(\"res://fonts/Montserrat-BlackItalic.ttf\")
+
+	var ms_fam = TLFontFamily.new()
+	ms_fam.set_face(\"Regular\", ms_rg)
+	ms_fam.set_face(\"Italic\", ms_it)
+	ms_fam.set_face(\"Bold\", ms_bl)
+	ms_fam.set_face(\"BoldItalic\", ms_bi)
+
+	font_fml.append(ms_fam)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Montserrat\")
+
+	var nt_rg = TLDynamicFontFace.new()
+	nt_rg.load(\"res://fonts/NotoSans-Regular.ttf\")
+	var nt_it = TLDynamicFontFace.new()
+	nt_it.load(\"res://fonts/NotoSans-Italic.ttf\")
+	var nt_bl = TLDynamicFontFace.new()
+	nt_bl.load(\"res://fonts/NotoSans-Bold.ttf\")
+	var nt_bi = TLDynamicFontFace.new()
+	nt_bi.load(\"res://fonts/NotoSans-BoldItalic.ttf\")
+
+	var nt_em = TLDynamicFontFace.new()
+	nt_em.load(\"res://fonts/NotoColorEmoji-subset.ttf\")
+	nt_rg.set_fallback(nt_em)
+	nt_it.set_fallback(nt_em)
+	nt_bl.set_fallback(nt_em)
+	nt_bi.set_fallback(nt_em)
+
+	var nt_ar = TLDynamicFontFace.new()
+	nt_ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
+	var nt_ab = TLDynamicFontFace.new()
+	nt_ab.load(\"res://fonts/NotoNaskhArabic-Bold.ttf\")
+
+	var nt_tr = TLDynamicFontFace.new()
+	nt_tr.load(\"res://fonts/NotoSerifThai-Regular.ttf\")
+	var nt_tb = TLDynamicFontFace.new()
+	nt_tb.load(\"res://fonts/NotoSerifThai-Bold.ttf\")
+
+	var nt_fam = TLFontFamily.new()
+	nt_fam.set_face(\"Regular\", nt_rg)
+	nt_fam.set_liked_face_for_script(\"Regular\", \"ARAB\", nt_ar)
+	nt_fam.set_liked_face_for_script(\"Regular\", \"THAI\", nt_tr)
+	nt_fam.set_face(\"Italic\", nt_it)
+	nt_fam.set_liked_face_for_script(\"Italic\", \"ARAB\", nt_ar)
+	nt_fam.set_liked_face_for_script(\"Italic\", \"THAI\", nt_tr)
+	nt_fam.set_face(\"Bold\", nt_bl)
+	nt_fam.set_liked_face_for_script(\"Bold\", \"ARAB\", nt_ab)
+	nt_fam.set_liked_face_for_script(\"Bold\", \"THAI\", nt_tb)
+	nt_fam.set_face(\"BoldItalic\", nt_bi)
+	nt_fam.set_liked_face_for_script(\"BoldItalic\", \"ARAB\", nt_ab)
+	nt_fam.set_liked_face_for_script(\"BoldItalic\", \"THAI\", nt_tb)
+
+	font_fml.append(nt_fam)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Noto Sans (+Thai +Naskh)\")
+
+	var nt_ar_bm = TLBitmapFontFace.new()
+	nt_ar_bm.load(\"res://fonts/NotoNaskhArabicUI.fnt\")
+
+	var nt_rg_bm = TLBitmapFontFace.new()
+	nt_rg_bm.load(\"res://fonts/NotoSansRegular.fnt\")
+
+	var nt_fam_bm = TLFontFamily.new()
+	nt_fam_bm.set_face(\"Regular\", nt_rg_bm)
+	nt_fam_bm.set_liked_face_for_script(\"Regular\", \"ARAB\", nt_ar_bm)
+	nt_fam_bm.set_face(\"Italic\", nt_rg_bm)
+	nt_fam_bm.set_liked_face_for_script(\"Italic\", \"ARAB\", nt_ar_bm)
+	nt_fam_bm.set_face(\"Bold\", nt_rg_bm)
+	nt_fam_bm.set_liked_face_for_script(\"Bold\", \"ARAB\", nt_ar_bm)
+	nt_fam_bm.set_face(\"BoldItalic\", nt_rg_bm)
+	nt_fam_bm.set_liked_face_for_script(\"BoldItalic\", \"ARAB\", nt_ar_bm)
+
+	font_fml.append(nt_fam_bm)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Noto Sans (+Naskh bitmap)\")
+
+	var nt_ar_ns = TLDynamicFontFace.new()
+	nt_ar_ns.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
+
+	var nt_fam_ns = TLFontFamily.new()
+	nt_fam_ns.set_face(\"Regular\", nt_rg)
+	nt_fam_ns.set_liked_face_for_script(\"Regular\", \"ARAB\", nt_ar_ns)
+	nt_fam_ns.set_face(\"Italic\", nt_it)
+	nt_fam_ns.set_liked_face_for_script(\"Italic\", \"ARAB\", nt_ar_ns)
+	nt_fam_ns.set_face(\"Bold\", nt_bl)
+	nt_fam_ns.set_liked_face_for_script(\"Bold\", \"ARAB\", nt_ar_ns)
+	nt_fam_ns.set_face(\"BoldItalic\", nt_bi)
+	nt_fam_ns.set_liked_face_for_script(\"BoldItalic\", \"ARAB\", nt_ar_ns)
+
+	font_fml.append(nt_fam_ns)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Noto Sans (+Nastaliq)\")
+
+	var cn_rg = TLDynamicFontFace.new()
+	cn_rg.load(\"res://fonts/ComicNeue-Regular.otf\")
+	var cn_it = TLDynamicFontFace.new()
+	cn_it.load(\"res://fonts/ComicNeue-Oblique.otf\")
+	var cn_bl = TLDynamicFontFace.new()
+	cn_bl.load(\"res://fonts/ComicNeue-Bold.otf\")
+	var cn_bi = TLDynamicFontFace.new()
+	cn_bi.load(\"res://fonts/ComicNeue-BoldOblique.otf\")
+
+	var cn_fam = TLFontFamily.new()
+	cn_fam.set_face(\"Regular\", cn_rg)
+	cn_fam.set_face(\"Italic\", cn_it)
+	cn_fam.set_face(\"Bold\", cn_bl)
+	cn_fam.set_face(\"BoldItalic\", cn_bi)
+
+	font_fml.append(cn_fam)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Comic Neue\")
+
+	var aw_rg = TLDynamicFontFace.new()
+	aw_rg.load(\"res://fonts/AwamiNastaliq-Regular.ttf\")
+
+	var aw_fam = TLFontFamily.new()
+	aw_fam.set_face(\"Regular\", aw_rg)
+	aw_fam.set_face(\"Italic\", aw_rg)
+	aw_fam.set_face(\"Bold\", aw_rg)
+	aw_fam.set_face(\"BoldItalic\", aw_rg)
+
+	font_fml.append(aw_fam)
+	get_node(\"FormatToolbar/FontFamily\").add_item(\"Awami (Nastaliq, Graphite)\")
+
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font(nt_fam)
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+
+	get_node(\"FormatToolbar/FontFamily\").select(2)
+
+	#embedded images
+	get_node(\"FormatToolbar/InsertImage\").add_item(\"Godot icon\")
+	get_node(\"FormatToolbar/InsertImage\").add_item(\"Godot old icon\")
+	get_node(\"FormatToolbar/InsertImage\").add_item(\"Godot ancient icon\")
+
+	get_node(\"FormatToolbar/InsertImage\").set_item_metadata(0, load(\"res://icon_new.png\"))
+	get_node(\"FormatToolbar/InsertImage\").set_item_metadata(1, load(\"res://icon_old.png\"))
+	get_node(\"FormatToolbar/InsertImage\").set_item_metadata(2, load(\"res://icon_older.png\"))
+
+	#font sizes
+	var s = 6;
+	while (s < 16):
+		get_node(\"FormatToolbar/FontSize\").add_item(\"%d\" % s)
+		s = s + 1
+	while (s < 28):
+		get_node(\"FormatToolbar/FontSize\").add_item(\"%d\" % s)
+		s = s + 2
+	while (s < 48):
+		get_node(\"FormatToolbar/FontSize\").add_item(\"%d\" % s)
+		s = s + 4
+	while (s < 72):
+		get_node(\"FormatToolbar/FontSize\").add_item(\"%d\" % s)
+		s = s + 6
+	while (s <= 96):
+		get_node(\"FormatToolbar/FontSize\").add_item(\"%d\" % s)
+		s = s + 8
+	get_node(\"FormatToolbar/FontSize\").select(6)
+
+	get_node(\"FormatToolbar/Dir\").add_item(\"LTR\")
+	get_node(\"FormatToolbar/Dir\").add_item(\"RTL\")
+	get_node(\"FormatToolbar/Dir\").add_item(\"Locale\")
+	get_node(\"FormatToolbar/Dir\").add_item(\"Auto\")
+
+	get_node(\"FormatToolbar/BrkMode\").add_item(\"No autobreak\")
+	get_node(\"FormatToolbar/BrkMode\").add_item(\"Words\")
+	get_node(\"FormatToolbar/BrkMode\").add_item(\"Graphemes\")
+	get_node(\"FormatToolbar/BrkMode\").select(2)
+	
+	get_node(\"FormatToolbar/JstMode\").add_item(\"Kashidas/spaces\")
+	get_node(\"FormatToolbar/JstMode\").add_item(\"Kashidas\")
+	get_node(\"FormatToolbar/JstMode\").add_item(\"Spaces\")
+
+func _on_FontFamily_item_selected(ID):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[ID])
+
+func _on_FontSize_item_selected(ID):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, get_node(\"FormatToolbar/FontSize\").get_item_text(ID).to_int())
+
+func _on_FontFtr_text_entered(new_text):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, new_text)
+
+func _on_Style_toggled(button_pressed):
+	if get_node(\"FormatToolbar/StyleBold\").pressed and get_node(\"FormatToolbar/StyleItalic\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"BoldItalic\")
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[get_node(\"FormatToolbar/FontFamily\").selected])
+	elif get_node(\"FormatToolbar/StyleBold\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Bold\")
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[get_node(\"FormatToolbar/FontFamily\").selected])
+	elif get_node(\"FormatToolbar/StyleItalic\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Regular\")
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[get_node(\"FormatToolbar/FontFamily\").selected])
+	else:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Italic\")
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[get_node(\"FormatToolbar/FontFamily\").selected])
+
+func _on_SpinBoxUnder_value_changed(value):
+	if get_node(\"FormatToolbar/StyleUnderline\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, value)
+
+func _on_SpinBoxOver_value_changed(value):
+	if get_node(\"FormatToolbar/StyleOver\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, value)
+
+func _on_SpinBoxStrike_value_changed(value):
+	if get_node(\"FormatToolbar/StyleStrike\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, value)
+
+func _on_StyleUnderline_toggled(button_pressed):
+	if button_pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, get_node(\"FormatToolbar/StyleUnderline/ColorPickerButton\").color)
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, get_node(\"FormatToolbar/StyleUnderline/SpinBox\").value)
+	else:
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR)
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH)
+
+func _on_StyleUnderlineColorPickerButton_color_changed(color):
+	if get_node(\"FormatToolbar/StyleUnderline\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, color)
+
+func _on_StyleOver_toggled(button_pressed):
+	if button_pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, get_node(\"FormatToolbar/StyleOver/ColorPickerButton\").color)
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, get_node(\"FormatToolbar/StyleOver/SpinBox\").value)
+	else:
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR)
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH)
+
+func _on_StyleOverColorPickerButton_color_changed(color):
+	if get_node(\"FormatToolbar/StyleOver\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, color)
+
+func _on_StyleStrike_toggled(button_pressed):
+	if button_pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, get_node(\"FormatToolbar/StyleStrike/ColorPickerButton\").color)
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, get_node(\"FormatToolbar/StyleStrike/SpinBox\").value)
+	else:
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)
+		get_node(\"TLProtoControl\").remove_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)
+
+func _on_StyleStrikeColorPickerButton_color_changed(color):
+	if get_node(\"FormatToolbar/StyleStrike\").pressed:
+		get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, color)
+
+func _on_HalL_toggled(button_pressed):
+	get_node(\"TLProtoControl\").set_paragraph_halign(get_node(\"TLProtoControl\").get_selection(), TLShapedParagraph.PARA_HALIGN_LEFT)
+
+func _on_HalC_toggled(button_pressed):
+	get_node(\"TLProtoControl\").set_paragraph_halign(get_node(\"TLProtoControl\").get_selection(), TLShapedParagraph.PARA_HALIGN_CENTER)
+
+func _on_HalR_toggled(button_pressed):
+	get_node(\"TLProtoControl\").set_paragraph_halign(get_node(\"TLProtoControl\").get_selection(), TLShapedParagraph.PARA_HALIGN_RIGHT)
+
+func _on_HalJ_toggled(button_pressed):
+	get_node(\"TLProtoControl\").set_paragraph_halign(get_node(\"TLProtoControl\").get_selection(),TLShapedParagraph.PARA_HALIGN_FILL)
+
+func _on_TextColorPickerButton_color_changed(color):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, color)
+
+func _on_HlColorPickerButton_color_changed(color):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, color)
+
+func _on_BackColorPickerButton_color_changed(color):
+	get_node(\"TLProtoControl\").set_paragraph_back_color(get_node(\"TLProtoControl\").get_selection(),color)
+
+func _on_ClearFMT_pressed():
+	get_node(\"TLProtoControl\").remove_attributes(get_node(\"TLProtoControl\").get_selection())
+
+func _on_Dir_item_selected(ID):
+	var f = get_node(\"TLProtoControl\").get_selection().get_start_para()
+	var l = get_node(\"TLProtoControl\").get_selection().get_end_para()
+	for i in range(f, l + 1):
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_base_direction(ID)
+
+func _on_BrkMode_item_selected(ID):
+	get_node(\"TLProtoControl\").set_paragraph_brk_flags(get_node(\"TLProtoControl\").get_selection(), ID + 1)
+
+func _on_JstMode_item_selected(ID):
+	get_node(\"TLProtoControl\").set_paragraph_jst_flags(get_node(\"TLProtoControl\").get_selection(), ID + 1)
+
+func _on_ValT_toggled(button_pressed):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_TOP)
+
+func _on_ValC_toggled(button_pressed):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_CENTER)
+
+func _on_ValB_toggled(button_pressed):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_BOTTOM)
+
+func _on_DecW_pressed():
+	var f = get_node(\"TLProtoControl\").get_selection().get_start_para()
+	var l = get_node(\"TLProtoControl\").get_selection().get_end_para()
+	for i in range(f, l + 1):
+		get_node(\"TLProtoControl\").get_paragraph(i).set_indent(get_node(\"TLProtoControl\").get_paragraph(i).get_indent() + 10)
+
+func _on_IncW_pressed():
+	var f = get_node(\"TLProtoControl\").get_selection().get_start_para()
+	var l = get_node(\"TLProtoControl\").get_selection().get_end_para()
+	for i in range(f, l + 1):
+		get_node(\"TLProtoControl\").get_paragraph(i).set_indent(get_node(\"TLProtoControl\").get_paragraph(i).get_indent() - 10)
+
+func _on_Lang_text_entered(new_text):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, new_text)
+
+func _on_InsertImage_item_selected(ID):
+	get_node(\"TLProtoControl\").replace_text(get_node(\"TLProtoControl\").get_selection(), \"?\")
+	get_node(\"TLProtoControl\").get_selection().set_start_offset(get_node(\"TLProtoControl\").get_selection().get_start_offset() - 1)
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, get_node(\"FormatToolbar/InsertImage\").get_item_metadata(ID))
+	get_node(\"TLProtoControl\").get_selection().set_start_offset(get_node(\"TLProtoControl\").get_selection().get_end_offset())
+
+func _on_New_pressed():
+	get_node(\"TLProtoControl\").clear()
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font(font_fml[1])
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+
+func _print_err():
+	print(\"Invalid file..\")
+
+func _on_Load_pressed():
+	get_node(\"FileDialogLoad\").popup()
+	
+func _on_FileDialogLoad_file_selected(path):
+	get_node(\"TLProtoControl\").clear()
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font(font_fml[1])
+	get_node(\"TLProtoControl\").get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+
+	var loadfile = File.new()
+	loadfile.open(path, File.READ)
+	if loadfile.get_8() != 0x47:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x44:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x52:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x54:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x46:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x00:
+		_print_err()
+		return
+	if loadfile.get_8() != 0x01:
+		_print_err()
+		return
+	var para_count = loadfile.get_64()
+	for i in range(para_count):
+		var utf16_size = loadfile.get_64()
+		var utf16 = loadfile.get_buffer(utf16_size)
+		if i > 0:
+			get_node(\"TLProtoControl\").insert_paragraph(null, i)
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_utf16(utf16)
+		var para = parse_json(loadfile.get_pascal_string())
+		#IDs to refs
+		if !para[\"base_font\"].begins_with(\"CTL_DEMO_FONT_\"):
+			_print_err()
+			return
+		para[\"base_font\"] = font_fml[para[\"base_font\"].trim_prefix(\"CTL_DEMO_FONT_\").to_int()]
+		get_node(\"TLProtoControl\").get_paragraph(i).set_width(para[\"width\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_indent(para[\"indent\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_back_color(para[\"back_color\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_line_spacing(para[\"line_spacing\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_base_direction(para[\"base_direction\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_base_font(para[\"base_font\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_base_font_style(para[\"base_font_style\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().set_base_font_size(para[\"font_font_size\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_brk_flags(para[\"brk_flags\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_jst_flags(para[\"jst_flags\"])
+		get_node(\"TLProtoControl\").get_paragraph(i).set_halign(para[\"halign\"])
+		for a in range(para[\"attributes\"].size()):
+			if para[\"attributes\"][a].has(\"format\"):
+				if para[\"attributes\"][a][\"format\"].has(\"font\"):
+					if !para[\"attributes\"][a][\"format\"][\"font\"].begins_with(\"CTL_DEMO_FONT_\"):
+						_print_err()
+						return
+					para[\"attributes\"][a][\"format\"][\"font\"] = font_fml[para[\"attributes\"][a][\"format\"][\"font\"].trim_prefix(\"CTL_DEMO_FONT_\").to_int()]
+				if para[\"attributes\"][a][\"format\"].has(\"repl_image\"):
+					if !para[\"attributes\"][a][\"format\"][\"repl_image\"].begins_with(\"CTL_DEMO_RIMG_\"):
+						_print_err()
+						return
+					para[\"attributes\"][a][\"format\"][\"repl_image\"] = get_node(\"FormatToolbar/InsertImage\").get_item_metadata(para[\"attributes\"][a][\"format\"][\"repl_image\"].trim_prefix(\"CTL_DEMO_RIMG_\").to_int())
+		get_node(\"TLProtoControl\").get_paragraph(i).get_string().load_attributes_dict(para[\"attributes\"])
+		loadfile.get_8()
+		loadfile.get_8()
+	#todo set caret and selection
+
+func _on_Save_pressed():
+	get_node(\"FileDialogSave\").popup()
+
+func _on_FileDialogSave_file_selected(path):
+	var savefile = File.new()
+	savefile.open(path, File.WRITE)
+	#magic
+	savefile.store_8(0x47)
+	savefile.store_8(0x44)
+	savefile.store_8(0x52)
+	savefile.store_8(0x54)
+	savefile.store_8(0x46)
+	#version
+	savefile.store_8(0x00)
+	savefile.store_8(0x01)
+	#paragraph count
+	savefile.store_64(get_node(\"TLProtoControl\").get_paragraphs())
+	for i in range(get_node(\"TLProtoControl\").get_paragraphs()):
+		var para = {}
+		var utf16 = get_node(\"TLProtoControl\").get_paragraph(i).get_string().get_utf16()
+		savefile.store_64(utf16.size())
+		savefile.store_buffer(utf16)
+		para[\"width\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_width()
+		para[\"indent\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_indent()
+		para[\"back_color\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_back_color().to_html()
+		para[\"line_spacing\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_line_spacing()
+		para[\"base_direction\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_string().get_base_direction()
+		for j in range(font_fml.size()):
+			if get_node(\"TLProtoControl\").get_paragraph(i).get_string().get_base_font() == font_fml[j]:
+				para[\"base_font\"] = \"CTL_DEMO_FONT_%d\" % [j]
+				break
+		para[\"base_font_style\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_string().get_base_font_style()
+		para[\"font_font_size\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_string().get_base_font_size()
+		para[\"brk_flags\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_brk_flags()
+		para[\"jst_flags\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_jst_flags()
+		para[\"halign\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_halign()
+		para[\"attributes\"] = get_node(\"TLProtoControl\").get_paragraph(i).get_string().save_attributes_dict()
+		#replace refs with IDs
+		for a in range(para[\"attributes\"].size()):
+			if para[\"attributes\"][a].has(\"format\"):
+				if para[\"attributes\"][a][\"format\"].has(\"font\"):
+					for j in range(font_fml.size()):
+						if para[\"attributes\"][a][\"format\"][\"font\"] == font_fml[j]:
+							para[\"attributes\"][a][\"format\"][\"font\"] = \"CTL_DEMO_FONT_%d\" % [j]
+							break
+				if para[\"attributes\"][a][\"format\"].has(\"repl_image\"):
+					for j in range(get_node(\"FormatToolbar/InsertImage\").get_item_count()):
+						if para[\"attributes\"][a][\"format\"][\"repl_image\"] == get_node(\"FormatToolbar/InsertImage\").get_item_metadata(j):
+							para[\"attributes\"][a][\"format\"][\"repl_image\"] = \"CTL_DEMO_RIMG_%d\" % [j]
+							break
+		savefile.store_pascal_string(to_json(para))
+		savefile.store_8(00)
+		savefile.store_8(00)
+	#todo save caret and selection
+
+func _on_Width_value_changed(value):
+	get_node(\"TLProtoControl\").set_paragraph_width(get_node(\"TLProtoControl\").get_selection(), value)
+
+func _on_ClearFMT2_pressed():
+	get_node(\"TLProtoControl\").set_paragraph_width(get_node(\"TLProtoControl\").get_selection(), -1.0)
+
+func _on_LineSpace_value_changed(value):
+	get_node(\"TLProtoControl\").set_paragraph_line_spacing(get_node(\"TLProtoControl\").get_selection(), value)
+
+func _on_Color2PickerButton_color_changed(color):
+	get_node(\"TLProtoControl\").set_back_color(color)
+
+func _on_ParaSpace_value_changed(value):
+	get_node(\"TLProtoControl\").set_paragraph_spacing(value)
+
+func _on_ColorPickerButton_color_changed(color):
+	get_node(\"TLProtoControl\").add_attribute(get_node(\"TLProtoControl\").get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, color)
+"
+
+[sub_resource type="StyleBoxFlat" id=2]
+
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0509804, 0.00784314, 0.827451, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+
+content_margin_left = 6.0
+content_margin_right = 6.0
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0235294, 0.0117647, 0.176471, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+
+content_margin_left = 6.0
+content_margin_right = 6.0
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0392157, 0.0313726, 0.141176, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+
+bg_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0588235, 0.0862745, 0.741176, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+
+bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.027451, 0, 0.486275, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Theme" id=11]
+
+Button/styles/focus = SubResource( 2 )
+Button/styles/hover = SubResource( 3 )
+Button/styles/normal = SubResource( 4 )
+Button/styles/pressed = SubResource( 5 )
+ColorPickerButton/styles/hover = SubResource( 6 )
+ColorPickerButton/styles/normal = SubResource( 7 )
+ColorPickerButton/styles/pressed = SubResource( 8 )
+LineEdit/colors/font_color = Color( 0, 0, 0, 1 )
+LineEdit/styles/focus = SubResource( 9 )
+LineEdit/styles/normal = SubResource( 10 )
+
+[sub_resource type="ButtonGroup" id=12]
+
+
+[sub_resource type="ButtonGroup" id=13]
+
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1200, 400 )
+script = SubResource( 1 )
+
+[node name="TLProtoControl" type="TLProtoControl" parent="."]
+margin_left = 5.0
+margin_top = 115.0
+margin_right = 1195.0
+margin_bottom = 765.0
+
+[node name="FormatToolbar" type="ColorRect" parent="."]
+margin_right = 1200.0
+margin_bottom = 110.0
+theme = SubResource( 11 )
+color = Color( 0.423529, 0.423529, 0.423529, 1 )
+
+[node name="FontFamily" type="OptionButton" parent="FormatToolbar"]
+margin_left = 5.0
+margin_top = 40.0
+margin_right = 235.0
+margin_bottom = 70.0
+hint_tooltip = "Font Family"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect2" type="TextureRect" parent="FormatToolbar/FontFamily"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+
+[node name="FontSize" type="OptionButton" parent="FormatToolbar"]
+margin_left = 244.0
+margin_top = 40.0
+margin_right = 334.0
+margin_bottom = 70.0
+hint_tooltip = "Font size"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect2" type="TextureRect" parent="FormatToolbar/FontSize"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 4
+
+[node name="StyleBold" type="Button" parent="FormatToolbar"]
+margin_left = 664.0
+margin_top = 40.0
+margin_right = 694.0
+margin_bottom = 70.0
+hint_tooltip = "Bold"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 3 )
+
+[node name="StyleItalic" type="Button" parent="FormatToolbar"]
+margin_left = 694.0
+margin_top = 40.0
+margin_right = 724.0
+margin_bottom = 70.0
+hint_tooltip = "Italic"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 4 )
+
+[node name="StyleUnderline" type="Button" parent="FormatToolbar"]
+margin_left = 734.0
+margin_top = 40.0
+margin_right = 764.0
+margin_bottom = 70.0
+hint_tooltip = "Underline"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 5 )
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleUnderline"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Underline color"
+focus_mode = 0
+color = Color( 0, 0, 1, 1 )
+
+[node name="SpinBox" type="SpinBox" parent="FormatToolbar/StyleUnderline"]
+margin_left = 50.0
+margin_right = 116.0
+margin_bottom = 30.0
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+align = 1
+
+[node name="StyleOver" type="Button" parent="FormatToolbar"]
+margin_left = 850.0
+margin_top = 40.0
+margin_right = 880.0
+margin_bottom = 70.0
+hint_tooltip = "Overline"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 6 )
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleOver"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Overline color"
+focus_mode = 0
+color = Color( 0.0313726, 0, 1, 1 )
+
+[node name="SpinBox" type="SpinBox" parent="FormatToolbar/StyleOver"]
+margin_left = 50.0
+margin_right = 116.0
+margin_bottom = 30.0
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+align = 1
+
+[node name="StyleStrike" type="Button" parent="FormatToolbar"]
+margin_left = 966.0
+margin_top = 40.0
+margin_right = 996.0
+margin_bottom = 70.0
+hint_tooltip = "Strikethrough"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 7 )
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleStrike"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Strikethrough color"
+focus_mode = 0
+color = Color( 0, 0, 1, 1 )
+
+[node name="SpinBox" type="SpinBox" parent="FormatToolbar/StyleStrike"]
+margin_left = 50.0
+margin_right = 116.0
+margin_bottom = 30.0
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+align = 1
+
+[node name="HalL" type="Button" parent="FormatToolbar"]
+margin_left = 495.0
+margin_top = 75.0
+margin_right = 525.0
+margin_bottom = 105.0
+hint_tooltip = "Align left"
+focus_mode = 0
+toggle_mode = true
+pressed = true
+group = SubResource( 12 )
+icon = ExtResource( 8 )
+
+[node name="HalC" type="Button" parent="FormatToolbar"]
+margin_left = 525.0
+margin_top = 75.0
+margin_right = 555.0
+margin_bottom = 105.0
+hint_tooltip = "Align center"
+focus_mode = 0
+toggle_mode = true
+group = SubResource( 12 )
+icon = ExtResource( 9 )
+
+[node name="HalR" type="Button" parent="FormatToolbar"]
+margin_left = 555.0
+margin_top = 75.0
+margin_right = 585.0
+margin_bottom = 105.0
+hint_tooltip = "Align right"
+focus_mode = 0
+toggle_mode = true
+group = SubResource( 12 )
+icon = ExtResource( 10 )
+
+[node name="HalJ" type="Button" parent="FormatToolbar"]
+margin_left = 585.0
+margin_top = 75.0
+margin_right = 615.0
+margin_bottom = 105.0
+hint_tooltip = "Justified"
+focus_mode = 0
+toggle_mode = true
+group = SubResource( 12 )
+icon = ExtResource( 11 )
+
+[node name="ClearFMT" type="Button" parent="FormatToolbar"]
+margin_left = 734.0
+margin_top = 5.0
+margin_right = 764.0
+margin_bottom = 35.0
+hint_tooltip = "Clear formatting"
+focus_mode = 0
+icon = ExtResource( 12 )
+
+[node name="ClearFMT2" type="Button" parent="FormatToolbar"]
+margin_left = 1010.0
+margin_top = 75.0
+margin_right = 1040.0
+margin_bottom = 105.0
+hint_tooltip = "Reset paragraph width"
+focus_mode = 0
+icon = ExtResource( 13 )
+
+[node name="New" type="Button" parent="FormatToolbar"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 35.0
+margin_bottom = 35.0
+hint_tooltip = "New"
+focus_mode = 0
+enabled_focus_mode = 0
+icon = ExtResource( 14 )
+
+[node name="Load" type="Button" parent="FormatToolbar"]
+margin_left = 35.0
+margin_top = 5.0
+margin_right = 65.0
+margin_bottom = 35.0
+hint_tooltip = "Load..."
+focus_mode = 0
+enabled_focus_mode = 0
+icon = ExtResource( 15 )
+
+[node name="Save" type="Button" parent="FormatToolbar"]
+margin_left = 65.0
+margin_top = 5.0
+margin_right = 95.0
+margin_bottom = 35.0
+hint_tooltip = "Save as..."
+focus_mode = 0
+icon = ExtResource( 16 )
+
+[node name="DecW" type="Button" parent="FormatToolbar"]
+margin_left = 35.0
+margin_top = 75.0
+margin_right = 65.0
+margin_bottom = 105.0
+hint_tooltip = "Increase indent"
+focus_mode = 0
+icon = ExtResource( 17 )
+
+[node name="IncW" type="Button" parent="FormatToolbar"]
+margin_left = 5.0
+margin_top = 75.0
+margin_right = 35.0
+margin_bottom = 105.0
+hint_tooltip = "Decrease indent"
+focus_mode = 0
+icon = ExtResource( 18 )
+
+[node name="InsertImage" type="OptionButton" parent="FormatToolbar"]
+margin_left = 264.0
+margin_top = 5.0
+margin_right = 462.0
+margin_bottom = 35.0
+hint_tooltip = "Image"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect3" type="TextureRect" parent="FormatToolbar/InsertImage"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 19 )
+stretch_mode = 4
+
+[node name="LineSpace" type="SpinBox" parent="FormatToolbar"]
+margin_left = 205.0
+margin_top = 75.0
+margin_right = 295.0
+margin_bottom = 105.0
+hint_tooltip = "Line spacing"
+min_value = 0.1
+max_value = 5.0
+step = 0.1
+value = 1.0
+align = 2
+
+[node name="TextureRect4" type="TextureRect" parent="FormatToolbar/LineSpace"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 20 )
+stretch_mode = 4
+
+[node name="ParaSpace" type="SpinBox" parent="FormatToolbar"]
+margin_left = 160.0
+margin_top = 5.0
+margin_right = 250.0
+margin_bottom = 35.0
+hint_tooltip = "Paragraph spacing"
+value = 2.0
+align = 2
+
+[node name="TextureRect4" type="TextureRect" parent="FormatToolbar/ParaSpace"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 20 )
+stretch_mode = 4
+
+[node name="Dir" type="OptionButton" parent="FormatToolbar"]
+margin_left = 75.0
+margin_top = 75.0
+margin_right = 195.0
+margin_bottom = 105.0
+hint_tooltip = "Paragraph base direction"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect3" type="TextureRect" parent="FormatToolbar/Dir"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 21 )
+stretch_mode = 4
+
+[node name="BrkMode" type="OptionButton" parent="FormatToolbar"]
+margin_left = 305.0
+margin_top = 75.0
+margin_right = 485.0
+margin_bottom = 105.0
+hint_tooltip = "Paragraph line break mode"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect4" type="TextureRect" parent="FormatToolbar/BrkMode"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 22 )
+stretch_mode = 4
+
+[node name="JstMode" type="OptionButton" parent="FormatToolbar"]
+margin_left = 625.0
+margin_top = 75.0
+margin_right = 805.0
+margin_bottom = 105.0
+hint_tooltip = "Paragraph justification mode"
+focus_mode = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+align = 1
+
+[node name="TextureRect5" type="TextureRect" parent="FormatToolbar/JstMode"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 11 )
+stretch_mode = 4
+
+[node name="ValT" type="Button" parent="FormatToolbar"]
+margin_left = 472.0
+margin_top = 5.0
+margin_right = 502.0
+margin_bottom = 35.0
+hint_tooltip = "Align top"
+focus_mode = 0
+toggle_mode = true
+group = SubResource( 13 )
+icon = ExtResource( 23 )
+
+[node name="ValC" type="Button" parent="FormatToolbar"]
+margin_left = 502.0
+margin_top = 5.0
+margin_right = 532.0
+margin_bottom = 35.0
+hint_tooltip = "Align baseline"
+focus_mode = 0
+toggle_mode = true
+pressed = true
+group = SubResource( 13 )
+icon = ExtResource( 24 )
+
+[node name="ValB" type="Button" parent="FormatToolbar"]
+margin_left = 532.0
+margin_top = 5.0
+margin_right = 562.0
+margin_bottom = 35.0
+hint_tooltip = "Align bottom"
+focus_mode = 0
+toggle_mode = true
+group = SubResource( 13 )
+icon = ExtResource( 25 )
+
+[node name="FontFtr" type="LineEdit" parent="FormatToolbar"]
+margin_left = 344.0
+margin_top = 40.0
+margin_right = 524.0
+margin_bottom = 70.0
+hint_tooltip = "Font OpenType features"
+focus_mode = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+focus_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="FormatToolbar/FontFtr"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 26 )
+stretch_mode = 4
+
+[node name="Width" type="SpinBox" parent="FormatToolbar"]
+margin_left = 865.0
+margin_top = 75.0
+margin_right = 1005.0
+margin_bottom = 105.0
+hint_tooltip = "Paragraph width"
+min_value = -1.0
+max_value = 1000.0
+value = -1.0
+align = 2
+
+[node name="TextureRect" type="TextureRect" parent="FormatToolbar/Width"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 27 )
+stretch_mode = 4
+
+[node name="Lang" type="LineEdit" parent="FormatToolbar"]
+margin_left = 534.0
+margin_top = 40.0
+margin_right = 654.0
+margin_bottom = 70.0
+hint_tooltip = "Language"
+focus_mode = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+focus_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="FormatToolbar/Lang"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture = ExtResource( 28 )
+stretch_mode = 4
+
+[node name="TextCol" type="TextureRect" parent="FormatToolbar"]
+margin_left = 575.0
+margin_top = 5.0
+margin_right = 605.0
+margin_bottom = 35.0
+hint_tooltip = "Text color"
+texture = ExtResource( 29 )
+stretch_mode = 4
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/TextCol"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Text color"
+focus_mode = 0
+
+[node name="HlColor" type="TextureRect" parent="FormatToolbar"]
+margin_left = 625.0
+margin_top = 5.0
+margin_right = 655.0
+margin_bottom = 35.0
+hint_tooltip = "Highlight color"
+texture = ExtResource( 30 )
+stretch_mode = 4
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/HlColor"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Highlight color"
+focus_mode = 0
+color = Color( 0.784314, 0.784314, 0.0784314, 1 )
+
+[node name="OutColor" type="TextureRect" parent="FormatToolbar"]
+margin_left = 675.0
+margin_top = 5.0
+margin_right = 705.0
+margin_bottom = 35.0
+hint_tooltip = "Outline color"
+texture = ExtResource( 31 )
+stretch_mode = 4
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/OutColor"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Outline color"
+color = Color( 1, 1, 1, 0 )
+
+[node name="BackColor" type="TextureRect" parent="FormatToolbar"]
+margin_left = 810.0
+margin_top = 75.0
+margin_right = 840.0
+margin_bottom = 105.0
+hint_tooltip = "Paragraph background color"
+texture = ExtResource( 32 )
+stretch_mode = 4
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Paragraph background color"
+focus_mode = 0
+color = Color( 1, 1, 1, 1 )
+
+[node name="Panel3" type="ColorRect" parent="FormatToolbar"]
+margin_left = 100.0
+margin_top = 10.0
+margin_right = 103.0
+margin_bottom = 30.0
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[node name="Panel4" type="ColorRect" parent="FormatToolbar"]
+margin_left = 255.0
+margin_top = 10.0
+margin_right = 258.0
+margin_bottom = 30.0
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[node name="Panel5" type="ColorRect" parent="FormatToolbar"]
+margin_left = 568.0
+margin_top = 10.0
+margin_right = 571.0
+margin_bottom = 30.0
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[node name="BackColor2" type="TextureRect" parent="FormatToolbar"]
+margin_left = 105.0
+margin_top = 5.0
+margin_right = 135.0
+margin_bottom = 35.0
+hint_tooltip = "Document background color"
+texture = ExtResource( 33 )
+stretch_mode = 4
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor2"]
+margin_left = 30.0
+margin_right = 50.0
+margin_bottom = 30.0
+hint_tooltip = "Document background color"
+focus_mode = 0
+color = Color( 1, 1, 1, 0.5 )
+
+[node name="StatBar" type="ColorRect" parent="."]
+margin_top = 780.0
+margin_right = 1200.0
+margin_bottom = 800.0
+color = Color( 0.423529, 0.423529, 0.423529, 1 )
+
+[node name="P" type="Label" parent="StatBar"]
+margin_right = 155.0
+margin_bottom = 20.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "-"
+align = 1
+valign = 1
+
+[node name="Panel1" type="ColorRect" parent="StatBar"]
+margin_left = 157.0
+margin_right = 160.0
+margin_bottom = 20.0
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[node name="W" type="Label" parent="StatBar"]
+margin_left = 160.0
+margin_right = 430.0
+margin_bottom = 20.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "-"
+align = 1
+valign = 1
+
+[node name="Panel2" type="ColorRect" parent="StatBar"]
+margin_left = 430.0
+margin_right = 433.0
+margin_bottom = 20.0
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[node name="FileDialogSave" type="FileDialog" parent="."]
+margin_left = 157.0
+margin_top = 190.0
+margin_right = 1035.0
+margin_bottom = 700.0
+access = 2
+filters = PoolStringArray( "*.gdrtf;Rich Text" )
+current_dir = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin"
+current_path = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin/"
+
+[node name="FileDialogLoad" type="FileDialog" parent="."]
+margin_left = 157.0
+margin_top = 190.0
+margin_right = 1035.0
+margin_bottom = 700.0
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.gdrtf;Rich Text" )
+current_dir = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin"
+current_path = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin/"
+
+[connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
+[connection signal="item_selected" from="FormatToolbar/FontSize" to="." method="_on_FontSize_item_selected"]
+[connection signal="toggled" from="FormatToolbar/StyleBold" to="." method="_on_Style_toggled"]
+[connection signal="toggled" from="FormatToolbar/StyleItalic" to="." method="_on_Style_toggled"]
+[connection signal="toggled" from="FormatToolbar/StyleUnderline" to="." method="_on_StyleUnderline_toggled"]
+[connection signal="color_changed" from="FormatToolbar/StyleUnderline/ColorPickerButton" to="." method="_on_StyleUnderlineColorPickerButton_color_changed"]
+[connection signal="value_changed" from="FormatToolbar/StyleUnderline/SpinBox" to="." method="_on_SpinBoxUnder_value_changed"]
+[connection signal="toggled" from="FormatToolbar/StyleOver" to="." method="_on_StyleOver_toggled"]
+[connection signal="color_changed" from="FormatToolbar/StyleOver/ColorPickerButton" to="." method="_on_StyleOverColorPickerButton_color_changed"]
+[connection signal="value_changed" from="FormatToolbar/StyleOver/SpinBox" to="." method="_on_SpinBoxOver_value_changed"]
+[connection signal="toggled" from="FormatToolbar/StyleStrike" to="." method="_on_StyleStrike_toggled"]
+[connection signal="color_changed" from="FormatToolbar/StyleStrike/ColorPickerButton" to="." method="_on_StyleStrikeColorPickerButton_color_changed"]
+[connection signal="value_changed" from="FormatToolbar/StyleStrike/SpinBox" to="." method="_on_SpinBoxStrike_value_changed"]
+[connection signal="toggled" from="FormatToolbar/HalL" to="." method="_on_HalL_toggled"]
+[connection signal="toggled" from="FormatToolbar/HalC" to="." method="_on_HalC_toggled"]
+[connection signal="toggled" from="FormatToolbar/HalR" to="." method="_on_HalR_toggled"]
+[connection signal="toggled" from="FormatToolbar/HalJ" to="." method="_on_HalJ_toggled"]
+[connection signal="pressed" from="FormatToolbar/ClearFMT" to="." method="_on_ClearFMT_pressed"]
+[connection signal="pressed" from="FormatToolbar/ClearFMT2" to="." method="_on_ClearFMT2_pressed"]
+[connection signal="pressed" from="FormatToolbar/New" to="." method="_on_New_pressed"]
+[connection signal="pressed" from="FormatToolbar/Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="FormatToolbar/Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="FormatToolbar/DecW" to="." method="_on_DecW_pressed"]
+[connection signal="pressed" from="FormatToolbar/IncW" to="." method="_on_IncW_pressed"]
+[connection signal="item_selected" from="FormatToolbar/InsertImage" to="." method="_on_InsertImage_item_selected"]
+[connection signal="value_changed" from="FormatToolbar/LineSpace" to="." method="_on_LineSpace_value_changed"]
+[connection signal="value_changed" from="FormatToolbar/ParaSpace" to="." method="_on_ParaSpace_value_changed"]
+[connection signal="item_selected" from="FormatToolbar/Dir" to="." method="_on_Dir_item_selected"]
+[connection signal="item_selected" from="FormatToolbar/BrkMode" to="." method="_on_BrkMode_item_selected"]
+[connection signal="item_selected" from="FormatToolbar/JstMode" to="." method="_on_JstMode_item_selected"]
+[connection signal="toggled" from="FormatToolbar/ValT" to="." method="_on_ValT_toggled"]
+[connection signal="toggled" from="FormatToolbar/ValC" to="." method="_on_ValC_toggled"]
+[connection signal="toggled" from="FormatToolbar/ValB" to="." method="_on_ValB_toggled"]
+[connection signal="text_entered" from="FormatToolbar/FontFtr" to="." method="_on_FontFtr_text_entered"]
+[connection signal="value_changed" from="FormatToolbar/Width" to="." method="_on_Width_value_changed"]
+[connection signal="text_entered" from="FormatToolbar/Lang" to="." method="_on_Lang_text_entered"]
+[connection signal="color_changed" from="FormatToolbar/TextCol/ColorPickerButton" to="." method="_on_TextColorPickerButton_color_changed"]
+[connection signal="color_changed" from="FormatToolbar/HlColor/ColorPickerButton" to="." method="_on_HlColorPickerButton_color_changed"]
+[connection signal="color_changed" from="FormatToolbar/OutColor/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="color_changed" from="FormatToolbar/BackColor/ColorPickerButton" to="." method="_on_BackColorPickerButton_color_changed"]
+[connection signal="color_changed" from="FormatToolbar/BackColor2/ColorPickerButton" to="." method="_on_Color2PickerButton_color_changed"]
+[connection signal="file_selected" from="FileDialogSave" to="." method="_on_FileDialogSave_file_selected"]
+[connection signal="file_selected" from="FileDialogLoad" to="." method="_on_FileDialogLoad_file_selected"]
