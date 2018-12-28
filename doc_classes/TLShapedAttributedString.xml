@@ -135,7 +135,7 @@
 			Font size. Attribute type: [code]int[/code]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_FONT_FEATURES" value="4" enum="TextAttribute">
-			Comma separated list of OpenType feature tags. More info: <link>https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags</link>. Attribute type: [String]
+			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Attribute type: [String]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_LANGUAGE" value="5" enum="TextAttribute">
 			Language code. Attribute type: [String]

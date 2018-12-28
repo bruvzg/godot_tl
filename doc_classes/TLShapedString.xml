@@ -6,21 +6,16 @@
 	<description>
 		Note 1: Code points, Characters, Clusters and Glyphs
 
-		[codeblock]
-		* A code point is a single encoding UTF-16 unit (Unicode character or half of the surrogate pair).
-		* A character is a full Unicode charecter.
-		* A grapheme cluster is the abstract unit of a writing system (a letter, a digit, or punctuation).
-		* A glyph is a shape used to render a character or a sequence of characters.
+		- A code point is a single encoding UTF-16 unit (Unicode character or half of the surrogate pair).
+		- A character is a full Unicode charecter.
+		- A grapheme cluster is the abstract unit of a writing system (a letter, a digit, or punctuation).
+		- A glyph is a shape used to render a character or a sequence of characters.
 
 		In general, code point, characters, clusters and glyphs do not have one-to-one correspondence.
 
-		[/codeblock]
-
 		Note 2: Encoding
 	
-		[codeblock]
 		TLShapedString uses UTF-16 encoding, all positions accepted and returned by TLShapedString function are measured in UTF-16 code points.
-		[/codeblock]
 
 	</description>
 	<tutorials>
@@ -558,7 +553,7 @@
 			Style name (Regular, Bold, Italic, Oblique etc.). Default: [code]"Regular"[/code]
 		</member>
 		<member name="features" type="String" setter="set_features" getter="get_features">
-			Comma separated list of OpenType feature tags. More info: <link>https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags</link>. Default: [code]""[/code]
+			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Default: [code]""[/code]
 		</member>
 		<member name="language" type="String" setter="set_language" getter="get_language">
 			Language code. Default: [code]""[/code]
