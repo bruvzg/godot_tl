@@ -1639,7 +1639,7 @@ int64_t TLShapedString::next_safe_bound(int64_t p_offset) const {
 	if (p_offset >= data_size)
 		return data_size;
 
-	return MIN((U16_IS_SURROGATE(data[p_offset]) && U16_IS_SURROGATE_LEAD(data[p_offset])) ? p_offset + 1 : p_offset, data_size);
+	return MIN((U16_IS_SURROGATE(data[p_offset]) && U16_IS_SURROGATE_TRAIL(data[p_offset])) ? p_offset + 1 : p_offset, data_size);
 }
 
 int64_t TLShapedString::prev_safe_bound(int64_t p_offset) const {
