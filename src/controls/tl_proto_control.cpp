@@ -1268,7 +1268,11 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 		}
 		if (in_focus && selectable) {
 			if (selection->caret.p == p_index) {
-				caret_pos = Point2(p_para->get_indent() + x_ofs, p_offset);
+				Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs, p_offset);
+				if (n_caret_pos != caret_pos) {
+					caret_pos = n_caret_pos;
+					emit_signal("cursor_changed");
+				}
 				VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_string()->get_height() + p_para->get_line_spacing())), cursor_color);
 			}
 		}
@@ -1338,8 +1342,12 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 									std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(_start, _end);
 									for (int k = 0; k < rects.size(); k++) {
 										Rect2 _rect = Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size);
-										caret_pos = _rect.position + Point2(0, _rect.size.height);
-										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(_rect.position + Point2(0, _rect.size.height), Size2(_rect.size.width, 2)), cursor_color);
+										Point2 n_caret_pos = _rect.position + Point2(0, _rect.size.height);
+										if (n_caret_pos != caret_pos) {
+											caret_pos = n_caret_pos;
+											emit_signal("cursor_changed");
+										}
+										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(_rect.size.width, 2)), cursor_color);
 									}
 								}
 							}
@@ -1392,12 +1400,21 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 								if (p_para->get_line(j)->length() > 0) {
 									std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(selection->caret.o - prev, last_inp_dir);
 									for (int k = 0; k < cur_ofs.size(); k++) {
-										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent()), Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
-										caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+										Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+										if (n_caret_pos != caret_pos) {
+											caret_pos = n_caret_pos;
+											emit_signal("cursor_changed");
+										}
+
+										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
 									}
 								} else {
-									VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()), Size2(1, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
-									caret_pos = Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent());
+									Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent());
+									if (n_caret_pos != caret_pos) {
+										caret_pos = n_caret_pos;
+										emit_signal("cursor_changed");
+									}
+									VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
 								}
 							}
 						}
