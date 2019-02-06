@@ -58,15 +58,15 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	p_ref->font_features = font_features;
 
 	//Copy attributes
-	auto attrib = no_greater(format_attributes, p_start);
-	while ((attrib != format_attributes.end()) && (attrib->first < p_end)) {
-		p_ref->format_attributes[MAX(0, attrib->first - p_start)] = attrib->second;
-		attrib++;
+	auto attrib = format_attributes.find_closest(p_start);
+	while (attrib && (attrib->key() < p_end)) {
+		p_ref->format_attributes[MAX(0, attrib->key() - p_start)] = attrib->get();
+		attrib = attrib->next();
 	}
-	attrib = no_greater(style_attributes, p_start);
-	while ((attrib != style_attributes.end()) && (attrib->first < p_end)) {
-		p_ref->style_attributes[MAX(0, attrib->first - p_start)] = attrib->second;
-		attrib++;
+	attrib = style_attributes.find_closest(p_start);
+	while (attrib && (attrib->key() < p_end)) {
+		p_ref->style_attributes[MAX(0, attrib->key() - p_start)] = attrib->get();
+		attrib = attrib->next();
 	}
 
 	UErrorCode err = U_ZERO_ERROR;
@@ -94,8 +94,8 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 
 void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster) const {
 
-	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? no_greater(format_attributes, p_start) : no_greater(format_attributes, p_end - 1);
-	if (attrib_iter == format_attributes.end()) {
+	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? format_attributes.find_closest(p_start) : format_attributes.find_closest(p_end - 1);
+	if (!attrib_iter) {
 		//Shape as plain string
 		TLShapedString::_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, p_font, p_cluster);
 		return;
@@ -104,11 +104,11 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	//Shape single cluster using HarfBuzz
 	Ref<TLFontFace> _font = p_font;
 	int64_t _size = base_size;
-	if (attrib_iter->second.count(TEXT_ATTRIBUTE_FONT) > 0) {
-		Ref<TLFontFamily> family = Ref<TLFontFamily>(attrib_iter->second.at(TEXT_ATTRIBUTE_FONT));
+	if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT)) {
+		Ref<TLFontFamily> family = Ref<TLFontFamily>(attrib_iter->get()[TEXT_ATTRIBUTE_FONT]);
 		String style = base_style;
-		if (attrib_iter->second.count(TEXT_ATTRIBUTE_FONT_STYLE) > 0) {
-			style = attrib_iter->second.at(TEXT_ATTRIBUTE_FONT_STYLE);
+		if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT_STYLE)) {
+			style = attrib_iter->get()[TEXT_ATTRIBUTE_FONT_STYLE];
 		}
 
 		_font = family->_get_liked_face_for_script(style, p_run_script);
@@ -119,8 +119,8 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 			}
 		}
 	}
-	if (attrib_iter->second.count(TEXT_ATTRIBUTE_FONT_SIZE) > 0) {
-		_size = attrib_iter->second.at(TEXT_ATTRIBUTE_FONT_SIZE);
+	if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
+		_size = attrib_iter->get()[TEXT_ATTRIBUTE_FONT_SIZE];
 	}
 	hb_font_t *hb_font = _font->get_hb_font(_size);
 	if (!hb_font) {
@@ -137,8 +137,8 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	}
 	hb_buffer_set_script(hb_buffer, p_run_script);
 
-	if (attrib_iter->second.count(TEXT_ATTRIBUTE_LANGUAGE) > 0) {
-		String cluster_language = attrib_iter->second.at(TEXT_ATTRIBUTE_LANGUAGE);
+	if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
+		String cluster_language = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 		hb_language_t _language = hb_language_from_string(cluster_language.ascii().get_data(), -1);
 		if (_language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, _language);
 	} else {
@@ -146,8 +146,8 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	}
 
 	hb_buffer_add_utf32(hb_buffer, (const uint32_t *)&p_codepoint, 1, 0, 1);
-	if (attrib_iter->second.count(TEXT_ATTRIBUTE_FONT_FEATURES) > 0) {
-		String s_features = attrib_iter->second.at(TEXT_ATTRIBUTE_FONT_FEATURES);
+	if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT_FEATURES)) {
+		String s_features = attrib_iter->get()[TEXT_ATTRIBUTE_FONT_FEATURES];
 #ifdef GODOT_MODULE
 		Vector<String> v_features = s_features.split(",");
 #else
@@ -198,79 +198,79 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 
 void TLShapedAttributedString::_generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
 
-	auto attrib_iter = no_greater(format_attributes, p_start);
-	if (attrib_iter == format_attributes.end()) {
+	auto attrib_iter = format_attributes.find_closest(p_start);
+	if (!attrib_iter) {
 		TLShapedString::_generate_justification_opportunies(p_start, p_end, p_lang, p_ops);
 		return;
 	}
 
-	int64_t sh_start = (attrib_iter != format_attributes.end()) ? MAX(p_start, attrib_iter->first) : p_start;
-	int64_t sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(p_end, std::next(attrib_iter, 1)->first) : p_end;
+	int64_t sh_start = (attrib_iter) ? MAX(p_start, attrib_iter->key()) : p_start;
+	int64_t sh_end = (attrib_iter->next()) ? MIN(p_end, attrib_iter->next()->key()) : p_end;
 	while (true) {
 
-		if (attrib_iter->second.count(TEXT_ATTRIBUTE_LANGUAGE) > 0) {
-			String s_lang = attrib_iter->second.at(TEXT_ATTRIBUTE_LANGUAGE);
+		if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
+			String s_lang = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 			TLShapedString::_generate_justification_opportunies(sh_start, sh_end, s_lang.ascii().get_data(), p_ops);
 		} else {
 			TLShapedString::_generate_justification_opportunies(sh_start, sh_end, p_lang, p_ops);
 		}
 
-		if (std::next(attrib_iter, 1) != format_attributes.end() && (std::next(attrib_iter, 1)->first <= sh_end)) attrib_iter++;
+		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
 		if (sh_end == p_end) break;
 		sh_start = sh_end;
-		sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(std::next(attrib_iter, 1)->first, p_end) : p_end;
+		sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_end) : p_end;
 	}
 }
 
 void TLShapedAttributedString::_generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const {
 
-	auto attrib_iter = no_greater(format_attributes, p_start);
-	if (attrib_iter == format_attributes.end()) {
+	auto attrib_iter = format_attributes.find_closest(p_start);
+	if (!attrib_iter) {
 		TLShapedString::_generate_break_opportunies(p_start, p_end, p_lang, p_ops);
 		return;
 	}
 
-	int64_t sh_start = (attrib_iter != format_attributes.end()) ? MAX(p_start, attrib_iter->first) : p_start;
-	int64_t sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(p_end, std::next(attrib_iter, 1)->first) : p_end;
+	int64_t sh_start = (attrib_iter) ? MAX(p_start, attrib_iter->key()) : p_start;
+	int64_t sh_end = (attrib_iter->next()) ? MIN(p_end, attrib_iter->next()->key()) : p_end;
 	while (true) {
 
-		if (attrib_iter->second.count(TEXT_ATTRIBUTE_LANGUAGE) > 0) {
-			String s_lang = attrib_iter->second.at(TEXT_ATTRIBUTE_LANGUAGE);
+		if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
+			String s_lang = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 			TLShapedString::_generate_break_opportunies(sh_start, sh_end, s_lang.ascii().get_data(), p_ops);
 		} else {
 			TLShapedString::_generate_break_opportunies(sh_start, sh_end, p_lang, p_ops);
 		}
 
-		if (std::next(attrib_iter, 1) != format_attributes.end() && (std::next(attrib_iter, 1)->first <= sh_end)) attrib_iter++;
+		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
 		if (sh_end == p_end) break;
 		sh_start = sh_end;
-		sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(std::next(attrib_iter, 1)->first, p_end) : p_end;
+		sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_end) : p_end;
 	}
 }
 
 void TLShapedAttributedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font) {
 
-	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? no_greater(format_attributes, p_run_start) : no_greater(format_attributes, p_run_end - 1);
-	if (attrib_iter == format_attributes.end()) {
+	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? format_attributes.find_closest(p_run_start) : format_attributes.find_closest(p_run_end - 1);
+	if (!attrib_iter) {
 		//Shape as plain string
 		TLShapedString::_shape_bidi_script_run(p_run_direction, p_run_script, p_run_start, p_run_end, p_font);
 		return;
 	}
 	//Iter Attrib runs and call next bidi_script_attrib run
-	int64_t sh_start = (attrib_iter != format_attributes.end()) ? MAX(p_run_start, attrib_iter->first) : p_run_start;
-	int64_t sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(p_run_end, std::next(attrib_iter, 1)->first) : p_run_end;
+	int64_t sh_start = (attrib_iter) ? MAX(p_run_start, attrib_iter->key()) : p_run_start;
+	int64_t sh_end = (attrib_iter->next()) ? MIN(p_run_end, attrib_iter->next()->key()) : p_run_end;
 	while (true) {
-		_shape_bidi_script_attrib_run(p_run_direction, p_run_script, attrib_iter->second, sh_start, sh_end, p_font);
+		_shape_bidi_script_attrib_run(p_run_direction, p_run_script, attrib_iter->get(), sh_start, sh_end, p_font);
 		if (p_run_direction == HB_DIRECTION_LTR) {
-			if (std::next(attrib_iter, 1) != format_attributes.end() && (std::next(attrib_iter, 1)->first <= sh_end)) attrib_iter++;
+			if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
 			if (sh_end == p_run_end) break;
 			sh_start = sh_end;
-			sh_end = (std::next(attrib_iter, 1) != format_attributes.end()) ? MIN(std::next(attrib_iter, 1)->first, p_run_end) : p_run_end;
+			sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_run_end) : p_run_end;
 		} else {
-			if (attrib_iter != format_attributes.begin() && (attrib_iter->first >= sh_start)) attrib_iter--;
+			if (attrib_iter->prev() && (attrib_iter->key() >= sh_start)) attrib_iter = attrib_iter->prev();
 			if (sh_start == p_run_start) break;
 			sh_end = sh_start;
-			sh_start = (attrib_iter != format_attributes.begin()) ? MAX(attrib_iter->first, p_run_start) : p_run_start;
+			sh_start = (attrib_iter->prev()) ? MAX(attrib_iter->key(), p_run_start) : p_run_start;
 		}
 	}
 }
@@ -387,15 +387,15 @@ void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, 
 	}
 }
 
-void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const std::map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font) {
+void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font) {
 
 	//Handle rects for embedded custom objects
-	if (p_attribs.count(TEXT_ATTRIBUTE_REPLACEMENT_RECT) > 0) {
-		Size2 rect = Size2(p_attribs.at(TEXT_ATTRIBUTE_REPLACEMENT_RECT));
+	if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_RECT)) {
+		Size2 rect = Size2(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_RECT]);
 		if (rect != Size2()) {
 			int64_t align = TEXT_VALIGN_CENTER;
-			if (p_attribs.count(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN) > 0) {
-				align = int(p_attribs.at(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN));
+			if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN)) {
+				align = int(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_VALIGN]);
 			}
 
 			_shape_rect_run(p_run_direction, rect, (TextVAlign)align, p_run_start, p_run_end);
@@ -404,12 +404,12 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	}
 
 	//Handle image runs
-	if (p_attribs.count(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) > 0) {
-		Ref<Texture> image = Ref<Texture>(p_attribs.at(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE));
+	if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
+		Ref<Texture> image = Ref<Texture>(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 		if (!image.is_null()) {
 			int64_t align = TEXT_VALIGN_CENTER;
-			if (p_attribs.count(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN) > 0) {
-				align = int(p_attribs.at(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN));
+			if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN)) {
+				align = int(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_VALIGN]);
 			}
 
 			_shape_image_run(p_run_direction, image, (TextVAlign)align, p_run_start, p_run_end);
@@ -419,11 +419,11 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 
 	//Shape monotone run using HarfBuzz
 	Ref<TLFontFace> _font = p_font;
-	if (p_attribs.count(TEXT_ATTRIBUTE_FONT) > 0) {
-		Ref<TLFontFamily> family = Ref<TLFontFamily>(p_attribs.at(TEXT_ATTRIBUTE_FONT));
+	if (p_attribs.has(TEXT_ATTRIBUTE_FONT)) {
+		Ref<TLFontFamily> family = Ref<TLFontFamily>(p_attribs[TEXT_ATTRIBUTE_FONT]);
 		String style = base_style;
-		if (p_attribs.count(TEXT_ATTRIBUTE_FONT_STYLE) > 0) {
-			style = p_attribs.at(TEXT_ATTRIBUTE_FONT_STYLE);
+		if (p_attribs.has(TEXT_ATTRIBUTE_FONT_STYLE)) {
+			style = p_attribs[TEXT_ATTRIBUTE_FONT_STYLE];
 		}
 
 		_font = family->_get_liked_face_for_script(style, p_run_script);
@@ -435,8 +435,8 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 		}
 	}
 	int64_t _size = base_size;
-	if (p_attribs.count(TEXT_ATTRIBUTE_FONT_SIZE) > 0) {
-		_size = p_attribs.at(TEXT_ATTRIBUTE_FONT_SIZE);
+	if (p_attribs.has(TEXT_ATTRIBUTE_FONT_SIZE)) {
+		_size = p_attribs[TEXT_ATTRIBUTE_FONT_SIZE];
 	}
 	hb_font_t *hb_font = _font->get_hb_font(_size);
 	if (!hb_font) {
@@ -456,8 +456,8 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	}
 	hb_buffer_set_script(hb_buffer, p_run_script);
 
-	if (p_attribs.count(TEXT_ATTRIBUTE_LANGUAGE) > 0) {
-		String cluster_language = p_attribs.at(TEXT_ATTRIBUTE_LANGUAGE);
+	if (p_attribs.has(TEXT_ATTRIBUTE_LANGUAGE)) {
+		String cluster_language = p_attribs[TEXT_ATTRIBUTE_LANGUAGE];
 		hb_language_t _language = hb_language_from_string(cluster_language.ascii().get_data(), -1);
 		if (_language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, _language);
 	} else {
@@ -465,8 +465,8 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	}
 
 	hb_buffer_add_utf16(hb_buffer, (const uint16_t *)data, data_size, p_run_start, p_run_end - p_run_start);
-	if (p_attribs.count(TEXT_ATTRIBUTE_FONT_FEATURES) > 0) {
-		String s_features = p_attribs.at(TEXT_ATTRIBUTE_FONT_FEATURES);
+	if (p_attribs.has(TEXT_ATTRIBUTE_FONT_FEATURES)) {
+		String s_features = p_attribs[TEXT_ATTRIBUTE_FONT_FEATURES];
 #ifdef GODOT_MODULE
 		Vector<String> v_features = s_features.split(",");
 #else
@@ -574,30 +574,30 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	}
 }
 
-bool TLShapedAttributedString::_compare_attributes(const std::map<TextAttribute, Variant> &p_first, const std::map<TextAttribute, Variant> &p_second) const {
+bool TLShapedAttributedString::_compare_attributes(const Map<TextAttribute, Variant> &p_first, const Map<TextAttribute, Variant> &p_second) const {
 
 	if (p_first.size() != p_second.size()) return false;
-	for (auto E = p_first.begin(); E != p_first.end(); E++) {
-		auto F = p_second.find(E->first);
-		if ((F == p_second.end()) || (E->second != F->second)) return false;
+	for (auto E = p_first.front(); E; E = E->next()) {
+		auto F = p_second.find(E->key());
+		if ((!F) || (E->get() != F->get())) return false;
 	}
 	return true;
 }
 
-void TLShapedAttributedString::_ensure_break(int64_t p_key, std::map<int, std::map<TextAttribute, Variant> > &p_attributes) {
+void TLShapedAttributedString::_ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant> > &p_attributes) {
 
 	//Ensures there is a run break at offset.
-	auto attrib = no_greater(p_attributes, p_key);
-	p_attributes[p_key] = (attrib != p_attributes.end()) ? attrib->second : std::map<TextAttribute, Variant>();
+	auto attrib = p_attributes.find_closest(p_key);
+	p_attributes[p_key] = (attrib) ? attrib->get() : Map<TextAttribute, Variant>();
 }
 
-void TLShapedAttributedString::_optimize_attributes(std::map<int, std::map<TextAttribute, Variant> > &p_attributes) {
+void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, Variant> > &p_attributes) {
 
 	std::vector<int> erase_list;
-	for (auto E = p_attributes.begin(); E != p_attributes.end(); E++) {
+	for (auto E = p_attributes.front(); E; E = E->next()) {
 
-		if (E != p_attributes.begin() && (_compare_attributes(E->second, std::prev(E, 1)->second))) {
-			erase_list.push_back(E->first);
+		if (E->prev() && (_compare_attributes(E->get(), E->prev()->get()))) {
+			erase_list.push_back(E->key());
 		}
 	}
 
@@ -659,12 +659,12 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 		if (p_end < data_size) _ensure_break(p_end, format_attributes);
 
 		auto attrib = format_attributes.find(p_start);
-		while ((attrib != format_attributes.end()) && ((attrib->first < p_end) || (p_end == data_size))) {
-			if ((p_end == data_size) && (p_end == attrib->first) && ((p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) || (p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_RECT) || (p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_ID))) {
+		while (attrib && ((attrib->key() < p_end) || (p_end == data_size))) {
+			if ((p_end == data_size) && (p_end == attrib->key()) && ((p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) || (p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_RECT) || (p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_ID))) {
 				break; //do not apply replacement to the end of string
 			}
-			attrib->second[(TextAttribute)p_attribute] = p_value;
-			attrib++;
+			attrib->get()[(TextAttribute)p_attribute] = p_value;
+			attrib = attrib->next();
 		}
 		_optimize_attributes(format_attributes);
 		_clear_visual();
@@ -675,9 +675,9 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 		if (p_end < data_size) _ensure_break(p_end, style_attributes);
 
 		auto attrib = style_attributes.find(p_start);
-		while ((attrib != style_attributes.end()) && ((attrib->first < p_end) || (p_end == data_size))) {
-			attrib->second[(TextAttribute)p_attribute] = p_value;
-			attrib++;
+		while (attrib && ((attrib->key() < p_end) || (p_end == data_size))) {
+			attrib->get()[(TextAttribute)p_attribute] = p_value;
+			attrib = attrib->next();
 		}
 		_optimize_attributes(style_attributes);
 	}
@@ -698,9 +698,9 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 		if (p_end < data_size) _ensure_break(p_end, format_attributes);
 
 		auto attrib = format_attributes.find(p_start);
-		while ((attrib != format_attributes.end()) && (attrib->first < p_end)) {
-			attrib->second.erase((TextAttribute)p_attribute);
-			attrib++;
+		while (attrib && (attrib->key() < p_end)) {
+			attrib->get().erase((TextAttribute)p_attribute);
+			attrib = attrib->next();
 		}
 		_optimize_attributes(format_attributes);
 		_clear_props();
@@ -710,9 +710,9 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 		if (p_end < data_size) _ensure_break(p_end, style_attributes);
 
 		auto attrib = style_attributes.find(p_start);
-		while ((attrib != style_attributes.end()) && (attrib->first < p_end)) {
-			attrib->second.erase((TextAttribute)p_attribute);
-			attrib++;
+		while (attrib && (attrib->key() < p_end)) {
+			attrib->get().erase((TextAttribute)p_attribute);
+			attrib = attrib->next();
 		}
 		_optimize_attributes(style_attributes);
 	}
@@ -737,14 +737,14 @@ void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end)
 	}
 
 	auto attrib = format_attributes.find(p_start);
-	while ((attrib != format_attributes.end()) && (attrib->first < p_end)) {
-		attrib->second.clear();
-		attrib++;
+	while (attrib && (attrib->key() < p_end)) {
+		attrib->get().clear();
+		attrib = attrib->next();
 	}
 	attrib = style_attributes.find(p_start);
-	while ((attrib != style_attributes.end()) && (attrib->first < p_end)) {
-		attrib->second.clear();
-		attrib++;
+	while (attrib && (attrib->key() < p_end)) {
+		attrib->get().clear();
+		attrib = attrib->next();
 	}
 
 	_optimize_attributes(format_attributes);
@@ -775,12 +775,12 @@ Array TLShapedAttributedString::get_embedded_rects() {
 	for (int64_t i = 0; i < visual.size(); i++) {
 		if (visual[i].cl_type == (int)_CLUSTER_TYPE_RECT) {
 			Dictionary ifo;
-			auto attrib = no_greater(format_attributes, visual[i].start);
-			if (attrib != format_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_REPLACEMENT_ID) > 0) {
-				ifo[String("id")] = Variant(attrib->second.at(TEXT_ATTRIBUTE_REPLACEMENT_ID));
+			auto attrib = format_attributes.find_closest(visual[i].start);
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_ID)) {
+				ifo[String("id")] = Variant(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_ID]);
 			}
-			if (attrib != format_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_REPLACEMENT_RECT) > 0) {
-				ifo[String("rect")] = Rect2(ofs + Point2(0, -visual[i].ascent), Vector2(attrib->second.at(TEXT_ATTRIBUTE_REPLACEMENT_RECT)));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_RECT)) {
+				ifo[String("rect")] = Rect2(ofs + Point2(0, -visual[i].ascent), Vector2(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_RECT]));
 			}
 			ret.push_back(ifo);
 			ofs += Vector2(visual[i].width, 0);
@@ -810,57 +810,57 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_TEXT) {
 		for (int64_t i = 0; i < visual[p_index].glyphs.size(); i++) {
 			int64_t _size = base_size;
-			auto fattrib = no_greater(format_attributes, visual[p_index].start);
-			if (fattrib != format_attributes.end() && fattrib->second.count(TEXT_ATTRIBUTE_FONT_SIZE) > 0) {
-				_size = fattrib->second.at(TEXT_ATTRIBUTE_FONT_SIZE);
+			auto fattrib = format_attributes.find_closest(visual[p_index].start);
+			if (fattrib && fattrib->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
+				_size = fattrib->get()[TEXT_ATTRIBUTE_FONT_SIZE];
 			}
 			Color _color = p_modulate;
-			auto attrib = no_greater(style_attributes, visual[p_index].start);
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_COLOR) > 0) {
-				_color = Color(attrib->second.at(TEXT_ATTRIBUTE_COLOR));
+			auto attrib = style_attributes.find_closest(visual[p_index].start);
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_COLOR)) {
+				_color = Color(attrib->get()[TEXT_ATTRIBUTE_COLOR]);
 			}
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR) > 0) {
-				Color _hl_color = Color(attrib->second.at(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR)) {
+				Color _hl_color = Color(attrib->get()[TEXT_ATTRIBUTE_HIGHLIGHT_COLOR]);
 				Rect2 _rect = get_cluster_rect(p_index);
 				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
 			}
 			visual[p_index].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[p_index].glyphs[i].offset - Point2(0, visual[p_index].ascent), visual[i].glyphs[i].codepoint, _color, _size);
 
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_OUTLINE_COLOR) > 0) {
-				Color _outline_color = Color(attrib->second.at(TEXT_ATTRIBUTE_OUTLINE_COLOR));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OUTLINE_COLOR)) {
+				Color _outline_color = Color(attrib->get()[TEXT_ATTRIBUTE_OUTLINE_COLOR]);
 				visual[p_index].font_face->draw_glyph_outline(p_canvas_item, p_position + ofs + visual[p_index].glyphs[i].offset - Point2(0, visual[p_index].ascent), visual[i].glyphs[i].codepoint, _outline_color, _size);
 			}
 
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_UNDERLINE_COLOR) > 0) {
-				Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_UNDERLINE_COLOR));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_COLOR)) {
+				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_COLOR]);
 				float _width = 1.0f;
-				if (attrib->second.count(TEXT_ATTRIBUTE_UNDERLINE_WIDTH) > 0) {
-					_width = float(attrib->second.at(TEXT_ATTRIBUTE_UNDERLINE_WIDTH));
+				if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
+					_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 				}
 				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, visual[p_index].descent), p_position + ofs + Point2(visual[p_index].width, visual[p_index].descent), _ln_color, _width);
 			}
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR) > 0) {
-				Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
+				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
 				float _width = 1.0f;
-				if (attrib->second.count(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH) > 0) {
-					_width = float(attrib->second.at(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH));
+				if (attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)) {
+					_width = float(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH]);
 				}
 				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[p_index].descent - visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, 2 * visual[p_index].descent - visual[p_index].ascent), _ln_color, _width);
 			}
-			if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_OVERLINE_COLOR) > 0) {
-				Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_OVERLINE_COLOR));
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_COLOR)) {
+				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_COLOR]);
 				float _width = 1.0f;
-				if (attrib->second.count(TEXT_ATTRIBUTE_OVERLINE_WIDTH) > 0) {
-					_width = float(attrib->second.at(TEXT_ATTRIBUTE_OVERLINE_WIDTH));
+				if (attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_WIDTH)) {
+					_width = float(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_WIDTH]);
 				}
 				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, -visual[p_index].ascent), _ln_color, _width);
 			}
 			ofs += visual[p_index].glyphs[i].advance;
 		}
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_IMAGE) {
-		auto attrib = no_greater(format_attributes, visual[p_index].start);
-		if (attrib != format_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) > 0) {
-			Ref<Texture> image = Ref<Texture>(attrib->second.at(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE));
+		auto attrib = format_attributes.find_closest(visual[p_index].start);
+		if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
+			Ref<Texture> image = Ref<Texture>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 			if (!image.is_null()) {
 				image->draw(p_canvas_item, p_position + ofs + Point2(0, -visual[p_index].ascent));
 			}
@@ -903,50 +903,50 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
 			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
 				int64_t _size = base_size;
-				auto fattrib = no_greater(format_attributes, visual[i].start);
-				if (fattrib != format_attributes.end() && fattrib->second.count(TEXT_ATTRIBUTE_FONT_SIZE) > 0) {
-					_size = fattrib->second.at(TEXT_ATTRIBUTE_FONT_SIZE);
+				auto fattrib = format_attributes.find_closest(visual[i].start);
+				if (fattrib && fattrib->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
+					_size = fattrib->get()[TEXT_ATTRIBUTE_FONT_SIZE];
 				}
 				Color _color = p_modulate;
-				auto attrib = no_greater(style_attributes, visual[i].start);
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_COLOR) > 0) {
-					Variant c = attrib->second.at(TEXT_ATTRIBUTE_COLOR);
+				auto attrib = style_attributes.find_closest(visual[i].start);
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_COLOR)) {
+					Variant c = attrib->get()[TEXT_ATTRIBUTE_COLOR];
 					_color = Color(c);
 				}
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR) > 0) {
-					Color _hl_color = Color(attrib->second.at(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR));
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR)) {
+					Color _hl_color = Color(attrib->get()[TEXT_ATTRIBUTE_HIGHLIGHT_COLOR]);
 					Rect2 _rect = get_cluster_rect(i);
 					VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
 				}
 				visual[i].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[i].glyphs[j].offset - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, _color, _size);
 
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_OUTLINE_COLOR) > 0) {
-					Color _outline_color = Color(attrib->second.at(TEXT_ATTRIBUTE_OUTLINE_COLOR));
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OUTLINE_COLOR)) {
+					Color _outline_color = Color(attrib->get()[TEXT_ATTRIBUTE_OUTLINE_COLOR]);
 					visual[i].font_face->draw_glyph_outline(p_canvas_item, p_position + ofs + visual[i].glyphs[j].offset - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, _outline_color, _size);
 				}
 
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_UNDERLINE_COLOR) > 0) {
-					Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_UNDERLINE_COLOR));
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_COLOR)) {
+					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_COLOR]);
 					float _width = 1.0f;
-					if (attrib->second.count(TEXT_ATTRIBUTE_UNDERLINE_WIDTH) > 0) {
-						_width = float(attrib->second.at(TEXT_ATTRIBUTE_UNDERLINE_WIDTH));
+					if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
+						_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 					}
 					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, visual[i].descent), p_position + ofs + Point2(visual[i].width, visual[i].descent), _ln_color, _width);
 				}
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR) > 0) {
-					Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR));
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
+					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
 					float _width = 1.0f;
-					if (attrib->second.count(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH) > 0) {
-						_width = float(attrib->second.at(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH));
+					if (attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)) {
+						_width = float(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH]);
 					}
 
 					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[i].descent - visual[i].ascent), p_position + ofs + Point2(visual[i].width, 2 * visual[i].descent - visual[i].ascent), _ln_color, _width);
 				}
-				if (attrib != style_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_OVERLINE_COLOR) > 0) {
-					Color _ln_color = Color(attrib->second.at(TEXT_ATTRIBUTE_OVERLINE_COLOR));
+				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_COLOR)) {
+					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_COLOR]);
 					float _width = 1.0f;
-					if (attrib->second.count(TEXT_ATTRIBUTE_OVERLINE_WIDTH) > 0) {
-						_width = float(attrib->second.at(TEXT_ATTRIBUTE_OVERLINE_WIDTH));
+					if (attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_WIDTH)) {
+						_width = float(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_WIDTH]);
 					}
 
 					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), _ln_color, _width);
@@ -954,9 +954,9 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 				ofs += visual[i].glyphs[j].advance;
 			}
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_IMAGE) {
-			auto attrib = no_greater(format_attributes, visual[i].start);
-			if (attrib != format_attributes.end() && attrib->second.count(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) > 0) {
-				Ref<Texture> image = Ref<Texture>(attrib->second.at(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE));
+			auto attrib = format_attributes.find_closest(visual[i].start);
+			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
+				Ref<Texture> image = Ref<Texture>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 				if (!image.is_null()) {
 					image->draw(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent));
 				}
@@ -979,17 +979,17 @@ bool TLShapedAttributedString::has_attribute(int64_t p_attribute, int64_t p_inde
 		ERR_FAIL_COND_V(true, false);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
-		auto attrib = no_greater(format_attributes, p_index);
-		if (attrib == format_attributes.end()) {
+		auto attrib = format_attributes.find_closest(p_index);
+		if (!attrib) {
 			return false;
 		}
-		return (attrib->second.count((TextAttribute)p_attribute) > 0);
+		return (attrib->get().has((TextAttribute)p_attribute));
 	} else {
-		auto attrib = no_greater(style_attributes, p_index);
-		if (attrib == style_attributes.end()) {
+		auto attrib = style_attributes.find_closest(p_index);
+		if (!attrib) {
 			return false;
 		}
-		return (attrib->second.count((TextAttribute)p_attribute) > 0);
+		return (attrib->get().has((TextAttribute)p_attribute));
 	}
 }
 
@@ -1000,22 +1000,22 @@ Variant TLShapedAttributedString::get_attribute(int64_t p_attribute, int64_t p_i
 		ERR_FAIL_COND_V(true, Variant());
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
-		auto attrib = no_greater(format_attributes, p_index);
-		if (attrib == format_attributes.end()) {
+		auto attrib = format_attributes.find_closest(p_index);
+		if (!attrib) {
 			return Variant();
 		}
-		if (attrib->second.count((TextAttribute)p_attribute) > 0) {
-			return attrib->second.at((TextAttribute)p_attribute);
+		if (attrib->get().has((TextAttribute)p_attribute)) {
+			return attrib->get()[(TextAttribute)p_attribute];
 		} else {
 			return Variant();
 		}
 	} else {
-		auto attrib = no_greater(style_attributes, p_index);
-		if (attrib == style_attributes.end()) {
+		auto attrib = style_attributes.find_closest(p_index);
+		if (!attrib) {
 			return Variant();
 		}
-		if (attrib->second.count((TextAttribute)p_attribute) > 0) {
-			return attrib->second.at((TextAttribute)p_attribute);
+		if (attrib->get().has((TextAttribute)p_attribute)) {
+			return attrib->get()[(TextAttribute)p_attribute];
 		} else {
 			return Variant();
 		}
@@ -1031,7 +1031,7 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 			int index = item["index"];
 			Dictionary run = item["format"];
 			Array keys = run.keys();
-			format_attributes[index] = std::map<TextAttribute, Variant>();
+			format_attributes[index] = Map<TextAttribute, Variant>();
 			for (int j = 0; j < keys.size(); j++) {
 				String key = keys[j];
 				if (key == String("font")) {
@@ -1060,7 +1060,7 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 			int index = item["index"];
 			Dictionary run = item["style"];
 			Array keys = run.keys();
-			style_attributes[index] = std::map<TextAttribute, Variant>();
+			style_attributes[index] = Map<TextAttribute, Variant>();
 			for (int j = 0; j < keys.size(); j++) {
 				String key = keys[j];
 				String pref = "meta_";
@@ -1096,86 +1096,86 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 Array TLShapedAttributedString::save_attributes_dict() const {
 
 	Array ret;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
+	for (auto it = format_attributes.front(); it; it = it->next()) {
 		Dictionary item;
 		Dictionary run;
-		for (auto sit = it->second.begin(); sit != it->second.end(); sit++) {
-			switch (sit->first) {
+		for (auto sit = it->get().front(); sit; sit = sit->next()) {
+			switch (sit->key()) {
 				case TEXT_ATTRIBUTE_FONT: {
-					run["font"] = sit->second;
+					run["font"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_FONT_STYLE: {
-					run["font_style"] = sit->second;
+					run["font_style"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_FONT_SIZE: {
-					run["font_size"] = sit->second;
+					run["font_size"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_FONT_FEATURES: {
-					run["font_features"] = sit->second;
+					run["font_features"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_LANGUAGE: {
-					run["language"] = sit->second;
+					run["language"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: {
-					run["repl_image"] = sit->second;
+					run["repl_image"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_REPLACEMENT_RECT: {
-					run["repl_rect"] = sit->second;
+					run["repl_rect"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_REPLACEMENT_ID: {
-					run["repl_id"] = sit->second;
+					run["repl_id"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: {
-					run["relp_valign"] = sit->second;
+					run["relp_valign"] = sit->get();
 				} break;
 				default: {
 					ERR_PRINTS("Invalid format attribute")
 				} break;
 			}
 		}
-		item["index"] = String::num_int64(it->first);
+		item["index"] = String::num_int64(it->key());
 		item["format"] = run;
 		ret.push_back(item);
 	}
 
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
+	for (auto it = style_attributes.front(); it; it = it->next()) {
 		Dictionary item;
 		Dictionary run;
-		for (auto sit = it->second.begin(); sit != it->second.end(); sit++) {
-			switch (sit->first) {
+		for (auto sit = it->get().front(); sit; sit = sit->next()) {
+			switch (sit->key()) {
 				case TEXT_ATTRIBUTE_COLOR: {
-					run["color"] = ((Color)(sit->second)).to_html();
+					run["color"] = ((Color)(sit->get())).to_html();
 				} break;
 				case TEXT_ATTRIBUTE_OUTLINE_COLOR: {
-					run["out_color"] = ((Color)(sit->second)).to_html();
+					run["out_color"] = ((Color)(sit->get())).to_html();
 				} break;
 				case TEXT_ATTRIBUTE_UNDERLINE_COLOR: {
-					run["ul_color"] = ((Color)(sit->second)).to_html();
+					run["ul_color"] = ((Color)(sit->get())).to_html();
 				} break;
 				case TEXT_ATTRIBUTE_UNDERLINE_WIDTH: {
-					run["ul_width"] = sit->second;
+					run["ul_width"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR: {
-					run["st_color"] = ((Color)(sit->second)).to_html();
+					run["st_color"] = ((Color)(sit->get())).to_html();
 				} break;
 				case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH: {
-					run["st_width"] = sit->second;
+					run["st_width"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_OVERLINE_COLOR: {
-					run["ol_color"] = ((Color)(sit->second)).to_html();
+					run["ol_color"] = ((Color)(sit->get())).to_html();
 				} break;
 				case TEXT_ATTRIBUTE_OVERLINE_WIDTH: {
-					run["ol_width"] = sit->second;
+					run["ol_width"] = sit->get();
 				} break;
 				case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR: {
-					run["hl_color"] = ((Color)(sit->second)).to_html();
+					run["hl_color"] = ((Color)(sit->get())).to_html();
 				} break;
 				default: {
-					run["meta_" + String::num_int64(sit->first)] = sit->second;
+					run["meta_" + String::num_int64(sit->key())] = sit->get();
 				} break;
 			}
 		}
-		item["index"] = String::num_int64(it->first);
+		item["index"] = String::num_int64(it->key());
 		item["style"] = run;
 		ret.push_back(item);
 	}
@@ -1189,19 +1189,19 @@ int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64
 		ERR_FAIL_COND_V(true, -1);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
-		auto attrib = no_greater(format_attributes, p_index);
-		if (attrib != format_attributes.end()) {
+		auto attrib = format_attributes.find_closest(p_index);
+		if (attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
-		return attrib->first;
+		return attrib->key();
 	} else {
-		auto attrib = no_greater(style_attributes, p_index);
-		if (attrib != style_attributes.end()) {
+		auto attrib = style_attributes.find_closest(p_index);
+		if (attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
-		return attrib->first;
+		return attrib->key();
 	}
 }
 
@@ -1212,21 +1212,21 @@ int64_t TLShapedAttributedString::get_attribute_end(int64_t p_attribute, int64_t
 		ERR_FAIL_COND_V(true, -1);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
-		auto attrib = no_greater(format_attributes, p_index);
-		attrib++;
-		if (attrib != format_attributes.end()) {
+		auto attrib = format_attributes.find_closest(p_index);
+		attrib = attrib->next();
+		if (attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
-		return attrib->first;
+		return attrib->key();
 	} else {
-		auto attrib = no_greater(style_attributes, p_index);
-		attrib++;
-		if (attrib != style_attributes.end()) {
+		auto attrib = style_attributes.find_closest(p_index);
+		attrib = attrib->next();
+		if (attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
-		return attrib->first;
+		return attrib->key();
 	}
 }
 
@@ -1238,22 +1238,22 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 
 	_len = data_size - _len;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_format_attributes;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
-		if (it->first <= p_start) {
-			new_format_attributes[it->first] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	for (auto it = format_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start) {
+			new_format_attributes[it->key()] = it->get();
 		}
-		if (it->first >= p_end)
-			new_format_attributes[it->first + _len] = it->second;
+		if (it->key() >= p_end)
+			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_style_attributes;
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
-		if (it->first <= p_start)
-			new_style_attributes[it->first] = it->second;
-		if (it->first >= p_end)
-			new_style_attributes[it->first + _len] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	for (auto it = style_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start)
+			new_style_attributes[it->key()] = it->get();
+		if (it->key() >= p_end)
+			new_style_attributes[it->key() + _len] = it->get();
 	}
 	style_attributes = new_style_attributes;
 
@@ -1269,22 +1269,22 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 
 	_len = data_size - _len;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_format_attributes;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
-		if (it->first <= p_start) {
-			new_format_attributes[it->first] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	for (auto it = format_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start) {
+			new_format_attributes[it->key()] = it->get();
 		}
-		if (it->first >= p_end)
-			new_format_attributes[it->first + _len] = it->second;
+		if (it->key() >= p_end)
+			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_style_attributes;
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
-		if (it->first <= p_start)
-			new_style_attributes[it->first] = it->second;
-		if (it->first >= p_end)
-			new_style_attributes[it->first + _len] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	for (auto it = style_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start)
+			new_style_attributes[it->key()] = it->get();
+		if (it->key() >= p_end)
+			new_style_attributes[it->key() + _len] = it->get();
 	}
 	style_attributes = new_style_attributes;
 
@@ -1300,22 +1300,22 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 
 	_len = data_size - _len;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_format_attributes;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
-		if (it->first <= p_start) {
-			new_format_attributes[it->first] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	for (auto it = format_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start) {
+			new_format_attributes[it->key()] = it->get();
 		}
-		if (it->first >= p_end)
-			new_format_attributes[it->first + _len] = it->second;
+		if (it->key() >= p_end)
+			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_style_attributes;
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
-		if (it->first <= p_start)
-			new_style_attributes[it->first] = it->second;
-		if (it->first >= p_end)
-			new_style_attributes[it->first + _len] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	for (auto it = style_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start)
+			new_style_attributes[it->key()] = it->get();
+		if (it->key() >= p_end)
+			new_style_attributes[it->key() + _len] = it->get();
 	}
 	style_attributes = new_style_attributes;
 
@@ -1331,22 +1331,22 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 
 	_len = data_size - _len;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_format_attributes;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
-		if (it->first <= p_start) {
-			new_format_attributes[it->first] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	for (auto it = format_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start) {
+			new_format_attributes[it->key()] = it->get();
 		}
-		if (it->first >= p_end)
-			new_format_attributes[it->first + _len] = it->second;
+		if (it->key() >= p_end)
+			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_style_attributes;
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
-		if (it->first <= p_start)
-			new_style_attributes[it->first] = it->second;
-		if (it->first >= p_end)
-			new_style_attributes[it->first + _len] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	for (auto it = style_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start)
+			new_style_attributes[it->key()] = it->get();
+		if (it->key() >= p_end)
+			new_style_attributes[it->key() + _len] = it->get();
 	}
 	style_attributes = new_style_attributes;
 
@@ -1364,31 +1364,31 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 
 	TLShapedAttributedString *at_ref = cast_to<TLShapedAttributedString>(*p_text);
 
-	std::map<int, std::map<TextAttribute, Variant> > new_format_attributes;
-	for (auto it = format_attributes.begin(); it != format_attributes.end(); it++) {
-		if (it->first <= p_start) {
-			new_format_attributes[it->first] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	for (auto it = format_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start) {
+			new_format_attributes[it->key()] = it->get();
 		}
-		if (it->first >= p_end)
-			new_format_attributes[it->first + _len] = it->second;
+		if (it->key() >= p_end)
+			new_format_attributes[it->key() + _len] = it->get();
 	}
 	if (at_ref) {
-		for (auto it = at_ref->format_attributes.begin(); it != at_ref->format_attributes.end(); it++) {
-			new_format_attributes[it->first + p_start] = it->second;
+		for (auto it = at_ref->format_attributes.front(); it; it = it->next()) {
+			new_format_attributes[it->key() + p_start] = it->get();
 		}
 	}
 	format_attributes = new_format_attributes;
 
-	std::map<int, std::map<TextAttribute, Variant> > new_style_attributes;
-	for (auto it = style_attributes.begin(); it != style_attributes.end(); it++) {
-		if (it->first <= p_start)
-			new_style_attributes[it->first] = it->second;
-		if (it->first >= p_end)
-			new_style_attributes[it->first + _len] = it->second;
+	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	for (auto it = style_attributes.front(); it; it = it->next()) {
+		if (it->key() <= p_start)
+			new_style_attributes[it->key()] = it->get();
+		if (it->key() >= p_end)
+			new_style_attributes[it->key() + _len] = it->get();
 	}
 	if (at_ref) {
-		for (auto it = at_ref->style_attributes.begin(); it != at_ref->style_attributes.end(); it++) {
-			new_style_attributes[it->first + p_start] = it->second;
+		for (auto it = at_ref->style_attributes.front(); it; it = it->next()) {
+			new_style_attributes[it->key() + p_start] = it->get();
 		}
 	}
 	style_attributes = new_style_attributes;
@@ -1421,11 +1421,11 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 	data_size = data_size + at_ref->data_size;
 
 	//copy attributes
-	for (auto it = at_ref->format_attributes.begin(); it != at_ref->format_attributes.end(); it++) {
-		format_attributes[it->first + _len] = it->second;
+	for (auto it = at_ref->format_attributes.front(); it; it = it->next()) {
+		format_attributes[it->key() + _len] = it->get();
 	}
-	for (auto it = at_ref->style_attributes.begin(); it != at_ref->style_attributes.end(); it++) {
-		style_attributes[it->first + _len] = it->second;
+	for (auto it = at_ref->style_attributes.front(); it; it = it->next()) {
+		style_attributes[it->key() + _len] = it->get();
 	}
 
 	_clear_props();

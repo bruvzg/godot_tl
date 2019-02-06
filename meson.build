@@ -1,7 +1,7 @@
 project(
 	'libgdtl',
 	'cpp',
-	meson_version : '>= 0.37'
+	meson_version : '>= 0.38'
 )
 library_version = '0.1.0'
 
@@ -119,5 +119,5 @@ shared_library(
 	dependencies : dependencies,
 	link_args : link_args,
 	cpp_args : cpp_args,
-	include_directories : include_directories('src', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
+	include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
 )
