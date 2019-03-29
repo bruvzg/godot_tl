@@ -92,7 +92,7 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	}
 }
 
-void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster) const {
+void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
 
 	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? format_attributes.find_closest(p_start) : format_attributes.find_closest(p_end - 1);
 	if (!attrib_iter) {
@@ -104,18 +104,20 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	//Shape single cluster using HarfBuzz
 	Ref<TLFontFace> _font = p_font;
 	int64_t _size = base_size;
-	if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT)) {
-		Ref<TLFontFamily> family = Ref<TLFontFamily>(attrib_iter->get()[TEXT_ATTRIBUTE_FONT]);
-		String style = base_style;
-		if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT_STYLE)) {
-			style = attrib_iter->get()[TEXT_ATTRIBUTE_FONT_STYLE];
-		}
+	if (!p_font_override) {
+		if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT)) {
+			Ref<TLFontFamily> family = Ref<TLFontFamily>(attrib_iter->get()[TEXT_ATTRIBUTE_FONT]);
+			String style = base_style;
+			if (attrib_iter->get().has(TEXT_ATTRIBUTE_FONT_STYLE)) {
+				style = attrib_iter->get()[TEXT_ATTRIBUTE_FONT_STYLE];
+			}
 
-		_font = family->_get_liked_face_for_script(style, p_run_script);
-		if (_font.is_null()) {
-			_font = family->get_face(style);
+			_font = family->_get_liked_face_for_script(style, p_run_script);
 			if (_font.is_null()) {
-				_font = p_font;
+				_font = family->get_face(style);
+				if (_font.is_null()) {
+					_font = p_font;
+				}
 			}
 		}
 	}
@@ -387,7 +389,7 @@ void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, 
 	}
 }
 
-void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font) {
+void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font, bool p_font_override) {
 
 	//Handle rects for embedded custom objects
 	if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_RECT)) {
@@ -419,18 +421,20 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 
 	//Shape monotone run using HarfBuzz
 	Ref<TLFontFace> _font = p_font;
-	if (p_attribs.has(TEXT_ATTRIBUTE_FONT)) {
-		Ref<TLFontFamily> family = Ref<TLFontFamily>(p_attribs[TEXT_ATTRIBUTE_FONT]);
-		String style = base_style;
-		if (p_attribs.has(TEXT_ATTRIBUTE_FONT_STYLE)) {
-			style = p_attribs[TEXT_ATTRIBUTE_FONT_STYLE];
-		}
+	if (!p_font_override) {
+		if (p_attribs.has(TEXT_ATTRIBUTE_FONT)) {
+			Ref<TLFontFamily> family = Ref<TLFontFamily>(p_attribs[TEXT_ATTRIBUTE_FONT]);
+			String style = base_style;
+			if (p_attribs.has(TEXT_ATTRIBUTE_FONT_STYLE)) {
+				style = p_attribs[TEXT_ATTRIBUTE_FONT_STYLE];
+			}
 
-		_font = family->_get_liked_face_for_script(style, p_run_script);
-		if (_font.is_null()) {
-			_font = family->get_face(style);
+			_font = family->_get_liked_face_for_script(style, p_run_script);
 			if (_font.is_null()) {
-				_font = p_font;
+				_font = family->get_face(style);
+				if (_font.is_null()) {
+					_font = p_font;
+				}
 			}
 		}
 	}
@@ -565,8 +569,8 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 			}
 		}
 		if (failed_subrun_start != p_run_end + 1) {
-			if (!_font->get_fallback().is_null()) {
-				_shape_bidi_script_attrib_run(p_run_direction, p_run_script, p_attribs, failed_subrun_start, failed_subrun_end + 1, _font->get_fallback());
+			if (!_font->get_fallback().is_null() && _font->get_fallback() != _font) {
+				_shape_bidi_script_attrib_run(p_run_direction, p_run_script, p_attribs, failed_subrun_start, failed_subrun_end + 1, _font->get_fallback(), true);
 			} else {
 				_shape_hex_run(p_run_direction, failed_subrun_start, failed_subrun_end + 1);
 			}
@@ -621,11 +625,11 @@ Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_
 	ret->language = language;
 	ret->font_features = font_features;
 
-	if ((data_size == 0) || (p_start < 0) || (p_end > data_size) || (p_start > p_end)) {
+	if ((data_size == 0) || (p_start < 0) || (p_end > data_size) || (p_start > p_end) || (prev_safe_bound(p_start) > next_safe_bound(p_end))) {
 		return ret;
 	}
 
-	_shape_substring(ret.ptr(), p_start, p_end, p_trim);
+	_shape_substring(ret.ptr(), prev_safe_bound(p_start), next_safe_bound(p_end), p_trim);
 	return ret;
 }
 

@@ -116,23 +116,12 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 	int32_t start_sp = paren_sp;
 	UErrorCode err = U_ZERO_ERROR;
 
-	cur = -1;
-
 	do {
 		script_code = USCRIPT_COMMON;
-		for (script_start = script_end; script_end < p_length; script_end += 1) {
-			UChar high = p_chars[script_end];
+		for (script_start = script_end; script_end < p_length; script_end = next_bound(p_chars, script_end + 1, p_length)) {
 
-			UChar32 ch = high;
-
-			if (high >= 0xD800 && high <= 0xDBFF && script_end < p_length - 1) {
-				UChar low = p_chars[script_end + 1];
-
-				if (low >= 0xDC00 && low <= 0xDFFF) {
-					ch = (high - 0xD800) * 0x0400 + low - 0xDC00 + 0x10000;
-					script_end += 1;
-				}
-			}
+			UChar32 ch;
+			U16_GET(p_chars, 0, script_end, p_length, ch);
 
 			UScriptCode sc = uscript_getScript(ch, &err);
 			if (U_FAILURE(err)) {
@@ -163,10 +152,12 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 					start_sp -= 1;
 				}
 			} else {
-				if (ch >= 0x10000) script_end -= 1;
+				if (ch >= 0x10000) script_end = MAX(script_start, prev_bound(p_chars, script_end - 1, p_length));
 				break;
 			}
 		}
+
+		//printf("SC:%d %d %d %d\n", script_code, script_start, script_end, p_length);
 
 		ScriptRange rng;
 		rng.script = hb_icu_script_to_script(script_code);
@@ -335,6 +326,7 @@ void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end,
 		op.hard = (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD);
 		p_ops.push_back(op);
 		//printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
+		//if (op.hard) printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
 	}
 	ubrk_close(bi);
 }
@@ -347,15 +339,19 @@ void TLShapedString::_generate_break_opportunies_fallback(int32_t p_start, int32
 			op.position = i + 1;
 			op.hard = true;
 			p_ops.push_back(op);
-			//printf("brk %d [H]\n", op.position);
+			//printf("brk %d [Hf]\n", op.position);
 		} else if (u_isWhitespace(get_char(i))) {
 			BreakOpportunity op;
 			op.position = i + 1;
 			op.hard = false;
 			p_ops.push_back(op);
-			//printf("brk %d [S]\n", op.position);
+			//printf("brk %d [Sf]\n", op.position);
 		}
 	}
+	BreakOpportunity op;
+	op.position = p_end;
+	op.hard = false;
+	p_ops.push_back(op);
 }
 
 void TLShapedString::_shape_full_string() {
@@ -670,7 +666,7 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 			}
 		}
 		if (failed_subrun_start != p_run_end + 1) {
-			if (!p_font->get_fallback().is_null()) {
+			if (!p_font->get_fallback().is_null() && p_font->get_fallback() != p_font) {
 				_shape_bidi_script_run(p_run_direction, p_run_script, failed_subrun_start, failed_subrun_end + 1, p_font->get_fallback());
 			} else {
 				_shape_hex_run(p_run_direction, failed_subrun_start, failed_subrun_end + 1);
@@ -1002,7 +998,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 	int64_t b = 0;
 	int64_t i = 0;
 	while (i < logical.size()) {
-		if ((b < brk_ops.size()) && (brk_ops[b].position == logical[i].start)) {
+		if ((b < brk_ops.size()) && (brk_ops[b].position <= logical[i].start)) {
 			last_safe_brk = b;
 			last_safe_brk_cluster = i;
 			b++;
@@ -1074,15 +1070,15 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 	ret->language = language;
 	ret->font_features = font_features;
 
-	if ((data_size == 0) || (p_start < 0) || (p_end > data_size) || (p_start > p_end)) {
+	if ((data_size == 0) || (p_start < 0) || (p_end > data_size) || (p_start > p_end) || (prev_safe_bound(p_start) > next_safe_bound(p_end))) {
 		return ret;
 	}
 
-	_shape_substring(ret.ptr(), p_start, p_end, p_trim);
+	_shape_substring(ret.ptr(), prev_safe_bound(p_start), next_safe_bound(p_end), p_trim);
 	return ret;
 }
 
-void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster) const {
+void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
 
 	//Shape single cluster using HarfBuzz
 	hb_font_t *hb_font = p_font->get_hb_font(base_size);
