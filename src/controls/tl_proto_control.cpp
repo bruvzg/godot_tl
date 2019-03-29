@@ -492,8 +492,8 @@ Point2 TLProtoControl::get_caret_position() {
 
 void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 
-	float y_ofs = 0.0f;
-	if (p_position.y < 0.0f) {
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
 	for (int i = 0; i < paragraphs.size(); i++) {
@@ -556,6 +556,79 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 		}
 		y_ofs += para_spacing;
 	}
+}
+
+Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
+
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_position.y < margin[MARGIN_TOP]) {
+		return Rect2();
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() == 0) {
+			return Rect2();
+		} else {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				float x_ofs = margin[MARGIN_LEFT];
+				if (paragraphs[i]->get_width() > 0) {
+					if (paragraphs[i]->get_halign() == PARA_HALIGN_RIGHT) {
+						x_ofs = (paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width());
+					} else if (paragraphs[i]->get_halign() == PARA_HALIGN_CENTER) {
+						x_ofs = ((paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width()) / 2);
+					}
+				}
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_position.y >= y_ofs && p_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						int64_t cl = paragraphs[i]->get_line(j)->hit_test_cluster(p_position.x - paragraphs[i]->get_indent() - x_ofs);
+
+						Rect2 x = paragraphs[i]->get_line(j)->get_cluster_rect(cl);
+						x.position.x += paragraphs[i]->get_indent() + x_ofs;
+						x.position.y += y_ofs + paragraphs[i]->get_line(j)->get_ascent();
+						return x;
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
+	return Rect2();
+}
+
+String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
+
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_position.y < margin[MARGIN_TOP]) {
+		return String();
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() == 0) {
+			return String();
+		} else {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				float x_ofs = margin[MARGIN_LEFT];
+				if (paragraphs[i]->get_width() > 0) {
+					if (paragraphs[i]->get_halign() == PARA_HALIGN_RIGHT) {
+						x_ofs = (paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width());
+					} else if (paragraphs[i]->get_halign() == PARA_HALIGN_CENTER) {
+						x_ofs = ((paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width()) / 2);
+					}
+				}
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_position.y >= y_ofs && p_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						int64_t cl = paragraphs[i]->get_line(j)->hit_test_cluster(p_position.x - paragraphs[i]->get_indent() - x_ofs);
+
+						return paragraphs[i]->get_line(j)->get_cluster_debug_info(cl);
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
+	return String();
 }
 
 void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_dir, TextDirection p_last_imp_dir) {
@@ -1624,6 +1697,9 @@ void TLProtoControl::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_selection"), &TLProtoControl::get_selection);
 	ClassDB::bind_method(D_METHOD("set_selection", "selection"), &TLProtoControl::set_selection);
+
+	ClassDB::bind_method(D_METHOD("get_cluster_debug_info_hit_test", "position"), &TLProtoControl::get_cluster_debug_info_hit_test);
+	ClassDB::bind_method(D_METHOD("get_cluster_rect_hit_test", "position"), &TLProtoControl::get_cluster_rect_hit_test);
 
 	ClassDB::bind_method(D_METHOD("get_readonly"), &TLProtoControl::get_readonly);
 	ClassDB::bind_method(D_METHOD("set_readonly", "readonly"), &TLProtoControl::set_readonly);

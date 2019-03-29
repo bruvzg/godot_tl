@@ -175,6 +175,13 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 
 	p_cluster.glyphs.clear();
 	p_cluster.font_face = _font.ptr();
+
+	//debug info
+	p_cluster.script = p_run_script;
+	p_cluster.dir = p_run_direction;
+	p_cluster.lang = language;
+	//debug info
+
 	p_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);
 	p_cluster.cl_type = _CLUSTER_TYPE_TEXT;
 	p_cluster.valid = true;
@@ -506,6 +513,12 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 			if (last_cluster_id != glyph_info[i].cluster) {
 				//Start new cluster
 				Cluster new_cluster;
+
+				//debug info
+				new_cluster.script = p_run_script;
+				new_cluster.dir = p_run_direction;
+				new_cluster.lang = language;
+				//debug info
 
 				new_cluster.font_face = _font.ptr();
 				new_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);

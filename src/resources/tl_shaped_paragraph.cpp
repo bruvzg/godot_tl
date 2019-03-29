@@ -82,7 +82,7 @@ void TLShapedParagraph::_update_paragraph() {
 		if (max_line_width < min_paragraph_width)
 			max_line_width = min_paragraph_width;
 	} else {
-		unsigned int prev = 0;
+		uint32_t prev = 0;
 		for (unsigned int i = 0; i < line_bounds.size(); i++) {
 			Ref<TLShapedAttributedString> line = ctx->substr(prev, line_bounds[i], TEXT_TRIM_BREAK);
 			line->shape();

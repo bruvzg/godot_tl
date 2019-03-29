@@ -104,6 +104,12 @@ protected:
 		float descent;
 		float width;
 
+		//debug info
+		hb_script_t script;
+		hb_direction_t dir;
+		hb_language_t lang;
+		//debug info
+
 		std::vector<Glyph> glyphs;
 
 		Cluster();
@@ -124,7 +130,7 @@ protected:
 
 		static bool same_script(int32_t p_script_one, int32_t p_script_two);
 
-		int32_t next_bound(const UChar *p_chars, int32_t p_offset, int32_t p_length) const {
+		_ALWAYS_INLINE_ int32_t next_bound(const UChar *p_chars, int32_t p_offset, int32_t p_length) const {
 
 			if (p_offset < 0)
 				p_offset = 0;
@@ -133,17 +139,6 @@ protected:
 				return p_length;
 
 			return MIN((U16_IS_SURROGATE(p_chars[p_offset]) && U16_IS_SURROGATE_TRAIL(p_chars[p_offset])) ? p_offset + 1 : p_offset, p_length);
-		}
-
-		int32_t prev_bound(const UChar *p_chars, int32_t p_offset, int32_t p_length) const {
-
-			if (p_offset < 0)
-				return 0;
-
-			if (p_offset >= p_length)
-				p_offset = p_length - 1;
-
-			return MAX((U16_IS_SURROGATE(p_chars[p_offset]) && U16_IS_SURROGATE_TRAIL(p_chars[p_offset])) ? p_offset - 1 : p_offset, 0);
 		}
 
 		int64_t cur;
@@ -345,6 +340,7 @@ public:
 	virtual float get_cluster_width(int64_t p_index) const;
 	virtual float get_cluster_height(int64_t p_index) const;
 	virtual Rect2 get_cluster_rect(int64_t p_index) const;
+	virtual String get_cluster_debug_info(int64_t p_index) const;
 
 	//Output
 	virtual std::vector<Rect2> get_highlight_shapes(int64_t p_start, int64_t p_end) const;

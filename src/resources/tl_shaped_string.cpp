@@ -107,6 +107,8 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 		UScriptCode script_code;
 	};
 
+	const UChar *x_chars = p_chars;
+
 	ParenStackEntry paren_stack[128];
 
 	int32_t script_start;
@@ -152,7 +154,6 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 					start_sp -= 1;
 				}
 			} else {
-				if (ch >= 0x10000) script_end = MAX(script_start, prev_bound(p_chars, script_end - 1, p_length));
 				break;
 			}
 		}
@@ -602,6 +603,12 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 			if (last_cluster_id != glyph_info[i].cluster) {
 				//Start new cluster
 				Cluster new_cluster;
+
+				//debug info
+				new_cluster.script = p_run_script;
+				new_cluster.dir = p_run_direction;
+				new_cluster.lang = language;
+				//debug info
 
 				new_cluster.font_face = p_font.ptr();
 				new_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);
@@ -1113,6 +1120,13 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 	hb_glyph_position_t *glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
 
 	p_cluster.glyphs.clear();
+
+	//debug info
+	p_cluster.script = p_run_script;
+	p_cluster.dir = p_run_direction;
+	p_cluster.lang = language;
+	//debug info
+
 	p_cluster.font_face = p_font.ptr();
 	p_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);
 	p_cluster.cl_type = _CLUSTER_TYPE_TEXT;
@@ -1374,6 +1388,29 @@ Rect2 TLShapedString::get_cluster_rect(int64_t p_index) const {
 		return Rect2();
 
 	return Rect2(Point2(visual[p_index].offset, -visual[p_index].ascent), Size2(visual[p_index].width, visual[p_index].ascent + visual[p_index].descent));
+}
+
+String TLShapedString::get_cluster_debug_info(int64_t p_index) const {
+
+	if (!valid)
+		const_cast<TLShapedString *>(this)->_shape_full_string();
+
+	if (!valid)
+		return String();
+
+	if ((p_index < 0) || (p_index >= visual.size()))
+		return String();
+
+	String info;
+	info += String("Type: ") + String::num_int64(visual[p_index].cl_type) + String("; ");
+	if (visual[p_index].cl_type == _CLUSTER_TYPE_TEXT) {
+		info += String("Lang: ") + hb_language_to_string(visual[p_index].lang) + String("; ");
+		info += String("Dir: ") + hb_direction_to_string(visual[p_index].dir) + String("; ");
+		char tag[5] = "";
+		hb_tag_to_string(hb_script_to_iso15924_tag(visual[p_index].script), tag);
+		info += String("Script: ") + tag + String("; ");
+	}
+	return info;
 }
 
 float TLShapedString::get_cluster_leading_edge(int64_t p_index) const {
@@ -2493,6 +2530,7 @@ void TLShapedString::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_cluster_width", "index"), &TLShapedString::get_cluster_width);
 	ClassDB::bind_method(D_METHOD("get_cluster_height", "index"), &TLShapedString::get_cluster_height);
 	ClassDB::bind_method(D_METHOD("get_cluster_rect", "index"), &TLShapedString::get_cluster_rect);
+	ClassDB::bind_method(D_METHOD("get_cluster_debug_info", "index"), &TLShapedString::get_cluster_debug_info);
 
 	//Glyph data
 	ClassDB::bind_method(D_METHOD("get_cluster_glyphs", "index"), &TLShapedString::get_cluster_glyphs);

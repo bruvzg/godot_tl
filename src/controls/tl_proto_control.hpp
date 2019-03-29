@@ -188,6 +188,9 @@ public:
 	Ref<TLProtoControlSelection> get_selection() const;
 	void set_selection(Ref<TLProtoControlSelection> p_selection);
 
+	String get_cluster_debug_info_hit_test(Point2 p_position);
+	Rect2 get_cluster_rect_hit_test(Point2 p_position);
+
 	void set_back_color(Color p_color);
 	Color get_back_color() const;
 
