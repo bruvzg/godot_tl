@@ -5,6 +5,9 @@ Import('env_modules')
 
 from compat import isbasestring
 
+if env['tools']:
+	SConscript('tools/icons/SCsub')
+
 env_godot_tl = env_modules.Clone()
 
 sources = [
@@ -20,14 +23,19 @@ sources = [
 	'controls/tl_proto_control.cpp'
 ]
 
-env_godot_tl.Append(CPPPATH=['.', '../subprojects/graphite2/include', '../subprojects/harfbuzz/src', '../subprojects/icu4c/source/common', "#thirdparty/freetype/include"])
+if env['tools']:
+	sources += [
+		'tools/tl_editor_node.cpp'
+	]
+
+env_godot_tl.Append(CPPPATH=['.', '../subprojects/graphite2/include', '../subprojects/harfbuzz/src', '../subprojects/icu4c/source/common', '#thirdparty/freetype/include', '#thirdparty/nanosvg/'])
 
 env_godot_tl.Append(CXXFLAGS=[
 	'-DGODOT_MODULE'
 ])
 
 if (not env_godot_tl.msvc):
-    env_godot_tl.Append(CXXFLAGS=["-std=c++14"])
+    env_godot_tl.Append(CXXFLAGS=["-std=c++14", "-Winconsistent-missing-override"])
 
 env_thirdparty = env_godot_tl.Clone()
 lib = env_thirdparty.add_library("godot_tl_builtin", sources)

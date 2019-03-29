@@ -25,6 +25,19 @@ using namespace godot;
 
 #ifdef GODOT_MODULE
 
+#ifdef TOOLS_ENABLED
+
+#include "tools/tl_editor_node.h"
+#include <editor/editor_node.h>
+
+void tl_init_callback() {
+
+	EditorNode *editor = EditorNode::get_singleton();
+	editor->add_child(memnew(TLEditorNode(editor)));
+};
+
+#endif
+
 void register_godot_tl_types() {
 
 	TLFontFace::initialize_hex_font();
@@ -39,6 +52,11 @@ void register_godot_tl_types() {
 	ClassDB::register_class<TLShapedParagraph>();
 	ClassDB::register_class<TLProtoControl>();
 	ClassDB::register_class<TLProtoControlSelection>();
+
+	//Register editor tools
+#ifdef TOOLS_ENABLED
+	EditorNode::add_init_callback(&tl_init_callback);
+#endif
 }
 
 void unregister_godot_tl_types() {

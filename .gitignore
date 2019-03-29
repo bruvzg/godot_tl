@@ -11,3 +11,4 @@ _build*
 *.dex
 *.pyc
 *.o
+icons.gen.h
