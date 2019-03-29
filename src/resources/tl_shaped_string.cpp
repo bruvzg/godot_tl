@@ -998,12 +998,14 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 	int64_t b = 0;
 	int64_t i = 0;
 	while (i < logical.size()) {
+		//printf(" B: %d %d\n", brk_ops[b].position, logical[i].start);
 		if ((b < brk_ops.size()) && (brk_ops[b].position <= logical[i].start)) {
 			last_safe_brk = b;
 			last_safe_brk_cluster = i;
 			b++;
 			if (brk_ops[last_safe_brk].hard) {
-				ret.push_back(logical[i].end);
+				ret.push_back(logical[i].start);
+				//printf("->H: %d %d\n", logical[i].end);
 
 				width = 0.0f;
 				line_start = logical[i].end;
@@ -1017,6 +1019,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 		if (p_flags == TEXT_BREAK_MANDATORY_AND_WORD_BOUND) {
 			if ((p_width > 0) && (width >= p_width) && (last_safe_brk != -1) && (brk_ops[last_safe_brk].position != line_start)) {
 				ret.push_back(brk_ops[last_safe_brk].position);
+				//printf("->W: %d %d\n", brk_ops[last_safe_brk].position);
 
 				width = 0.0f;
 				i = last_safe_brk_cluster;
@@ -1028,6 +1031,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 		} else if (p_flags == TEXT_BREAK_MANDATORY_AND_ANYWHERE) {
 			if ((p_width > 0) && (width >= p_width)) {
 				ret.push_back(logical[i].end);
+				//printf("->A: %d %d\n", logical[i].end);
 
 				width = 0.0f;
 				line_start = logical[i].end;
@@ -1042,6 +1046,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 	//still opts left, check for hard break after end of line
 	while (b < brk_ops.size()) {
 		if ((brk_ops[b].position == data_size) && (brk_ops[b].hard)) {
+			//printf("->X: %d %d\n", data_size);
 			ret.push_back(data_size);
 			break;
 		}
@@ -1049,6 +1054,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 	}
 	if (line_start < data_size) {
 		//Shape clusters after last safe break
+		//printf("->F: %d %d\n", data_size);
 		ret.push_back(data_size);
 	}
 
@@ -1252,6 +1258,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 								ws_cluster.start = visual[j].start;
 								ws_cluster.end = visual[j].start;
 
+								j++;
 								visual.insert(visual.begin() + j, ws_cluster);
 								j++;
 							}
