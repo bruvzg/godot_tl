@@ -48,9 +48,11 @@ meson {Targer-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
 ninja -C {Targer-Folder}
 ```
 
-## Screenshot
+## Screenshots
 
 ![libgdtl all scripts screenshot](scripts_scr.png)
+
+![libgdtl debug view](debug_view.png)
 
 ## License
 - The source code of the **libgdtl** module is released under unlicense.

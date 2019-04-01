@@ -51,6 +51,33 @@ void TLFontFace::finish_hex_font() {
 	hex_box_img_tex.unref();
 }
 
+void TLFontFace::_draw_small_int(RID p_canvas_item, const Point2 p_pos, uint32_t p_int, const Color p_modulate) {
+	//for debug draw (4 dig)
+	uint8_t a = p_int % 10000 / 1000;
+	uint8_t b = p_int % 1000 / 100;
+	uint8_t c = p_int % 100 / 10;
+	uint8_t d = p_int % 10;
+
+	Vector2 off = Vector2();
+	if (a != 0) {
+		Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
+		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(a * 5, 0), dest.size), p_modulate, false, RID(), false);
+		off += Point2(6, 0);
+	}
+	if (b != 0) {
+		Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
+		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(b * 5, 0), dest.size), p_modulate, false, RID(), false);
+		off += Point2(6, 0);
+	}
+	if (c != 0) {
+		Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
+		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(c * 5, 0), dest.size), p_modulate, false, RID(), false);
+		off += Point2(6, 0);
+	}
+	Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
+	VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(d * 5, 0), dest.size), p_modulate, false, RID(), false);
+}
+
 void TLFontFace::draw_hexbox(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) {
 
 	uint8_t a = p_codepoint & 0x0F;

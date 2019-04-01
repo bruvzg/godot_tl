@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://icons/ic_font_download_black_18dp.png" type="Texture" id=1]
 [ext_resource path="res://icons/ic_format_size_black_18dp.png" type="Texture" id=2]
@@ -15,8 +15,8 @@
 [ext_resource path="res://icons/ic_cancel_18pt.png" type="Texture" id=13]
 [ext_resource path="res://icons/dng_crect_black_18dp.png" type="Texture" id=14]
 [ext_resource path="res://icons/dng_lbrk_black_18dp.png" type="Texture" id=15]
-[ext_resource path="res://icons/dng_wbrk_black_18dp.png" type="Texture" id=16]
-[ext_resource path="res://icons/dng_jbrk_black_18dp.png" type="Texture" id=17]
+[ext_resource path="res://icons/dng_jbrk_black_18dp.png" type="Texture" id=16]
+[ext_resource path="res://icons/dng_wbrk_black_18dp.png" type="Texture" id=17]
 [ext_resource path="res://icons/dng_cprev_black_18dp.png" type="Texture" id=18]
 [ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=19]
 [ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=20]
@@ -39,6 +39,7 @@
 [ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=37]
 [ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=38]
 [ext_resource path="res://Panel.gd" type="Script" id=39]
+[ext_resource path="res://Panel2.gd" type="Script" id=40]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -63,6 +64,9 @@ func _onresize():
 		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
 
 	$FormatToolbar/W.rect_position.x = get_viewport_rect().size.x - $FormatToolbar/W.rect_size.x
+	
+	$PanelDbgD.rect_position.y = get_viewport_rect().size.y - 40 - $PanelDbgD.rect_size.y
+	$PanelDbgD.rect_size.x = get_viewport_rect().size.x - 20
 
 func _on_HScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.x = 5 - value
@@ -1096,18 +1100,19 @@ func _on_TLProtoControl_gui_input(event):
 		$TLProtoControl/Panel.rect_size = r.size
 		$FormatToolbar/W/Panel.gldata = $TLProtoControl.get_cluster_glyphs_hit_test(event.position)
 		$FormatToolbar/W/Panel.update()
+		$PanelDbgD.point = event.position
+		$PanelDbgD.update()
 
 func _on_DEbug_toggled(button_pressed):
 	$TLProtoControl/Panel.visible = button_pressed
 
-func _on_DebugWBrk_toggled(button_pressed):
-	$TLProtoControl.set_debug_draw_word_breaks(button_pressed)
-
 func _on_DebugLBrk_toggled(button_pressed):
-	$TLProtoControl.set_debug_draw_line_breaks(button_pressed)
+	$PanelDbgD.brk = button_pressed
+	$PanelDbgD.update()
 
 func _on_DebugJBrk_toggled(button_pressed):
-	$TLProtoControl.set_debug_draw_jst_breaks(button_pressed)
+	$PanelDbgD.jst = button_pressed
+	$PanelDbgD.update()
 
 func _on_DebugJBrk2_toggled(button_pressed):
 	$FormatToolbar/W.visible = button_pressed
@@ -1117,7 +1122,12 @@ func _on_DebugJBrk2_toggled(button_pressed):
 	else:
 		$VScrollBar.rect_position.y = 115
 		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
-	
+
+func _on_DebugDdr_toggled(button_pressed):
+	$FormatToolbar/DebugLBrk.disabled = !button_pressed
+	$FormatToolbar/DebugJBrk.disabled = !button_pressed
+	$PanelDbgD.visible = button_pressed
+	$PanelDbgD.update()
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -1437,9 +1447,9 @@ focus_mode = 0
 icon = ExtResource( 13 )
 
 [node name="DebugRect" type="Button" parent="FormatToolbar"]
-margin_left = 884.0
+margin_left = 888.0
 margin_top = 5.0
-margin_right = 914.0
+margin_right = 918.0
 margin_bottom = 35.0
 hint_tooltip = "Debug: Display cluster rect"
 focus_mode = 0
@@ -1453,33 +1463,34 @@ margin_right = 1066.0
 margin_bottom = 35.0
 hint_tooltip = "Debug: Display line break points"
 focus_mode = 0
+disabled = true
 toggle_mode = true
 icon = ExtResource( 15 )
 
-[node name="DebugWBrk" type="Button" parent="FormatToolbar"]
-margin_left = 1003.0
+[node name="DebugJBrk" type="Button" parent="FormatToolbar"]
+margin_left = 1004.0
 margin_top = 5.0
-margin_right = 1033.0
+margin_right = 1034.0
 margin_bottom = 35.0
 hint_tooltip = "Debug: Display word break points"
 focus_mode = 0
+disabled = true
 toggle_mode = true
 icon = ExtResource( 16 )
 
-[node name="DebugJBrk" type="Button" parent="FormatToolbar"]
-margin_left = 969.0
+[node name="DebugDdr" type="Button" parent="FormatToolbar"]
+margin_left = 966.0
 margin_top = 5.0
-margin_right = 999.0
+margin_right = 996.0
 margin_bottom = 35.0
-hint_tooltip = "Debug: Display word break points"
-focus_mode = 0
+hint_tooltip = "Debug: Display string info"
 toggle_mode = true
 icon = ExtResource( 17 )
 
 [node name="DebugJBrk2" type="Button" parent="FormatToolbar"]
-margin_left = 919.0
+margin_left = 920.0
 margin_top = 5.0
-margin_right = 949.0
+margin_right = 950.0
 margin_bottom = 35.0
 hint_tooltip = "Debug: Cluster preview"
 focus_mode = 0
@@ -1930,6 +1941,54 @@ margin_top = 305.0
 margin_right = 1180.0
 margin_bottom = 767.0
 step = 1.0
+
+[node name="PanelDbgD" type="ColorRect" parent="."]
+visible = false
+margin_top = 565.0
+margin_right = 1205.0
+margin_bottom = 740.0
+color = Color( 0.752941, 0.752941, 0.752941, 1 )
+script = ExtResource( 40 )
+
+[node name="Label" type="Label" parent="PanelDbgD"]
+margin_left = 5.0
+margin_top = 20.0
+margin_right = 53.0
+margin_bottom = 34.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Glyphs:"
+
+[node name="Label3" type="Label" parent="PanelDbgD"]
+margin_left = 5.0
+margin_top = 60.0
+margin_right = 53.0
+margin_bottom = 74.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Pos (S/E):"
+
+[node name="Label5" type="Label" parent="PanelDbgD"]
+margin_left = 5.0
+margin_top = 95.0
+margin_right = 53.0
+margin_bottom = 109.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Gl. Idx:"
+
+[node name="Label4" type="Label" parent="PanelDbgD"]
+margin_left = 5.0
+margin_top = 155.0
+margin_right = 53.0
+margin_bottom = 169.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Pos:"
+
+[node name="Label2" type="Label" parent="PanelDbgD"]
+margin_left = 5.0
+margin_top = 129.0
+margin_right = 52.0
+margin_bottom = 143.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Source:"
 [connection signal="gui_input" from="TLProtoControl" to="." method="_on_TLProtoControl_gui_input"]
 [connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
 [connection signal="item_selected" from="FormatToolbar/FontSize" to="." method="_on_FontSize_item_selected"]
@@ -1952,8 +2011,8 @@ step = 1.0
 [connection signal="pressed" from="FormatToolbar/ClearFMT2" to="." method="_on_ClearFMT2_pressed"]
 [connection signal="toggled" from="FormatToolbar/DebugRect" to="." method="_on_DEbug_toggled"]
 [connection signal="toggled" from="FormatToolbar/DebugLBrk" to="." method="_on_DebugLBrk_toggled"]
-[connection signal="toggled" from="FormatToolbar/DebugWBrk" to="." method="_on_DebugWBrk_toggled"]
 [connection signal="toggled" from="FormatToolbar/DebugJBrk" to="." method="_on_DebugJBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugDdr" to="." method="_on_DebugDdr_toggled"]
 [connection signal="toggled" from="FormatToolbar/DebugJBrk2" to="." method="_on_DebugJBrk2_toggled"]
 [connection signal="pressed" from="FormatToolbar/New" to="." method="_on_New_pressed"]
 [connection signal="pressed" from="FormatToolbar/Load" to="." method="_on_Load_pressed"]

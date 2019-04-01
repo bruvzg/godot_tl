@@ -355,6 +355,11 @@ public:
 	virtual Vector2 draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate = Color(1, 1, 1));
 	virtual void draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1));
 
+	//Extra
+	virtual void draw_dbg(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1), bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
+	virtual void draw_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1), bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
+	virtual void draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1), bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
+
 	//GDNative wrappers
 	Array _break_words() const;
 	Array _break_jst() const;

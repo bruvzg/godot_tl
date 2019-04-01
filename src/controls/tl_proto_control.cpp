@@ -205,10 +205,6 @@ TLProtoControl::~TLProtoControl() {
 
 void TLProtoControl::_init() {
 
-	dbg_draw_break_ops = false;
-	dbg_draw_word_ops = false;
-	dbg_draw_jst_ops = false;
-
 	set_focus_mode(FOCUS_ALL);
 
 	para_spacing = 3.0f;
@@ -1386,22 +1382,73 @@ void TLProtoControl::_gui_input(InputEvent *p_event) {
 	}
 }
 
-void TLProtoControl::set_debug_draw_line_breaks(bool p_enable) {
+void TLProtoControl::debug_draw(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
-	dbg_draw_break_ops = p_enable;
-	update();
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_hit_position.y < margin[MARGIN_TOP]) {
+		return;
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() > 0) {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_hit_position.y >= y_ofs && p_hit_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						paragraphs[i]->get_line(j)->draw_dbg(p_canvas_item, p_position, Color(0, 0, 0), p_draw_brk_ops, p_draw_jst_ops);
+						return;
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
 }
 
-void TLProtoControl::set_debug_draw_word_breaks(bool p_enable) {
+void TLProtoControl::debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
-	dbg_draw_word_ops = p_enable;
-	update();
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_hit_position.y < margin[MARGIN_TOP]) {
+		return;
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() > 0) {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_hit_position.y >= y_ofs && p_hit_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						paragraphs[i]->get_line(j)->draw_as_hex(p_canvas_item, p_position, Color(0, 0, 0), p_draw_brk_ops, p_draw_jst_ops);
+						return;
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
 }
 
-void TLProtoControl::set_debug_draw_jst_breaks(bool p_enable) {
+void TLProtoControl::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
-	dbg_draw_jst_ops = p_enable;
-	update();
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_hit_position.y < margin[MARGIN_TOP]) {
+		return;
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() > 0) {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_hit_position.y >= y_ofs && p_hit_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						paragraphs[i]->get_line(j)->draw_logical_as_hex(p_canvas_item, p_position, Color(0, 0, 0), p_draw_brk_ops, p_draw_jst_ops);
+						return;
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
 }
 
 float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset) {
@@ -1449,46 +1496,6 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 
 			if (p_para->get_line(j).is_valid()) {
 				p_offset += p_para->get_line(j)->get_ascent();
-				//Debug
-				if (dbg_draw_break_ops) {
-					std::vector<int> brks = p_para->get_line(j)->break_lines(0.0000001f, TEXT_BREAK_MANDATORY_AND_WORD_BOUND);
-					for (int l = 0; l < brks.size(); l++) {
-						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
-						for (int k = 0; k < cur_ofs.size(); k++) {
-							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(1, 0, 0, 0.5));
-						}
-					}
-					brks = p_para->get_line(j)->break_lines(0.0f, TEXT_BREAK_MANDATORY);
-					for (int l = 0; l < brks.size(); l++) {
-						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
-						for (int k = 0; k < cur_ofs.size(); k++) {
-							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(1, 1, 0, 0.5));
-						}
-					}
-				}
-				if (dbg_draw_word_ops) {
-					std::vector<int> brks = p_para->get_line(j)->break_words();
-					for (int l = 0; l < brks.size(); l++) {
-						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
-						for (int k = 0; k < cur_ofs.size(); k++) {
-							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(0, 1, 1, 0.5));
-						}
-					}
-				}
-				if (dbg_draw_jst_ops) {
-					std::vector<int> brks = p_para->get_line(j)->break_jst();
-					for (int l = 0; l < brks.size(); l++) {
-						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
-						for (int k = 0; k < cur_ofs.size(); k++) {
-							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(0, 1, 0, 0.5));
-						}
-					}
-				}
-				//Debug
 				if ((p_offset <= size.height) && (p_offset + p_para->get_line(j)->get_descent() > 0.0f)) {
 					//draw selection
 					if (selectable) {
@@ -1833,9 +1840,9 @@ void TLProtoControl::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_selectable", "selectable"), &TLProtoControl::set_selectable);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "selectable"), "set_selectable", "get_selectable");
 
-	ClassDB::bind_method(D_METHOD("set_debug_draw_line_breaks", "enable"), &TLProtoControl::set_debug_draw_line_breaks);
-	ClassDB::bind_method(D_METHOD("set_debug_draw_word_breaks", "enable"), &TLProtoControl::set_debug_draw_word_breaks);
-	ClassDB::bind_method(D_METHOD("set_debug_draw_jst_breaks", "enable"), &TLProtoControl::set_debug_draw_jst_breaks);
+	ClassDB::bind_method(D_METHOD("debug_draw", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw);
+	ClassDB::bind_method(D_METHOD("debug_draw_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw_as_hex);
+	ClassDB::bind_method(D_METHOD("debug_draw_logical_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw_logical_as_hex);
 
 	ClassDB::bind_method(D_METHOD("_gui_input"), &TLProtoControl::_gui_input);
 
@@ -1902,9 +1909,9 @@ void TLProtoControl::_register_methods() {
 	register_method("_gui_input", &TLProtoControl::_gui_input);
 	register_method("get_minimum_size", &TLProtoControl::get_minimum_size);
 
-	register_method("set_debug_draw_line_breaks", &TLProtoControl::set_debug_draw_line_breaks);
-	register_method("set_debug_draw_word_breaks", &TLProtoControl::set_debug_draw_word_breaks);
-	register_method("set_debug_draw_jst_breaks", &TLProtoControl::set_debug_draw_jst_breaks);
+	register_method("debug_draw", &TLProtoControl::debug_draw);
+	register_method("debug_draw_as_hex", &TLProtoControl::debug_draw_as_hex);
+	register_method("debug_draw_logical_as_hex", &TLProtoControl::debug_draw_logcial_as_hex);
 
 	register_method("_notification", &TLProtoControl::_notification);
 

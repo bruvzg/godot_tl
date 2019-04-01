@@ -46,6 +46,7 @@ public:
 	virtual float get_glyph_scale(int p_size) const;
 
 	static void draw_hexbox(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate);
+	static void _draw_small_int(RID p_canvas_item, const Point2 p_pos, uint32_t p_int, const Color p_modulate);
 
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;

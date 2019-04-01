@@ -151,10 +151,6 @@ protected:
 
 	float para_spacing;
 
-	bool dbg_draw_break_ops;
-	bool dbg_draw_word_ops;
-	bool dbg_draw_jst_ops;
-
 public:
 	TLProtoControl();
 	~TLProtoControl();
@@ -208,9 +204,9 @@ public:
 	void set_selectable(bool p_value);
 	bool get_selectable() const;
 
-	void set_debug_draw_line_breaks(bool p_enable);
-	void set_debug_draw_word_breaks(bool p_enable);
-	void set_debug_draw_jst_breaks(bool p_enable);
+	void debug_draw(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
+	void debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
+	void debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
 
 #ifdef GODOT_MODULE
 	void _gui_input(const Ref<InputEvent> &p_event);

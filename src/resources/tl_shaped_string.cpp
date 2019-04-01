@@ -107,8 +107,6 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 		UScriptCode script_code;
 	};
 
-	const UChar *x_chars = p_chars;
-
 	ParenStackEntry paren_stack[128];
 
 	int32_t script_start;
@@ -1879,6 +1877,174 @@ Vector2 TLShapedString::draw_cluster(RID p_canvas_item, const Point2 p_position,
 	return ofs;
 }
 
+void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+
+	if (!valid)
+		_shape_full_string();
+
+	if (!valid)
+		return;
+
+	std::vector<BreakOpportunity> brk_ops;
+	if (p_draw_brk_ops) {
+		_generate_break_opportunies(0, data_size, hb_language_to_string(language), brk_ops);
+	}
+
+	std::vector<JustificationOpportunity> jst_ops;
+	if (p_draw_jst_ops) {
+		_generate_justification_opportunies(0, data_size, hb_language_to_string(language), jst_ops);
+	}
+
+	Vector2 ofs;
+	for (int64_t i = 0; i < visual.size(); i++) {
+		float w = 0.0;
+		if (visual[i].is_rtl) {
+			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+				w += (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+			}
+		}
+		if (p_draw_brk_ops) {
+			for (int k = 0; k < brk_ops.size(); k++) {
+				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
+					if (brk_ops[k].hard) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -visual[i].ascent), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -visual[i].ascent), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
+					}
+				}
+			}
+		}
+		if (p_draw_jst_ops) {
+			for (int k = 0; k < jst_ops.size(); k++) {
+				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
+					if (jst_ops[k].kashida) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, visual[i].descent), Color(0, 0, 1), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, visual[i].descent), Color(0, 0.5, 1), 2);
+					}
+				}
+			}
+		}
+		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, visual[i].descent + 10), visual[i].start, p_modulate);
+		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, visual[i].descent + 20), visual[i].end, p_modulate);
+		for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+			VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, visual[i].ascent), Size2(w, visual[i].ascent + visual[i].descent)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.2));
+			if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
+				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, p_modulate);
+			} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
+				visual[i].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[i].glyphs[j].offset - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, p_modulate, base_size);
+			} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
+				//NOP
+			} else {
+				ERR_PRINTS("Invalid cluster type");
+			}
+			ofs += Vector2(w, 0);
+		}
+		ofs += Vector2(10, 0);
+	}
+}
+
+void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+
+	if (!valid)
+		_shape_full_string();
+
+	if (!valid)
+		return;
+
+	std::vector<BreakOpportunity> brk_ops;
+	if (p_draw_brk_ops) {
+		_generate_break_opportunies(0, data_size, hb_language_to_string(language), brk_ops);
+	}
+
+	std::vector<JustificationOpportunity> jst_ops;
+	if (p_draw_jst_ops) {
+		_generate_justification_opportunies(0, data_size, hb_language_to_string(language), jst_ops);
+	}
+
+	Vector2 ofs;
+	for (int64_t i = 0; i < visual.size(); i++) {
+		float w = 0.0;
+		if (visual[i].is_rtl) {
+			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+				w += (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+			}
+		}
+		if (p_draw_brk_ops) {
+			for (int k = 0; k < brk_ops.size(); k++) {
+				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
+					if (brk_ops[k].hard) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
+					}
+				}
+			}
+		}
+		if (p_draw_jst_ops) {
+			for (int k = 0; k < jst_ops.size(); k++) {
+				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
+					if (jst_ops[k].kashida) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0.5, 1), 2);
+					}
+				}
+			}
+		}
+		for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+			TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
+			ofs += Vector2(w, 0);
+		}
+		ofs += Vector2(10, 0);
+	}
+}
+
+void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+
+	std::vector<BreakOpportunity> brk_ops;
+	if (p_draw_brk_ops) {
+		_generate_break_opportunies(0, data_size, hb_language_to_string(language), brk_ops);
+	}
+
+	std::vector<JustificationOpportunity> jst_ops;
+	if (p_draw_jst_ops) {
+		_generate_justification_opportunies(0, data_size, hb_language_to_string(language), jst_ops);
+	}
+
+	Vector2 ofs;
+	for (int64_t i = 0; i < data_size; i++) {
+		if (p_draw_brk_ops) {
+			for (int k = 0; k < brk_ops.size(); k++) {
+				if (brk_ops[k].position == i) {
+					if (brk_ops[k].hard) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0, 0), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0.5, 0), 2);
+					}
+				}
+			}
+		}
+		if (p_draw_jst_ops) {
+			for (int k = 0; k < jst_ops.size(); k++) {
+				if (jst_ops[k].position == i) {
+					if (jst_ops[k].kashida) {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0, 1), 2);
+					} else {
+						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0.5, 1), 2);
+					}
+				}
+			}
+		}
+		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(4, 20), i, p_modulate);
+		float w = (data[i] <= 0xFF) ? 14 : ((data[i] <= 0xFFFF) ? 20 : 26);
+		TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), data[i], p_modulate);
+		ofs += Vector2(w, 0);
+	}
+}
+
 void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate) {
 
 	if (!valid)
@@ -2605,6 +2771,10 @@ void TLShapedString::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("draw_cluster", "canvas_item", "position", "index", "modulate"), &TLShapedString::draw_cluster);
 	ClassDB::bind_method(D_METHOD("draw", "canvas_item", "position", "modulate"), &TLShapedString::draw);
 
+	ClassDB::bind_method(D_METHOD("draw_dbg", "canvas_item", "position", "modulate", "draw_brk_ops", "draw_jst_ops"), &TLShapedString::draw_dbg);
+	ClassDB::bind_method(D_METHOD("draw_as_hex", "canvas_item", "position", "modulate", "draw_brk_ops", "draw_jst_ops"), &TLShapedString::draw_as_hex);
+	ClassDB::bind_method(D_METHOD("draw_logical_as_hex", "canvas_item", "position", "modulate", "draw_brk_ops", "draw_jst_ops"), &TLShapedString::draw_logical_as_hex);
+
 	//Helpers
 	ClassDB::bind_method(D_METHOD("pos_u16_to_wcs", "position"), &TLShapedString::pos_u16_to_wcs);
 	ClassDB::bind_method(D_METHOD("pos_wcs_to_u16", "position"), &TLShapedString::pos_wcs_to_u16);
@@ -2745,6 +2915,10 @@ void TLShapedString::_register_methods() {
 
 	register_method("draw_cluster", &TLShapedString::draw_cluster);
 	register_method("draw", &TLShapedString::draw);
+
+	register_method("draw_dbg", &TLShapedString::draw_dbg);
+	register_method("draw_as_hex", &TLShapedString::draw_as_hex);
+	register_method("draw_logical_as_hex", &TLShapedString::draw_logical_as_hex);
 
 	//Helpers
 	register_method("pos_u16_to_wcs", &TLShapedString::pos_u16_to_wcs);
