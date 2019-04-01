@@ -64,12 +64,12 @@ void TLFontFace::_draw_small_int(RID p_canvas_item, const Point2 p_pos, uint32_t
 		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(a * 5, 0), dest.size), p_modulate, false, RID(), false);
 		off += Point2(6, 0);
 	}
-	if (b != 0) {
+	if ((a != 0) || (b != 0)) {
 		Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
 		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(b * 5, 0), dest.size), p_modulate, false, RID(), false);
 		off += Point2(6, 0);
 	}
-	if (c != 0) {
+	if ((a != 0) || (b != 0) || (c != 0)) {
 		Rect2 dest = Rect2(p_pos + off, Size2(5, 7));
 		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, dest, hex_box_img_tex->get_rid(), Rect2(Point2(c * 5, 0), dest.size), p_modulate, false, RID(), false);
 		off += Point2(6, 0);

@@ -1936,7 +1936,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 				if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 					TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
 				} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
-					visual[i].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[i].glyphs[j].offset - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate, 16);
+					visual[i].font_face->draw_glyph(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate, 16);
 				} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 					//NOP
 				}

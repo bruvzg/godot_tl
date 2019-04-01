@@ -57,17 +57,16 @@ func _onresize():
 
 	$VScrollBar.rect_position.x = get_viewport_rect().size.x - 5 - $VScrollBar.rect_size.x
 	if $FormatToolbar/W.visible:
-		$VScrollBar.rect_position.y = 305
-		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 305 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+		$VScrollBar.rect_position.y = 405
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 405 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
 	else:
 		$VScrollBar.rect_position.y = 115
 		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
 
 	$FormatToolbar/W.rect_position.x = get_viewport_rect().size.x - $FormatToolbar/W.rect_size.x
 	
-	$PanelDbgD.rect_position.y = get_viewport_rect().size.y - 40 - $PanelDbgD.rect_size.y
-	$PanelDbgD.rect_size.x = get_viewport_rect().size.x - 20
-	$PanelDbgD/Panel.rect_size.x = get_viewport_rect().size.x - 20
+	$ScrollContainer.rect_position.y = get_viewport_rect().size.y - 55 - $ScrollContainer.rect_size.y
+	$ScrollContainer.rect_size.x = get_viewport_rect().size.x - 35
 
 func _on_HScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.x = 5 - value
@@ -1101,25 +1100,25 @@ func _on_TLProtoControl_gui_input(event):
 		$TLProtoControl/Panel.rect_size = r.size
 		$FormatToolbar/W/Panel.gldata = $TLProtoControl.get_cluster_glyphs_hit_test(event.position)
 		$FormatToolbar/W/Panel.update()
-		$PanelDbgD.point = event.position
-		$PanelDbgD.update()
+		$ScrollContainer/PanelDbgD.point = event.position
+		$ScrollContainer/PanelDbgD.update()
 
 func _on_DEbug_toggled(button_pressed):
 	$TLProtoControl/Panel.visible = button_pressed
 
 func _on_DebugLBrk_toggled(button_pressed):
-	$PanelDbgD.brk = button_pressed
-	$PanelDbgD.update()
+	$ScrollContainer/PanelDbgD.brk = button_pressed
+	$ScrollContainer/PanelDbgD.update()
 
 func _on_DebugJBrk_toggled(button_pressed):
-	$PanelDbgD.jst = button_pressed
-	$PanelDbgD.update()
+	$ScrollContainer/PanelDbgD.jst = button_pressed
+	$ScrollContainer/PanelDbgD.update()
 
 func _on_DebugJBrk2_toggled(button_pressed):
 	$FormatToolbar/W.visible = button_pressed
 	if $FormatToolbar/W.visible:
-		$VScrollBar.rect_position.y = 305
-		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 305 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+		$VScrollBar.rect_position.y = 405
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 405 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
 	else:
 		$VScrollBar.rect_position.y = 115
 		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
@@ -1127,8 +1126,8 @@ func _on_DebugJBrk2_toggled(button_pressed):
 func _on_DebugDdr_toggled(button_pressed):
 	$FormatToolbar/DebugLBrk.disabled = !button_pressed
 	$FormatToolbar/DebugJBrk.disabled = !button_pressed
-	$PanelDbgD.visible = button_pressed
-	$PanelDbgD.update()
+	$ScrollContainer.visible = button_pressed
+	$ScrollContainer/PanelDbgD.update()
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -1840,19 +1839,17 @@ hint_tooltip = "Document background color"
 focus_mode = 0
 color = Color( 1, 1, 1, 0.5 )
 
-[node name="W" type="ColorRect" parent="FormatToolbar"]
+[node name="W" type="ScrollContainer" parent="FormatToolbar"]
 visible = false
 margin_left = 1082.0
 margin_right = 1570.0
-margin_bottom = 275.0
-rect_clip_content = true
-color = Color( 0.423529, 0.423529, 0.423529, 1 )
+margin_bottom = 394.0
 
-[node name="Panel" type="Panel" parent="FormatToolbar/W"]
-margin_left = 8.0
-margin_top = 5.0
-margin_right = 478.0
-margin_bottom = 265.0
+[node name="Panel" type="ColorRect" parent="FormatToolbar/W"]
+margin_right = 5000.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 5000, 380 )
+color = Color( 0, 0, 0, 1 )
 script = ExtResource( 39 )
 
 [node name="HSlider" type="HSlider" parent="FormatToolbar/W/Panel"]
@@ -1945,16 +1942,22 @@ margin_right = 1180.0
 margin_bottom = 767.0
 step = 1.0
 
-[node name="PanelDbgD" type="ColorRect" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 visible = false
-margin_top = 565.0
-margin_right = 1205.0
-margin_bottom = 740.0
+margin_left = 15.0
+margin_top = 550.0
+margin_right = 1280.0
+margin_bottom = 765.0
+
+[node name="PanelDbgD" type="ColorRect" parent="ScrollContainer"]
+margin_right = 5000.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 5000, 200 )
 rect_clip_content = true
 color = Color( 0.752941, 0.752941, 0.752941, 1 )
 script = ExtResource( 40 )
 
-[node name="Label" type="Label" parent="PanelDbgD"]
+[node name="Label" type="Label" parent="ScrollContainer/PanelDbgD"]
 margin_left = 5.0
 margin_top = 30.0
 margin_right = 53.0
@@ -1962,7 +1965,7 @@ margin_bottom = 44.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Glyphs:"
 
-[node name="Label3" type="Label" parent="PanelDbgD"]
+[node name="Label3" type="Label" parent="ScrollContainer/PanelDbgD"]
 margin_left = 5.0
 margin_top = 67.0
 margin_right = 63.0
@@ -1970,7 +1973,7 @@ margin_bottom = 81.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Pos (S/E):"
 
-[node name="Label5" type="Label" parent="PanelDbgD"]
+[node name="Label5" type="Label" parent="ScrollContainer/PanelDbgD"]
 margin_left = 5.0
 margin_top = 95.0
 margin_right = 53.0
@@ -1978,7 +1981,7 @@ margin_bottom = 109.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Gl. Idx:"
 
-[node name="Label4" type="Label" parent="PanelDbgD"]
+[node name="Label4" type="Label" parent="ScrollContainer/PanelDbgD"]
 margin_left = 5.0
 margin_top = 155.0
 margin_right = 53.0
@@ -1986,7 +1989,7 @@ margin_bottom = 169.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Pos:"
 
-[node name="Label2" type="Label" parent="PanelDbgD"]
+[node name="Label2" type="Label" parent="ScrollContainer/PanelDbgD"]
 margin_left = 5.0
 margin_top = 129.0
 margin_right = 52.0
@@ -1994,9 +1997,9 @@ margin_bottom = 143.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Source:"
 
-[node name="Panel" type="Panel" parent="PanelDbgD"]
+[node name="Panel" type="Panel" parent="ScrollContainer/PanelDbgD"]
 margin_top = 119.0
-margin_right = 1880.0
+margin_right = 10000.0
 margin_bottom = 121.0
 [connection signal="gui_input" from="TLProtoControl" to="." method="_on_TLProtoControl_gui_input"]
 [connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
