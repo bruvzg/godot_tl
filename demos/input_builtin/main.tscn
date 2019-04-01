@@ -1952,17 +1952,17 @@ script = ExtResource( 40 )
 
 [node name="Label" type="Label" parent="PanelDbgD"]
 margin_left = 5.0
-margin_top = 20.0
+margin_top = 25.0
 margin_right = 53.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Glyphs:"
 
 [node name="Label3" type="Label" parent="PanelDbgD"]
 margin_left = 5.0
-margin_top = 60.0
-margin_right = 53.0
-margin_bottom = 74.0
+margin_top = 62.0
+margin_right = 63.0
+margin_bottom = 76.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Pos (S/E):"
 
