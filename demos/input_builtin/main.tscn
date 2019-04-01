@@ -67,6 +67,7 @@ func _onresize():
 	
 	$PanelDbgD.rect_position.y = get_viewport_rect().size.y - 40 - $PanelDbgD.rect_size.y
 	$PanelDbgD.rect_size.x = get_viewport_rect().size.x - 20
+	$PanelDbgD/Panel.rect_size.x = get_viewport_rect().size.x - 20
 
 func _on_HScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.x = 5 - value
@@ -1484,6 +1485,7 @@ margin_top = 5.0
 margin_right = 996.0
 margin_bottom = 35.0
 hint_tooltip = "Debug: Display string info"
+focus_mode = 0
 toggle_mode = true
 icon = ExtResource( 17 )
 
@@ -1843,6 +1845,7 @@ visible = false
 margin_left = 1082.0
 margin_right = 1570.0
 margin_bottom = 275.0
+rect_clip_content = true
 color = Color( 0.423529, 0.423529, 0.423529, 1 )
 
 [node name="Panel" type="Panel" parent="FormatToolbar/W"]
@@ -1947,22 +1950,23 @@ visible = false
 margin_top = 565.0
 margin_right = 1205.0
 margin_bottom = 740.0
+rect_clip_content = true
 color = Color( 0.752941, 0.752941, 0.752941, 1 )
 script = ExtResource( 40 )
 
 [node name="Label" type="Label" parent="PanelDbgD"]
 margin_left = 5.0
-margin_top = 25.0
+margin_top = 30.0
 margin_right = 53.0
-margin_bottom = 39.0
+margin_bottom = 44.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Glyphs:"
 
 [node name="Label3" type="Label" parent="PanelDbgD"]
 margin_left = 5.0
-margin_top = 62.0
+margin_top = 67.0
 margin_right = 63.0
-margin_bottom = 76.0
+margin_bottom = 81.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Pos (S/E):"
 
@@ -1989,6 +1993,11 @@ margin_right = 52.0
 margin_bottom = 143.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Source:"
+
+[node name="Panel" type="Panel" parent="PanelDbgD"]
+margin_top = 119.0
+margin_right = 1880.0
+margin_bottom = 121.0
 [connection signal="gui_input" from="TLProtoControl" to="." method="_on_TLProtoControl_gui_input"]
 [connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
 [connection signal="item_selected" from="FormatToolbar/FontSize" to="." method="_on_FontSize_item_selected"]
