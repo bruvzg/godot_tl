@@ -320,6 +320,7 @@ public:
 
 	//Line modification
 	virtual std::vector<int> break_words() const;
+	virtual std::vector<int> break_jst() const;
 	virtual std::vector<int> break_lines(float p_width, TextBreak p_flags) const;
 	virtual Ref<TLShapedString> substr(int64_t p_start, int64_t p_end, int p_trim) const;
 	virtual float extend_to_width(float p_width, TextJustification p_flags);
@@ -327,6 +328,8 @@ public:
 	//Cluster data
 	virtual int64_t clusters() const;
 	virtual int64_t get_cluster_index(int64_t p_position) const;
+	virtual Ref<TLFontFace> get_cluster_face(int64_t p_index) const;
+	virtual float get_cluster_face_size(int64_t p_index) const;
 	virtual int64_t get_cluster_glyphs(int64_t p_index) const;
 	virtual uint32_t get_cluster_glyph(int64_t p_index, int64_t p_glyph) const;
 	virtual Point2 get_cluster_glyph_offset(int64_t p_index, int64_t p_glyph) const;
@@ -354,6 +357,7 @@ public:
 
 	//GDNative wrappers
 	Array _break_words() const;
+	Array _break_jst() const;
 	Array _break_lines(float p_width, int64_t p_flags) const;
 	Array _get_highlight_shapes(int64_t p_start, int64_t p_end) const;
 	Array _get_cursor_positions(int64_t p_position, int64_t p_primary_dir) const;

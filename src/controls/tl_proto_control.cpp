@@ -205,6 +205,10 @@ TLProtoControl::~TLProtoControl() {
 
 void TLProtoControl::_init() {
 
+	dbg_draw_break_ops = false;
+	dbg_draw_word_ops = false;
+	dbg_draw_jst_ops = false;
+
 	set_focus_mode(FOCUS_ALL);
 
 	para_spacing = 3.0f;
@@ -596,6 +600,53 @@ Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
 	return Rect2();
 }
 
+Array TLProtoControl::get_cluster_glyphs_hit_test(Point2 p_position) {
+
+	Array glyphs;
+	float y_ofs = margin[MARGIN_TOP];
+	if (p_position.y < margin[MARGIN_TOP]) {
+		return glyphs;
+	}
+	for (int i = 0; i < paragraphs.size(); i++) {
+		if (paragraphs[i]->get_lines() == 0) {
+			return glyphs;
+		} else {
+			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
+			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
+				float x_ofs = margin[MARGIN_LEFT];
+				if (paragraphs[i]->get_width() > 0) {
+					if (paragraphs[i]->get_halign() == PARA_HALIGN_RIGHT) {
+						x_ofs = (paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width());
+					} else if (paragraphs[i]->get_halign() == PARA_HALIGN_CENTER) {
+						x_ofs = ((paragraphs[i]->get_width() - paragraphs[i]->get_line(j)->get_width()) / 2);
+					}
+				}
+				if (paragraphs[i]->get_line(j).is_valid()) {
+					if (p_position.y >= y_ofs && p_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
+						int64_t cl = paragraphs[i]->get_line(j)->hit_test_cluster(p_position.x - paragraphs[i]->get_indent() - x_ofs);
+
+						int c = paragraphs[i]->get_line(j)->get_cluster_glyphs(cl);
+						for (int k = 0; k < c; k++) {
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_face(cl));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_face_size(cl));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_ascent(cl));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_descent(cl));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_glyph(cl, k));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_glyph_offset(cl, k));
+							glyphs.push_back(paragraphs[i]->get_line(j)->get_cluster_glyph_advance(cl, k));
+						}
+
+						return glyphs;
+					}
+					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
+				}
+			}
+		}
+		y_ofs += para_spacing;
+	}
+	return glyphs;
+}
+
 String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 
 	float y_ofs = margin[MARGIN_TOP];
@@ -620,7 +671,22 @@ String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 					if (p_position.y >= y_ofs && p_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
 						int64_t cl = paragraphs[i]->get_line(j)->hit_test_cluster(p_position.x - paragraphs[i]->get_indent() - x_ofs);
 
-						return paragraphs[i]->get_line(j)->get_cluster_debug_info(cl);
+						String info = paragraphs[i]->get_line(j)->get_cluster_debug_info(cl);
+						info += String("Para: ") + String::num_int64(i) + String(" [");
+						std::vector<int> lines = paragraphs[i]->get_line_bounds();
+						for (int k = 0; k < lines.size(); k++) {
+							info += String::num_int64(lines[k]) + String(",");
+						}
+						info += String("]; ");
+						info += String("Line: ") + String::num_int64(j) + String(" (") + String::num_int64(paragraphs[i]->get_line(j)->length()) + String("); ");
+						info += String("Pos: ") + String::num_int64(paragraphs[i]->get_line(j)->get_cluster_start(cl)) + String("/") + String::num_int64(paragraphs[i]->get_line(j)->get_cluster_end(cl)) + String("; ");
+						info += String("Glyphs: [");
+						for (int k = 0; k < paragraphs[i]->get_line(j)->get_cluster_glyphs(cl); k++) {
+							info += String::num_int64(paragraphs[i]->get_line(j)->get_cluster_glyph(cl, k)) + String(",");
+						}
+						info += String("]");
+
+						return info;
 					}
 					y_ofs += paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing();
 				}
@@ -1320,6 +1386,24 @@ void TLProtoControl::_gui_input(InputEvent *p_event) {
 	}
 }
 
+void TLProtoControl::set_debug_draw_line_breaks(bool p_enable) {
+
+	dbg_draw_break_ops = p_enable;
+	update();
+}
+
+void TLProtoControl::set_debug_draw_word_breaks(bool p_enable) {
+
+	dbg_draw_word_ops = p_enable;
+	update();
+}
+
+void TLProtoControl::set_debug_draw_jst_breaks(bool p_enable) {
+
+	dbg_draw_jst_ops = p_enable;
+	update();
+}
+
 float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset) {
 
 	Size2 size = get_size();
@@ -1354,7 +1438,6 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 		int prev = 0;
 		std::vector<int> bounds = p_para->get_line_bounds();
 		for (int j = 0; j < p_para->get_lines(); j++) {
-
 			float x_ofs = margin[MARGIN_LEFT];
 			if (p_para->get_width() > 0) {
 				if (p_para->get_halign() == PARA_HALIGN_RIGHT) {
@@ -1366,6 +1449,46 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 
 			if (p_para->get_line(j).is_valid()) {
 				p_offset += p_para->get_line(j)->get_ascent();
+				//Debug
+				if (dbg_draw_break_ops) {
+					std::vector<int> brks = p_para->get_line(j)->break_lines(0.0000001f, TEXT_BREAK_MANDATORY_AND_WORD_BOUND);
+					for (int l = 0; l < brks.size(); l++) {
+						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
+						for (int k = 0; k < cur_ofs.size(); k++) {
+							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(1, 0, 0, 0.5));
+						}
+					}
+					brks = p_para->get_line(j)->break_lines(0.0f, TEXT_BREAK_MANDATORY);
+					for (int l = 0; l < brks.size(); l++) {
+						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
+						for (int k = 0; k < cur_ofs.size(); k++) {
+							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(1, 1, 0, 0.5));
+						}
+					}
+				}
+				if (dbg_draw_word_ops) {
+					std::vector<int> brks = p_para->get_line(j)->break_words();
+					for (int l = 0; l < brks.size(); l++) {
+						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
+						for (int k = 0; k < cur_ofs.size(); k++) {
+							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(0, 1, 1, 0.5));
+						}
+					}
+				}
+				if (dbg_draw_jst_ops) {
+					std::vector<int> brks = p_para->get_line(j)->break_jst();
+					for (int l = 0; l < brks.size(); l++) {
+						std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(brks[l], TEXT_DIRECTION_LTR);
+						for (int k = 0; k < cur_ofs.size(); k++) {
+							Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
+							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(n_caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), Color(0, 1, 0, 0.5));
+						}
+					}
+				}
+				//Debug
 				if ((p_offset <= size.height) && (p_offset + p_para->get_line(j)->get_descent() > 0.0f)) {
 					//draw selection
 					if (selectable) {
@@ -1699,6 +1822,7 @@ void TLProtoControl::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_selection", "selection"), &TLProtoControl::set_selection);
 
 	ClassDB::bind_method(D_METHOD("get_cluster_debug_info_hit_test", "position"), &TLProtoControl::get_cluster_debug_info_hit_test);
+	ClassDB::bind_method(D_METHOD("get_cluster_glyphs_hit_test", "position"), &TLProtoControl::get_cluster_glyphs_hit_test);
 	ClassDB::bind_method(D_METHOD("get_cluster_rect_hit_test", "position"), &TLProtoControl::get_cluster_rect_hit_test);
 
 	ClassDB::bind_method(D_METHOD("get_readonly"), &TLProtoControl::get_readonly);
@@ -1708,6 +1832,10 @@ void TLProtoControl::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_selectable"), &TLProtoControl::get_selectable);
 	ClassDB::bind_method(D_METHOD("set_selectable", "selectable"), &TLProtoControl::set_selectable);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "selectable"), "set_selectable", "get_selectable");
+
+	ClassDB::bind_method(D_METHOD("set_debug_draw_line_breaks", "enable"), &TLProtoControl::set_debug_draw_line_breaks);
+	ClassDB::bind_method(D_METHOD("set_debug_draw_word_breaks", "enable"), &TLProtoControl::set_debug_draw_word_breaks);
+	ClassDB::bind_method(D_METHOD("set_debug_draw_jst_breaks", "enable"), &TLProtoControl::set_debug_draw_jst_breaks);
 
 	ClassDB::bind_method(D_METHOD("_gui_input"), &TLProtoControl::_gui_input);
 
@@ -1767,8 +1895,16 @@ void TLProtoControl::_register_methods() {
 	register_method("set_selectable", &TLProtoControl::set_selectable);
 	register_property<TLProtoControl, bool>("selectable", &TLProtoControl::set_selectable, &TLProtoControl::get_selectable, false);
 
+	register_method("get_cluster_debug_info_hit_test", &TLProtoControl::get_cluster_debug_info_hit_test);
+	register_method("get_cluster_glyphs_hit_test", &TLProtoControl::get_cluster_glyphs_hit_test);
+	register_method("get_cluster_rect_hit_test", &TLProtoControl::get_cluster_rect_hit_test);
+
 	register_method("_gui_input", &TLProtoControl::_gui_input);
 	register_method("get_minimum_size", &TLProtoControl::get_minimum_size);
+
+	register_method("set_debug_draw_line_breaks", &TLProtoControl::set_debug_draw_line_breaks);
+	register_method("set_debug_draw_word_breaks", &TLProtoControl::set_debug_draw_word_breaks);
+	register_method("set_debug_draw_jst_breaks", &TLProtoControl::set_debug_draw_jst_breaks);
 
 	register_method("_notification", &TLProtoControl::_notification);
 

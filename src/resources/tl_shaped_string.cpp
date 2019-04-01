@@ -535,6 +535,9 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 
 void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_run_start, int32_t p_run_end) {
 
+#ifdef DEBUG_PRINT_RUNS
+	printf(" Shape BiDi Run %d %d %s\n", p_run_start, p_run_end, hb_direction_to_string(p_run_direction));
+#endif
 	//Find intersecting script runs in visual order
 	script_iter->reset(p_run_direction);
 	while (script_iter->next()) {
@@ -972,6 +975,26 @@ std::vector<int> TLShapedString::break_words() const {
 	return ret;
 }
 
+std::vector<int> TLShapedString::break_jst() const {
+
+	std::vector<int> ret;
+
+	if (!valid)
+		const_cast<TLShapedString *>(this)->_shape_full_string();
+
+	if (!valid)
+		return ret;
+
+	std::vector<JustificationOpportunity> jst_ops;
+	_generate_justification_opportunies(0, data_size, hb_language_to_string(language), jst_ops);
+
+	for (int i = 0; i < jst_ops.size(); i++) {
+		ret.push_back(jst_ops[i].position);
+	}
+
+	return ret;
+}
+
 std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) const {
 
 	std::vector<int> ret;
@@ -1309,6 +1332,25 @@ int64_t TLShapedString::get_cluster_index(int64_t p_position) const {
 		}
 	}
 	return -1;
+}
+
+float TLShapedString::get_cluster_face_size(int64_t p_index) const {
+
+	return base_size;
+}
+
+Ref<TLFontFace> TLShapedString::get_cluster_face(int64_t p_index) const {
+
+	if (!valid)
+		const_cast<TLShapedString *>(this)->_shape_full_string();
+
+	if (!valid)
+		return Ref<TLFontFace>();
+
+	if ((p_index < 0) || (p_index >= visual.size()))
+		return Ref<TLFontFace>();
+
+	return Ref<TLFontFace>(visual[p_index].font_face);
 }
 
 int64_t TLShapedString::get_cluster_glyphs(int64_t p_index) const {
@@ -1875,6 +1917,18 @@ Array TLShapedString::_break_words() const {
 	std::vector<int> words = break_words();
 	for (int64_t i = 0; i < words.size(); i++) {
 		ret.push_back(words[i]);
+	}
+
+	return ret;
+}
+
+Array TLShapedString::_break_jst() const {
+
+	Array ret;
+
+	std::vector<int> jst = break_jst();
+	for (int64_t i = 0; i < jst.size(); i++) {
+		ret.push_back(jst[i]);
 	}
 
 	return ret;
@@ -2514,6 +2568,7 @@ void TLShapedString::_bind_methods() {
 
 	//Line modification
 	ClassDB::bind_method(D_METHOD("break_words"), &TLShapedString::_break_words);
+	ClassDB::bind_method(D_METHOD("break_jst"), &TLShapedString::_break_jst);
 	ClassDB::bind_method(D_METHOD("break_lines", "width", "flags"), &TLShapedString::_break_lines);
 	ClassDB::bind_method(D_METHOD("substr", "start", "end", "trim"), &TLShapedString::substr);
 	ClassDB::bind_method(D_METHOD("extend_to_width", "width", "flags"), &TLShapedString::_extend_to_width);
@@ -2521,6 +2576,8 @@ void TLShapedString::_bind_methods() {
 	//Cluster data
 	ClassDB::bind_method(D_METHOD("clusters"), &TLShapedString::clusters);
 	ClassDB::bind_method(D_METHOD("get_cluster_index", "position"), &TLShapedString::get_cluster_index);
+	ClassDB::bind_method(D_METHOD("get_cluster_face", "position"), &TLShapedString::get_cluster_face);
+	ClassDB::bind_method(D_METHOD("get_cluster_face_size", "position"), &TLShapedString::get_cluster_face_size);
 	ClassDB::bind_method(D_METHOD("get_cluster_trailing_edge", "index"), &TLShapedString::get_cluster_trailing_edge);
 	ClassDB::bind_method(D_METHOD("get_cluster_leading_edge", "index"), &TLShapedString::get_cluster_leading_edge);
 	ClassDB::bind_method(D_METHOD("get_cluster_start", "index"), &TLShapedString::get_cluster_start);
@@ -2651,6 +2708,7 @@ void TLShapedString::_register_methods() {
 
 	//Line modification
 	register_method("break_words", &TLShapedString::_break_words);
+	register_method("break_jst", &TLShapedString::_break_jst);
 	register_method("break_lines", &TLShapedString::_break_lines);
 
 	register_method("substr", &TLShapedString::substr);
@@ -2659,6 +2717,8 @@ void TLShapedString::_register_methods() {
 	//Cluster data
 	register_method("clusters", &TLShapedString::clusters);
 	register_method("get_cluster_index", &TLShapedString::get_cluster_index);
+	register_method("get_cluster_face", &TLShapedString::get_cluster_face);
+	register_method("get_cluster_face_size", &TLShapedString::get_cluster_face_size);
 	register_method("get_cluster_trailing_edge", &TLShapedString::get_cluster_trailing_edge);
 	register_method("get_cluster_leading_edge", &TLShapedString::get_cluster_leading_edge);
 	register_method("get_cluster_start", &TLShapedString::get_cluster_start);
@@ -2668,6 +2728,7 @@ void TLShapedString::_register_methods() {
 	register_method("get_cluster_width", &TLShapedString::get_cluster_width);
 	register_method("get_cluster_height", &TLShapedString::get_cluster_height);
 	register_method("get_cluster_rect", &TLShapedString::get_cluster_rect);
+	register_method("get_cluster_debug_info", &TLShapedString::get_cluster_debug_info);
 
 	//Glyph data
 	register_method("get_cluster_glyphs", &TLShapedString::get_cluster_glyphs);

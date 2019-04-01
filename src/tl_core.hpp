@@ -9,6 +9,9 @@
 #include <cstdlib>
 #include <cstring>
 
+//#define DEBUG_DISPLAY_METRICS
+//#define DEBUG_PRINT_RUNS
+
 #ifdef GODOT_MODULE
 
 namespace godot {};

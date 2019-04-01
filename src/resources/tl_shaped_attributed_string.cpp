@@ -808,6 +808,26 @@ Array TLShapedAttributedString::get_embedded_rects() {
 	return ret;
 }
 
+float TLShapedAttributedString::get_cluster_face_size(int64_t p_index) const {
+
+	if (!valid)
+		const_cast<TLShapedAttributedString *>(this)->_shape_full_string();
+
+	if (!valid)
+		return base_size;
+
+	if ((p_index < 0) || (p_index >= visual.size()))
+		return base_size;
+
+	int64_t _size = base_size;
+	auto fattrib = format_attributes.find_closest(visual[p_index].start);
+	if (fattrib && fattrib->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
+		_size = fattrib->get()[TEXT_ATTRIBUTE_FONT_SIZE];
+	}
+
+	return _size;
+}
+
 Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate) {
 
 	if (!valid)

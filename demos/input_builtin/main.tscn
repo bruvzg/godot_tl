@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://icons/ic_font_download_black_18dp.png" type="Texture" id=1]
 [ext_resource path="res://icons/ic_format_size_black_18dp.png" type="Texture" id=2]
@@ -13,27 +13,32 @@
 [ext_resource path="res://icons/ic_format_align_justify_black_18dp.png" type="Texture" id=11]
 [ext_resource path="res://icons/ic_format_color_reset_black_18dp.png" type="Texture" id=12]
 [ext_resource path="res://icons/ic_cancel_18pt.png" type="Texture" id=13]
-[ext_resource path="res://icons/ic_sentiment_very_dissatisfied_black_18dp.png" type="Texture" id=14]
-[ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=15]
-[ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=16]
-[ext_resource path="res://icons/ic_save_black_18dp.png" type="Texture" id=17]
-[ext_resource path="res://icons/ic_format_indent_increase_black_18dp.png" type="Texture" id=18]
-[ext_resource path="res://icons/ic_format_indent_decrease_black_18dp.png" type="Texture" id=19]
-[ext_resource path="res://icons/ic_wallpaper_black_18dp.png" type="Texture" id=20]
-[ext_resource path="res://icons/ic_format_line_spacing_black_18dp.png" type="Texture" id=21]
-[ext_resource path="res://icons/ic_format_textdirection_l_to_r_black_18dp.png" type="Texture" id=22]
-[ext_resource path="res://icons/ic_wrap_text_black_18dp.png" type="Texture" id=23]
-[ext_resource path="res://icons/ic_vertical_align_top_black_18dp.png" type="Texture" id=24]
-[ext_resource path="res://icons/ic_vertical_align_center_black_18dp.png" type="Texture" id=25]
-[ext_resource path="res://icons/ic_vertical_align_bottom_black_18dp.png" type="Texture" id=26]
-[ext_resource path="res://icons/ic_bookmark_border_black_18dp.png" type="Texture" id=27]
-[ext_resource path="res://icons/ic_photo_size_select_large_black_18dp.png" type="Texture" id=28]
-[ext_resource path="res://icons/ic_language_black_18dp.png" type="Texture" id=29]
-[ext_resource path="res://icons/ic_format_color_text_black_18dp.png" type="Texture" id=30]
-[ext_resource path="res://icons/ic_border_color_black_18dp.png" type="Texture" id=31]
-[ext_resource path="res://icons/ic_format_color_outline_black_18dp.png" type="Texture" id=32]
-[ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=33]
-[ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=34]
+[ext_resource path="res://icons/dng_crect_black_18dp.png" type="Texture" id=14]
+[ext_resource path="res://icons/dng_lbrk_black_18dp.png" type="Texture" id=15]
+[ext_resource path="res://icons/dng_wbrk_black_18dp.png" type="Texture" id=16]
+[ext_resource path="res://icons/dng_jbrk_black_18dp.png" type="Texture" id=17]
+[ext_resource path="res://icons/dng_cprev_black_18dp.png" type="Texture" id=18]
+[ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=19]
+[ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=20]
+[ext_resource path="res://icons/ic_save_black_18dp.png" type="Texture" id=21]
+[ext_resource path="res://icons/ic_format_indent_increase_black_18dp.png" type="Texture" id=22]
+[ext_resource path="res://icons/ic_format_indent_decrease_black_18dp.png" type="Texture" id=23]
+[ext_resource path="res://icons/ic_wallpaper_black_18dp.png" type="Texture" id=24]
+[ext_resource path="res://icons/ic_format_line_spacing_black_18dp.png" type="Texture" id=25]
+[ext_resource path="res://icons/ic_format_textdirection_l_to_r_black_18dp.png" type="Texture" id=26]
+[ext_resource path="res://icons/ic_wrap_text_black_18dp.png" type="Texture" id=27]
+[ext_resource path="res://icons/ic_vertical_align_top_black_18dp.png" type="Texture" id=28]
+[ext_resource path="res://icons/ic_vertical_align_center_black_18dp.png" type="Texture" id=29]
+[ext_resource path="res://icons/ic_vertical_align_bottom_black_18dp.png" type="Texture" id=30]
+[ext_resource path="res://icons/ic_bookmark_border_black_18dp.png" type="Texture" id=31]
+[ext_resource path="res://icons/ic_photo_size_select_large_black_18dp.png" type="Texture" id=32]
+[ext_resource path="res://icons/ic_language_black_18dp.png" type="Texture" id=33]
+[ext_resource path="res://icons/ic_format_color_text_black_18dp.png" type="Texture" id=34]
+[ext_resource path="res://icons/ic_border_color_black_18dp.png" type="Texture" id=35]
+[ext_resource path="res://icons/ic_format_color_outline_black_18dp.png" type="Texture" id=36]
+[ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=37]
+[ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=38]
+[ext_resource path="res://Panel.gd" type="Script" id=39]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -50,7 +55,14 @@ func _onresize():
 	$HScrollBar.rect_size.x = get_viewport_rect().size.x - 20
 
 	$VScrollBar.rect_position.x = get_viewport_rect().size.x - 5 - $VScrollBar.rect_size.x
-	$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	if $FormatToolbar/W.visible:
+		$VScrollBar.rect_position.y = 305
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 305 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	else:
+		$VScrollBar.rect_position.y = 115
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+
+	$FormatToolbar/W.rect_position.x = get_viewport_rect().size.x - $FormatToolbar/W.rect_size.x
 
 func _on_HScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.x = 5 - value
@@ -1082,9 +1094,30 @@ func _on_TLProtoControl_gui_input(event):
 		var r = $TLProtoControl.get_cluster_rect_hit_test(event.position)
 		$TLProtoControl/Panel.rect_position = r.position
 		$TLProtoControl/Panel.rect_size = r.size
+		$FormatToolbar/W/Panel.gldata = $TLProtoControl.get_cluster_glyphs_hit_test(event.position)
+		$FormatToolbar/W/Panel.update()
 
 func _on_DEbug_toggled(button_pressed):
 	$TLProtoControl/Panel.visible = button_pressed
+
+func _on_DebugWBrk_toggled(button_pressed):
+	$TLProtoControl.set_debug_draw_word_breaks(button_pressed)
+
+func _on_DebugLBrk_toggled(button_pressed):
+	$TLProtoControl.set_debug_draw_line_breaks(button_pressed)
+
+func _on_DebugJBrk_toggled(button_pressed):
+	$TLProtoControl.set_debug_draw_jst_breaks(button_pressed)
+
+func _on_DebugJBrk2_toggled(button_pressed):
+	$FormatToolbar/W.visible = button_pressed
+	if $FormatToolbar/W.visible:
+		$VScrollBar.rect_position.y = 305
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 305 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	else:
+		$VScrollBar.rect_position.y = 115
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -1395,22 +1428,63 @@ focus_mode = 0
 icon = ExtResource( 12 )
 
 [node name="ClearFMT2" type="Button" parent="FormatToolbar"]
-margin_left = 1010.0
+margin_left = 1036.0
 margin_top = 75.0
-margin_right = 1040.0
+margin_right = 1066.0
 margin_bottom = 105.0
 hint_tooltip = "Reset paragraph width"
 focus_mode = 0
 icon = ExtResource( 13 )
 
-[node name="DEbug" type="Button" parent="FormatToolbar"]
-margin_left = 1110.0
-margin_top = 75.0
-margin_right = 1140.0
-margin_bottom = 105.0
+[node name="DebugRect" type="Button" parent="FormatToolbar"]
+margin_left = 884.0
+margin_top = 5.0
+margin_right = 914.0
+margin_bottom = 35.0
 hint_tooltip = "Debug: Display cluster rect"
+focus_mode = 0
 toggle_mode = true
 icon = ExtResource( 14 )
+
+[node name="DebugLBrk" type="Button" parent="FormatToolbar"]
+margin_left = 1036.0
+margin_top = 5.0
+margin_right = 1066.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display line break points"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 15 )
+
+[node name="DebugWBrk" type="Button" parent="FormatToolbar"]
+margin_left = 1003.0
+margin_top = 5.0
+margin_right = 1033.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display word break points"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 16 )
+
+[node name="DebugJBrk" type="Button" parent="FormatToolbar"]
+margin_left = 969.0
+margin_top = 5.0
+margin_right = 999.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display word break points"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 17 )
+
+[node name="DebugJBrk2" type="Button" parent="FormatToolbar"]
+margin_left = 919.0
+margin_top = 5.0
+margin_right = 949.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Cluster preview"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 18 )
 
 [node name="New" type="Button" parent="FormatToolbar"]
 margin_left = 5.0
@@ -1420,7 +1494,7 @@ margin_bottom = 35.0
 hint_tooltip = "New"
 focus_mode = 0
 enabled_focus_mode = 0
-icon = ExtResource( 15 )
+icon = ExtResource( 19 )
 
 [node name="Load" type="Button" parent="FormatToolbar"]
 margin_left = 35.0
@@ -1430,7 +1504,7 @@ margin_bottom = 35.0
 hint_tooltip = "Load..."
 focus_mode = 0
 enabled_focus_mode = 0
-icon = ExtResource( 16 )
+icon = ExtResource( 20 )
 
 [node name="Save" type="Button" parent="FormatToolbar"]
 margin_left = 65.0
@@ -1439,7 +1513,7 @@ margin_right = 95.0
 margin_bottom = 35.0
 hint_tooltip = "Save as..."
 focus_mode = 0
-icon = ExtResource( 17 )
+icon = ExtResource( 21 )
 
 [node name="DecW" type="Button" parent="FormatToolbar"]
 margin_left = 35.0
@@ -1448,7 +1522,7 @@ margin_right = 65.0
 margin_bottom = 105.0
 hint_tooltip = "Increase indent"
 focus_mode = 0
-icon = ExtResource( 18 )
+icon = ExtResource( 22 )
 
 [node name="IncW" type="Button" parent="FormatToolbar"]
 margin_left = 5.0
@@ -1457,7 +1531,7 @@ margin_right = 35.0
 margin_bottom = 105.0
 hint_tooltip = "Decrease indent"
 focus_mode = 0
-icon = ExtResource( 19 )
+icon = ExtResource( 23 )
 
 [node name="InsertImage" type="OptionButton" parent="FormatToolbar"]
 margin_left = 264.0
@@ -1474,7 +1548,7 @@ align = 1
 [node name="TextureRect3" type="TextureRect" parent="FormatToolbar/InsertImage"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 20 )
+texture = ExtResource( 24 )
 stretch_mode = 4
 
 [node name="LineSpace" type="SpinBox" parent="FormatToolbar"]
@@ -1492,7 +1566,7 @@ align = 2
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/LineSpace"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 21 )
+texture = ExtResource( 25 )
 stretch_mode = 4
 
 [node name="ParaSpace" type="SpinBox" parent="FormatToolbar"]
@@ -1507,7 +1581,7 @@ align = 2
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/ParaSpace"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 21 )
+texture = ExtResource( 25 )
 stretch_mode = 4
 
 [node name="Dir" type="OptionButton" parent="FormatToolbar"]
@@ -1525,7 +1599,7 @@ align = 1
 [node name="TextureRect3" type="TextureRect" parent="FormatToolbar/Dir"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 22 )
+texture = ExtResource( 26 )
 stretch_mode = 4
 
 [node name="BrkMode" type="OptionButton" parent="FormatToolbar"]
@@ -1543,7 +1617,7 @@ align = 1
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/BrkMode"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 23 )
+texture = ExtResource( 27 )
 stretch_mode = 4
 
 [node name="JstMode" type="OptionButton" parent="FormatToolbar"]
@@ -1573,7 +1647,7 @@ hint_tooltip = "Align top"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 13 )
-icon = ExtResource( 24 )
+icon = ExtResource( 28 )
 
 [node name="ValC" type="Button" parent="FormatToolbar"]
 margin_left = 502.0
@@ -1585,7 +1659,7 @@ focus_mode = 0
 toggle_mode = true
 pressed = true
 group = SubResource( 13 )
-icon = ExtResource( 25 )
+icon = ExtResource( 29 )
 
 [node name="ValB" type="Button" parent="FormatToolbar"]
 margin_left = 532.0
@@ -1596,7 +1670,7 @@ hint_tooltip = "Align bottom"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 13 )
-icon = ExtResource( 26 )
+icon = ExtResource( 30 )
 
 [node name="FontFtr" type="LineEdit" parent="FormatToolbar"]
 margin_left = 344.0
@@ -1612,7 +1686,7 @@ focus_mode = 1
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/FontFtr"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 27 )
+texture = ExtResource( 31 )
 stretch_mode = 4
 
 [node name="Width" type="SpinBox" parent="FormatToolbar"]
@@ -1629,7 +1703,7 @@ align = 2
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/Width"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 28 )
+texture = ExtResource( 32 )
 stretch_mode = 4
 
 [node name="Lang" type="LineEdit" parent="FormatToolbar"]
@@ -1646,7 +1720,7 @@ focus_mode = 1
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/Lang"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 29 )
+texture = ExtResource( 33 )
 stretch_mode = 4
 
 [node name="TextCol" type="TextureRect" parent="FormatToolbar"]
@@ -1655,7 +1729,7 @@ margin_top = 5.0
 margin_right = 605.0
 margin_bottom = 35.0
 hint_tooltip = "Text color"
-texture = ExtResource( 30 )
+texture = ExtResource( 34 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/TextCol"]
@@ -1671,7 +1745,7 @@ margin_top = 5.0
 margin_right = 655.0
 margin_bottom = 35.0
 hint_tooltip = "Highlight color"
-texture = ExtResource( 31 )
+texture = ExtResource( 35 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/HlColor"]
@@ -1688,7 +1762,7 @@ margin_top = 5.0
 margin_right = 705.0
 margin_bottom = 35.0
 hint_tooltip = "Outline color"
-texture = ExtResource( 32 )
+texture = ExtResource( 36 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/OutColor"]
@@ -1704,7 +1778,7 @@ margin_top = 75.0
 margin_right = 840.0
 margin_bottom = 105.0
 hint_tooltip = "Paragraph background color"
-texture = ExtResource( 33 )
+texture = ExtResource( 37 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor"]
@@ -1742,7 +1816,7 @@ margin_top = 5.0
 margin_right = 135.0
 margin_bottom = 35.0
 hint_tooltip = "Document background color"
-texture = ExtResource( 34 )
+texture = ExtResource( 38 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor2"]
@@ -1752,6 +1826,31 @@ margin_bottom = 30.0
 hint_tooltip = "Document background color"
 focus_mode = 0
 color = Color( 1, 1, 1, 0.5 )
+
+[node name="W" type="ColorRect" parent="FormatToolbar"]
+visible = false
+margin_left = 1082.0
+margin_right = 1570.0
+margin_bottom = 275.0
+color = Color( 0.423529, 0.423529, 0.423529, 1 )
+
+[node name="Panel" type="Panel" parent="FormatToolbar/W"]
+margin_left = 8.0
+margin_top = 5.0
+margin_right = 478.0
+margin_bottom = 265.0
+script = ExtResource( 39 )
+
+[node name="HSlider" type="HSlider" parent="FormatToolbar/W/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 205.0
+margin_bottom = 21.0
+hint_tooltip = "Preview scale"
+min_value = 1.0
+max_value = 10.0
+step = 0.5
+value = 3.0
 
 [node name="StatBar" type="ColorRect" parent="."]
 margin_top = 780.0
@@ -1775,7 +1874,7 @@ color = Color( 0.54902, 0.54902, 0.54902, 1 )
 
 [node name="W" type="Label" parent="StatBar"]
 margin_left = 160.0
-margin_right = 430.0
+margin_right = 415.0
 margin_bottom = 20.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "-"
@@ -1783,23 +1882,16 @@ align = 1
 valign = 1
 
 [node name="X" type="Label" parent="StatBar"]
-margin_left = 435.0
-margin_right = 784.0
+margin_left = 425.0
+margin_right = 1455.0
 margin_bottom = 20.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "-"
-align = 1
 valign = 1
 
 [node name="Panel2" type="ColorRect" parent="StatBar"]
-margin_left = 430.0
-margin_right = 433.0
-margin_bottom = 20.0
-color = Color( 0.54902, 0.54902, 0.54902, 1 )
-
-[node name="Panel3" type="ColorRect" parent="StatBar"]
-margin_left = 785.0
-margin_right = 788.0
+margin_left = 415.0
+margin_right = 418.0
 margin_bottom = 20.0
 color = Color( 0.54902, 0.54902, 0.54902, 1 )
 
@@ -1834,7 +1926,7 @@ step = 1.0
 
 [node name="VScrollBar" type="VScrollBar" parent="."]
 margin_left = 1168.0
-margin_top = 115.0
+margin_top = 305.0
 margin_right = 1180.0
 margin_bottom = 767.0
 step = 1.0
@@ -1858,7 +1950,11 @@ step = 1.0
 [connection signal="toggled" from="FormatToolbar/HalJ" to="." method="_on_HalJ_toggled"]
 [connection signal="pressed" from="FormatToolbar/ClearFMT" to="." method="_on_ClearFMT_pressed"]
 [connection signal="pressed" from="FormatToolbar/ClearFMT2" to="." method="_on_ClearFMT2_pressed"]
-[connection signal="toggled" from="FormatToolbar/DEbug" to="." method="_on_DEbug_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugRect" to="." method="_on_DEbug_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugLBrk" to="." method="_on_DebugLBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugWBrk" to="." method="_on_DebugWBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugJBrk" to="." method="_on_DebugJBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugJBrk2" to="." method="_on_DebugJBrk2_toggled"]
 [connection signal="pressed" from="FormatToolbar/New" to="." method="_on_New_pressed"]
 [connection signal="pressed" from="FormatToolbar/Load" to="." method="_on_Load_pressed"]
 [connection signal="pressed" from="FormatToolbar/Save" to="." method="_on_Save_pressed"]
@@ -1881,6 +1977,7 @@ step = 1.0
 [connection signal="color_changed" from="FormatToolbar/OutColor/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor/ColorPickerButton" to="." method="_on_BackColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor2/ColorPickerButton" to="." method="_on_Color2PickerButton_color_changed"]
+[connection signal="value_changed" from="FormatToolbar/W/Panel/HSlider" to="FormatToolbar/W/Panel" method="_on_HSlider_value_changed"]
 [connection signal="file_selected" from="FileDialogSave" to="." method="_on_FileDialogSave_file_selected"]
 [connection signal="file_selected" from="FileDialogLoad" to="." method="_on_FileDialogLoad_file_selected"]
 [connection signal="value_changed" from="HScrollBar" to="." method="_on_HScrollBar_value_changed"]

@@ -151,6 +151,10 @@ protected:
 
 	float para_spacing;
 
+	bool dbg_draw_break_ops;
+	bool dbg_draw_word_ops;
+	bool dbg_draw_jst_ops;
+
 public:
 	TLProtoControl();
 	~TLProtoControl();
@@ -190,6 +194,7 @@ public:
 
 	String get_cluster_debug_info_hit_test(Point2 p_position);
 	Rect2 get_cluster_rect_hit_test(Point2 p_position);
+	Array get_cluster_glyphs_hit_test(Point2 p_position);
 
 	void set_back_color(Color p_color);
 	Color get_back_color() const;
@@ -202,6 +207,10 @@ public:
 
 	void set_selectable(bool p_value);
 	bool get_selectable() const;
+
+	void set_debug_draw_line_breaks(bool p_enable);
+	void set_debug_draw_word_breaks(bool p_enable);
+	void set_debug_draw_jst_breaks(bool p_enable);
 
 #ifdef GODOT_MODULE
 	void _gui_input(const Ref<InputEvent> &p_event);

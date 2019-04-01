@@ -77,6 +77,8 @@ protected:
 	virtual void _shape_image_run(hb_direction_t p_run_direction, const Ref<Texture> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
 
 public:
+	virtual float get_cluster_face_size(int64_t p_index) const override;
+
 	virtual Ref<TLShapedString> substr(int64_t p_start, int64_t p_end, int p_trim) const override;
 
 	virtual void add_sstring(Ref<TLShapedString> p_text) override;
