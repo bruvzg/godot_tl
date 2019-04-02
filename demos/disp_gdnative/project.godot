@@ -15,14 +15,22 @@ _global_script_class_icons={
 
 [application]
 
-config/name="libgdtl test"
+config/name="libgdtl test (gdnative)"
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+TLConstants="*res://addons/libgdtl/constants.gd"
 
 [display]
 
 window/size/width=1400
 window/size/resizable=false
+
+[editor_plugins]
+
+enabled=PoolStringArray( "libgdtl" )
 
 [rendering]
 

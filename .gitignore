@@ -12,3 +12,4 @@ _build*
 *.pyc
 *.o
 icons.gen.h
+.DS_Store

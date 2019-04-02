@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="libgdtl rich text input control demo"
+config/name="libgdtl rich text input control demo (builtin)"
 run/main_scene="res://main.tscn"
 boot_splash/image="res://splash.png"
 boot_splash/fullsize=false

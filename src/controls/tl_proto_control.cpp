@@ -1911,7 +1911,7 @@ void TLProtoControl::_register_methods() {
 
 	register_method("debug_draw", &TLProtoControl::debug_draw);
 	register_method("debug_draw_as_hex", &TLProtoControl::debug_draw_as_hex);
-	register_method("debug_draw_logical_as_hex", &TLProtoControl::debug_draw_logcial_as_hex);
+	register_method("debug_draw_logical_as_hex", &TLProtoControl::debug_draw_logical_as_hex);
 
 	register_method("_notification", &TLProtoControl::_notification);
 

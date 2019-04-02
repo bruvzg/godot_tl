@@ -1,41 +1,49 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=56 format=2]
 
-[ext_resource path="res://icons/ic_font_download_black_18dp.png" type="Texture" id=1]
-[ext_resource path="res://icons/ic_format_size_black_18dp.png" type="Texture" id=2]
-[ext_resource path="res://icons/ic_format_bold_black_18dp.png" type="Texture" id=3]
-[ext_resource path="res://icons/ic_format_italic_black_18dp.png" type="Texture" id=4]
-[ext_resource path="res://icons/ic_format_underlined_black_18dp.png" type="Texture" id=5]
-[ext_resource path="res://icons/ic_format_overlined_black_18dp.png" type="Texture" id=6]
-[ext_resource path="res://icons/ic_strikethrough_s_black_18dp.png" type="Texture" id=7]
-[ext_resource path="res://icons/ic_format_align_left_black_18dp.png" type="Texture" id=8]
-[ext_resource path="res://icons/ic_format_align_center_black_18dp.png" type="Texture" id=9]
-[ext_resource path="res://icons/ic_format_align_right_black_18dp.png" type="Texture" id=10]
-[ext_resource path="res://icons/ic_format_align_justify_black_18dp.png" type="Texture" id=11]
-[ext_resource path="res://icons/ic_format_color_reset_black_18dp.png" type="Texture" id=12]
-[ext_resource path="res://icons/ic_cancel_18pt.png" type="Texture" id=13]
-[ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=14]
-[ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=15]
-[ext_resource path="res://icons/ic_save_black_18dp.png" type="Texture" id=16]
-[ext_resource path="res://icons/ic_format_indent_increase_black_18dp.png" type="Texture" id=17]
-[ext_resource path="res://icons/ic_format_indent_decrease_black_18dp.png" type="Texture" id=18]
-[ext_resource path="res://icons/ic_wallpaper_black_18dp.png" type="Texture" id=19]
-[ext_resource path="res://icons/ic_format_line_spacing_black_18dp.png" type="Texture" id=20]
-[ext_resource path="res://icons/ic_format_textdirection_l_to_r_black_18dp.png" type="Texture" id=21]
-[ext_resource path="res://icons/ic_wrap_text_black_18dp.png" type="Texture" id=22]
-[ext_resource path="res://icons/ic_vertical_align_top_black_18dp.png" type="Texture" id=23]
-[ext_resource path="res://icons/ic_vertical_align_center_black_18dp.png" type="Texture" id=24]
-[ext_resource path="res://icons/ic_vertical_align_bottom_black_18dp.png" type="Texture" id=25]
-[ext_resource path="res://icons/ic_bookmark_border_black_18dp.png" type="Texture" id=26]
-[ext_resource path="res://icons/ic_photo_size_select_large_black_18dp.png" type="Texture" id=27]
-[ext_resource path="res://icons/ic_language_black_18dp.png" type="Texture" id=28]
-[ext_resource path="res://icons/ic_format_color_text_black_18dp.png" type="Texture" id=29]
-[ext_resource path="res://icons/ic_border_color_black_18dp.png" type="Texture" id=30]
-[ext_resource path="res://icons/ic_format_color_outline_black_18dp.png" type="Texture" id=31]
-[ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=32]
-[ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=33]
+[ext_resource path="res://addons/libgdtl/classes/tl_proto_control.gdns" type="Script" id=1]
+[ext_resource path="res://addons/libgdtl/icons/icon_t_l_proto_control.svg" type="Texture" id=2]
+[ext_resource path="res://icons/ic_font_download_black_18dp.png" type="Texture" id=3]
+[ext_resource path="res://icons/ic_format_size_black_18dp.png" type="Texture" id=4]
+[ext_resource path="res://icons/ic_format_bold_black_18dp.png" type="Texture" id=5]
+[ext_resource path="res://icons/ic_format_italic_black_18dp.png" type="Texture" id=6]
+[ext_resource path="res://icons/ic_format_underlined_black_18dp.png" type="Texture" id=7]
+[ext_resource path="res://icons/ic_format_overlined_black_18dp.png" type="Texture" id=8]
+[ext_resource path="res://icons/ic_strikethrough_s_black_18dp.png" type="Texture" id=9]
+[ext_resource path="res://icons/ic_format_align_left_black_18dp.png" type="Texture" id=10]
+[ext_resource path="res://icons/ic_format_align_center_black_18dp.png" type="Texture" id=11]
+[ext_resource path="res://icons/ic_format_align_right_black_18dp.png" type="Texture" id=12]
+[ext_resource path="res://icons/ic_format_align_justify_black_18dp.png" type="Texture" id=13]
+[ext_resource path="res://icons/ic_format_color_reset_black_18dp.png" type="Texture" id=14]
+[ext_resource path="res://icons/ic_cancel_18pt.png" type="Texture" id=15]
+[ext_resource path="res://icons/dng_crect_black_18dp.png" type="Texture" id=16]
+[ext_resource path="res://icons/dng_lbrk_black_18dp.png" type="Texture" id=17]
+[ext_resource path="res://icons/dng_jbrk_black_18dp.png" type="Texture" id=18]
+[ext_resource path="res://icons/dng_wbrk_black_18dp.png" type="Texture" id=19]
+[ext_resource path="res://icons/dng_cprev_black_18dp.png" type="Texture" id=20]
+[ext_resource path="res://icons/ic_create_16pt.png" type="Texture" id=21]
+[ext_resource path="res://icons/ic_folder_open_black_18dp.png" type="Texture" id=22]
+[ext_resource path="res://icons/ic_save_black_18dp.png" type="Texture" id=23]
+[ext_resource path="res://icons/ic_format_indent_increase_black_18dp.png" type="Texture" id=24]
+[ext_resource path="res://icons/ic_format_indent_decrease_black_18dp.png" type="Texture" id=25]
+[ext_resource path="res://icons/ic_wallpaper_black_18dp.png" type="Texture" id=26]
+[ext_resource path="res://icons/ic_format_line_spacing_black_18dp.png" type="Texture" id=27]
+[ext_resource path="res://icons/ic_format_textdirection_l_to_r_black_18dp.png" type="Texture" id=28]
+[ext_resource path="res://icons/ic_wrap_text_black_18dp.png" type="Texture" id=29]
+[ext_resource path="res://icons/ic_vertical_align_top_black_18dp.png" type="Texture" id=30]
+[ext_resource path="res://icons/ic_vertical_align_center_black_18dp.png" type="Texture" id=31]
+[ext_resource path="res://icons/ic_vertical_align_bottom_black_18dp.png" type="Texture" id=32]
+[ext_resource path="res://icons/ic_bookmark_border_black_18dp.png" type="Texture" id=33]
+[ext_resource path="res://icons/ic_photo_size_select_large_black_18dp.png" type="Texture" id=34]
+[ext_resource path="res://icons/ic_language_black_18dp.png" type="Texture" id=35]
+[ext_resource path="res://icons/ic_format_color_text_black_18dp.png" type="Texture" id=36]
+[ext_resource path="res://icons/ic_border_color_black_18dp.png" type="Texture" id=37]
+[ext_resource path="res://icons/ic_format_color_outline_black_18dp.png" type="Texture" id=38]
+[ext_resource path="res://icons/ic_format_color_fill_black_18dp.png" type="Texture" id=39]
+[ext_resource path="res://icons/ic_format_color_doc_fill_black_18dp.png" type="Texture" id=40]
+[ext_resource path="res://Panel.gd" type="Script" id=41]
+[ext_resource path="res://Panel2.gd" type="Script" id=42]
 
 [sub_resource type="GDScript" id=1]
-
 script/source = "extends Control
 
 const TLICUDataLoader = preload(\"res://addons/libgdtl/classes/tl_icu_data_loader.gdns\")
@@ -43,13 +51,11 @@ const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\
 const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
 const TLBitmapFontFace = preload(\"res://addons/libgdtl/classes/tl_bitmap_font_face.gdns\")
 const TLProtoControl = preload(\"res://addons/libgdtl/classes/tl_proto_control.gdns\")
-const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
 
 # Called when the node enters the scene tree for the first time.
 var font_fml = []
 
 func _onresize():
-
 	$FormatToolbar.rect_size.x = get_viewport_rect().size.x
 	$StatBar.rect_size.x = get_viewport_rect().size.x
 	$StatBar.rect_position.y =  get_viewport_rect().size.y - $StatBar.rect_size.y
@@ -58,7 +64,17 @@ func _onresize():
 	$HScrollBar.rect_size.x = get_viewport_rect().size.x - 20
 
 	$VScrollBar.rect_position.x = get_viewport_rect().size.x - 5 - $VScrollBar.rect_size.x
-	$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	if $FormatToolbar/W.visible:
+		$VScrollBar.rect_position.y = 405
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 405 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	else:
+		$VScrollBar.rect_position.y = 115
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+
+	$FormatToolbar/W.rect_position.x = get_viewport_rect().size.x - $FormatToolbar/W.rect_size.x
+	
+	$ScrollContainer.rect_position.y = get_viewport_rect().size.y - 55 - $ScrollContainer.rect_size.y
+	$ScrollContainer.rect_size.x = get_viewport_rect().size.x - 35
 
 func _on_HScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.x = 5 - value
@@ -67,8 +83,8 @@ func _on_VScrollBar_value_changed(value):
 	$TLProtoControl.rect_position.y = 115 - value
 
 func _cursorchange():
-	var p = $TLProtoControl.get_selection().get_caret_para();
-	var o = $TLProtoControl.get_selection().get_caret_offset();
+	var p = $TLProtoControl.get_selection().get_caret_para()
+	var o = $TLProtoControl.get_selection().get_caret_offset()
 
 	$TLProtoControl.rect_size = $TLProtoControl.get_minimum_size() + Vector2(5, 5)
 
@@ -153,15 +169,6 @@ func _ready():
 	var data_loader = TLICUDataLoader.new()
 	data_loader.load(\"res://icudt63l.dat\")
 
-	var control = TLProtoControl.new()
-	control.name = \"TLProtoControl\"
-	control.margin_left = 5.0
-	control.margin_top = 115.0
-	control.margin_right = 1195.0
-	control.margin_bottom = 765.0
-	add_child(control)
-	move_child(control, 0)
-
 	get_tree().get_root().connect(\"size_changed\", self, \"_onresize\")
 	$TLProtoControl.connect(\"cursor_changed\", self, \"_cursorchange\")
 	_onresize()
@@ -244,7 +251,7 @@ func _ready():
 	nt_fam_bm.set_liked_face_for_script(\"BoldItalic\", \"ARAB\", nt_ar_bm)
 
 	font_fml.append(nt_fam_bm)
-	$FormatToolbar/FontFamily.add_item(\"Noto Sans (+Naskh) bitmap\")
+	$FormatToolbar/FontFamily.add_item(\"Noto Sans (+Naskh bitmap)\")
 
 	var nt_ar_ns = TLDynamicFontFace.new()
 	nt_ar_ns.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
@@ -291,6 +298,470 @@ func _ready():
 
 	font_fml.append(aw_fam)
 	$FormatToolbar/FontFamily.add_item(\"Awami (Nastaliq, Graphite)\")
+
+	#FULL NOTRO REGULAR
+	#https://github.com/harfbuzz/harfbuzz/blob/master/src/hb-common.h
+
+	#base
+	var ms_rg_base = TLDynamicFontFace.new()
+	ms_rg_base.load(\"res://fonts/NotoFull/NotoSans-Regular.ttf\")
+
+	#supl
+	var ms_rg_hluw = TLDynamicFontFace.new()
+	ms_rg_hluw.load(\"res://fonts/NotoFull/NotoSansAnatolianHieroglyphs-Regular.ttf\")
+	ms_rg_hluw.set_fallback(ms_rg_base)
+
+	var ms_rg_mymr = TLDynamicFontFace.new()
+	ms_rg_mymr.load(\"res://fonts/NotoFull/NotoSansMyanmar-Regular.ttf\")
+	ms_rg_mymr.set_fallback(ms_rg_base)
+
+	var ms_rg_telu = TLDynamicFontFace.new()
+	ms_rg_telu.load(\"res://fonts/NotoFull/NotoSansTelugu-Regular.ttf\")
+	ms_rg_telu.set_fallback(ms_rg_base)
+
+	var ms_rg_guru = TLDynamicFontFace.new()
+	ms_rg_guru.load(\"res://fonts/NotoFull/NotoSansGurmukhi-Regular.ttf\")
+	ms_rg_guru.set_fallback(ms_rg_base)
+
+	var ms_rg_orya = TLDynamicFontFace.new()
+	ms_rg_orya.load(\"res://fonts/NotoFull/NotoSansOriya-Regular.ttf\")
+	ms_rg_orya.set_fallback(ms_rg_base)
+
+	var ms_rg_thai = TLDynamicFontFace.new()
+	ms_rg_thai.load(\"res://fonts/NotoFull/NotoSansThai-Regular.ttf\")
+	ms_rg_thai.set_fallback(ms_rg_base)
+
+	var ms_rg_knda = TLDynamicFontFace.new()
+	ms_rg_knda.load(\"res://fonts/NotoFull/NotoSansKannada-Regular.ttf\")
+	ms_rg_knda.set_fallback(ms_rg_base)
+
+	var ms_rg_osge = TLDynamicFontFace.new()
+	ms_rg_osge.load(\"res://fonts/NotoFull/NotoSansOsage-Regular.ttf\")
+	ms_rg_osge.set_fallback(ms_rg_base)
+
+	var ms_rg_tibt = TLDynamicFontFace.new()
+	ms_rg_tibt.load(\"res://fonts/NotoFull/NotoSansTibetan-Regular.ttf\")
+	ms_rg_tibt.set_fallback(ms_rg_base)
+
+	var ms_rg_mlym = TLDynamicFontFace.new()
+	ms_rg_mlym.load(\"res://fonts/NotoFull/NotoSansMalayalam-Regular.ttf\")
+	ms_rg_mlym.set_fallback(ms_rg_base)
+
+	var ms_rg_sinh = TLDynamicFontFace.new()
+	ms_rg_sinh.load(\"res://fonts/NotoFull/NotoSansSinhala-Regular.ttf\")
+	ms_rg_sinh.set_fallback(ms_rg_base)
+
+	var ms_rg_taml = TLDynamicFontFace.new()
+	ms_rg_taml.load(\"res://fonts/NotoFull/NotoSansTamil-Regular.ttf\")
+	ms_rg_taml.set_fallback(ms_rg_base)
+
+	var ms_rg_adlm = TLDynamicFontFace.new()
+	ms_rg_adlm.load(\"res://fonts/NotoFull/NotoSansAdlam-Regular.ttf\")
+	ms_rg_adlm.set_fallback(ms_rg_base)
+
+	var ms_rg_hani = TLDynamicFontFace.new()
+	ms_rg_hani.load(\"res://fonts/NotoFull/NotoSansCJKjp-Regular.otf\")
+	ms_rg_hani.set_fallback(ms_rg_base)
+
+	var ms_rg_deva = TLDynamicFontFace.new()
+	ms_rg_deva.load(\"res://fonts/NotoFull/NotoSansDevanagari-Regular.ttf\")
+	ms_rg_deva.set_fallback(ms_rg_base)
+
+	var ms_rg_khar = TLDynamicFontFace.new()
+	ms_rg_khar.load(\"res://fonts/NotoFull/NotoSansKharoshthi-Regular.ttf\")
+	ms_rg_khar.set_fallback(ms_rg_base)
+
+	var ms_rg_arab = TLDynamicFontFace.new()
+	ms_rg_arab.load(\"res://fonts/NotoFull/NotoSansArabic-Regular.ttf\")
+	ms_rg_arab.set_fallback(ms_rg_base)
+
+	var ms_rg_cans = TLDynamicFontFace.new()
+	ms_rg_cans.load(\"res://fonts/NotoFull/NotoSansCanadianAboriginal-Regular.ttf\")
+	ms_rg_cans.set_fallback(ms_rg_base)
+
+	var ms_rg_ethi = TLDynamicFontFace.new()
+	ms_rg_ethi.load(\"res://fonts/NotoFull/NotoSansEthiopic-Regular.ttf\")
+	ms_rg_ethi.set_fallback(ms_rg_base)
+
+	var ms_rg_khmr = TLDynamicFontFace.new()
+	ms_rg_khmr.load(\"res://fonts/NotoFull/NotoSansKhmer-Regular.ttf\")
+	ms_rg_khmr.set_fallback(ms_rg_base)
+
+	var ms_rg_armn = TLDynamicFontFace.new()
+	ms_rg_armn.load(\"res://fonts/NotoFull/NotoSansArmenian-Regular.ttf\")
+	ms_rg_armn.set_fallback(ms_rg_base)
+
+	var ms_rg_cakm = TLDynamicFontFace.new()
+	ms_rg_cakm.load(\"res://fonts/NotoFull/NotoSansChakma-Regular.ttf\")
+	ms_rg_cakm.set_fallback(ms_rg_base)
+
+	var ms_rg_geor = TLDynamicFontFace.new()
+	ms_rg_geor.load(\"res://fonts/NotoFull/NotoSansGeorgian-Regular.ttf\")
+	ms_rg_geor.set_fallback(ms_rg_base)
+
+	var ms_rg_laoo = TLDynamicFontFace.new()
+	ms_rg_laoo.load(\"res://fonts/NotoFull/NotoSansLao-Regular.ttf\")
+	ms_rg_laoo.set_fallback(ms_rg_base)
+
+	var ms_rg_beng = TLDynamicFontFace.new()
+	ms_rg_beng.load(\"res://fonts/NotoFull/NotoSansBengali-Regular.ttf\")
+	ms_rg_beng.set_fallback(ms_rg_base)
+
+	var ms_rg_cher = TLDynamicFontFace.new()
+	ms_rg_cher.load(\"res://fonts/NotoFull/NotoSansCherokee-Regular.ttf\")
+	ms_rg_cher.set_fallback(ms_rg_base)
+
+	var ms_rg_gujr = TLDynamicFontFace.new()
+	ms_rg_gujr.load(\"res://fonts/NotoFull/NotoSansGujarati-Regular.ttf\")
+	ms_rg_gujr.set_fallback(ms_rg_base)
+
+	var ms_rg_buhd = TLDynamicFontFace.new()
+	ms_rg_buhd.load(\"res://fonts/NotoFull/NotoSansBuhid-Regular.ttf\")
+	ms_rg_buhd.set_fallback(ms_rg_base)
+
+	var ms_rg_dsrt = TLDynamicFontFace.new()
+	ms_rg_dsrt.load(\"res://fonts/NotoFull/NotoSansDeseret-Regular.ttf\")
+	ms_rg_dsrt.set_fallback(ms_rg_base)
+
+	var ms_rg_hebr = TLDynamicFontFace.new()
+	ms_rg_hebr.load(\"res://fonts/NotoFull/NotoSansHebrew-Regular.ttf\")
+	ms_rg_hebr.set_fallback(ms_rg_base)
+
+	var ms_rg_avst = TLDynamicFontFace.new()
+	ms_rg_avst.load(\"res://fonts/NotoFull/NotoSansAvestan-Regular.ttf\")
+	ms_rg_avst.set_fallback(ms_rg_base)
+
+	var ms_rg_bali = TLDynamicFontFace.new()
+	ms_rg_bali.load(\"res://fonts/NotoFull/NotoSansBalinese-Regular.ttf\")
+	ms_rg_bali.set_fallback(ms_rg_base)
+
+	var ms_rg_bamu = TLDynamicFontFace.new()
+	ms_rg_bamu.load(\"res://fonts/NotoFull/NotoSansBamum-Regular.ttf\")
+	ms_rg_bamu.set_fallback(ms_rg_base)
+
+	var ms_rg_batk = TLDynamicFontFace.new()
+	ms_rg_batk.load(\"res://fonts/NotoFull/NotoSansBatak-Regular.ttf\")
+	ms_rg_batk.set_fallback(ms_rg_base)
+
+	var ms_rg_brah = TLDynamicFontFace.new()
+	ms_rg_brah.load(\"res://fonts/NotoFull/NotoSansBrahmi-Regular.ttf\")
+	ms_rg_brah.set_fallback(ms_rg_base)
+
+	var ms_rg_bugi = TLDynamicFontFace.new()
+	ms_rg_bugi.load(\"res://fonts/NotoFull/NotoSansBuginese-Regular.ttf\")
+	ms_rg_bugi.set_fallback(ms_rg_base)
+
+	var ms_rg_cari = TLDynamicFontFace.new()
+	ms_rg_cari.load(\"res://fonts/NotoFull/NotoSansCarian-Regular.ttf\")
+	ms_rg_cari.set_fallback(ms_rg_base)
+
+	var ms_rg_copt = TLDynamicFontFace.new()
+	ms_rg_copt.load(\"res://fonts/NotoFull/NotoSansCoptic-Regular.ttf\")
+	ms_rg_copt.set_fallback(ms_rg_base)
+
+	var ms_rg_xsux = TLDynamicFontFace.new()
+	ms_rg_xsux.load(\"res://fonts/NotoFull/NotoSansCuneiform-Regular.ttf\")
+	ms_rg_xsux.set_fallback(ms_rg_base)
+
+	var ms_rg_cprt = TLDynamicFontFace.new()
+	ms_rg_cprt.load(\"res://fonts/NotoFull/NotoSansCypriot-Regular.ttf\")
+	ms_rg_cprt.set_fallback(ms_rg_base)
+
+	var ms_rg_egyp = TLDynamicFontFace.new()
+	ms_rg_egyp.load(\"res://fonts/NotoFull/NotoSansEgyptianHieroglyphs-Regular.ttf\")
+	ms_rg_egyp.set_fallback(ms_rg_base)
+
+	var ms_rg_glag = TLDynamicFontFace.new()
+	ms_rg_glag.load(\"res://fonts/NotoFull/NotoSansGlagolitic-Regular.ttf\")
+	ms_rg_glag.set_fallback(ms_rg_base)
+
+	var ms_rg_goth = TLDynamicFontFace.new()
+	ms_rg_goth.load(\"res://fonts/NotoFull/NotoSansGothic-Regular.ttf\")
+	ms_rg_goth.set_fallback(ms_rg_base)
+
+	var ms_rg_hano = TLDynamicFontFace.new()
+	ms_rg_hano.load(\"res://fonts/NotoFull/NotoSansHanunoo-Regular.ttf\")
+	ms_rg_hano.set_fallback(ms_rg_base)
+
+	var ms_rg_armi = TLDynamicFontFace.new()
+	ms_rg_armi.load(\"res://fonts/NotoFull/NotoSansImperialAramaic-Regular.ttf\")
+	ms_rg_armi.set_fallback(ms_rg_base)
+
+	var ms_rg_phli = TLDynamicFontFace.new()
+	ms_rg_phli.load(\"res://fonts/NotoFull/NotoSansInscriptionalPahlavi-Regular.ttf\")
+	ms_rg_phli.set_fallback(ms_rg_base)
+
+	var ms_rg_prti = TLDynamicFontFace.new()
+	ms_rg_prti.load(\"res://fonts/NotoFull/NotoSansInscriptionalParthian-Regular.ttf\")
+	ms_rg_prti.set_fallback(ms_rg_base)
+
+	var ms_rg_java = TLDynamicFontFace.new()
+	ms_rg_java.load(\"res://fonts/NotoFull/NotoSansJavanese-Regular.ttf\")
+	ms_rg_java.set_fallback(ms_rg_base)
+
+	var ms_rg_kthi = TLDynamicFontFace.new()
+	ms_rg_kthi.load(\"res://fonts/NotoFull/NotoSansKaithi-Regular.ttf\")
+	ms_rg_kthi.set_fallback(ms_rg_base)
+
+	var ms_rg_kali = TLDynamicFontFace.new()
+	ms_rg_kali.load(\"res://fonts/NotoFull/NotoSansKayahLi-Regular.ttf\")
+	ms_rg_kali.set_fallback(ms_rg_base)
+
+	var ms_rg_lepc = TLDynamicFontFace.new()
+	ms_rg_lepc.load(\"res://fonts/NotoFull/NotoSansLepcha-Regular.ttf\")
+	ms_rg_lepc.set_fallback(ms_rg_base)
+
+	var ms_rg_limb = TLDynamicFontFace.new()
+	ms_rg_limb.load(\"res://fonts/NotoFull/NotoSansLimbu-Regular.ttf\")
+	ms_rg_limb.set_fallback(ms_rg_base)
+
+	var ms_rg_linb = TLDynamicFontFace.new()
+	ms_rg_linb.load(\"res://fonts/NotoFull/NotoSansLinearB-Regular.ttf\")
+	ms_rg_linb.set_fallback(ms_rg_base)
+
+	var ms_rg_lisu = TLDynamicFontFace.new()
+	ms_rg_lisu.load(\"res://fonts/NotoFull/NotoSansLisu-Regular.ttf\")
+	ms_rg_lisu.set_fallback(ms_rg_base)
+
+	var ms_rg_lyci = TLDynamicFontFace.new()
+	ms_rg_lyci.load(\"res://fonts/NotoFull/NotoSansLycian-Regular.ttf\")
+	ms_rg_lyci.set_fallback(ms_rg_base)
+
+	var ms_rg_lydi = TLDynamicFontFace.new()
+	ms_rg_lydi.load(\"res://fonts/NotoFull/NotoSansLydian-Regular.ttf\")
+	ms_rg_lydi.set_fallback(ms_rg_base)
+
+	var ms_rg_mand = TLDynamicFontFace.new()
+	ms_rg_mand.load(\"res://fonts/NotoFull/NotoSansMandaic-Regular.ttf\")
+	ms_rg_mand.set_fallback(ms_rg_base)
+
+	var ms_rg_mtei = TLDynamicFontFace.new()
+	ms_rg_mtei.load(\"res://fonts/NotoFull/NotoSansMeeteiMayek-Regular.ttf\")
+	ms_rg_mtei.set_fallback(ms_rg_base)
+
+	var ms_rg_mong = TLDynamicFontFace.new()
+	ms_rg_mong.load(\"res://fonts/NotoFull/NotoSansMongolian-Regular.ttf\")
+	ms_rg_mong.set_fallback(ms_rg_base)
+
+	var ms_rg_nkoo = TLDynamicFontFace.new()
+	ms_rg_nkoo.load(\"res://fonts/NotoFull/NotoSansNKo-Regular.ttf\")
+	ms_rg_nkoo.set_fallback(ms_rg_base)
+
+	var ms_rg_talu = TLDynamicFontFace.new()
+	ms_rg_talu.load(\"res://fonts/NotoFull/NotoSansNewTaiLue-Regular.ttf\")
+	ms_rg_talu.set_fallback(ms_rg_base)
+
+	var ms_rg_ogam = TLDynamicFontFace.new()
+	ms_rg_ogam.load(\"res://fonts/NotoFull/NotoSansOgham-Regular.ttf\")
+	ms_rg_ogam.set_fallback(ms_rg_base)
+
+	var ms_rg_olck = TLDynamicFontFace.new()
+	ms_rg_olck.load(\"res://fonts/NotoFull/NotoSansOlChiki-Regular.ttf\")
+	ms_rg_olck.set_fallback(ms_rg_base)
+
+	var ms_rg_ital = TLDynamicFontFace.new()
+	ms_rg_ital.load(\"res://fonts/NotoFull/NotoSansOldItalic-Regular.ttf\")
+	ms_rg_ital.set_fallback(ms_rg_base)
+
+	var ms_rg_xpeo = TLDynamicFontFace.new()
+	ms_rg_xpeo.load(\"res://fonts/NotoFull/NotoSansOldPersian-Regular.ttf\")
+	ms_rg_xpeo.set_fallback(ms_rg_base)
+
+	var ms_rg_sarb = TLDynamicFontFace.new()
+	ms_rg_sarb.load(\"res://fonts/NotoFull/NotoSansOldSouthArabian-Regular.ttf\")
+	ms_rg_sarb.set_fallback(ms_rg_base)
+
+	var ms_rg_orkh = TLDynamicFontFace.new()
+	ms_rg_orkh.load(\"res://fonts/NotoFull/NotoSansOldTurkic-Regular.ttf\")
+	ms_rg_orkh.set_fallback(ms_rg_base)
+
+	var ms_rg_osma = TLDynamicFontFace.new()
+	ms_rg_osma.load(\"res://fonts/NotoFull/NotoSansOsmanya-Regular.ttf\")
+	ms_rg_osma.set_fallback(ms_rg_base)
+
+	var ms_rg_phag = TLDynamicFontFace.new()
+	ms_rg_phag.load(\"res://fonts/NotoFull/NotoSansPhagsPa-Regular.ttf\")
+	ms_rg_phag.set_fallback(ms_rg_base)
+
+	var ms_rg_phnx = TLDynamicFontFace.new()
+	ms_rg_phnx.load(\"res://fonts/NotoFull/NotoSansPhoenician-Regular.ttf\")
+	ms_rg_phnx.set_fallback(ms_rg_base)
+
+	var ms_rg_rjng = TLDynamicFontFace.new()
+	ms_rg_rjng.load(\"res://fonts/NotoFull/NotoSansRejang-Regular.ttf\")
+	ms_rg_rjng.set_fallback(ms_rg_base)
+
+	var ms_rg_runr = TLDynamicFontFace.new()
+	ms_rg_runr.load(\"res://fonts/NotoFull/NotoSansRunic-Regular.ttf\")
+	ms_rg_runr.set_fallback(ms_rg_base)
+
+	var ms_rg_samr = TLDynamicFontFace.new()
+	ms_rg_samr.load(\"res://fonts/NotoFull/NotoSansSamaritan-Regular.ttf\")
+	ms_rg_samr.set_fallback(ms_rg_base)
+
+	var ms_rg_saur = TLDynamicFontFace.new()
+	ms_rg_saur.load(\"res://fonts/NotoFull/NotoSansSaurashtra-Regular.ttf\")
+	ms_rg_saur.set_fallback(ms_rg_base)
+
+	var ms_rg_shaw = TLDynamicFontFace.new()
+	ms_rg_shaw.load(\"res://fonts/NotoFull/NotoSansShavian-Regular.ttf\")
+	ms_rg_shaw.set_fallback(ms_rg_base)
+
+	var ms_rg_sund = TLDynamicFontFace.new()
+	ms_rg_sund.load(\"res://fonts/NotoFull/NotoSansSundanese-Regular.ttf\")
+	ms_rg_sund.set_fallback(ms_rg_base)
+
+	var ms_rg_sylo = TLDynamicFontFace.new()
+	ms_rg_sylo.load(\"res://fonts/NotoFull/NotoSansSylotiNagri-Regular.ttf\")
+	ms_rg_sylo.set_fallback(ms_rg_base)
+
+	var ms_rg_syrc = TLDynamicFontFace.new()
+	ms_rg_syrc.load(\"res://fonts/NotoFull/NotoSansSyriacEastern-Regular.ttf\")
+	ms_rg_syrc.set_fallback(ms_rg_base)
+
+	var ms_rg_tglg = TLDynamicFontFace.new()
+	ms_rg_tglg.load(\"res://fonts/NotoFull/NotoSansTagalog-Regular.ttf\")
+	ms_rg_tglg.set_fallback(ms_rg_base)
+
+	var ms_rg_tagb = TLDynamicFontFace.new()
+	ms_rg_tagb.load(\"res://fonts/NotoFull/NotoSansTagbanwa-Regular.ttf\")
+	ms_rg_tagb.set_fallback(ms_rg_base)
+
+	var ms_rg_tale = TLDynamicFontFace.new()
+	ms_rg_tale.load(\"res://fonts/NotoFull/NotoSansTaiLe-Regular.ttf\")
+	ms_rg_tale.set_fallback(ms_rg_base)
+
+	var ms_rg_lana = TLDynamicFontFace.new()
+	ms_rg_lana.load(\"res://fonts/NotoFull/NotoSansTaiTham-Regular.ttf\")
+	ms_rg_lana.set_fallback(ms_rg_base)
+
+	var ms_rg_tavt = TLDynamicFontFace.new()
+	ms_rg_tavt.load(\"res://fonts/NotoFull/NotoSansTaiViet-Regular.ttf\")
+	ms_rg_tavt.set_fallback(ms_rg_base)
+
+	var ms_rg_thaa = TLDynamicFontFace.new()
+	ms_rg_thaa.load(\"res://fonts/NotoFull/NotoSansThaana-Regular.ttf\")
+	ms_rg_thaa.set_fallback(ms_rg_base)
+
+	var ms_rg_tfng = TLDynamicFontFace.new()
+	ms_rg_tfng.load(\"res://fonts/NotoFull/NotoSansTifinagh-Regular.ttf\")
+	ms_rg_tfng.set_fallback(ms_rg_base)
+
+	var ms_rg_ugar = TLDynamicFontFace.new()
+	ms_rg_ugar.load(\"res://fonts/NotoFull/NotoSansUgaritic-Regular.ttf\")
+	ms_rg_ugar.set_fallback(ms_rg_base)
+
+	var ms_rg_vaii = TLDynamicFontFace.new()
+	ms_rg_vaii.load(\"res://fonts/NotoFull/NotoSansVai-Regular.ttf\")
+	ms_rg_vaii.set_fallback(ms_rg_base)
+
+	var ms_rg_yiii = TLDynamicFontFace.new()
+	ms_rg_yiii.load(\"res://fonts/NotoFull/NotoSansYi-Regular.ttf\")
+	ms_rg_yiii.set_fallback(ms_rg_hani)
+
+	var ms_rg_cham = TLDynamicFontFace.new()
+	ms_rg_cham.load(\"res://fonts/NotoFull/NotoSansCham-Regular.ttf\")
+	ms_rg_cham.set_fallback(ms_rg_base)
+
+	var nt_fam_full = TLFontFamily.new()
+	nt_fam_full.set_face(\"Regular\", ms_rg_base)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HLUW\", ms_rg_hluw)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MYMR\", ms_rg_mymr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TELU\", ms_rg_telu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GURU\", ms_rg_guru)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ORYA\", ms_rg_orya)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"THAI\", ms_rg_thai)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KNDA\", ms_rg_knda)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OSGE\", ms_rg_osge)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TIBT\", ms_rg_tibt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MLYM\", ms_rg_mlym)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SINH\", ms_rg_sinh)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAML\", ms_rg_taml)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ADLM\", ms_rg_adlm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANI\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HIRA\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KANA\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANG\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"DEVA\", ms_rg_deva)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KHAR\", ms_rg_khar)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARAB\", ms_rg_arab)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CANS\", ms_rg_cans)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ETHI\", ms_rg_ethi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KHMR\", ms_rg_khmr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARMN\", ms_rg_armn)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CAKM\", ms_rg_cakm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GEOR\", ms_rg_geor)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LAOO\", ms_rg_laoo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BENG\", ms_rg_beng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CHER\", ms_rg_cher)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GUJR\", ms_rg_gujr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"DSRT\", ms_rg_dsrt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HEBR\", ms_rg_hebr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"AVST\", ms_rg_avst)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BALI\", ms_rg_bali)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BAMU\", ms_rg_bamu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BATK\", ms_rg_batk)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BRAH\", ms_rg_brah)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BUGI\", ms_rg_bugi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BUHD\", ms_rg_buhd)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CARI\", ms_rg_cari)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"COPT\", ms_rg_copt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"XSUX\", ms_rg_xsux)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CPRT\", ms_rg_cprt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"EGYP\", ms_rg_egyp)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GLAG\", ms_rg_glag)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GOTH\", ms_rg_goth)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANO\", ms_rg_hano)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARMI\", ms_rg_armi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHLI\", ms_rg_phli)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PRTI\", ms_rg_prti)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"JAVA\", ms_rg_java)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KTHI\", ms_rg_kthi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KALI\", ms_rg_kali)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LEPC\", ms_rg_lepc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LIMB\", ms_rg_limb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LINB\", ms_rg_linb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LISU\", ms_rg_lisu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LYCI\", ms_rg_lyci)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LYDI\", ms_rg_lydi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MAND\", ms_rg_mand)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MTEI\", ms_rg_mtei)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MONG\", ms_rg_mong)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"NKOO\", ms_rg_nkoo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TALU\", ms_rg_talu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OGAM\", ms_rg_ogam)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ITAL\", ms_rg_ital)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ITAL\", ms_rg_ital)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"XPEO\", ms_rg_xpeo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SARB\", ms_rg_sarb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ORKH\", ms_rg_orkh)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OSMA\", ms_rg_osma)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHAG\", ms_rg_phag)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHNX\", ms_rg_phnx)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"RJNG\", ms_rg_rjng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"RUNR\", ms_rg_runr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SAMR\", ms_rg_samr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SAUR\", ms_rg_saur)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SHAW\", ms_rg_shaw)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SUND\", ms_rg_sund)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SYLO\", ms_rg_sylo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SYRC\", ms_rg_syrc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TGLG\", ms_rg_tglg)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAGB\", ms_rg_tagb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TALE\", ms_rg_tale)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LANA\", ms_rg_lana)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAVT\", ms_rg_tavt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"THAA\", ms_rg_thaa)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TFNG\", ms_rg_tfng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"UGAR\", ms_rg_ugar)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"VAII\", ms_rg_vaii)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"YIII\", ms_rg_yiii)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CHAM\", ms_rg_cham)
+
+	font_fml.append(nt_fam_full)
+	$FormatToolbar/FontFamily.add_item(\"Noto Sans (+Full, Reg)\")
+
+	##END
 
 	$TLProtoControl.get_paragraph(0).get_string().set_base_font(nt_fam)
 	$TLProtoControl.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
@@ -628,10 +1099,46 @@ func _on_ParaSpace_value_changed(value):
 
 func _on_ColorPickerButton_color_changed(color):
 	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLConstants.TextAttribute.TEXT_ATTRIBUTE_OUTLINE_COLOR, color)
+
+func _on_TLProtoControl_gui_input(event):
+	if event is InputEventMouseMotion:
+		$StatBar/X.text = $TLProtoControl.get_cluster_debug_info_hit_test(event.position)
+		var r = $TLProtoControl.get_cluster_rect_hit_test(event.position)
+		$TLProtoControl/Panel.rect_position = r.position
+		$TLProtoControl/Panel.rect_size = r.size
+		$FormatToolbar/W/Panel.gldata = $TLProtoControl.get_cluster_glyphs_hit_test(event.position)
+		$FormatToolbar/W/Panel.update()
+		$ScrollContainer/PanelDbgD.point = event.position
+		$ScrollContainer/PanelDbgD.update()
+
+func _on_DEbug_toggled(button_pressed):
+	$TLProtoControl/Panel.visible = button_pressed
+
+func _on_DebugLBrk_toggled(button_pressed):
+	$ScrollContainer/PanelDbgD.brk = button_pressed
+	$ScrollContainer/PanelDbgD.update()
+
+func _on_DebugJBrk_toggled(button_pressed):
+	$ScrollContainer/PanelDbgD.jst = button_pressed
+	$ScrollContainer/PanelDbgD.update()
+
+func _on_DebugJBrk2_toggled(button_pressed):
+	$FormatToolbar/W.visible = button_pressed
+	if $FormatToolbar/W.visible:
+		$VScrollBar.rect_position.y = 405
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 405 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+	else:
+		$VScrollBar.rect_position.y = 115
+		$VScrollBar.rect_size.y = get_viewport_rect().size.y - 115 - $StatBar.rect_size.y - $HScrollBar.rect_size.y - 10
+
+func _on_DebugDdr_toggled(button_pressed):
+	$FormatToolbar/DebugLBrk.disabled = !button_pressed
+	$FormatToolbar/DebugJBrk.disabled = !button_pressed
+	$ScrollContainer.visible = button_pressed
+	$ScrollContainer/PanelDbgD.update()
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
-
 content_margin_left = 6.0
 content_margin_right = 6.0
 bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
@@ -642,7 +1149,6 @@ border_width_bottom = 1
 border_color = Color( 0.0509804, 0.00784314, 0.827451, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-
 content_margin_left = 6.0
 content_margin_right = 6.0
 border_width_left = 1
@@ -652,7 +1158,6 @@ border_width_bottom = 1
 border_color = Color( 0.0235294, 0.0117647, 0.176471, 1 )
 
 [sub_resource type="StyleBoxFlat" id=4]
-
 content_margin_left = 6.0
 content_margin_right = 6.0
 border_width_left = 1
@@ -662,7 +1167,6 @@ border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=5]
-
 content_margin_left = 6.0
 content_margin_right = 6.0
 bg_color = Color( 0.254902, 0.254902, 0.254902, 1 )
@@ -673,7 +1177,6 @@ border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=6]
-
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -681,7 +1184,6 @@ border_width_bottom = 1
 border_color = Color( 0.0392157, 0.0313726, 0.141176, 1 )
 
 [sub_resource type="StyleBoxFlat" id=7]
-
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -689,7 +1191,6 @@ border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=8]
-
 bg_color = Color( 0.254902, 0.254902, 0.254902, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -698,7 +1199,6 @@ border_width_bottom = 1
 border_color = Color( 0.0588235, 0.0862745, 0.741176, 1 )
 
 [sub_resource type="StyleBoxFlat" id=9]
-
 bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -707,7 +1207,6 @@ border_width_bottom = 1
 border_color = Color( 0.027451, 0, 0.486275, 1 )
 
 [sub_resource type="StyleBoxFlat" id=10]
-
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -715,7 +1214,6 @@ border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="Theme" id=11]
-
 Button/styles/focus = SubResource( 2 )
 Button/styles/hover = SubResource( 3 )
 Button/styles/normal = SubResource( 4 )
@@ -729,15 +1227,30 @@ LineEdit/styles/normal = SubResource( 10 )
 
 [sub_resource type="ButtonGroup" id=12]
 
-
 [sub_resource type="ButtonGroup" id=13]
-
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 1200, 400 )
 script = SubResource( 1 )
+
+[node name="TLProtoControl" type="Control" parent="."]
+margin_left = 5.0
+margin_top = 115.0
+margin_right = 1143.0
+margin_bottom = 661.0
+rect_min_size = Vector2( 1000, 500 )
+focus_mode = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_icon": ExtResource( 2 )
+}
+
+[node name="Panel" type="Panel" parent="TLProtoControl"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
 
 [node name="FormatToolbar" type="ColorRect" parent="."]
 margin_right = 1200.0
@@ -760,7 +1273,7 @@ align = 1
 [node name="TextureRect2" type="TextureRect" parent="FormatToolbar/FontFamily"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="FontSize" type="OptionButton" parent="FormatToolbar"]
@@ -778,7 +1291,7 @@ align = 1
 [node name="TextureRect2" type="TextureRect" parent="FormatToolbar/FontSize"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 stretch_mode = 4
 
 [node name="StyleBold" type="Button" parent="FormatToolbar"]
@@ -789,7 +1302,7 @@ margin_bottom = 70.0
 hint_tooltip = "Bold"
 focus_mode = 0
 toggle_mode = true
-icon = ExtResource( 3 )
+icon = ExtResource( 5 )
 
 [node name="StyleItalic" type="Button" parent="FormatToolbar"]
 margin_left = 694.0
@@ -799,7 +1312,7 @@ margin_bottom = 70.0
 hint_tooltip = "Italic"
 focus_mode = 0
 toggle_mode = true
-icon = ExtResource( 4 )
+icon = ExtResource( 6 )
 
 [node name="StyleUnderline" type="Button" parent="FormatToolbar"]
 margin_left = 734.0
@@ -809,7 +1322,7 @@ margin_bottom = 70.0
 hint_tooltip = "Underline"
 focus_mode = 0
 toggle_mode = true
-icon = ExtResource( 5 )
+icon = ExtResource( 7 )
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleUnderline"]
 margin_left = 30.0
@@ -836,7 +1349,7 @@ margin_bottom = 70.0
 hint_tooltip = "Overline"
 focus_mode = 0
 toggle_mode = true
-icon = ExtResource( 6 )
+icon = ExtResource( 8 )
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleOver"]
 margin_left = 30.0
@@ -863,7 +1376,7 @@ margin_bottom = 70.0
 hint_tooltip = "Strikethrough"
 focus_mode = 0
 toggle_mode = true
-icon = ExtResource( 7 )
+icon = ExtResource( 9 )
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/StyleStrike"]
 margin_left = 30.0
@@ -892,7 +1405,7 @@ focus_mode = 0
 toggle_mode = true
 pressed = true
 group = SubResource( 12 )
-icon = ExtResource( 8 )
+icon = ExtResource( 10 )
 
 [node name="HalC" type="Button" parent="FormatToolbar"]
 margin_left = 525.0
@@ -903,7 +1416,7 @@ hint_tooltip = "Align center"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 12 )
-icon = ExtResource( 9 )
+icon = ExtResource( 11 )
 
 [node name="HalR" type="Button" parent="FormatToolbar"]
 margin_left = 555.0
@@ -914,7 +1427,7 @@ hint_tooltip = "Align right"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 12 )
-icon = ExtResource( 10 )
+icon = ExtResource( 12 )
 
 [node name="HalJ" type="Button" parent="FormatToolbar"]
 margin_left = 585.0
@@ -925,7 +1438,7 @@ hint_tooltip = "Justified"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 12 )
-icon = ExtResource( 11 )
+icon = ExtResource( 13 )
 
 [node name="ClearFMT" type="Button" parent="FormatToolbar"]
 margin_left = 734.0
@@ -934,16 +1447,68 @@ margin_right = 764.0
 margin_bottom = 35.0
 hint_tooltip = "Clear formatting"
 focus_mode = 0
-icon = ExtResource( 12 )
+icon = ExtResource( 14 )
 
 [node name="ClearFMT2" type="Button" parent="FormatToolbar"]
-margin_left = 1010.0
+margin_left = 1036.0
 margin_top = 75.0
-margin_right = 1040.0
+margin_right = 1066.0
 margin_bottom = 105.0
 hint_tooltip = "Reset paragraph width"
 focus_mode = 0
-icon = ExtResource( 13 )
+icon = ExtResource( 15 )
+
+[node name="DebugRect" type="Button" parent="FormatToolbar"]
+margin_left = 888.0
+margin_top = 5.0
+margin_right = 918.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display cluster rect"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 16 )
+
+[node name="DebugLBrk" type="Button" parent="FormatToolbar"]
+margin_left = 1036.0
+margin_top = 5.0
+margin_right = 1066.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display line break points"
+focus_mode = 0
+disabled = true
+toggle_mode = true
+icon = ExtResource( 17 )
+
+[node name="DebugJBrk" type="Button" parent="FormatToolbar"]
+margin_left = 1004.0
+margin_top = 5.0
+margin_right = 1034.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display word break points"
+focus_mode = 0
+disabled = true
+toggle_mode = true
+icon = ExtResource( 18 )
+
+[node name="DebugDdr" type="Button" parent="FormatToolbar"]
+margin_left = 966.0
+margin_top = 5.0
+margin_right = 996.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Display string info"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 19 )
+
+[node name="DebugJBrk2" type="Button" parent="FormatToolbar"]
+margin_left = 920.0
+margin_top = 5.0
+margin_right = 950.0
+margin_bottom = 35.0
+hint_tooltip = "Debug: Cluster preview"
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource( 20 )
 
 [node name="New" type="Button" parent="FormatToolbar"]
 margin_left = 5.0
@@ -953,7 +1518,7 @@ margin_bottom = 35.0
 hint_tooltip = "New"
 focus_mode = 0
 enabled_focus_mode = 0
-icon = ExtResource( 14 )
+icon = ExtResource( 21 )
 
 [node name="Load" type="Button" parent="FormatToolbar"]
 margin_left = 35.0
@@ -963,7 +1528,7 @@ margin_bottom = 35.0
 hint_tooltip = "Load..."
 focus_mode = 0
 enabled_focus_mode = 0
-icon = ExtResource( 15 )
+icon = ExtResource( 22 )
 
 [node name="Save" type="Button" parent="FormatToolbar"]
 margin_left = 65.0
@@ -972,7 +1537,7 @@ margin_right = 95.0
 margin_bottom = 35.0
 hint_tooltip = "Save as..."
 focus_mode = 0
-icon = ExtResource( 16 )
+icon = ExtResource( 23 )
 
 [node name="DecW" type="Button" parent="FormatToolbar"]
 margin_left = 35.0
@@ -981,7 +1546,7 @@ margin_right = 65.0
 margin_bottom = 105.0
 hint_tooltip = "Increase indent"
 focus_mode = 0
-icon = ExtResource( 17 )
+icon = ExtResource( 24 )
 
 [node name="IncW" type="Button" parent="FormatToolbar"]
 margin_left = 5.0
@@ -990,7 +1555,7 @@ margin_right = 35.0
 margin_bottom = 105.0
 hint_tooltip = "Decrease indent"
 focus_mode = 0
-icon = ExtResource( 18 )
+icon = ExtResource( 25 )
 
 [node name="InsertImage" type="OptionButton" parent="FormatToolbar"]
 margin_left = 264.0
@@ -1007,7 +1572,7 @@ align = 1
 [node name="TextureRect3" type="TextureRect" parent="FormatToolbar/InsertImage"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 19 )
+texture = ExtResource( 26 )
 stretch_mode = 4
 
 [node name="LineSpace" type="SpinBox" parent="FormatToolbar"]
@@ -1025,7 +1590,7 @@ align = 2
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/LineSpace"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 20 )
+texture = ExtResource( 27 )
 stretch_mode = 4
 
 [node name="ParaSpace" type="SpinBox" parent="FormatToolbar"]
@@ -1040,7 +1605,7 @@ align = 2
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/ParaSpace"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 20 )
+texture = ExtResource( 27 )
 stretch_mode = 4
 
 [node name="Dir" type="OptionButton" parent="FormatToolbar"]
@@ -1058,7 +1623,7 @@ align = 1
 [node name="TextureRect3" type="TextureRect" parent="FormatToolbar/Dir"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 21 )
+texture = ExtResource( 28 )
 stretch_mode = 4
 
 [node name="BrkMode" type="OptionButton" parent="FormatToolbar"]
@@ -1076,7 +1641,7 @@ align = 1
 [node name="TextureRect4" type="TextureRect" parent="FormatToolbar/BrkMode"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 22 )
+texture = ExtResource( 29 )
 stretch_mode = 4
 
 [node name="JstMode" type="OptionButton" parent="FormatToolbar"]
@@ -1094,7 +1659,7 @@ align = 1
 [node name="TextureRect5" type="TextureRect" parent="FormatToolbar/JstMode"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 11 )
+texture = ExtResource( 13 )
 stretch_mode = 4
 
 [node name="ValT" type="Button" parent="FormatToolbar"]
@@ -1106,7 +1671,7 @@ hint_tooltip = "Align top"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 13 )
-icon = ExtResource( 23 )
+icon = ExtResource( 30 )
 
 [node name="ValC" type="Button" parent="FormatToolbar"]
 margin_left = 502.0
@@ -1118,7 +1683,7 @@ focus_mode = 0
 toggle_mode = true
 pressed = true
 group = SubResource( 13 )
-icon = ExtResource( 24 )
+icon = ExtResource( 31 )
 
 [node name="ValB" type="Button" parent="FormatToolbar"]
 margin_left = 532.0
@@ -1129,7 +1694,7 @@ hint_tooltip = "Align bottom"
 focus_mode = 0
 toggle_mode = true
 group = SubResource( 13 )
-icon = ExtResource( 25 )
+icon = ExtResource( 32 )
 
 [node name="FontFtr" type="LineEdit" parent="FormatToolbar"]
 margin_left = 344.0
@@ -1145,7 +1710,7 @@ focus_mode = 1
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/FontFtr"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 26 )
+texture = ExtResource( 33 )
 stretch_mode = 4
 
 [node name="Width" type="SpinBox" parent="FormatToolbar"]
@@ -1162,7 +1727,7 @@ align = 2
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/Width"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 27 )
+texture = ExtResource( 34 )
 stretch_mode = 4
 
 [node name="Lang" type="LineEdit" parent="FormatToolbar"]
@@ -1179,7 +1744,7 @@ focus_mode = 1
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/Lang"]
 margin_right = 30.0
 margin_bottom = 30.0
-texture = ExtResource( 28 )
+texture = ExtResource( 35 )
 stretch_mode = 4
 
 [node name="TextCol" type="TextureRect" parent="FormatToolbar"]
@@ -1188,7 +1753,7 @@ margin_top = 5.0
 margin_right = 605.0
 margin_bottom = 35.0
 hint_tooltip = "Text color"
-texture = ExtResource( 29 )
+texture = ExtResource( 36 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/TextCol"]
@@ -1204,7 +1769,7 @@ margin_top = 5.0
 margin_right = 655.0
 margin_bottom = 35.0
 hint_tooltip = "Highlight color"
-texture = ExtResource( 30 )
+texture = ExtResource( 37 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/HlColor"]
@@ -1221,7 +1786,7 @@ margin_top = 5.0
 margin_right = 705.0
 margin_bottom = 35.0
 hint_tooltip = "Outline color"
-texture = ExtResource( 31 )
+texture = ExtResource( 38 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/OutColor"]
@@ -1237,7 +1802,7 @@ margin_top = 75.0
 margin_right = 840.0
 margin_bottom = 105.0
 hint_tooltip = "Paragraph background color"
-texture = ExtResource( 32 )
+texture = ExtResource( 39 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor"]
@@ -1275,7 +1840,7 @@ margin_top = 5.0
 margin_right = 135.0
 margin_bottom = 35.0
 hint_tooltip = "Document background color"
-texture = ExtResource( 33 )
+texture = ExtResource( 40 )
 stretch_mode = 4
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="FormatToolbar/BackColor2"]
@@ -1285,6 +1850,30 @@ margin_bottom = 30.0
 hint_tooltip = "Document background color"
 focus_mode = 0
 color = Color( 1, 1, 1, 0.5 )
+
+[node name="W" type="ScrollContainer" parent="FormatToolbar"]
+visible = false
+margin_left = 1082.0
+margin_right = 1570.0
+margin_bottom = 394.0
+
+[node name="Panel" type="ColorRect" parent="FormatToolbar/W"]
+margin_right = 5000.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 5000, 380 )
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 41 )
+
+[node name="HSlider" type="HSlider" parent="FormatToolbar/W/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 205.0
+margin_bottom = 21.0
+hint_tooltip = "Preview scale"
+min_value = 1.0
+max_value = 10.0
+step = 0.5
+value = 3.0
 
 [node name="StatBar" type="ColorRect" parent="."]
 margin_top = 780.0
@@ -1308,16 +1897,24 @@ color = Color( 0.54902, 0.54902, 0.54902, 1 )
 
 [node name="W" type="Label" parent="StatBar"]
 margin_left = 160.0
-margin_right = 430.0
+margin_right = 415.0
 margin_bottom = 20.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "-"
 align = 1
 valign = 1
 
+[node name="X" type="Label" parent="StatBar"]
+margin_left = 425.0
+margin_right = 1455.0
+margin_bottom = 20.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "-"
+valign = 1
+
 [node name="Panel2" type="ColorRect" parent="StatBar"]
-margin_left = 430.0
-margin_right = 433.0
+margin_left = 415.0
+margin_right = 418.0
 margin_bottom = 20.0
 color = Color( 0.54902, 0.54902, 0.54902, 1 )
 
@@ -1352,11 +1949,72 @@ step = 1.0
 
 [node name="VScrollBar" type="VScrollBar" parent="."]
 margin_left = 1168.0
-margin_top = 115.0
+margin_top = 305.0
 margin_right = 1180.0
 margin_bottom = 767.0
 step = 1.0
 
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+visible = false
+margin_left = 15.0
+margin_top = 550.0
+margin_right = 1280.0
+margin_bottom = 765.0
+
+[node name="PanelDbgD" type="ColorRect" parent="ScrollContainer"]
+margin_right = 5000.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 5000, 200 )
+rect_clip_content = true
+color = Color( 0.752941, 0.752941, 0.752941, 1 )
+script = ExtResource( 42 )
+
+[node name="Label" type="Label" parent="ScrollContainer/PanelDbgD"]
+margin_left = 5.0
+margin_top = 30.0
+margin_right = 53.0
+margin_bottom = 44.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Glyphs:"
+
+[node name="Label3" type="Label" parent="ScrollContainer/PanelDbgD"]
+margin_left = 5.0
+margin_top = 67.0
+margin_right = 63.0
+margin_bottom = 81.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Pos (S/E):"
+
+[node name="Label5" type="Label" parent="ScrollContainer/PanelDbgD"]
+margin_left = 5.0
+margin_top = 95.0
+margin_right = 53.0
+margin_bottom = 109.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Gl. Idx:"
+
+[node name="Label4" type="Label" parent="ScrollContainer/PanelDbgD"]
+margin_left = 5.0
+margin_top = 155.0
+margin_right = 53.0
+margin_bottom = 169.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Pos:"
+
+[node name="Label2" type="Label" parent="ScrollContainer/PanelDbgD"]
+margin_left = 5.0
+margin_top = 129.0
+margin_right = 52.0
+margin_bottom = 143.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Source:"
+
+[node name="Panel" type="Panel" parent="ScrollContainer/PanelDbgD"]
+margin_top = 119.0
+margin_right = 10000.0
+margin_bottom = 121.0
+
+[connection signal="gui_input" from="TLProtoControl" to="." method="_on_TLProtoControl_gui_input"]
 [connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
 [connection signal="item_selected" from="FormatToolbar/FontSize" to="." method="_on_FontSize_item_selected"]
 [connection signal="toggled" from="FormatToolbar/StyleBold" to="." method="_on_Style_toggled"]
@@ -1376,6 +2034,11 @@ step = 1.0
 [connection signal="toggled" from="FormatToolbar/HalJ" to="." method="_on_HalJ_toggled"]
 [connection signal="pressed" from="FormatToolbar/ClearFMT" to="." method="_on_ClearFMT_pressed"]
 [connection signal="pressed" from="FormatToolbar/ClearFMT2" to="." method="_on_ClearFMT2_pressed"]
+[connection signal="toggled" from="FormatToolbar/DebugRect" to="." method="_on_DEbug_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugLBrk" to="." method="_on_DebugLBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugJBrk" to="." method="_on_DebugJBrk_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugDdr" to="." method="_on_DebugDdr_toggled"]
+[connection signal="toggled" from="FormatToolbar/DebugJBrk2" to="." method="_on_DebugJBrk2_toggled"]
 [connection signal="pressed" from="FormatToolbar/New" to="." method="_on_New_pressed"]
 [connection signal="pressed" from="FormatToolbar/Load" to="." method="_on_Load_pressed"]
 [connection signal="pressed" from="FormatToolbar/Save" to="." method="_on_Save_pressed"]
@@ -1398,6 +2061,7 @@ step = 1.0
 [connection signal="color_changed" from="FormatToolbar/OutColor/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor/ColorPickerButton" to="." method="_on_BackColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor2/ColorPickerButton" to="." method="_on_Color2PickerButton_color_changed"]
+[connection signal="value_changed" from="FormatToolbar/W/Panel/HSlider" to="FormatToolbar/W/Panel" method="_on_HSlider_value_changed"]
 [connection signal="file_selected" from="FileDialogSave" to="." method="_on_FileDialogSave_file_selected"]
 [connection signal="file_selected" from="FileDialogLoad" to="." method="_on_FileDialogLoad_file_selected"]
 [connection signal="value_changed" from="HScrollBar" to="." method="_on_HScrollBar_value_changed"]

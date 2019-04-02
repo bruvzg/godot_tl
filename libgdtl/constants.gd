@@ -1,3 +1,6 @@
+tool
+extends Node
+
 enum TextDirection {
 
 	TEXT_DIRECTION_LTR = 0,
