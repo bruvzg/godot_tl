@@ -79,3 +79,5 @@ For more information, see https://github.com/silnrsi/graphite/blob/master/COPYIN
 [Material Design icons by Google](https://github.com/google/material-design-icons) are published under the [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 Noto Color Emoji font is cut down to single glyph (U+1F604) using [glyphhanger](https://github.com/filamentgroup/glyphhanger).
+
+[![Travis Build Status](https://travis-ci.org/bruvzg/godot_tl.svg?branch=master)](https://travis-ci.org/bruvzg/godot_tl)
