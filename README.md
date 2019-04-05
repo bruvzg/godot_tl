@@ -20,7 +20,7 @@ Name | Description | Default value
 `builtin_runtime` | Use the built-in libraries | `true`
 `use_graphite2` | Enable SIL Graphite 2 complementary shaper | `true`
 
-### Building `libdgtl` module
+### Building `libgdtl` module
 
 Clone this repository (without `--recursive` flag) into Godot's `modules` subfolder as `godot_tl`.
 Rebuild Godot engine as ususal.
@@ -40,7 +40,7 @@ Name | Description | Default value
 
 See https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library
 
-### Building `libdgtl` module
+### Building `libgdtl` module
 
 You can compile this module by executing:
 ```
