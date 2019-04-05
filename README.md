@@ -44,8 +44,8 @@ See https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compilin
 
 You can compile this module by executing:
 ```
-meson {Targer-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
-ninja -C {Targer-Folder}
+meson {Target-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
+ninja -C {Target-Folder}
 ```
 
 ## Screenshots
