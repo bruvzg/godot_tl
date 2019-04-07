@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <list>
 
 //#define DEBUG_DISPLAY_METRICS
 //#define DEBUG_PRINT_RUNS
@@ -39,6 +40,10 @@ namespace godot {};
 
 #ifndef MIN
 #define MIN(a, b) (a < b ? a : b)
+#endif
+
+#ifndef CLAMP
+#define CLAMP(m_a, m_min, m_max) (((m_a) < (m_min)) ? (m_min) : (((m_a) > (m_max)) ? m_max : m_a))
 #endif
 
 #ifdef WARN_PRINTS

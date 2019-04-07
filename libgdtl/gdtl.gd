@@ -12,6 +12,8 @@ func _enter_tree():
     add_custom_type("TLShapedParagraph", "Resource", preload("res://addons/libgdtl/classes/tl_shaped_paragraph.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_shaped_paragraph.svg"))
     add_custom_type("TLProtoControl", "Control", preload("res://addons/libgdtl/classes/tl_proto_control.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_proto_control.svg"))
     add_custom_type("TLProtoControlSelection", "Reference", preload("res://addons/libgdtl/classes/tl_proto_control_selection.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_proto_control_selection.svg"))
+    add_custom_type("TLLabel", "Control", preload("res://addons/libgdtl/classes/tl_label.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_label.svg"))
+    add_custom_type("TLLineEdit", "Control", preload("res://addons/libgdtl/classes/tl_line_edit.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_line_edit.svg"))
     add_autoload_singleton("TLConstants", "res://addons/libgdtl/constants.gd")
 
 func _exit_tree():
@@ -25,3 +27,5 @@ func _exit_tree():
     remove_custom_type("TLShapedParagraph")
     remove_custom_type("TLProtoControl")
     remove_custom_type("TLProtoControlSelection")
+    remove_custom_type("TLLabel")
+    remove_custom_type("TLLineEdit")

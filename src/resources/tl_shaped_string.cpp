@@ -38,11 +38,18 @@ TLShapedString::Cluster::Cluster() {
 
 	start = -1;
 	end = -1;
+	offset = 0.0f;
 	ascent = 0.0f;
 	descent = 0.0f;
 	width = 0.0f;
 	valid = false;
+	is_rtl = false;
 	ignore_on_input = false;
+	font_face = NULL;
+	script = HB_SCRIPT_INVALID;
+	dir = HB_DIRECTION_INVALID;
+	lang = HB_LANGUAGE_INVALID;
+	cl_type = _CLUSTER_TYPE_INVALID;
 }
 
 /*************************************************************************/
@@ -2174,6 +2181,7 @@ void TLShapedString::_init() {
 	char_size = 0;
 	base_direction = TEXT_DIRECTION_AUTO;
 	base_size = 12;
+	base_style = String("Regular");
 }
 
 TLShapedString::~TLShapedString() {
@@ -2940,8 +2948,8 @@ void TLShapedString::_register_methods() {
 	register_property<TLShapedString, int>("base_direction", &TLShapedString::set_base_direction, &TLShapedString::get_base_direction, TEXT_DIRECTION_AUTO, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("LTR,RTL,Locale,Auto"));
 	register_property<TLShapedString, String>("text", &TLShapedString::set_text, &TLShapedString::get_text, String());
 	register_property<TLShapedString, Ref<TLFontFamily> >("base_font", &TLShapedString::set_base_font, &TLShapedString::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
-	register_property<TLShapedString, String>("base_font_style", &TLShapedString::set_base_font_style, &TLShapedString::get_base_font_style, String());
-	register_property<TLShapedString, int>("base_font_ssize", &TLShapedString::set_base_font_size, &TLShapedString::get_base_font_size, 12);
+	register_property<TLShapedString, String>("base_font_style", &TLShapedString::set_base_font_style, &TLShapedString::get_base_font_style, String("Regular"));
+	register_property<TLShapedString, int>("base_font_size", &TLShapedString::set_base_font_size, &TLShapedString::get_base_font_size, 12);
 	register_property<TLShapedString, String>("features", &TLShapedString::set_features, &TLShapedString::get_features, String());
 	register_property<TLShapedString, String>("language", &TLShapedString::set_language, &TLShapedString::get_language, String());
 	register_property<TLShapedString, bool>("preserve_control", &TLShapedString::set_preserve_control, &TLShapedString::get_preserve_control, false);

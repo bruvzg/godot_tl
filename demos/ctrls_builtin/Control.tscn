@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="TLDynamicFontFace" id=1]
+font_path = "res://fonts/NotoSans-Bold.ttf"
+
+[sub_resource type="TLFontFamily" id=2]
+regular/base = SubResource( 1 )
+
+[sub_resource type="TLDynamicFontFace" id=3]
+font_path = "res://fonts/NotoNastaliqUrdu-Regular.ttf"
+
+[sub_resource type="TLFontFamily" id=4]
+regular/base = SubResource( 3 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TLLabel" type="TLLabel" parent="."]
+margin_left = 111.0
+margin_top = 37.0
+margin_right = 321.0
+margin_bottom = 147.0
+text = "test232"
+base_font = SubResource( 2 )
+
+[node name="TLLineEdit" type="TLLineEdit" parent="."]
+margin_left = 159.0
+margin_top = 154.0
+margin_right = 381.0
+margin_bottom = 178.0
+base_font = SubResource( 4 )
+text = "اور بازار سے لے آئے اگر ٹوٹ گیا"

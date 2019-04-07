@@ -151,6 +151,12 @@ bool TLFontFace::load(String p_resource_path) {
 	return false;
 }
 
+bool TLFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
+
+	WARN_PRINTS("Not implemented, pure virtual function call!")
+	return false;
+}
+
 double TLFontFace::get_ascent(int p_size) const {
 
 	WARN_PRINTS("Not implemented, pure virtual function call!")
@@ -205,6 +211,16 @@ int TLFontFace::get_base_size() const {
 	return 0;
 }
 
+void TLFontFace::set_font_path(String p_resource_path) {
+
+	path = p_resource_path;
+}
+
+String TLFontFace::get_font_path() const {
+
+	return path;
+}
+
 #ifdef GODOT_MODULE
 void TLFontFace::_bind_methods() {
 
@@ -219,11 +235,18 @@ void TLFontFace::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_base_size"), &TLFontFace::get_base_size);
 
+	ClassDB::bind_method(D_METHOD("get_font_path"), &TLFontFace::get_font_path);
+	ClassDB::bind_method(D_METHOD("set_font_path", "path"), &TLFontFace::set_font_path);
+
 	ClassDB::bind_method(D_METHOD("set_fallback", "ref"), &TLFontFace::set_fallback);
 	ClassDB::bind_method(D_METHOD("get_fallback"), &TLFontFace::get_fallback);
 
 	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &TLFontFace::set_texture_flags);
 	ClassDB::bind_method(D_METHOD("get_texture_flags"), &TLFontFace::get_texture_flags);
+
+	ClassDB::bind_method(D_METHOD("unicode_range_supported", "size", "bank", "range"), &TLFontFace::unicode_range_supported);
+
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "font_path", PROPERTY_HINT_FILE, "*.ttf,*.otf"), "set_font_path", "get_font_path");
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fallback", PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"), "set_fallback", "get_fallback");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_flags", PROPERTY_HINT_FLAGS, "Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"), "set_texture_flags", "get_texture_flags");
@@ -244,11 +267,18 @@ void TLFontFace::_register_methods() {
 
 	register_method("get_base_size", &TLFontFace::get_base_size);
 
+	register_method("get_font_path", &TLFontFace::get_font_path);
+	register_method("set_font_path", &TLFontFace::set_font_path);
+
 	register_method("set_fallback", &TLFontFace::set_fallback);
 	register_method("get_fallback", &TLFontFace::get_fallback);
 
 	register_method("set_texture_flags", &TLFontFace::set_texture_flags);
 	register_method("get_texture_flags", &TLFontFace::get_texture_flags);
+
+	register_method("unicode_range_supported", &TLFontFace::unicode_range_supported);
+
+	register_property<TLFontFace, String>("font_path", &TLFontFace::set_font_path, &TLFontFace::get_font_path, String(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_FILE, String("*.ttf,*.otf"));
 
 	register_property<TLFontFace, Ref<TLFontFace> >("fallback", &TLFontFace::set_fallback, &TLFontFace::get_fallback, Ref<TLFontFace>(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFace"));
 	register_property<TLFontFace, int>("texture_flags", &TLFontFace::set_texture_flags, &TLFontFace::get_texture_flags, Texture::FLAG_VIDEO_SURFACE, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_FLAGS, String("Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"));

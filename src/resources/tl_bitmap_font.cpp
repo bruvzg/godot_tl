@@ -224,6 +224,8 @@ TLBitmapFontFace::~TLBitmapFontFace() {
 
 float TLBitmapFontFace::get_glyph_advance(uint32_t p_codepoint, int p_size) const {
 
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
 	if (loaded && (glyph_cache.count(p_codepoint) > 0)) {
 		return glyph_cache.at(p_codepoint).advance * scale;
@@ -234,6 +236,8 @@ float TLBitmapFontFace::get_glyph_advance(uint32_t p_codepoint, int p_size) cons
 
 Point2 TLBitmapFontFace::get_glyph_align(uint32_t p_codepoint, int p_size) const {
 
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
 	if (loaded && (glyph_cache.count(p_codepoint) > 0)) {
 		return glyph_cache.at(p_codepoint).align * scale;
@@ -244,6 +248,8 @@ Point2 TLBitmapFontFace::get_glyph_align(uint32_t p_codepoint, int p_size) const
 
 Size2 TLBitmapFontFace::get_glyph_size(uint32_t p_codepoint, int p_size) const {
 
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
 	if (loaded && (glyph_cache.count(p_codepoint) > 0)) {
 		return glyph_cache.at(p_codepoint).uv.size * scale;
@@ -253,6 +259,9 @@ Size2 TLBitmapFontFace::get_glyph_size(uint32_t p_codepoint, int p_size) const {
 }
 
 float TLBitmapFontFace::get_kerning_pair(uint32_t p_codepoint_l, uint32_t p_codepoint_r, int p_size) const {
+
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 
 	float scale = (float)p_size / bmp_size;
 	if (loaded) {
@@ -270,10 +279,16 @@ float TLBitmapFontFace::get_kerning_pair(uint32_t p_codepoint_l, uint32_t p_code
 
 bool TLBitmapFontFace::has_glyph(uint32_t p_codepoint) const {
 
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
+
 	return (loaded && (glyph_cache.count(p_codepoint) > 0));
 }
 
 void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
+
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 
 	float scale = (float)p_size / bmp_size;
 	if (loaded && (glyph_cache.count(p_codepoint) > 0)) {
@@ -289,6 +304,9 @@ void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_
 }
 
 hb_font_t *TLBitmapFontFace::get_hb_font(int p_size) const {
+
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->hb_font;
@@ -315,6 +333,12 @@ void TLBitmapFontFace::clear_cache() {
 		delete it->second;
 	}
 	sizes.clear();
+}
+
+void TLBitmapFontFace::set_font_path(String p_resource_path) {
+
+	path = p_resource_path;
+	load(p_resource_path);
 }
 
 bool TLBitmapFontFace::load(String p_resource_path) {
@@ -473,30 +497,40 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 	return loaded;
 }
 
+bool TLBitmapFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
+
+	//TODO
+	return false;
+}
+
 double TLBitmapFontFace::get_ascent(int p_size) const {
 
 	float scale = (float)p_size / bmp_size;
-	if (!loaded) WARN_PRINTS("Font not loaded!")
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	return loaded ? ascent * scale : 0.0f;
 }
 
 double TLBitmapFontFace::get_descent(int p_size) const {
 
 	float scale = (float)p_size / bmp_size;
-	if (!loaded) WARN_PRINTS("Font not loaded!")
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	return loaded ? descent * scale : 0.0f;
 }
 
 double TLBitmapFontFace::get_height(int p_size) const {
 
 	float scale = (float)p_size / bmp_size;
-	if (!loaded) WARN_PRINTS("Font not loaded!")
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	return loaded ? height * scale : 0.0f;
 }
 
 int TLBitmapFontFace::get_base_size() const {
 
-	if (!loaded) WARN_PRINTS("Font not loaded!")
+	if (!loaded)
+		const_cast<TLBitmapFontFace *>(this)->load(path);
 	return loaded ? bmp_size : 0;
 }
 
@@ -504,6 +538,8 @@ void TLBitmapFontFace::set_texture_flags(int p_flags) {
 
 	if (txt_flags != p_flags) {
 		txt_flags = p_flags;
+		if (!loaded)
+			load(path);
 		if (loaded) {
 			for (size_t i = 0; i < texture_cache.size(); i++) {
 				Ref<Texture> &tex = texture_cache[i];

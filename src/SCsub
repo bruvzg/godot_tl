@@ -20,7 +20,9 @@ sources = [
 	'resources/tl_shaped_attributed_string.cpp',
 	'resources/tl_shaped_paragraph.cpp',
 	'resources/tl_icu_data_loader.cpp',
-	'controls/tl_proto_control.cpp'
+	'controls/tl_proto_control.cpp',
+	'controls/tl_label.cpp',
+	'controls/tl_line_edit.cpp',
 ]
 
 if env['tools']:

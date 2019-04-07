@@ -73,6 +73,7 @@ TLDynamicFontFaceAtSize::TLDynamicFontFaceAtSize() {
 	descent = 0.0f;
 	height = 0.0f;
 	hb_font = NULL;
+	os2 = NULL;
 }
 
 TLDynamicFontFaceAtSize::~TLDynamicFontFaceAtSize() {
@@ -480,9 +481,32 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size) {
 		return false;
 	}
 
+	//Load os2 TTF pable
+	os2 = (TT_OS2 *)FT_Get_Sfnt_Table(ft_face, FT_SFNT_OS2);
+
 	loaded = true;
 
 	return loaded;
+}
+
+bool TLDynamicFontFaceAtSize::unicode_range_supported(uint8_t p_bank, uint32_t p_range) const {
+
+	//https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_ucr_xxx
+	if (!os2)
+		return false;
+
+	switch (p_bank) {
+		case 1:
+			return (os2->ulUnicodeRange1 & p_range);
+		case 2:
+			return (os2->ulUnicodeRange2 & p_range);
+		case 3:
+			return (os2->ulUnicodeRange3 & p_range);
+		case 4:
+			return (os2->ulUnicodeRange4 & p_range);
+		default:
+			return false;
+	}
 }
 
 double TLDynamicFontFaceAtSize::get_ascent() const {
@@ -582,7 +606,7 @@ hb_font_t *TLDynamicFontFace::get_hb_font(int p_size) const {
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			return f_at_s->get_hb_font();
 		}
@@ -601,7 +625,7 @@ float TLDynamicFontFace::get_glyph_scale(int p_size) const {
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			return f_at_s->get_glyph_scale();
 		}
@@ -620,7 +644,7 @@ void TLDynamicFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			f_at_s->draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate);
 		}
@@ -638,21 +662,46 @@ void TLDynamicFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			f_at_s->draw_glyph_outline(p_canvas_item, p_pos, p_codepoint, p_modulate);
 		}
 	}
 }
 
+void TLDynamicFontFace::set_font_path(String p_resource_path) {
+
+	load(p_resource_path);
+}
+
 bool TLDynamicFontFace::load(String p_resource_path) {
 
+	path = p_resource_path;
 	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
 		delete it->second;
 	}
 	sizes.clear();
-	resource_name = p_resource_path;
 	return true;
+}
+
+bool TLDynamicFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
+
+	if (sizes.count(p_size) > 0) {
+		return sizes.at(p_size)->unicode_range_supported(p_bank, p_range);
+	} else {
+		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
+		f_at_s->set_texture_flags(txt_flags);
+		f_at_s->set_hinting(hinting);
+		f_at_s->set_force_autohinter(force_autohinter);
+		f_at_s->set_oversampling(oversampling);
+
+		if (f_at_s->load(path, p_size)) {
+			sizes[p_size] = f_at_s;
+			return f_at_s->unicode_range_supported(p_bank, p_range);
+		}
+	}
+	WARN_PRINTS("Font not loaded!")
+	return false;
 }
 
 double TLDynamicFontFace::get_ascent(int p_size) const {
@@ -666,7 +715,7 @@ double TLDynamicFontFace::get_ascent(int p_size) const {
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			return f_at_s->get_ascent();
 		}
@@ -686,7 +735,7 @@ double TLDynamicFontFace::get_descent(int p_size) const {
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			return f_at_s->get_descent();
 		}
@@ -706,7 +755,7 @@ double TLDynamicFontFace::get_height(int p_size) const {
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
 
-		if (f_at_s->load(resource_name, p_size)) {
+		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			return f_at_s->get_height();
 		}
@@ -717,6 +766,7 @@ double TLDynamicFontFace::get_height(int p_size) const {
 
 void TLDynamicFontFace::set_texture_flags(int p_flags) {
 
+	txt_flags = p_flags;
 	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
 		it->second->set_texture_flags(p_flags);
 	}
@@ -729,6 +779,7 @@ int TLDynamicFontFace::get_texture_flags() const {
 
 void TLDynamicFontFace::set_hinting(int p_hinting) {
 
+	hinting = (DynamicFaceHinting)p_hinting;
 	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
 		it->second->set_hinting(p_hinting);
 	}
@@ -741,6 +792,7 @@ int TLDynamicFontFace::get_hinting() const {
 
 void TLDynamicFontFace::set_force_autohinter(bool p_force) {
 
+	force_autohinter = p_force;
 	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
 		it->second->set_force_autohinter(p_force);
 	}
@@ -753,6 +805,7 @@ bool TLDynamicFontFace::get_force_autohinter() const {
 
 void TLDynamicFontFace::set_oversampling(float p_oversampling) {
 
+	oversampling = p_oversampling;
 	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
 		it->second->set_oversampling(p_oversampling);
 	}

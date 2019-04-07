@@ -14,6 +14,8 @@
 #include <ft2build.h>
 #include <hb-ft.h>
 
+#include FT_TRUETYPE_TABLES_H
+
 using namespace godot;
 
 enum DynamicFaceHinting {
@@ -84,6 +86,8 @@ protected:
 	int ft_size;
 	float scale_color_font;
 
+	TT_OS2 *os2;
+
 	float ascent;
 	float descent;
 	float height;
@@ -107,6 +111,8 @@ public:
 	void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
 	void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
 
+	bool unicode_range_supported(uint8_t p_bank, uint32_t p_range) const;
+
 	bool load(String p_resource_path, int p_size);
 
 	double get_ascent() const;
@@ -123,8 +129,6 @@ class TLDynamicFontFace : public TLFontFace {
 	GODOT_SUBCLASS(TLDynamicFontFace, TLFontFace);
 
 protected:
-	String resource_name;
-
 	float oversampling;
 	DynamicFaceHinting hinting;
 	bool force_autohinter;
@@ -144,8 +148,12 @@ public:
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
 
+	virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const override;
+
 	//GDNative methods
 	virtual bool load(String p_resource_path) override;
+
+	virtual void set_font_path(String p_resource_path) override;
 
 	virtual double get_ascent(int p_size) const override;
 	virtual double get_descent(int p_size) const override;

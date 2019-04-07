@@ -31,6 +31,7 @@ class TLFontFace : public Resource {
 protected:
 	Ref<TLFontFace> fallback;
 	static Ref<ImageTexture> hex_box_img_tex;
+	String path;
 
 public:
 	TLFontFace();
@@ -51,8 +52,13 @@ public:
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 
+	virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const;
+
 	//GDNative methods
 	virtual bool load(String p_resource_path);
+
+	virtual void set_font_path(String p_resource_path);
+	virtual String get_font_path() const;
 
 	virtual double get_ascent(int p_size) const;
 	virtual double get_descent(int p_size) const;

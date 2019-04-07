@@ -16,6 +16,8 @@
 
 #include "resources/tl_icu_data_loader.hpp"
 
+#include "controls/tl_label.hpp"
+#include "controls/tl_line_edit.hpp"
 #include "controls/tl_proto_control.hpp"
 
 #include <unicode/uclean.h>
@@ -52,6 +54,8 @@ void register_godot_tl_types() {
 	ClassDB::register_class<TLShapedParagraph>();
 	ClassDB::register_class<TLProtoControl>();
 	ClassDB::register_class<TLProtoControlSelection>();
+	ClassDB::register_class<TLLabel>();
+	ClassDB::register_class<TLLineEdit>();
 
 	//Register editor tools
 #ifdef TOOLS_ENABLED
@@ -104,6 +108,8 @@ extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
 	register_class<TLShapedParagraph>();
 	register_class<TLProtoControl>();
 	register_class<TLProtoControlSelection>();
+	register_class<TLLabel>();
+	register_class<TLLineEdit>();
 
 	register_tool_class<TLICUDataLoader>();
 	register_tool_class<TLFontFace>();
@@ -115,6 +121,8 @@ extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
 	register_tool_class<TLShapedParagraph>();
 	register_tool_class<TLProtoControl>();
 	register_tool_class<TLProtoControlSelection>();
+	register_tool_class<TLLabel>();
+	register_tool_class<TLLineEdit>();
 }
 
 #endif

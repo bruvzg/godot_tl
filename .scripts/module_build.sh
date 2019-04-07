@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -ev
-set -x #echo on
 
 scons --version
 clang --version
