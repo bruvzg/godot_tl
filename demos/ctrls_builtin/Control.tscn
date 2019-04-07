@@ -1,4 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://fonts/NotoSans-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/NotoNastaliqUrdu-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="TLDynamicFontFace" id=1]
 font_path = "res://fonts/NotoSans-Bold.ttf"
@@ -6,11 +9,19 @@ font_path = "res://fonts/NotoSans-Bold.ttf"
 [sub_resource type="TLFontFamily" id=2]
 regular/base = SubResource( 1 )
 
-[sub_resource type="TLDynamicFontFace" id=3]
+[sub_resource type="DynamicFont" id=3]
+size = 12
+font_data = ExtResource( 1 )
+
+[sub_resource type="TLDynamicFontFace" id=4]
 font_path = "res://fonts/NotoNastaliqUrdu-Regular.ttf"
 
-[sub_resource type="TLFontFamily" id=4]
-regular/base = SubResource( 3 )
+[sub_resource type="TLFontFamily" id=5]
+regular/base = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 12
+font_data = ExtResource( 2 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -18,16 +29,34 @@ anchor_bottom = 1.0
 
 [node name="TLLabel" type="TLLabel" parent="."]
 margin_left = 111.0
-margin_top = 37.0
+margin_top = 36.0
 margin_right = 321.0
-margin_bottom = 147.0
-text = "test232"
+margin_bottom = 146.0
+text = "test232
+gdtl TLLabel"
 base_font = SubResource( 2 )
 
+[node name="Label" type="Label" parent="."]
+margin_left = 401.0
+margin_top = 37.0
+margin_right = 611.0
+margin_bottom = 151.0
+custom_fonts/font = SubResource( 3 )
+text = "test232
+Godot Label"
+
 [node name="TLLineEdit" type="TLLineEdit" parent="."]
-margin_left = 159.0
-margin_top = 154.0
-margin_right = 381.0
-margin_bottom = 178.0
-base_font = SubResource( 4 )
+margin_left = 100.0
+margin_top = 159.0
+margin_right = 322.0
+margin_bottom = 200.0
+base_font = SubResource( 5 )
+text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 390.0
+margin_top = 159.0
+margin_right = 612.0
+margin_bottom = 200.0
+custom_fonts/font = SubResource( 6 )
 text = "اور بازار سے لے آئے اگر ٹوٹ گیا"

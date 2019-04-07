@@ -767,10 +767,10 @@ void TLLineEdit::_notification(int p_what) {
 			int y_area = height - style->get_minimum_size().height;
 			int y_ofs = style->get_offset().y + (y_area - MAX(_get_base_font_height(), line->get_height())) / 2;
 
-			Color selection_color = get_color("selection_color", "Label");
-			Color font_color = get_color("font_color", "Label");
-			Color font_color_selected = get_color("font_color_selected", "Label");
-			Color cursor_color = get_color("cursor_color", "Label");
+			Color selection_color = get_color("selection_color", "LineEdit");
+			Color font_color = get_color("font_color", "LineEdit");
+			Color font_color_selected = get_color("font_color_selected", "LineEdit");
+			Color cursor_color = get_color("cursor_color", "LineEdit");
 
 			// draw placeholder color
 			if (using_placeholder)
@@ -783,9 +783,9 @@ void TLLineEdit::_notification(int p_what) {
 				Color color_icon(1, 1, 1, disabled_alpha * .9);
 				if (display_clear_icon) {
 					if (clear_button_status.press_attempt && clear_button_status.pressing_inside) {
-						color_icon = get_color("clear_button_color_pressed", "Label");
+						color_icon = get_color("clear_button_color_pressed", "LineEdit");
 					} else {
-						color_icon = get_color("clear_button_color", "Label");
+						color_icon = get_color("clear_button_color", "LineEdit");
 					}
 				}
 				r_icon->draw(ci, Point2(width - r_icon->get_width() - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)), height / 2 - r_icon->get_height() / 2), color_icon);
@@ -1311,7 +1311,7 @@ Size2 TLLineEdit::get_minimum_size() const {
 
 	//minimum size of text
 	int space_size = 10;
-	int mstext = get_constant("minimum_spaces", "Label") * space_size;
+	int mstext = get_constant("minimum_spaces", "LineEdit") * space_size;
 
 	if (expand_to_text_length) {
 		mstext = line->get_width();
