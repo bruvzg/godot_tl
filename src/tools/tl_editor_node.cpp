@@ -13,6 +13,7 @@ TLEditorNode *TLEditorNode::singleton = NULL;
 void TLEditorNode::_notification(int p_notification) {
 
 	switch (p_notification) {
+		case Node::NOTIFICATION_ENTER_TREE:
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
 
 			//Register node type icons

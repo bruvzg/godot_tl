@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLFontFace" inherits="Resource" category="Core" version="3.1">
+<class name="TLFontFace" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
 		*Virtual class*
 
@@ -89,10 +89,24 @@
 				Loads font from speified file.
 			</description>
 		</method>
+		<method name="unicode_range_supported" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="size" type="int">
+			</argument>
+			<argument index="1" name="bank" type="int">
+			</argument>
+			<argument index="2" name="range" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="fallback" type="TLFontFace" setter="set_fallback" getter="get_fallback">
 			Fallback font face reference. Default: [code]null[/code]
+		</member>
+		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path">
 		</member>
 		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags">
 			Font texture flags. Default: [code]FLAG_VIDEO_SURFACE[/code]

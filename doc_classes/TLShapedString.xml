@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLShapedString" inherits="Resource" category="Core" version="3.1">
+<class name="TLShapedString" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
 		Holds shaped line of plain text.
 	</brief_description>
@@ -16,7 +16,6 @@
 		Note 2: Encoding
 	
 		TLShapedString uses UTF-16 encoding, all positions accepted and returned by TLShapedString function are measured in UTF-16 code points.
-
 	</description>
 	<tutorials>
 	</tutorials>
@@ -61,6 +60,12 @@
 			</return>
 			<argument index="0" name="text" type="PoolByteArray">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="break_jst" qualifiers="const">
+			<return type="Array">
+			</return>
 			<description>
 			</description>
 		</method>
@@ -119,6 +124,22 @@
 				Draws a string.
 			</description>
 		</method>
+		<method name="draw_as_hex">
+			<return type="void">
+			</return>
+			<argument index="0" name="canvas_item" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="modulate" type="Color">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="draw_cluster">
 			<return type="Vector2">
 			</return>
@@ -132,6 +153,38 @@
 			</argument>
 			<description>
 				Draws single grapheme cluster. Returns advance.
+			</description>
+		</method>
+		<method name="draw_dbg">
+			<return type="void">
+			</return>
+			<argument index="0" name="canvas_item" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="modulate" type="Color">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="draw_logical_as_hex">
+			<return type="void">
+			</return>
+			<argument index="0" name="canvas_item" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="modulate" type="Color">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="empty" qualifiers="const">
@@ -177,6 +230,14 @@
 				Returns cluster ascent.
 			</description>
 		</method>
+		<method name="get_cluster_debug_info" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_cluster_descent" qualifiers="const">
 			<return type="float">
 			</return>
@@ -193,6 +254,22 @@
 			</argument>
 			<description>
 				Returns last character position corresponding cluster.
+			</description>
+		</method>
+		<method name="get_cluster_face" qualifiers="const">
+			<return type="TLFontFace">
+			</return>
+			<argument index="0" name="position" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_cluster_face_size" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="position" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="get_cluster_glyph" qualifiers="const">

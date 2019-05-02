@@ -466,7 +466,7 @@ void TLFontFamily::_register_methods() {
 	register_method("set_liked_face_for_script", &TLFontFamily::set_liked_face_for_script);
 	register_method("get_liked_face_for_script", &TLFontFamily::get_liked_face_for_script);
 
-	register_method("_get_property_list", &TLFontFamily::_get_property_list);
+	register_method("_get_property_list", &TLFontFamily::_get_property_list); //??? does not work for resource ???
 	register_method("_get", &TLFontFamily::_get);
 	register_method("_set", &TLFontFamily::_set);
 }

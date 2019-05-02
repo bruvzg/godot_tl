@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLProtoControl" inherits="Control" category="Core" version="3.1">
+<class name="TLProtoControl" inherits="Control" category="Core" version="3.2">
 	<brief_description>
 		Rich text input control prototype.
 	</brief_description>
@@ -28,9 +28,81 @@
 			<description>
 			</description>
 		</method>
+		<method name="debug_draw">
+			<return type="void">
+			</return>
+			<argument index="0" name="rid" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="hit_position" type="Vector2">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="debug_draw_as_hex">
+			<return type="void">
+			</return>
+			<argument index="0" name="rid" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="hit_position" type="Vector2">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="debug_draw_logical_as_hex">
+			<return type="void">
+			</return>
+			<argument index="0" name="rid" type="RID">
+			</argument>
+			<argument index="1" name="position" type="Vector2">
+			</argument>
+			<argument index="2" name="hit_position" type="Vector2">
+			</argument>
+			<argument index="3" name="draw_brk_ops" type="bool">
+			</argument>
+			<argument index="4" name="draw_jst_ops" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_caret_position">
 			<return type="Vector2">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_cluster_debug_info_hit_test">
+			<return type="String">
+			</return>
+			<argument index="0" name="position" type="Vector2">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_cluster_glyphs_hit_test">
+			<return type="Array">
+			</return>
+			<argument index="0" name="position" type="Vector2">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_cluster_rect_hit_test">
+			<return type="Rect2">
+			</return>
+			<argument index="0" name="position" type="Vector2">
+			</argument>
 			<description>
 			</description>
 		</method>

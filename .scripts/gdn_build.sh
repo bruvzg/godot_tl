@@ -8,7 +8,7 @@ scons --version
 clang --version
 
 cd godot-cpp
-scons -j2 platform=linux bits=64 target=debug generate_bindings=yes use_custom_api_file=yes custom_api_file="../api_3_1.json"
+scons -j2 platform=linux bits=64 target=debug generate_bindings=yes
 
 cd ..
 

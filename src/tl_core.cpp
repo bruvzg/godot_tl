@@ -98,19 +98,6 @@ extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
 
 	TLFontFace::initialize_hex_font();
 
-	register_class<TLICUDataLoader>();
-	register_class<TLFontFace>();
-	register_class<TLBitmapFontFace>();
-	register_class<TLDynamicFontFace>();
-	register_class<TLFontFamily>();
-	register_class<TLShapedString>();
-	register_class<TLShapedAttributedString>();
-	register_class<TLShapedParagraph>();
-	register_class<TLProtoControl>();
-	register_class<TLProtoControlSelection>();
-	register_class<TLLabel>();
-	register_class<TLLineEdit>();
-
 	register_tool_class<TLICUDataLoader>();
 	register_tool_class<TLFontFace>();
 	register_tool_class<TLBitmapFontFace>();

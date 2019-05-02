@@ -20,12 +20,16 @@ class TLICUDataLoader : public Resource {
 	GODOT_CLASS(TLICUDataLoader, Resource);
 
 	static uint8_t *icu_data;
+	String path;
 
 public:
 	TLICUDataLoader();
 	~TLICUDataLoader();
 
 	void _init();
+
+	void set_data_path(String p_resource_path);
+	String get_data_path() const;
 
 	bool load(String p_path);
 	static void unload();

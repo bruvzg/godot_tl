@@ -84,14 +84,33 @@ void TLICUDataLoader::unload() {
 	}
 }
 
+void TLICUDataLoader::set_data_path(String p_resource_path) {
+
+	path = p_resource_path;
+	load(path);
+}
+
+String TLICUDataLoader::get_data_path() const {
+
+	return path;
+}
+
 #ifdef GODOT_MODULE
 void TLICUDataLoader::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("load", "resource_path"), &TLICUDataLoader::load);
+	ClassDB::bind_method(D_METHOD("get_data_path"), &TLICUDataLoader::get_data_path);
+	ClassDB::bind_method(D_METHOD("set_data_path", "path"), &TLICUDataLoader::set_data_path);
+
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data_path", PROPERTY_HINT_FILE, "*.dat"), "set_data_path", "get_data_path");
 }
 #else
 void TLICUDataLoader::_register_methods() {
 
 	register_method("load", &TLICUDataLoader::load);
+	register_method("get_data_path", &TLICUDataLoader::get_data_path);
+	register_method("set_data_path", &TLICUDataLoader::set_data_path);
+
+	register_property<TLICUDataLoader, String>("data_path", &TLICUDataLoader::set_data_path, &TLICUDataLoader::get_data_path, String(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_FILE, String("*.dat"));
 }
 #endif
