@@ -23,7 +23,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt -y install libasound2-dev libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev -q
   - sudo apt -t xenial-backports -y install meson ninja-build -q
-  - sudo apt -t xenial-updates -y install clang-format-6.0 -q
+  - sudo apt -t xenial-updates -y install clang-format-6.0 clang-6.0 -q
 
 install:
   - pip install --user scons;
