@@ -1,0 +1,534 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var nt_fam_full
+var content = []
+var names = []
+var i = 0
+var drawn = false
+var s = 3
+
+func _ready():
+	var data_loader = TLICUDataLoader.new()
+	data_loader.load(\"res://icudt63l.dat\")
+
+	#base
+	var ms_rg_base = TLDynamicFontFace.new()
+	ms_rg_base.load(\"res://fonts/NotoFull/NotoSans-Regular.ttf\")
+
+	#supl
+	var ms_rg_hluw = TLDynamicFontFace.new()
+	ms_rg_hluw.load(\"res://fonts/NotoFull/NotoSansAnatolianHieroglyphs-Regular.ttf\")
+	ms_rg_hluw.set_fallback(ms_rg_base)
+
+	var ms_rg_mymr = TLDynamicFontFace.new()
+	ms_rg_mymr.load(\"res://fonts/NotoFull/NotoSansMyanmar-Regular.ttf\")
+	ms_rg_mymr.set_fallback(ms_rg_base)
+
+	var ms_rg_telu = TLDynamicFontFace.new()
+	ms_rg_telu.load(\"res://fonts/NotoFull/NotoSansTelugu-Regular.ttf\")
+	ms_rg_telu.set_fallback(ms_rg_base)
+
+	var ms_rg_guru = TLDynamicFontFace.new()
+	ms_rg_guru.load(\"res://fonts/NotoFull/NotoSansGurmukhi-Regular.ttf\")
+	ms_rg_guru.set_fallback(ms_rg_base)
+
+	var ms_rg_orya = TLDynamicFontFace.new()
+	ms_rg_orya.load(\"res://fonts/NotoFull/NotoSansOriya-Regular.ttf\")
+	ms_rg_orya.set_fallback(ms_rg_base)
+
+	var ms_rg_thai = TLDynamicFontFace.new()
+	ms_rg_thai.load(\"res://fonts/NotoFull/NotoSansThai-Regular.ttf\")
+	ms_rg_thai.set_fallback(ms_rg_base)
+
+	var ms_rg_knda = TLDynamicFontFace.new()
+	ms_rg_knda.load(\"res://fonts/NotoFull/NotoSansKannada-Regular.ttf\")
+	ms_rg_knda.set_fallback(ms_rg_base)
+
+	var ms_rg_osge = TLDynamicFontFace.new()
+	ms_rg_osge.load(\"res://fonts/NotoFull/NotoSansOsage-Regular.ttf\")
+	ms_rg_osge.set_fallback(ms_rg_base)
+
+	var ms_rg_tibt = TLDynamicFontFace.new()
+	ms_rg_tibt.load(\"res://fonts/NotoFull/NotoSansTibetan-Regular.ttf\")
+	ms_rg_tibt.set_fallback(ms_rg_base)
+
+	var ms_rg_mlym = TLDynamicFontFace.new()
+	ms_rg_mlym.load(\"res://fonts/NotoFull/NotoSansMalayalam-Regular.ttf\")
+	ms_rg_mlym.set_fallback(ms_rg_base)
+
+	var ms_rg_sinh = TLDynamicFontFace.new()
+	ms_rg_sinh.load(\"res://fonts/NotoFull/NotoSansSinhala-Regular.ttf\")
+	ms_rg_sinh.set_fallback(ms_rg_base)
+
+	var ms_rg_taml = TLDynamicFontFace.new()
+	ms_rg_taml.load(\"res://fonts/NotoFull/NotoSansTamil-Regular.ttf\")
+	ms_rg_taml.set_fallback(ms_rg_base)
+
+	var ms_rg_adlm = TLDynamicFontFace.new()
+	ms_rg_adlm.load(\"res://fonts/NotoFull/NotoSansAdlam-Regular.ttf\")
+	ms_rg_adlm.set_fallback(ms_rg_base)
+
+	var ms_rg_hani = TLDynamicFontFace.new()
+	ms_rg_hani.load(\"res://fonts/NotoFull/NotoSansCJKjp-Regular.otf\")
+	ms_rg_hani.set_fallback(ms_rg_base)
+
+	var ms_rg_deva = TLDynamicFontFace.new()
+	ms_rg_deva.load(\"res://fonts/NotoFull/NotoSansDevanagari-Regular.ttf\")
+	ms_rg_deva.set_fallback(ms_rg_base)
+
+	var ms_rg_khar = TLDynamicFontFace.new()
+	ms_rg_khar.load(\"res://fonts/NotoFull/NotoSansKharoshthi-Regular.ttf\")
+	ms_rg_khar.set_fallback(ms_rg_base)
+
+	var ms_rg_arab = TLDynamicFontFace.new()
+	ms_rg_arab.load(\"res://fonts/NotoFull/NotoSansArabic-Regular.ttf\")
+	ms_rg_arab.set_fallback(ms_rg_base)
+
+	var ms_rg_cans = TLDynamicFontFace.new()
+	ms_rg_cans.load(\"res://fonts/NotoFull/NotoSansCanadianAboriginal-Regular.ttf\")
+	ms_rg_cans.set_fallback(ms_rg_base)
+
+	var ms_rg_ethi = TLDynamicFontFace.new()
+	ms_rg_ethi.load(\"res://fonts/NotoFull/NotoSansEthiopic-Regular.ttf\")
+	ms_rg_ethi.set_fallback(ms_rg_base)
+
+	var ms_rg_khmr = TLDynamicFontFace.new()
+	ms_rg_khmr.load(\"res://fonts/NotoFull/NotoSansKhmer-Regular.ttf\")
+	ms_rg_khmr.set_fallback(ms_rg_base)
+
+	var ms_rg_armn = TLDynamicFontFace.new()
+	ms_rg_armn.load(\"res://fonts/NotoFull/NotoSansArmenian-Regular.ttf\")
+	ms_rg_armn.set_fallback(ms_rg_base)
+
+	var ms_rg_cakm = TLDynamicFontFace.new()
+	ms_rg_cakm.load(\"res://fonts/NotoFull/NotoSansChakma-Regular.ttf\")
+	ms_rg_cakm.set_fallback(ms_rg_base)
+
+	var ms_rg_geor = TLDynamicFontFace.new()
+	ms_rg_geor.load(\"res://fonts/NotoFull/NotoSansGeorgian-Regular.ttf\")
+	ms_rg_geor.set_fallback(ms_rg_base)
+
+	var ms_rg_laoo = TLDynamicFontFace.new()
+	ms_rg_laoo.load(\"res://fonts/NotoFull/NotoSansLao-Regular.ttf\")
+	ms_rg_laoo.set_fallback(ms_rg_base)
+
+	var ms_rg_beng = TLDynamicFontFace.new()
+	ms_rg_beng.load(\"res://fonts/NotoFull/NotoSansBengali-Regular.ttf\")
+	ms_rg_beng.set_fallback(ms_rg_base)
+
+	var ms_rg_cher = TLDynamicFontFace.new()
+	ms_rg_cher.load(\"res://fonts/NotoFull/NotoSansCherokee-Regular.ttf\")
+	ms_rg_cher.set_fallback(ms_rg_base)
+
+	var ms_rg_gujr = TLDynamicFontFace.new()
+	ms_rg_gujr.load(\"res://fonts/NotoFull/NotoSansGujarati-Regular.ttf\")
+	ms_rg_gujr.set_fallback(ms_rg_base)
+
+	var ms_rg_buhd = TLDynamicFontFace.new()
+	ms_rg_buhd.load(\"res://fonts/NotoFull/NotoSansBuhid-Regular.ttf\")
+	ms_rg_buhd.set_fallback(ms_rg_base)
+
+	var ms_rg_dsrt = TLDynamicFontFace.new()
+	ms_rg_dsrt.load(\"res://fonts/NotoFull/NotoSansDeseret-Regular.ttf\")
+	ms_rg_dsrt.set_fallback(ms_rg_base)
+
+	var ms_rg_hebr = TLDynamicFontFace.new()
+	ms_rg_hebr.load(\"res://fonts/NotoFull/NotoSansHebrew-Regular.ttf\")
+	ms_rg_hebr.set_fallback(ms_rg_base)
+
+	var ms_rg_avst = TLDynamicFontFace.new()
+	ms_rg_avst.load(\"res://fonts/NotoFull/NotoSansAvestan-Regular.ttf\")
+	ms_rg_avst.set_fallback(ms_rg_base)
+
+	var ms_rg_bali = TLDynamicFontFace.new()
+	ms_rg_bali.load(\"res://fonts/NotoFull/NotoSansBalinese-Regular.ttf\")
+	ms_rg_bali.set_fallback(ms_rg_base)
+
+	var ms_rg_bamu = TLDynamicFontFace.new()
+	ms_rg_bamu.load(\"res://fonts/NotoFull/NotoSansBamum-Regular.ttf\")
+	ms_rg_bamu.set_fallback(ms_rg_base)
+
+	var ms_rg_batk = TLDynamicFontFace.new()
+	ms_rg_batk.load(\"res://fonts/NotoFull/NotoSansBatak-Regular.ttf\")
+	ms_rg_batk.set_fallback(ms_rg_base)
+
+	var ms_rg_brah = TLDynamicFontFace.new()
+	ms_rg_brah.load(\"res://fonts/NotoFull/NotoSansBrahmi-Regular.ttf\")
+	ms_rg_brah.set_fallback(ms_rg_base)
+
+	var ms_rg_bugi = TLDynamicFontFace.new()
+	ms_rg_bugi.load(\"res://fonts/NotoFull/NotoSansBuginese-Regular.ttf\")
+	ms_rg_bugi.set_fallback(ms_rg_base)
+
+	var ms_rg_cari = TLDynamicFontFace.new()
+	ms_rg_cari.load(\"res://fonts/NotoFull/NotoSansCarian-Regular.ttf\")
+	ms_rg_cari.set_fallback(ms_rg_base)
+
+	var ms_rg_copt = TLDynamicFontFace.new()
+	ms_rg_copt.load(\"res://fonts/NotoFull/NotoSansCoptic-Regular.ttf\")
+	ms_rg_copt.set_fallback(ms_rg_base)
+
+	var ms_rg_xsux = TLDynamicFontFace.new()
+	ms_rg_xsux.load(\"res://fonts/NotoFull/NotoSansCuneiform-Regular.ttf\")
+	ms_rg_xsux.set_fallback(ms_rg_base)
+
+	var ms_rg_cprt = TLDynamicFontFace.new()
+	ms_rg_cprt.load(\"res://fonts/NotoFull/NotoSansCypriot-Regular.ttf\")
+	ms_rg_cprt.set_fallback(ms_rg_base)
+
+	var ms_rg_egyp = TLDynamicFontFace.new()
+	ms_rg_egyp.load(\"res://fonts/NotoFull/NotoSansEgyptianHieroglyphs-Regular.ttf\")
+	ms_rg_egyp.set_fallback(ms_rg_base)
+
+	var ms_rg_glag = TLDynamicFontFace.new()
+	ms_rg_glag.load(\"res://fonts/NotoFull/NotoSansGlagolitic-Regular.ttf\")
+	ms_rg_glag.set_fallback(ms_rg_base)
+
+	var ms_rg_goth = TLDynamicFontFace.new()
+	ms_rg_goth.load(\"res://fonts/NotoFull/NotoSansGothic-Regular.ttf\")
+	ms_rg_goth.set_fallback(ms_rg_base)
+
+	var ms_rg_hano = TLDynamicFontFace.new()
+	ms_rg_hano.load(\"res://fonts/NotoFull/NotoSansHanunoo-Regular.ttf\")
+	ms_rg_hano.set_fallback(ms_rg_base)
+
+	var ms_rg_armi = TLDynamicFontFace.new()
+	ms_rg_armi.load(\"res://fonts/NotoFull/NotoSansImperialAramaic-Regular.ttf\")
+	ms_rg_armi.set_fallback(ms_rg_base)
+
+	var ms_rg_phli = TLDynamicFontFace.new()
+	ms_rg_phli.load(\"res://fonts/NotoFull/NotoSansInscriptionalPahlavi-Regular.ttf\")
+	ms_rg_phli.set_fallback(ms_rg_base)
+
+	var ms_rg_prti = TLDynamicFontFace.new()
+	ms_rg_prti.load(\"res://fonts/NotoFull/NotoSansInscriptionalParthian-Regular.ttf\")
+	ms_rg_prti.set_fallback(ms_rg_base)
+
+	var ms_rg_java = TLDynamicFontFace.new()
+	ms_rg_java.load(\"res://fonts/NotoFull/NotoSansJavanese-Regular.ttf\")
+	ms_rg_java.set_fallback(ms_rg_base)
+
+	var ms_rg_kthi = TLDynamicFontFace.new()
+	ms_rg_kthi.load(\"res://fonts/NotoFull/NotoSansKaithi-Regular.ttf\")
+	ms_rg_kthi.set_fallback(ms_rg_base)
+
+	var ms_rg_kali = TLDynamicFontFace.new()
+	ms_rg_kali.load(\"res://fonts/NotoFull/NotoSansKayahLi-Regular.ttf\")
+	ms_rg_kali.set_fallback(ms_rg_base)
+
+	var ms_rg_lepc = TLDynamicFontFace.new()
+	ms_rg_lepc.load(\"res://fonts/NotoFull/NotoSansLepcha-Regular.ttf\")
+	ms_rg_lepc.set_fallback(ms_rg_base)
+
+	var ms_rg_limb = TLDynamicFontFace.new()
+	ms_rg_limb.load(\"res://fonts/NotoFull/NotoSansLimbu-Regular.ttf\")
+	ms_rg_limb.set_fallback(ms_rg_base)
+
+	var ms_rg_linb = TLDynamicFontFace.new()
+	ms_rg_linb.load(\"res://fonts/NotoFull/NotoSansLinearB-Regular.ttf\")
+	ms_rg_linb.set_fallback(ms_rg_base)
+
+	var ms_rg_lisu = TLDynamicFontFace.new()
+	ms_rg_lisu.load(\"res://fonts/NotoFull/NotoSansLisu-Regular.ttf\")
+	ms_rg_lisu.set_fallback(ms_rg_base)
+
+	var ms_rg_lyci = TLDynamicFontFace.new()
+	ms_rg_lyci.load(\"res://fonts/NotoFull/NotoSansLycian-Regular.ttf\")
+	ms_rg_lyci.set_fallback(ms_rg_base)
+
+	var ms_rg_lydi = TLDynamicFontFace.new()
+	ms_rg_lydi.load(\"res://fonts/NotoFull/NotoSansLydian-Regular.ttf\")
+	ms_rg_lydi.set_fallback(ms_rg_base)
+
+	var ms_rg_mand = TLDynamicFontFace.new()
+	ms_rg_mand.load(\"res://fonts/NotoFull/NotoSansMandaic-Regular.ttf\")
+	ms_rg_mand.set_fallback(ms_rg_base)
+
+	var ms_rg_mtei = TLDynamicFontFace.new()
+	ms_rg_mtei.load(\"res://fonts/NotoFull/NotoSansMeeteiMayek-Regular.ttf\")
+	ms_rg_mtei.set_fallback(ms_rg_base)
+
+	var ms_rg_mong = TLDynamicFontFace.new()
+	ms_rg_mong.load(\"res://fonts/NotoFull/NotoSansMongolian-Regular.ttf\")
+	ms_rg_mong.set_fallback(ms_rg_base)
+
+	var ms_rg_nkoo = TLDynamicFontFace.new()
+	ms_rg_nkoo.load(\"res://fonts/NotoFull/NotoSansNKo-Regular.ttf\")
+	ms_rg_nkoo.set_fallback(ms_rg_base)
+
+	var ms_rg_talu = TLDynamicFontFace.new()
+	ms_rg_talu.load(\"res://fonts/NotoFull/NotoSansNewTaiLue-Regular.ttf\")
+	ms_rg_talu.set_fallback(ms_rg_base)
+
+	var ms_rg_ogam = TLDynamicFontFace.new()
+	ms_rg_ogam.load(\"res://fonts/NotoFull/NotoSansOgham-Regular.ttf\")
+	ms_rg_ogam.set_fallback(ms_rg_base)
+
+	var ms_rg_olck = TLDynamicFontFace.new()
+	ms_rg_olck.load(\"res://fonts/NotoFull/NotoSansOlChiki-Regular.ttf\")
+	ms_rg_olck.set_fallback(ms_rg_base)
+
+	var ms_rg_ital = TLDynamicFontFace.new()
+	ms_rg_ital.load(\"res://fonts/NotoFull/NotoSansOldItalic-Regular.ttf\")
+	ms_rg_ital.set_fallback(ms_rg_base)
+
+	var ms_rg_xpeo = TLDynamicFontFace.new()
+	ms_rg_xpeo.load(\"res://fonts/NotoFull/NotoSansOldPersian-Regular.ttf\")
+	ms_rg_xpeo.set_fallback(ms_rg_base)
+
+	var ms_rg_sarb = TLDynamicFontFace.new()
+	ms_rg_sarb.load(\"res://fonts/NotoFull/NotoSansOldSouthArabian-Regular.ttf\")
+	ms_rg_sarb.set_fallback(ms_rg_base)
+
+	var ms_rg_orkh = TLDynamicFontFace.new()
+	ms_rg_orkh.load(\"res://fonts/NotoFull/NotoSansOldTurkic-Regular.ttf\")
+	ms_rg_orkh.set_fallback(ms_rg_base)
+
+	var ms_rg_osma = TLDynamicFontFace.new()
+	ms_rg_osma.load(\"res://fonts/NotoFull/NotoSansOsmanya-Regular.ttf\")
+	ms_rg_osma.set_fallback(ms_rg_base)
+
+	var ms_rg_phag = TLDynamicFontFace.new()
+	ms_rg_phag.load(\"res://fonts/NotoFull/NotoSansPhagsPa-Regular.ttf\")
+	ms_rg_phag.set_fallback(ms_rg_base)
+
+	var ms_rg_phnx = TLDynamicFontFace.new()
+	ms_rg_phnx.load(\"res://fonts/NotoFull/NotoSansPhoenician-Regular.ttf\")
+	ms_rg_phnx.set_fallback(ms_rg_base)
+
+	var ms_rg_rjng = TLDynamicFontFace.new()
+	ms_rg_rjng.load(\"res://fonts/NotoFull/NotoSansRejang-Regular.ttf\")
+	ms_rg_rjng.set_fallback(ms_rg_base)
+
+	var ms_rg_runr = TLDynamicFontFace.new()
+	ms_rg_runr.load(\"res://fonts/NotoFull/NotoSansRunic-Regular.ttf\")
+	ms_rg_runr.set_fallback(ms_rg_base)
+
+	var ms_rg_samr = TLDynamicFontFace.new()
+	ms_rg_samr.load(\"res://fonts/NotoFull/NotoSansSamaritan-Regular.ttf\")
+	ms_rg_samr.set_fallback(ms_rg_base)
+
+	var ms_rg_saur = TLDynamicFontFace.new()
+	ms_rg_saur.load(\"res://fonts/NotoFull/NotoSansSaurashtra-Regular.ttf\")
+	ms_rg_saur.set_fallback(ms_rg_base)
+
+	var ms_rg_shaw = TLDynamicFontFace.new()
+	ms_rg_shaw.load(\"res://fonts/NotoFull/NotoSansShavian-Regular.ttf\")
+	ms_rg_shaw.set_fallback(ms_rg_base)
+
+	var ms_rg_sund = TLDynamicFontFace.new()
+	ms_rg_sund.load(\"res://fonts/NotoFull/NotoSansSundanese-Regular.ttf\")
+	ms_rg_sund.set_fallback(ms_rg_base)
+
+	var ms_rg_sylo = TLDynamicFontFace.new()
+	ms_rg_sylo.load(\"res://fonts/NotoFull/NotoSansSylotiNagri-Regular.ttf\")
+	ms_rg_sylo.set_fallback(ms_rg_base)
+
+	var ms_rg_syrc = TLDynamicFontFace.new()
+	ms_rg_syrc.load(\"res://fonts/NotoFull/NotoSansSyriacEastern-Regular.ttf\")
+	ms_rg_syrc.set_fallback(ms_rg_base)
+
+	var ms_rg_tglg = TLDynamicFontFace.new()
+	ms_rg_tglg.load(\"res://fonts/NotoFull/NotoSansTagalog-Regular.ttf\")
+	ms_rg_tglg.set_fallback(ms_rg_base)
+
+	var ms_rg_tagb = TLDynamicFontFace.new()
+	ms_rg_tagb.load(\"res://fonts/NotoFull/NotoSansTagbanwa-Regular.ttf\")
+	ms_rg_tagb.set_fallback(ms_rg_base)
+
+	var ms_rg_tale = TLDynamicFontFace.new()
+	ms_rg_tale.load(\"res://fonts/NotoFull/NotoSansTaiLe-Regular.ttf\")
+	ms_rg_tale.set_fallback(ms_rg_base)
+
+	var ms_rg_lana = TLDynamicFontFace.new()
+	ms_rg_lana.load(\"res://fonts/NotoFull/NotoSansTaiTham-Regular.ttf\")
+	ms_rg_lana.set_fallback(ms_rg_base)
+
+	var ms_rg_tavt = TLDynamicFontFace.new()
+	ms_rg_tavt.load(\"res://fonts/NotoFull/NotoSansTaiViet-Regular.ttf\")
+	ms_rg_tavt.set_fallback(ms_rg_base)
+
+	var ms_rg_thaa = TLDynamicFontFace.new()
+	ms_rg_thaa.load(\"res://fonts/NotoFull/NotoSansThaana-Regular.ttf\")
+	ms_rg_thaa.set_fallback(ms_rg_base)
+
+	var ms_rg_tfng = TLDynamicFontFace.new()
+	ms_rg_tfng.load(\"res://fonts/NotoFull/NotoSansTifinagh-Regular.ttf\")
+	ms_rg_tfng.set_fallback(ms_rg_base)
+
+	var ms_rg_ugar = TLDynamicFontFace.new()
+	ms_rg_ugar.load(\"res://fonts/NotoFull/NotoSansUgaritic-Regular.ttf\")
+	ms_rg_ugar.set_fallback(ms_rg_base)
+
+	var ms_rg_vaii = TLDynamicFontFace.new()
+	ms_rg_vaii.load(\"res://fonts/NotoFull/NotoSansVai-Regular.ttf\")
+	ms_rg_vaii.set_fallback(ms_rg_base)
+
+	var ms_rg_yiii = TLDynamicFontFace.new()
+	ms_rg_yiii.load(\"res://fonts/NotoFull/NotoSansYi-Regular.ttf\")
+	ms_rg_yiii.set_fallback(ms_rg_hani)
+
+	var ms_rg_cham = TLDynamicFontFace.new()
+	ms_rg_cham.load(\"res://fonts/NotoFull/NotoSansCham-Regular.ttf\")
+	ms_rg_cham.set_fallback(ms_rg_base)
+
+	nt_fam_full = TLFontFamily.new()
+	nt_fam_full.set_face(\"Regular\", ms_rg_base)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HLUW\", ms_rg_hluw)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MYMR\", ms_rg_mymr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TELU\", ms_rg_telu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GURU\", ms_rg_guru)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ORYA\", ms_rg_orya)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"THAI\", ms_rg_thai)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KNDA\", ms_rg_knda)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OSGE\", ms_rg_osge)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TIBT\", ms_rg_tibt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MLYM\", ms_rg_mlym)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SINH\", ms_rg_sinh)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAML\", ms_rg_taml)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ADLM\", ms_rg_adlm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANI\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HIRA\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KANA\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANG\", ms_rg_hani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"DEVA\", ms_rg_deva)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KHAR\", ms_rg_khar)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARAB\", ms_rg_arab)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CANS\", ms_rg_cans)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ETHI\", ms_rg_ethi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KHMR\", ms_rg_khmr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARMN\", ms_rg_armn)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CAKM\", ms_rg_cakm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GEOR\", ms_rg_geor)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LAOO\", ms_rg_laoo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BENG\", ms_rg_beng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CHER\", ms_rg_cher)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GUJR\", ms_rg_gujr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"DSRT\", ms_rg_dsrt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HEBR\", ms_rg_hebr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"AVST\", ms_rg_avst)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BALI\", ms_rg_bali)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BAMU\", ms_rg_bamu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BATK\", ms_rg_batk)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BRAH\", ms_rg_brah)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BUGI\", ms_rg_bugi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BUHD\", ms_rg_buhd)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CARI\", ms_rg_cari)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"COPT\", ms_rg_copt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"XSUX\", ms_rg_xsux)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CPRT\", ms_rg_cprt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"EGYP\", ms_rg_egyp)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GLAG\", ms_rg_glag)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GOTH\", ms_rg_goth)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANO\", ms_rg_hano)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ARMI\", ms_rg_armi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHLI\", ms_rg_phli)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PRTI\", ms_rg_prti)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"JAVA\", ms_rg_java)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KTHI\", ms_rg_kthi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KALI\", ms_rg_kali)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LEPC\", ms_rg_lepc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LIMB\", ms_rg_limb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LINB\", ms_rg_linb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LISU\", ms_rg_lisu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LYCI\", ms_rg_lyci)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LYDI\", ms_rg_lydi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MAND\", ms_rg_mand)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MTEI\", ms_rg_mtei)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MONG\", ms_rg_mong)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"NKOO\", ms_rg_nkoo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TALU\", ms_rg_talu)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OGAM\", ms_rg_ogam)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ITAL\", ms_rg_ital)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ITAL\", ms_rg_ital)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"XPEO\", ms_rg_xpeo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SARB\", ms_rg_sarb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ORKH\", ms_rg_orkh)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OSMA\", ms_rg_osma)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHAG\", ms_rg_phag)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHNX\", ms_rg_phnx)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"RJNG\", ms_rg_rjng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"RUNR\", ms_rg_runr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SAMR\", ms_rg_samr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SAUR\", ms_rg_saur)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SHAW\", ms_rg_shaw)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SUND\", ms_rg_sund)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SYLO\", ms_rg_sylo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SYRC\", ms_rg_syrc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TGLG\", ms_rg_tglg)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAGB\", ms_rg_tagb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TALE\", ms_rg_tale)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LANA\", ms_rg_lana)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAVT\", ms_rg_tavt)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"THAA\", ms_rg_thaa)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TFNG\", ms_rg_tfng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"UGAR\", ms_rg_ugar)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"VAII\", ms_rg_vaii)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"YIII\", ms_rg_yiii)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"CHAM\", ms_rg_cham)
+
+	var dir = Directory.new()
+	if dir.open(\"res://text_source\") == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while (file_name != \"\"):
+			if file_name.get_extension() == \"txt\" and file_name != \"attributions.txt\":
+				if !dir.current_is_dir():
+					var file = File.new()
+					file.open(\"res://text_source\".plus_file(file_name), File.READ)
+					names.push_back(file_name)
+					content.push_back(file.get_as_text().replace(\"\\n\", \"\"))
+			file_name = dir.get_next()
+
+func _draw():
+	draw_rect(Rect2(0, 0, 1200, 600), Color(1, 1, 1), true)
+
+	var sstring = TLShapedString.new()
+	sstring.set_base_font(nt_fam_full)
+	sstring.set_base_font_size(14)
+	sstring.set_base_font_style(\"Regular\")
+	sstring.set_text(content[i])
+	var bounds = sstring.break_lines(1100, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+
+	sstring.draw(get_canvas_item(), Vector2(50, 50), Color(0, 0, 0))
+
+	var ofs = 100
+	var prev = 0
+	for b in bounds:
+		var line = sstring.substr(prev, b, TLShapedString.TEXT_TRIM_BREAK_AND_WHITESPACE)
+		ofs += line.get_ascent()
+		line.draw(get_canvas_item(), Vector2(50, ofs), Color(0, 0, 0))
+		ofs += line.get_descent() + 4.0
+		prev = b
+
+	drawn = true
+
+func _process(_delta):
+	if (s > 0):
+		#skip some frames
+		s = s - 1
+		update()
+	elif (i < names.size() - 1):
+		if drawn:
+			var image = get_viewport().get_texture().get_data()
+			image.flip_y()
+			image.save_png(\"res://output\".plus_file(names[i].get_basename() + \".png\"))
+			print(\"Saving \" + names[i].get_basename() + \".png...\")
+
+			i = i + 1
+			drawn = false
+			update()
+		else:
+			update()
+	else:
+		get_tree().quit()
+"
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1200, 600 )
+script = SubResource( 1 )

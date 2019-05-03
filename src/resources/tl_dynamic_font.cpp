@@ -145,6 +145,41 @@ void TLDynamicFontFaceAtSize::draw_glyph_outline(RID p_canvas_item, const Point2
 	}
 }
 
+Array TLDynamicFontFaceAtSize::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint) const {
+
+	Array ret;
+	if (loaded) {
+		if (FT_Load_Glyph(ft_face, p_codepoint, FT_LOAD_NO_BITMAP) != 0)
+			return ret;
+
+		FT_Glyph ft_glyph;
+
+		if (FT_Get_Glyph(ft_face->glyph, &ft_glyph) != 0)
+			return ret;
+
+		if (ft_glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+			return ret;
+
+		FT_Outline ol = ((FT_OutlineGlyph)ft_glyph)->outline;
+
+		int prev = 0;
+		for (int i = 0; i < ol.n_contours; i++) {
+			PoolVector3Array contour;
+			contour.resize(ol.contours[i] - prev);
+			PoolVector3Array::Write w = contour.write();
+
+			for (int j = 0; j < ol.contours[i] - prev; j++) {
+				w[j] = Vector3(p_pos.x + ol.points[prev + 1 + j].x, p_pos.y + ol.points[prev + 1 + j].x, ol.tags[prev + 1 + j]);
+			}
+			prev = ol.contours[i];
+			ret.push_back(contour);
+		}
+
+		FT_Done_Glyph(ft_glyph);
+	}
+	return ret;
+}
+
 TLDynamicFontFaceAtSize::TexturePosition TLDynamicFontFaceAtSize::find_texture_pos_for_glyph(int p_color_size, Image::Format p_image_format, int p_width, int p_height) {
 	TexturePosition ret;
 	ret.index = -1;
@@ -667,6 +702,25 @@ void TLDynamicFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos
 			f_at_s->draw_glyph_outline(p_canvas_item, p_pos, p_codepoint, p_modulate);
 		}
 	}
+}
+
+Array TLDynamicFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const {
+
+	if (sizes.count(p_size) > 0) {
+		return sizes.at(p_size)->get_glyph_outline(p_pos, p_codepoint);
+	} else {
+		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
+		f_at_s->set_texture_flags(txt_flags);
+		f_at_s->set_hinting(hinting);
+		f_at_s->set_force_autohinter(force_autohinter);
+		f_at_s->set_oversampling(oversampling);
+
+		if (f_at_s->load(path, p_size)) {
+			sizes[p_size] = f_at_s;
+			return f_at_s->get_glyph_outline(p_pos, p_codepoint);
+		}
+	}
+	return Array();
 }
 
 void TLDynamicFontFace::set_font_path(String p_resource_path) {

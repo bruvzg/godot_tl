@@ -134,6 +134,12 @@ void TLFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint3
 	WARN_PRINTS("Not implemented, pure virtual function call!")
 }
 
+Array TLFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const {
+
+	WARN_PRINTS("Not implemented, pure virtual function call!")
+	return Array();
+}
+
 float TLFontFace::get_glyph_scale(int p_size) const {
 
 	return 1.0f;
@@ -228,6 +234,7 @@ void TLFontFace::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("draw_glyph", "canvas_item", "pos", "codepoint", "modulate", "size"), &TLFontFace::draw_glyph);
 	ClassDB::bind_method(D_METHOD("draw_glyph_outline", "canvas_item", "pos", "codepoint", "modulate", "size"), &TLFontFace::draw_glyph_outline);
+	ClassDB::bind_method(D_METHOD("get_glyph_outline", "pos", "codepoint", "size"), &TLFontFace::get_glyph_outline);
 
 	ClassDB::bind_method(D_METHOD("get_ascent", "size"), &TLFontFace::get_ascent);
 	ClassDB::bind_method(D_METHOD("get_descent", "size"), &TLFontFace::get_descent);
@@ -260,6 +267,7 @@ void TLFontFace::_register_methods() {
 
 	register_method("draw_glyph", &TLFontFace::draw_glyph);
 	register_method("draw_glyph_outline", &TLFontFace::draw_glyph_outline);
+	register_method("get_glyph_outline", &TLFontFace::get_glyph_outline);
 
 	register_method("get_ascent", &TLFontFace::get_ascent);
 	register_method("get_descent", &TLFontFace::get_descent);

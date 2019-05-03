@@ -110,6 +110,7 @@ public:
 
 	void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
 	void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
+	Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint) const;
 
 	bool unicode_range_supported(uint8_t p_bank, uint32_t p_range) const;
 
@@ -147,6 +148,7 @@ public:
 
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
+	virtual Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const override;
 
 	virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const override;
 
