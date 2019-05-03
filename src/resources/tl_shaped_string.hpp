@@ -39,7 +39,8 @@ enum TextDirection {
 	TEXT_DIRECTION_LTR = 0,
 	TEXT_DIRECTION_RTL = 1,
 	TEXT_DIRECTION_LOCALE = 2,
-	TEXT_DIRECTION_AUTO = 3
+	TEXT_DIRECTION_AUTO = 3,
+	TEXT_DIRECTION_INVALID = 4
 };
 
 enum TextJustification {
@@ -47,7 +48,11 @@ enum TextJustification {
 	TEXT_JUSTIFICATION_NONE = 0,
 	TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE = 1,
 	TEXT_JUSTIFICATION_KASHIDA_ONLY = 2,
-	TEXT_JUSTIFICATION_WHITESPACE_ONLY = 3
+	TEXT_JUSTIFICATION_WHITESPACE_ONLY = 3,
+	TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR = 4,
+	TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR = 5,
+	TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR = 6,
+	TEXT_JUSTIFICATION_INTERCHAR_ONLY = 7
 };
 
 enum TextBreak {
@@ -172,6 +177,7 @@ protected:
 	bool valid;
 
 	TextDirection base_direction;
+	TextDirection para_direction;
 	Ref<TLFontFamily> base_font;
 	String base_style;
 	int base_size;
@@ -351,6 +357,8 @@ public:
 	virtual TextDirection get_char_direction(int64_t p_position) const;
 	virtual int64_t hit_test(float p_position) const;
 	virtual int64_t hit_test_cluster(float p_position) const;
+
+	int get_para_direction() const;
 
 	virtual Vector2 draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate = Color(1, 1, 1));
 	virtual void draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1));

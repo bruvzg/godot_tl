@@ -293,10 +293,15 @@ void TLShapedString::_generate_justification_opportunies(int32_t p_start, int32_
 		if (ubrk_getRuleStatus(bi) != UBRK_WORD_NONE) {
 			_generate_kashida_justification_opportunies(p_start + limit, p_start + ubrk_current(bi), p_ops);
 
-			JustificationOpportunity op;
-			op.position = p_start + ubrk_current(bi);
-			op.kashida = false;
-			p_ops.push_back(op);
+			UChar32 pch, nch;
+			U16_GET(data, 0, p_start + ubrk_current(bi) - 1, data_size, pch);
+			U16_GET(data, 0, p_start + ubrk_current(bi), data_size, nch);
+			if (!u_ispunct(pch) && !(u_charType(nch) == U_DASH_PUNCTUATION)) { //ignore justification before punctuation and after dashes
+				JustificationOpportunity op;
+				op.position = p_start + ubrk_current(bi);
+				op.kashida = false;
+				p_ops.push_back(op);
+			}
 			limit = ubrk_current(bi) + 1;
 		}
 	}
@@ -309,10 +314,16 @@ void TLShapedString::_generate_justification_opportunies_fallback(int32_t p_star
 	for (int64_t i = p_start; i < p_end; i++) {
 		if (u_isWhitespace(get_char(i))) {
 			_generate_kashida_justification_opportunies(limit, i, p_ops);
-			JustificationOpportunity op;
-			op.position = i;
-			op.kashida = false;
-			p_ops.push_back(op);
+
+			UChar32 pch, nch;
+			U16_GET(data, 0, i - 1, data_size, pch);
+			U16_GET(data, 0, i, data_size, nch);
+			if (!u_ispunct(pch) && !(u_charType(nch) == U_DASH_PUNCTUATION)) { //ignore justification before punctuation and after dashes
+				JustificationOpportunity op;
+				op.position = i;
+				op.kashida = false;
+				p_ops.push_back(op);
+			}
 			limit = i + 1;
 		}
 	}
@@ -329,10 +340,15 @@ void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end,
 		return;
 	}
 	while (ubrk_next(bi) != UBRK_DONE) {
-		BreakOpportunity op;
-		op.position = p_start + ubrk_current(bi);
-		op.hard = (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD);
-		p_ops.push_back(op);
+
+		UChar32 nch;
+		U16_GET(data, 0, p_start + ubrk_current(bi), data_size, nch);
+		if ((nch != 0x1361) || (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD)) { //do not soft break before ethiopic wordspace
+			BreakOpportunity op;
+			op.position = p_start + ubrk_current(bi);
+			op.hard = (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD);
+			p_ops.push_back(op);
+		}
 		//printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
 		//if (op.hard) printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
 	}
@@ -349,10 +365,14 @@ void TLShapedString::_generate_break_opportunies_fallback(int32_t p_start, int32
 			p_ops.push_back(op);
 			//printf("brk %d [Hf]\n", op.position);
 		} else if (u_isWhitespace(get_char(i))) {
-			BreakOpportunity op;
-			op.position = i + 1;
-			op.hard = false;
-			p_ops.push_back(op);
+			UChar32 nch;
+			U16_GET(data, 0, i + 1, data_size, nch);
+			if (nch != 0x1361) { //do not soft break before ethiopic wordspace
+				BreakOpportunity op;
+				op.position = i + 1;
+				op.hard = false;
+				p_ops.push_back(op);
+			}
 			//printf("brk %d [Sf]\n", op.position);
 		}
 	}
@@ -383,22 +403,33 @@ void TLShapedString::_shape_full_string() {
 		}
 		switch (base_direction) {
 			case TEXT_DIRECTION_LOCALE: {
-				ubidi_setPara(bidi_iter, data, data_size, uloc_isRightToLeft(TranslationServer::get_singleton()->get_locale().ascii().get_data()) ? UBIDI_RTL : UBIDI_LTR, NULL, &err);
+				bool is_rtl = uloc_isRightToLeft(TranslationServer::get_singleton()->get_locale().ascii().get_data());
+				ubidi_setPara(bidi_iter, data, data_size, is_rtl ? UBIDI_RTL : UBIDI_LTR, NULL, &err);
+				para_direction = is_rtl ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_LTR;
 			} break;
 			case TEXT_DIRECTION_LTR: {
 				ubidi_setPara(bidi_iter, data, data_size, UBIDI_LTR, NULL, &err);
+				para_direction = TEXT_DIRECTION_LTR;
 			} break;
 			case TEXT_DIRECTION_RTL: {
 				ubidi_setPara(bidi_iter, data, data_size, UBIDI_RTL, NULL, &err);
+				para_direction = TEXT_DIRECTION_RTL;
 			} break;
 			case TEXT_DIRECTION_AUTO: {
 				UBiDiDirection direction = ubidi_getBaseDirection(data, data_size);
 				if (direction != UBIDI_NEUTRAL) {
 					ubidi_setPara(bidi_iter, data, data_size, direction, NULL, &err);
+					para_direction = (direction == UBIDI_RTL) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_LTR;
 				} else {
-					ubidi_setPara(bidi_iter, data, data_size, uloc_isRightToLeft(TranslationServer::get_singleton()->get_locale().ascii().get_data()) ? UBIDI_RTL : UBIDI_LTR, NULL, &err);
+					bool is_rtl = uloc_isRightToLeft(TranslationServer::get_singleton()->get_locale().ascii().get_data());
+					ubidi_setPara(bidi_iter, data, data_size, is_rtl ? UBIDI_RTL : UBIDI_LTR, NULL, &err);
+					para_direction = is_rtl ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_LTR;
 				}
 			} break;
+			case TEXT_DIRECTION_INVALID: {
+				ERR_PRINTS("Invalid base direction!");
+				ERR_FAIL_COND(true);
+			}
 		}
 		if (U_FAILURE(err)) {
 			ERR_PRINTS(u_errorName(err));
@@ -510,6 +541,7 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 	p_ref->char_size = u_countChar32(p_ref->data, p_ref->data_size);
 
 	p_ref->base_direction = base_direction;
+	p_ref->para_direction = para_direction;
 	p_ref->base_font = base_font;
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
@@ -739,6 +771,17 @@ void TLShapedString::_shape_hex_run(hb_direction_t p_run_direction, int32_t p_ru
 int TLShapedString::get_base_direction() const {
 
 	return base_direction;
+}
+
+int TLShapedString::get_para_direction() const {
+
+	if (!valid)
+		const_cast<TLShapedString *>(this)->_shape_full_string();
+
+	if (!valid)
+		return TEXT_DIRECTION_INVALID;
+
+	return para_direction;
 }
 
 void TLShapedString::set_base_direction(int p_base_direction) {
@@ -1107,6 +1150,7 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 	ret = Ref<TLShapedString>::__internal_constructor(TLShapedString::_new());
 #endif
 	ret->base_direction = base_direction;
+	ret->para_direction = para_direction;
 	ret->base_font = base_font;
 	ret->base_style = base_style;
 	ret->base_size = base_size;
@@ -1225,7 +1269,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	}
 
 	//Step 1: Kashida justification
-	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_ONLY)) {
+	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_ONLY) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR)) {
 		Cluster ks_cluster;
 		float ks_width_per_op = (p_width - width) / ks_count;
 		for (int64_t i = 0; i < jst_ops.size(); i++) {
@@ -1256,7 +1300,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	}
 
 	//Step 2: Whitespace justification
-	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_WHITESPACE_ONLY)) {
+	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_WHITESPACE_ONLY) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR)) {
 		float ws_width_per_op = (p_width - width) / ws_count;
 
 		if (base_font.is_null()) {
@@ -1312,6 +1356,26 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 					j++;
 				}
 			}
+		}
+	}
+
+	//Step 3: Non joined interchar justification
+	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_INTERCHAR_ONLY)) {
+		std::vector<int64_t> ic_jst_ops;
+		for (int64_t j = 1; j < visual.size(); j++) {
+			UChar32 ch, pch;
+			U16_GET(data, 0, visual[j].start, data_size, ch);
+			U16_GET(data, 0, visual[j].start - 1, data_size, pch);
+
+			if (!is_connected_to_prev(ch, pch)) {
+				ic_jst_ops.push_back(j);
+			}
+		}
+		float ic_width_per_op = (p_width - width) / ic_jst_ops.size();
+		for (int64_t j = 0; j < ic_jst_ops.size(); j++) {
+			visual[ic_jst_ops[j] - 1].glyphs[visual[ic_jst_ops[j] - 1].glyphs.size() - 1].advance.x += ic_width_per_op;
+			visual[ic_jst_ops[j] - 1].width += ic_width_per_op;
+			width += ic_width_per_op;
 		}
 	}
 
@@ -2201,6 +2265,7 @@ void TLShapedString::_init() {
 	data_size = 0;
 	char_size = 0;
 	base_direction = TEXT_DIRECTION_AUTO;
+	para_direction = TEXT_DIRECTION_INVALID;
 	base_size = 12;
 	base_style = String("Regular");
 }
@@ -2717,6 +2782,7 @@ void TLShapedString::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_base_direction", "direction"), &TLShapedString::set_base_direction);
 	ClassDB::bind_method(D_METHOD("get_base_direction"), &TLShapedString::get_base_direction);
+	ClassDB::bind_method(D_METHOD("get_para_direction"), &TLShapedString::get_para_direction);
 
 	ClassDB::bind_method(D_METHOD("set_text", "text"), &TLShapedString::set_text);
 	ClassDB::bind_method(D_METHOD("get_text"), &TLShapedString::get_text);
@@ -2837,11 +2903,16 @@ void TLShapedString::_bind_methods() {
 	BIND_ENUM_CONSTANT(TEXT_DIRECTION_RTL);
 	BIND_ENUM_CONSTANT(TEXT_DIRECTION_LOCALE);
 	BIND_ENUM_CONSTANT(TEXT_DIRECTION_AUTO);
+	BIND_ENUM_CONSTANT(TEXT_DIRECTION_INVALID);
 
 	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_NONE);
 	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE);
 	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_KASHIDA_ONLY);
 	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_WHITESPACE_ONLY);
+	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR);
+	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR);
+	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR);
+	BIND_ENUM_CONSTANT(TEXT_JUSTIFICATION_INTERCHAR_ONLY);
 
 	BIND_ENUM_CONSTANT(TEXT_BREAK_NONE);
 	BIND_ENUM_CONSTANT(TEXT_BREAK_MANDATORY);
@@ -2861,6 +2932,7 @@ void TLShapedString::_register_methods() {
 
 	register_method("set_base_direction", &TLShapedString::set_base_direction);
 	register_method("get_base_direction", &TLShapedString::get_base_direction);
+	register_method("get_para_direction", &TLShapedString::get_para_direction);
 
 	register_method("set_text", &TLShapedString::set_text);
 	register_method("get_text", &TLShapedString::get_text);

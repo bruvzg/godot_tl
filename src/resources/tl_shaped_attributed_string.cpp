@@ -50,6 +50,7 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	memcpy(p_ref->data, data + p_start, (p_end - p_start) * sizeof(UChar));
 	p_ref->data_size = (p_end - p_start);
 	p_ref->base_direction = base_direction;
+	p_ref->para_direction = para_direction;
 	p_ref->base_font = base_font;
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
@@ -632,6 +633,7 @@ Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_
 	ret = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
 #endif
 	ret->base_direction = base_direction;
+	ret->para_direction = para_direction;
 	ret->base_font = base_font;
 	ret->base_style = base_style;
 	ret->base_size = base_size;
