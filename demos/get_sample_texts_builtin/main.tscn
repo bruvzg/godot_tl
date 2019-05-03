@@ -496,10 +496,6 @@ func _draw():
 		sstring.set_base_font_size(14)
 		sstring.set_base_font_style(\"Regular\")
 		sstring.set_text(content[i])
-		var bounds = sstring.break_lines(500, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
-
-		draw_line(Vector2(50, 300), Vector2(50, 750), Color(0, 0, 1, 0.5))
-		draw_line(Vector2(550, 300), Vector2(550, 750), Color(0, 0, 1, 0.5))
 
 		sstring.draw(get_canvas_item(), Vector2(50, 50), Color(0, 0, 0))
 
@@ -507,12 +503,40 @@ func _draw():
 		sstring.draw_as_hex(get_canvas_item(), Vector2(50, 170), Color(0, 1, 0), true, true);
 		sstring.draw_logical_as_hex(get_canvas_item(), Vector2(50, 220), Color(0, 0, 1), true, true);
 
+		var bounds1 = sstring.break_lines(500, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+		var bounds2 = sstring.break_lines(200, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+
+		draw_line(Vector2(50, 300), Vector2(50, 750), Color(0, 0, 1, 0.5))
+		draw_line(Vector2(550, 300), Vector2(550, 750), Color(0, 0, 1, 0.5))
+
+		draw_line(Vector2(750, 300), Vector2(750, 750), Color(1, 0, 1, 0.5))
+		draw_line(Vector2(1250, 300), Vector2(1250, 750), Color(1, 0, 1, 0.5))
+
+		draw_line(Vector2(1450, 300), Vector2(1450, 750), Color(0, 0, 1, 0.5))
+		draw_line(Vector2(1650, 300), Vector2(1650, 750), Color(0, 0, 1, 0.5))
+
+		draw_line(Vector2(1850, 300), Vector2(1850, 750), Color(1, 0, 1, 0.5))
+		draw_line(Vector2(2050, 300), Vector2(2050, 750), Color(1, 0, 1, 0.5))
+
 		var ofs = 300
 		var prev = 0
-		for b in bounds:
+		for b in bounds1:
 			var line = sstring.substr(prev, b, TLShapedString.TEXT_TRIM_BREAK_AND_WHITESPACE)
 			ofs += line.get_ascent()
 			line.draw(get_canvas_item(), Vector2(50, ofs), Color(0, 0, 0))
+			line.extend_to_width(500, TLShapedString.TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE)
+			line.draw(get_canvas_item(), Vector2(750, ofs), Color(0, 0, 0))
+			ofs += line.get_descent() + 4.0
+			prev = b
+
+		ofs = 300
+		prev = 0
+		for b in bounds2:
+			var line = sstring.substr(prev, b, TLShapedString.TEXT_TRIM_BREAK_AND_WHITESPACE)
+			ofs += line.get_ascent()
+			line.draw(get_canvas_item(), Vector2(1450, ofs), Color(0, 0, 0))
+			line.extend_to_width(200, TLShapedString.TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE)
+			line.draw(get_canvas_item(), Vector2(1850, ofs), Color(0, 0, 0))
 			ofs += line.get_descent() + 4.0
 			prev = b
 
