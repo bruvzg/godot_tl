@@ -2056,10 +2056,27 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			}
 		}
 		if ((i % 5 == 0) || (i == 0) || (i == data_size - 1)) {
-			TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs - Point2(0, -20), i, p_modulate);
+			TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, 15), i, p_modulate);
 		}
 		float w = (data[i] <= 0xFF) ? 14 : ((data[i] <= 0xFFFF) ? 20 : 26);
 		TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), data[i], p_modulate);
+
+		if (!U16_IS_SURROGATE(data[i]) || !U16_IS_SURROGATE_TRAIL(data[i])) {
+			UChar32 ch;
+			U16_GET(data, 0, i, data_size, ch);
+			if (base_font.is_valid()) {
+				Ref<TLFontFace> _font = base_font->get_face(base_style);
+				for (int64_t z = 0; z < visual.size(); z++) {
+					int64_t last = U16_IS_SURROGATE(data[i]) ? i + 1 : i;
+					if (((visual[z].start <= i) && (visual[z].end >= last)) || (visual[z].start == i)) {
+						_font = Ref<TLFontFace>(visual[z].font_face);
+						break;
+					}
+				}
+				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
+				_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
+			}
+		}
 		ofs += Vector2(w, 0);
 	}
 }

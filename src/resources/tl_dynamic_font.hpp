@@ -109,6 +109,7 @@ public:
 	float get_glyph_scale() const;
 
 	void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
+	void _draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const; //raw char for debug only, do not use
 	void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const;
 	Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint) const;
 
@@ -147,6 +148,7 @@ public:
 	virtual float get_glyph_scale(int p_size) const override;
 
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
+	virtual void _draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override; //raw char for debug only, do not use
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
 	virtual Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const override;
 

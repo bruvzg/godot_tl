@@ -50,6 +50,7 @@ public:
 	static void _draw_small_int(RID p_canvas_item, const Point2 p_pos, uint32_t p_int, const Color p_modulate);
 
 	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
+	virtual void _draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const; //raw char for debug only, do not use
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 	virtual Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const;
 

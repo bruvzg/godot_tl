@@ -123,6 +123,14 @@ void TLDynamicFontFaceAtSize::draw_glyph(RID p_canvas_item, const Point2 p_pos, 
 	}
 }
 
+void TLDynamicFontFaceAtSize::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const {
+
+	//raw char for debug only, do not use
+	if (loaded) {
+		draw_glyph(p_canvas_item, p_pos, FT_Get_Char_Index(ft_face, p_codepoint), p_modulate);
+	}
+}
+
 void TLDynamicFontFaceAtSize::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) const {
 
 	if (loaded) {
@@ -682,6 +690,25 @@ void TLDynamicFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32
 		if (f_at_s->load(path, p_size)) {
 			sizes[p_size] = f_at_s;
 			f_at_s->draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate);
+		}
+	}
+}
+
+void TLDynamicFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
+
+	//raw char for debug only, do not use
+	if (sizes.count(p_size) > 0) {
+		sizes.at(p_size)->_draw_char(p_canvas_item, p_pos, p_codepoint, p_modulate);
+	} else {
+		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
+		f_at_s->set_texture_flags(txt_flags);
+		f_at_s->set_hinting(hinting);
+		f_at_s->set_force_autohinter(force_autohinter);
+		f_at_s->set_oversampling(oversampling);
+
+		if (f_at_s->load(path, p_size)) {
+			sizes[p_size] = f_at_s;
+			f_at_s->_draw_char(p_canvas_item, p_pos, p_codepoint, p_modulate);
 		}
 	}
 }
