@@ -11,6 +11,10 @@ var drawn = false
 var s = 3
 
 func _ready():
+	OS.set_current_screen(0)
+	OS.set_window_position(Vector2(0, 0))
+	OS.set_window_size(Vector2(4000, 800))
+
 	var data_loader = TLICUDataLoader.new()
 	data_loader.load(\"res://icudt63l.dat\")
 
@@ -484,27 +488,35 @@ func _ready():
 			file_name = dir.get_next()
 
 func _draw():
-	draw_rect(Rect2(0, 0, 1200, 600), Color(1, 1, 1), true)
+	if (s <= 0):
+		draw_rect(Rect2(0, 0, 4000, 800), Color(1, 1, 1), true)
 
-	var sstring = TLShapedString.new()
-	sstring.set_base_font(nt_fam_full)
-	sstring.set_base_font_size(14)
-	sstring.set_base_font_style(\"Regular\")
-	sstring.set_text(content[i])
-	var bounds = sstring.break_lines(1100, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
+		var sstring = TLShapedString.new()
+		sstring.set_base_font(nt_fam_full)
+		sstring.set_base_font_size(14)
+		sstring.set_base_font_style(\"Regular\")
+		sstring.set_text(content[i])
+		var bounds = sstring.break_lines(500, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)
 
-	sstring.draw(get_canvas_item(), Vector2(50, 50), Color(0, 0, 0))
+		draw_line(Vector2(50, 300), Vector2(50, 750), Color(0, 0, 1, 0.5))
+		draw_line(Vector2(550, 300), Vector2(550, 750), Color(0, 0, 1, 0.5))
 
-	var ofs = 100
-	var prev = 0
-	for b in bounds:
-		var line = sstring.substr(prev, b, TLShapedString.TEXT_TRIM_BREAK_AND_WHITESPACE)
-		ofs += line.get_ascent()
-		line.draw(get_canvas_item(), Vector2(50, ofs), Color(0, 0, 0))
-		ofs += line.get_descent() + 4.0
-		prev = b
+		sstring.draw(get_canvas_item(), Vector2(50, 50), Color(0, 0, 0))
 
-	drawn = true
+		sstring.draw_dbg(get_canvas_item(), Vector2(50, 100), Color(1, 0, 0), true, true)
+		sstring.draw_as_hex(get_canvas_item(), Vector2(50, 170), Color(0, 1, 0), true, true);
+		sstring.draw_logical_as_hex(get_canvas_item(), Vector2(50, 220), Color(0, 0, 1), true, true);
+
+		var ofs = 300
+		var prev = 0
+		for b in bounds:
+			var line = sstring.substr(prev, b, TLShapedString.TEXT_TRIM_BREAK_AND_WHITESPACE)
+			ofs += line.get_ascent()
+			line.draw(get_canvas_item(), Vector2(50, ofs), Color(0, 0, 0))
+			ofs += line.get_descent() + 4.0
+			prev = b
+
+		drawn = true
 
 func _process(_delta):
 	if (s > 0):
@@ -530,5 +542,5 @@ func _process(_delta):
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 1200, 600 )
+rect_min_size = Vector2( 4000, 800 )
 script = SubResource( 1 )
