@@ -499,8 +499,8 @@ func _draw():
 
 		sstring.draw(get_canvas_item(), Vector2(50, 50), Color(0, 0, 0))
 
-		sstring.draw_dbg(get_canvas_item(), Vector2(50, 100), Color(1, 0, 0), true, true)
-		sstring.draw_as_hex(get_canvas_item(), Vector2(50, 170), Color(0, 1, 0), true, true);
+		sstring.draw_dbg(get_canvas_item(), Vector2(50, 100), Color(1, 0, 1), true, true)
+		sstring.draw_as_hex(get_canvas_item(), Vector2(50, 170), Color(1, 0, 1), true, true);
 		sstring.draw_logical_as_hex(get_canvas_item(), Vector2(50, 220), Color(0, 0, 1), true, true);
 
 		var bounds1 = sstring.break_lines(500, TLShapedString.TEXT_BREAK_MANDATORY_AND_WORD_BOUND)

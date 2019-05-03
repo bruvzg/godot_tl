@@ -2055,7 +2055,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 				}
 			}
 		}
-		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(4, 20), i, p_modulate);
+		if ((i % 5 == 0) || (i == 0) || (i == data_size - 1)) {
+			TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs - Point2(0, -20), i, p_modulate);
+		}
 		float w = (data[i] <= 0xFF) ? 14 : ((data[i] <= 0xFFFF) ? 20 : 26);
 		TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), data[i], p_modulate);
 		ofs += Vector2(w, 0);
