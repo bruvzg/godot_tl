@@ -2074,7 +2074,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 					}
 				}
 				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
-				_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
+				if (_font.is_valid()) {
+					_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
+				}
 			}
 		}
 		ofs += Vector2(w, 0);
