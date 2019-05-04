@@ -13,7 +13,7 @@ var s = 3
 func _ready():
 	OS.set_current_screen(0)
 	OS.set_window_position(Vector2(0, 0))
-	OS.set_window_size(Vector2(6000, 1000))
+	OS.set_window_size(Vector2(7500, 1000))
 
 	var data_loader = TLICUDataLoader.new()
 	data_loader.load(\"res://icudt63l.dat\")
@@ -23,6 +23,134 @@ func _ready():
 	ms_rg_base.load(\"res://fonts/NotoFull/NotoSans-Regular.ttf\")
 
 	#supl
+	var ms_rg_aghm = TLDynamicFontFace.new()
+	ms_rg_aghm.load(\"res://fonts/NotoFull/NotoSansCaucasianAlbanian-Regular.ttf\")
+	ms_rg_aghm.set_fallback(ms_rg_base)
+
+	var ms_rg_ahom = TLDynamicFontFace.new()
+	ms_rg_ahom.load(\"res://fonts/NotoFull/NotoSerifAhom-Regular.ttf\")
+	ms_rg_ahom.set_fallback(ms_rg_base)
+
+	var ms_rg_bhks = TLDynamicFontFace.new()
+	ms_rg_bhks.load(\"res://fonts/NotoFull/NotoSansBhaiksuki-Regular.ttf\")
+	ms_rg_bhks.set_fallback(ms_rg_base)
+
+	var ms_rg_dupl = TLDynamicFontFace.new()
+	ms_rg_dupl.load(\"res://fonts/NotoFull/NotoSansDuployan-Regular.ttf\")
+	ms_rg_dupl.set_fallback(ms_rg_base)
+
+	var ms_rg_elba = TLDynamicFontFace.new()
+	ms_rg_elba.load(\"res://fonts/NotoFull/NotoSansElbasan-Regular.ttf\")
+	ms_rg_elba.set_fallback(ms_rg_base)
+
+	var ms_rg_gran = TLDynamicFontFace.new()
+	ms_rg_gran.load(\"res://fonts/NotoFull/NotoSansGrantha-Regular.ttf\")
+	ms_rg_gran.set_fallback(ms_rg_base)
+
+	var ms_rg_hatr = TLDynamicFontFace.new()
+	ms_rg_hatr.load(\"res://fonts/NotoFull/NotoSansHatran-Regular.ttf\")
+	ms_rg_hatr.set_fallback(ms_rg_base)
+
+	var ms_rg_hmng = TLDynamicFontFace.new()
+	ms_rg_hmng.load(\"res://fonts/NotoFull/NotoSansPahawhHmong-Regular.ttf\")
+	ms_rg_hmng.set_fallback(ms_rg_base)
+
+	var ms_rg_hung = TLDynamicFontFace.new()
+	ms_rg_hung.load(\"res://fonts/NotoFull/NotoSansOldHungarian-Regular.ttf\")
+	ms_rg_hung.set_fallback(ms_rg_base)
+
+	var ms_rg_khoj = TLDynamicFontFace.new()
+	ms_rg_khoj.load(\"res://fonts/NotoFull/NotoSansKhojki-Regular.ttf\")
+	ms_rg_khoj.set_fallback(ms_rg_base)
+
+	var ms_rg_mahj = TLDynamicFontFace.new()
+	ms_rg_mahj.load(\"res://fonts/NotoFull/NotoSansMahajani-Regular.ttf\")
+	ms_rg_mahj.set_fallback(ms_rg_base)
+
+	var ms_rg_mani = TLDynamicFontFace.new()
+	ms_rg_mani.load(\"res://fonts/NotoFull/NotoSansManichaean-Regular.ttf\")
+	ms_rg_mani.set_fallback(ms_rg_base)
+
+	var ms_rg_marc = TLDynamicFontFace.new()
+	ms_rg_marc.load(\"res://fonts/NotoFull/NotoSansMarchen-Regular.ttf\")
+	ms_rg_marc.set_fallback(ms_rg_base)
+
+	var ms_rg_mend = TLDynamicFontFace.new()
+	ms_rg_mend.load(\"res://fonts/NotoFull/NotoSansMendeKikakui-Regular.ttf\")
+	ms_rg_mend.set_fallback(ms_rg_base)
+
+	var ms_rg_modi = TLDynamicFontFace.new()
+	ms_rg_modi.load(\"res://fonts/NotoFull/NotoSansModi-Regular.ttf\")
+	ms_rg_modi.set_fallback(ms_rg_base)
+
+	var ms_rg_mero = TLDynamicFontFace.new()
+	ms_rg_mero.load(\"res://fonts/NotoFull/NotoSansMeroitic-Regular.ttf\")
+	ms_rg_mero.set_fallback(ms_rg_base)
+
+	var ms_rg_mroo = TLDynamicFontFace.new()
+	ms_rg_mroo.load(\"res://fonts/NotoFull/NotoSansMro-Regular.ttf\")
+	ms_rg_mroo.set_fallback(ms_rg_base)
+
+	var ms_rg_mult = TLDynamicFontFace.new()
+	ms_rg_mult.load(\"res://fonts/NotoFull/NotoSansMultani-Regular.ttf\")
+	ms_rg_mult.set_fallback(ms_rg_base)
+
+	var ms_rg_narb = TLDynamicFontFace.new()
+	ms_rg_narb.load(\"res://fonts/NotoFull/NotoSansOldNorthArabian-Regular.ttf\")
+	ms_rg_narb.set_fallback(ms_rg_base)
+
+	var ms_rg_nbat = TLDynamicFontFace.new()
+	ms_rg_nbat.load(\"res://fonts/NotoFull/NotoSansNabataean-Regular.ttf\")
+	ms_rg_nbat.set_fallback(ms_rg_base)
+
+	var ms_rg_newa = TLDynamicFontFace.new()
+	ms_rg_newa.load(\"res://fonts/NotoFull/NotoSansNewa-Regular.ttf\")
+	ms_rg_newa.set_fallback(ms_rg_base)
+
+	var ms_rg_palm = TLDynamicFontFace.new()
+	ms_rg_palm.load(\"res://fonts/NotoFull/NotoSansPalmyrene-Regular.ttf\")
+	ms_rg_palm.set_fallback(ms_rg_base)
+
+	var ms_rg_pauc = TLDynamicFontFace.new()
+	ms_rg_pauc.load(\"res://fonts/NotoFull/NotoSansPauCinHau-Regular.ttf\")
+	ms_rg_pauc.set_fallback(ms_rg_base)
+
+	var ms_rg_perm = TLDynamicFontFace.new()
+	ms_rg_perm.load(\"res://fonts/NotoFull/NotoSansOldPermic-Regular.ttf\")
+	ms_rg_perm.set_fallback(ms_rg_base)
+
+	var ms_rg_phlp = TLDynamicFontFace.new()
+	ms_rg_phlp.load(\"res://fonts/NotoFull/NotoSansPsalterPahlavi-Regular.ttf\")
+	ms_rg_phlp.set_fallback(ms_rg_base)
+
+	var ms_rg_plrd = TLDynamicFontFace.new()
+	ms_rg_plrd.load(\"res://fonts/NotoFull/NotoSansMiao-Regular.ttf\")
+	ms_rg_plrd.set_fallback(ms_rg_base)
+
+	var ms_rg_shrd = TLDynamicFontFace.new()
+	ms_rg_shrd.load(\"res://fonts/NotoFull/NotoSansSharada-Regular.ttf\")
+	ms_rg_shrd.set_fallback(ms_rg_base)
+
+	var ms_rg_sind = TLDynamicFontFace.new()
+	ms_rg_sind.load(\"res://fonts/NotoFull/NotoSansKhudawadi-Regular.ttf\")
+	ms_rg_sind.set_fallback(ms_rg_base)
+
+	var ms_rg_sora = TLDynamicFontFace.new()
+	ms_rg_sora.load(\"res://fonts/NotoFull/NotoSansSoraSompeng-Regular.ttf\")
+	ms_rg_sora.set_fallback(ms_rg_base)
+
+	var ms_rg_takr = TLDynamicFontFace.new()
+	ms_rg_takr.load(\"res://fonts/NotoFull/NotoSansTakri-Regular.ttf\")
+	ms_rg_takr.set_fallback(ms_rg_base)
+
+	var ms_rg_tirh = TLDynamicFontFace.new()
+	ms_rg_tirh.load(\"res://fonts/NotoFull/NotoSansTirhuta-Regular.ttf\")
+	ms_rg_tirh.set_fallback(ms_rg_base)
+
+	var ms_rg_wara = TLDynamicFontFace.new()
+	ms_rg_wara.load(\"res://fonts/NotoFull/NotoSansWarangCiti-Regular.ttf\")
+	ms_rg_wara.set_fallback(ms_rg_base)
+
 	var ms_rg_hluw = TLDynamicFontFace.new()
 	ms_rg_hluw.load(\"res://fonts/NotoFull/NotoSansAnatolianHieroglyphs-Regular.ttf\")
 	ms_rg_hluw.set_fallback(ms_rg_base)
@@ -231,6 +359,10 @@ func _ready():
 	ms_rg_limb.load(\"res://fonts/NotoFull/NotoSansLimbu-Regular.ttf\")
 	ms_rg_limb.set_fallback(ms_rg_base)
 
+	var ms_rg_lina = TLDynamicFontFace.new()
+	ms_rg_lina.load(\"res://fonts/NotoFull/NotoSansLinearA-Regular.ttf\")
+	ms_rg_lina.set_fallback(ms_rg_base)
+
 	var ms_rg_linb = TLDynamicFontFace.new()
 	ms_rg_linb.load(\"res://fonts/NotoFull/NotoSansLinearB-Regular.ttf\")
 	ms_rg_linb.set_fallback(ms_rg_base)
@@ -381,6 +513,39 @@ func _ready():
 
 	nt_fam_full = TLFontFamily.new()
 	nt_fam_full.set_face(\"Regular\", ms_rg_base)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"AGHM\", ms_rg_aghm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"AHOM\", ms_rg_ahom)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BHKS\", ms_rg_bhks)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"DUPL\", ms_rg_dupl)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ELBA\", ms_rg_elba)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"GRAN\", ms_rg_gran)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HATR\", ms_rg_hatr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HMNG\", ms_rg_hmng)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HUNG\", ms_rg_hung)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KHOJ\", ms_rg_khoj)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MAHJ\", ms_rg_mahj)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MANI\", ms_rg_mani)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MARC\", ms_rg_marc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MEND\", ms_rg_mend)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MODI\", ms_rg_modi)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MERO\", ms_rg_mero)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MROO\", ms_rg_mroo)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MULT\", ms_rg_mult)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"NARB\", ms_rg_narb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"NBAT\", ms_rg_nbat)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"NEWA\", ms_rg_newa)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"OLCK\", ms_rg_olck)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PALM\", ms_rg_palm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PAUC\", ms_rg_pauc)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PERM\", ms_rg_perm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PHLP\", ms_rg_phlp)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"PLRD\", ms_rg_plrd)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SHRD\", ms_rg_shrd)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SIND\", ms_rg_sind)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SORA\", ms_rg_sora)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAKR\", ms_rg_takr)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TIRH\", ms_rg_tirh)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"WARA\", ms_rg_wara)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HLUW\", ms_rg_hluw)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"MYMR\", ms_rg_mymr)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TELU\", ms_rg_telu)
@@ -394,6 +559,7 @@ func _ready():
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"SINH\", ms_rg_sinh)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"TAML\", ms_rg_taml)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"ADLM\", ms_rg_adlm)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"BOPO\", ms_rg_hani)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HANI\", ms_rg_hani)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"HIRA\", ms_rg_hani)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KANA\", ms_rg_hani)
@@ -436,6 +602,7 @@ func _ready():
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"KALI\", ms_rg_kali)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LEPC\", ms_rg_lepc)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LIMB\", ms_rg_limb)
+	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LINA\", ms_rg_lina)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LINB\", ms_rg_linb)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LISU\", ms_rg_lisu)
 	nt_fam_full.set_liked_face_for_script(\"Regular\", \"LYCI\", ms_rg_lyci)
@@ -489,7 +656,7 @@ func _ready():
 
 func _draw():
 	if (s <= 0):
-		draw_rect(Rect2(0, 0, 6000, 1000), Color(1, 1, 1), true)
+		draw_rect(Rect2(0, 0, 7500, 1000), Color(1, 1, 1), true)
 
 		var sstring = TLShapedString.new()
 		sstring.set_base_font(nt_fam_full)
@@ -520,11 +687,11 @@ func _draw():
 			draw_line(Vector2(1850, 300), Vector2(1850, 750), Color(1, 0, 1, 0.5))
 			draw_line(Vector2(2050, 300), Vector2(2050, 750), Color(1, 0, 1, 0.5))
 
-			draw_line(Vector2(2250, 300), Vector2(2250, 750), Color(1, 0, 1, 0.5))
-			draw_line(Vector2(2350, 300), Vector2(2350, 750), Color(1, 0, 1, 0.5))
+			draw_line(Vector2(2250, 300), Vector2(2250, 750), Color(0, 0, 1, 0.5))
+			draw_line(Vector2(2350, 300), Vector2(2350, 750), Color(0, 0, 1, 0.5))
 
-			draw_line(Vector2(2550, 300), Vector2(2550, 750), Color(0, 0, 1, 0.5))
-			draw_line(Vector2(2650, 300), Vector2(2650, 750), Color(0, 0, 1, 0.5))
+			draw_line(Vector2(2550, 300), Vector2(2550, 750), Color(1, 0, 1, 0.5))
+			draw_line(Vector2(2650, 300), Vector2(2650, 750), Color(1, 0, 1, 0.5))
 
 			var ofs = 300
 			var prev = 0
@@ -609,5 +776,5 @@ func _process(_delta):
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 6000, 1000 )
+rect_min_size = Vector2( 7500, 1000 )
 script = SubResource( 1 )
