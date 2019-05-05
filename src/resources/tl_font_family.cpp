@@ -360,45 +360,62 @@ Ref<TLFontFace> TLFontFamily::get_liked_face_for_script(String p_style, String p
 #ifdef GODOT_MODULE
 
 bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
-	/*
+
 	String name = p_name;
-
-	Vector<String> tokens = name.split("/")
-	if ((tokens.size() >= 2) && (styles.count(tokens[0]))) {
+	Vector<String> tokens = name.split("/");
+	if (tokens.size() >= 2) {
 		String style = tokens[0];
-		
-		if (tokens.size() == 2) {
-			add_face(style, p_value);
-			return true;
 
+		if (tokens.size() == 2) {
+			int index = (int)tokens[1].to_int();
+			if (index == styles[style.to_upper()].main_chain.size()) {
+				styles[style.to_upper()].main_chain.push_back(p_value);
+				return true;
+			} else if ((index >= 0) && (index < styles[style.to_upper()].main_chain.size())) {
+				styles[style.to_upper()].main_chain[index] = p_value;
+				return true;
+			}
 		} else if (tokens.size() == 4) {
+			int index = (int)tokens[3].to_int();
 			if (tokens[1] == "script") {
 				//add script
-				add_face_for_script(style, p_value, tokens[2]);
-				return true;
+				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
+				if (index == styles[style.to_upper()].linked_src_chain[scr].size()) {
+					styles[style.to_upper()].linked_src_chain[scr].push_back(p_value);
+					return true;
+				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_src_chain[scr].size())) {
+					styles[style.to_upper()].linked_src_chain[scr][index] = p_value;
+					return true;
+				}
 			} else if (tokens[1] == "lang") {
 				//add lang
-				add_face_for_lang(style, p_value, tokens[2]);
-				return true;
+				hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
+				if (index == styles[style.to_upper()].linked_lang_chain[lang].size()) {
+					styles[style.to_upper()].linked_lang_chain[lang].push_back(p_value);
+					return true;
+				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_lang_chain[lang].size())) {
+					styles[style.to_upper()].linked_lang_chain[lang][index] = p_value;
+					return true;
+				}
 			}
 		}
 	}
-*/
+
 	return false;
 }
 
 bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
-	/*
+
 	String name = p_name;
 
-	Vector<String> tokens = name.split("/")
+	Vector<String> tokens = name.split("/");
 	if ((tokens.size() >= 2) && (styles.count(tokens[0]))) {
 		String style = tokens[0];
 		if (styles.count(style.to_upper()) > 0) {
 			if (tokens.size() == 2) {
 				int index = (int)tokens[1].to_int();
 				if ((index >= 0) && (index < styles.at(style.to_upper()).main_chain.size())) {
-					r_ret = styles.at(p_style.to_upper()).main_chain[index];
+					r_ret = styles.at(style.to_upper()).main_chain[index];
 					return true;
 				}
 
@@ -406,20 +423,20 @@ bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
 				int index = (int)tokens[3].to_int();
 				if (tokens[1] == "script") {
 					//add script
- 					hb_script_t scr = hb_script_from_string(tokens[2]);
-					if (p_style.to_upper()).linked_src_chain.count(scr) > 0) {
+					hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
+					if (styles.at(style.to_upper()).linked_src_chain.count(scr) > 0) {
 						if ((index >= 0) && (index < styles.at(style.to_upper()).linked_src_chain.at(scr).size())) {
-							r_ret = styles.at(p_style.to_upper()).linked_src_chain.at(scr)[index];
+							r_ret = styles.at(style.to_upper()).linked_src_chain.at(scr)[index];
 							return true;
 						}
 					}
 
 				} else if (tokens[1] == "lang") {
 					//add lang
-					hb_language_t lang = hb_language_from_string(tokens[2]);
-					if (p_style.to_upper()).linked_lang_chain.count(lang) > 0) {
+					hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
+					if (styles.at(style.to_upper()).linked_lang_chain.count(lang) > 0) {
 						if ((index >= 0) && (index < styles.at(style.to_upper()).linked_lang_chain.at(lang).size())) {
-							r_ret = styles.at(p_style.to_upper()).linked_lang_chain.at(lang)[index];
+							r_ret = styles.at(style.to_upper()).linked_lang_chain.at(lang)[index];
 							return true;
 						}
 					}
@@ -427,32 +444,31 @@ bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
 			}
 		}
 	}
-*/
+
 	return false;
 }
 
 void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
-	/*
-	for (std::map<String, StyleData>::iterator it = styles.begin(); it != styles.end(); ++it) {
-		
+
+	for (auto it = styles.begin(); it != styles.end(); ++it) {
+
 		for (int i = 0; i < it->second.main_chain.size(); i++) {
-			p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/" + String::num_int64((i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
+			p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
 		}
 
-		for (std::map<hb_script_t, std::vector<Ref<TLFontFace> > >::iterator sit = p_list->second.linked_src_chain.begin(); sit != p_list->second.linked_src_chain.end(); ++sit) {
+		for (auto sit = it->second.linked_src_chain.begin(); sit != it->second.linked_src_chain.end(); ++sit) {
 			for (int i = 0; i < sit->second.size(); i++) {
 				char tag[5] = "";
 				hb_tag_to_string(hb_script_to_iso15924_tag(sit->first), tag);
-				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/script/" + tag + "/" + String::num_int64((i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
+				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/script/" + tag + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
 			}
 		}
-		for (std::map<hb_language_t, std::vector<Ref<TLFontFace> > >::iterator sit = p_list->second.linked_lang_chain.begin(); sit != p_list->second.linked_lang_chain.end(); ++sit) {
+		for (auto sit = it->second.linked_lang_chain.begin(); sit != it->second.linked_lang_chain.end(); ++sit) {
 			for (int i = 0; i < sit->second.size(); i++) {
-				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64((i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
+				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
 			}
 		}
 	}
-*/
 }
 
 void TLFontFamily::_bind_methods() {
@@ -476,20 +492,131 @@ void TLFontFamily::_bind_methods() {
 
 bool TLFontFamily::_set(String p_name, Variant p_value) {
 
-	//TODO
+	String name = p_name;
+	PoolStringArray tokens = name.split("/");
+	if (tokens.size() >= 2) {
+		String style = tokens[0];
+
+		if (tokens.size() == 2) {
+			int index = (int)tokens[1].to_int();
+			if (index == styles[style.to_upper()].main_chain.size()) {
+				styles[style.to_upper()].main_chain.push_back(p_value);
+				return true;
+			} else if ((index >= 0) && (index < styles[style.to_upper()].main_chain.size())) {
+				styles[style.to_upper()].main_chain[index] = p_value;
+				return true;
+			}
+		} else if (tokens.size() == 4) {
+			int index = (int)tokens[3].to_int();
+			if (tokens[1] == "script") {
+				//add script
+				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
+				if (index == styles[style.to_upper()].linked_src_chain[scr].size()) {
+					styles[style.to_upper()].linked_src_chain[scr].push_back(p_value);
+					return true;
+				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_src_chain[scr].size())) {
+					styles[style.to_upper()].linked_src_chain[scr][index] = p_value;
+					return true;
+				}
+			} else if (tokens[1] == "lang") {
+				//add lang
+				hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
+				if (index == styles[style.to_upper()].linked_lang_chain[lang].size()) {
+					styles[style.to_upper()].linked_lang_chain[lang].push_back(p_value);
+					return true;
+				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_lang_chain[lang].size())) {
+					styles[style.to_upper()].linked_lang_chain[lang][index] = p_value;
+					return true;
+				}
+			}
+		}
+	}
+
 	return false;
 }
 
-Variant TLFontFamily::_get(String p_name) {
+Variant TLFontFamily::_get(String p_name) const {
 
-	//TODO
+	String name = p_name;
+
+	PoolStringArray tokens = name.split("/");
+	if ((tokens.size() >= 2) && (styles.count(tokens[0]))) {
+		String style = tokens[0];
+		if (styles.count(style.to_upper()) > 0) {
+			if (tokens.size() == 2) {
+				int index = (int)tokens[1].to_int();
+				if ((index >= 0) && (index < styles.at(style.to_upper()).main_chain.size())) {
+					return styles.at(style.to_upper()).main_chain[index];
+				}
+
+			} else if (tokens.size() == 4) {
+				int index = (int)tokens[3].to_int();
+				if (tokens[1] == "script") {
+					//add script
+					hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
+					if (styles.at(style.to_upper()).linked_src_chain.count(scr) > 0) {
+						if ((index >= 0) && (index < styles.at(style.to_upper()).linked_src_chain.at(scr).size())) {
+							return styles.at(style.to_upper()).linked_src_chain.at(scr)[index];
+						}
+					}
+
+				} else if (tokens[1] == "lang") {
+					//add lang
+					hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
+					if (styles.at(style.to_upper()).linked_lang_chain.count(lang) > 0) {
+						if ((index >= 0) && (index < styles.at(style.to_upper()).linked_lang_chain.at(lang).size())) {
+							return styles.at(style.to_upper()).linked_lang_chain.at(lang)[index];
+						}
+					}
+				}
+			}
+		}
+	}
+
 	return Variant();
 }
 
-Array TLFontFamily::_get_property_list() {
+Array TLFontFamily::_get_property_list() const {
 
 	Array ret;
-	//TODO
+	for (auto it = styles.begin(); it != styles.end(); ++it) {
+
+		for (int i = 0; i < it->second.main_chain.size(); i++) {
+			Dictionary prop;
+			prop["name"] = it->first.to_lower() + "/" + String::num_int64(i);
+			prop["type"] = GlobalConstants::TYPE_OBJECT;
+			prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+			prop["hint_string"] = "TLFontFace";
+			prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_STORAGE;
+			ret.push_back(prop);
+		}
+
+		for (auto sit = it->second.linked_src_chain.begin(); sit != it->second.linked_src_chain.end(); ++sit) {
+			for (int i = 0; i < sit->second.size(); i++) {
+				char tag[5] = "";
+				hb_tag_to_string(hb_script_to_iso15924_tag(sit->first), tag);
+
+				Dictionary prop;
+				prop["name"] = it->first.to_lower() + "/script/" + tag + "/" + String::num_int64(i);
+				prop["type"] = GlobalConstants::TYPE_OBJECT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+				prop["hint_string"] = "TLFontFace";
+				prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_STORAGE;
+				ret.push_back(prop);
+			}
+		}
+		for (auto sit = it->second.linked_lang_chain.begin(); sit != it->second.linked_lang_chain.end(); ++sit) {
+			for (int i = 0; i < sit->second.size(); i++) {
+				Dictionary prop;
+				prop["name"] = it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64(i);
+				prop["type"] = GlobalConstants::TYPE_OBJECT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+				prop["hint_string"] = "TLFontFace";
+				prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_STORAGE;
+				ret.push_back(prop);
+			}
+		}
+	}
 	return ret;
 }
 
