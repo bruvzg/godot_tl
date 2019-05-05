@@ -16,6 +16,8 @@
 #include <RID.hpp>
 #endif
 
+#include <vector>
+
 #include <hb.h>
 
 using namespace godot;
@@ -29,7 +31,7 @@ class TLFontFace : public Resource {
 	GODOT_CLASS(TLFontFace, Resource);
 
 protected:
-	Ref<TLFontFace> fallback;
+	//Ref<TLFontFace> fallback;
 	static Ref<ImageTexture> hex_box_img_tex;
 	String path;
 
@@ -54,7 +56,9 @@ public:
 	virtual void draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 	virtual Array get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const;
 
-	virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const;
+	Array _unicode_scripts_supported() const;
+	virtual std::vector<hb_script_t> unicode_scripts_supported() const;
+	//virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const;
 
 	//GDNative methods
 	virtual bool load(String p_resource_path);
@@ -71,8 +75,8 @@ public:
 	virtual void set_texture_flags(int p_flags);
 	virtual int get_texture_flags() const;
 
-	void set_fallback(const Ref<TLFontFace> p_fallback);
-	Ref<TLFontFace> get_fallback() const;
+	//void set_fallback(const Ref<TLFontFace> p_fallback);
+	//Ref<TLFontFace> get_fallback() const;
 
 #ifdef GODOT_MODULE
 	static void _bind_methods();

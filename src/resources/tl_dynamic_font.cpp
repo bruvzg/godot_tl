@@ -532,6 +532,249 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size) {
 	return loaded;
 }
 
+//Array TLDynamicFontFaceAtSize::unicode_scripts_supported() const {
+std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() const {
+	//DEBUG
+	/*
+	for (int i = 31; i >= 0; i--)
+		printf("%s", ((os2->ulUnicodeRange1 >> i) & 1) ? "+" : "-");
+	printf(" ");
+	for (int i = 31; i >= 0; i--)
+		printf("%s", ((os2->ulUnicodeRange2 >> i) & 1) ? "+" : "-");
+	printf(" ");
+	for (int i = 31; i >= 0; i--)
+		printf("%s", ((os2->ulUnicodeRange3 >> i) & 1) ? "+" : "-");
+	printf(" ");
+	for (int i = 31; i >= 0; i--)
+		printf("%s", ((os2->ulUnicodeRange4 >> i) & 1) ? "+" : "-");
+	printf("\n");
+	*/
+	//DEBUG
+	std::vector<hb_script_t> ret;
+	if (!os2)
+		return ret;
+
+	if ((os2->ulUnicodeRange1 & 1L << 0) || (os2->ulUnicodeRange1 & 1L << 1) || (os2->ulUnicodeRange1 & 1L << 2) || (os2->ulUnicodeRange1 & 1L << 3) || (os2->ulUnicodeRange1 & 1L << 29)) {
+		ret.push_back(HB_SCRIPT_LATIN);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 4) || (os2->ulUnicodeRange1 & 1L << 5) || (os2->ulUnicodeRange1 & 1L << 6) || (os2->ulUnicodeRange1 & 1L << 31) || (os2->ulUnicodeRange2 & 1L << 0) || (os2->ulUnicodeRange2 & 1L << 1) || (os2->ulUnicodeRange2 & 1L << 2) || (os2->ulUnicodeRange2 & 1L << 3) || (os2->ulUnicodeRange2 & 1L << 4) || (os2->ulUnicodeRange2 & 1L << 5) || (os2->ulUnicodeRange2 & 1L << 6) || (os2->ulUnicodeRange2 & 1L << 7) || (os2->ulUnicodeRange2 & 1L << 8) || (os2->ulUnicodeRange2 & 1L << 9) || (os2->ulUnicodeRange2 & 1L << 10) || (os2->ulUnicodeRange2 & 1L << 11) || (os2->ulUnicodeRange2 & 1L << 12) || (os2->ulUnicodeRange2 & 1L << 13) || (os2->ulUnicodeRange2 & 1L << 14) || (os2->ulUnicodeRange2 & 1L << 15) || (os2->ulUnicodeRange2 & 1L << 30) || (os2->ulUnicodeRange3 & 1L << 0) || (os2->ulUnicodeRange3 & 1L << 1) || (os2->ulUnicodeRange3 & 1L << 2) || (os2->ulUnicodeRange3 & 1L << 4) || (os2->ulUnicodeRange3 & 1L << 5) || (os2->ulUnicodeRange3 & 1L << 18) || (os2->ulUnicodeRange3 & 1L << 24) || (os2->ulUnicodeRange3 & 1L << 25) || (os2->ulUnicodeRange3 & 1L << 26) || (os2->ulUnicodeRange3 & 1L << 27) || (os2->ulUnicodeRange3 & 1L << 28) || (os2->ulUnicodeRange4 & 1L << 3) || (os2->ulUnicodeRange4 & 1L << 6) || (os2->ulUnicodeRange4 & 1L << 15) || (os2->ulUnicodeRange4 & 1L << 23) || (os2->ulUnicodeRange4 & 1L << 24) || (os2->ulUnicodeRange4 & 1L << 26)) {
+		ret.push_back(HB_SCRIPT_COMMON);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 7) || (os2->ulUnicodeRange1 & 1L << 30)) {
+		ret.push_back(HB_SCRIPT_GREEK);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 8)) {
+		ret.push_back(HB_SCRIPT_COPTIC);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 9)) {
+		ret.push_back(HB_SCRIPT_CYRILLIC);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 10)) {
+		ret.push_back(HB_SCRIPT_ARMENIAN);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 11)) {
+		ret.push_back(HB_SCRIPT_HEBREW);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 12)) {
+		ret.push_back(HB_SCRIPT_VAI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 13) || (os2->ulUnicodeRange2 & 1L << 31) || (os2->ulUnicodeRange3 & 1L << 3)) {
+		ret.push_back(HB_SCRIPT_ARABIC);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 14)) {
+		ret.push_back(HB_SCRIPT_NKO);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 15)) {
+		ret.push_back(HB_SCRIPT_DEVANAGARI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 16)) {
+		ret.push_back(HB_SCRIPT_BENGALI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 17)) {
+		ret.push_back(HB_SCRIPT_GURMUKHI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 18)) {
+		ret.push_back(HB_SCRIPT_GUJARATI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 19)) {
+		ret.push_back(HB_SCRIPT_ORIYA);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 20)) {
+		ret.push_back(HB_SCRIPT_TAMIL);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 21)) {
+		ret.push_back(HB_SCRIPT_TELUGU);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 22)) {
+		ret.push_back(HB_SCRIPT_KANNADA);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 23)) {
+		ret.push_back(HB_SCRIPT_MALAYALAM);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 24)) {
+		ret.push_back(HB_SCRIPT_THAI);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 25)) {
+		ret.push_back(HB_SCRIPT_LAO);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 26)) {
+		ret.push_back(HB_SCRIPT_GEORGIAN);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 27)) {
+		ret.push_back(HB_SCRIPT_BALINESE);
+	}
+	if ((os2->ulUnicodeRange1 & 1L << 28) || (os2->ulUnicodeRange2 & 1L << 20) || (os2->ulUnicodeRange2 & 1L << 20) || (os2->ulUnicodeRange2 & 1L << 24)) {
+		//HANG and JAMO
+		ret.push_back(HB_SCRIPT_HANGUL);
+	}
+	if ((os2->ulUnicodeRange2 & 1L << 16) || (os2->ulUnicodeRange2 & 1L << 21) || (os2->ulUnicodeRange2 & 1L << 22) || (os2->ulUnicodeRange2 & 1L << 23) || (os2->ulUnicodeRange2 & 1L << 26) || (os2->ulUnicodeRange2 & 1L << 27) || (os2->ulUnicodeRange2 & 1L << 28) || (os2->ulUnicodeRange2 & 1L << 29)) {
+		ret.push_back(HB_SCRIPT_HAN);
+	}
+	if ((os2->ulUnicodeRange2 & 1L << 17)) {
+		ret.push_back(HB_SCRIPT_HIRAGANA);
+	}
+	if ((os2->ulUnicodeRange2 & 1L << 18)) {
+		ret.push_back(HB_SCRIPT_KATAKANA);
+	}
+	if ((os2->ulUnicodeRange2 & 1L << 19)) {
+		ret.push_back(HB_SCRIPT_BOPOMOFO);
+	}
+	//Bit 25 - Surrogates - Ignore
+	if ((os2->ulUnicodeRange3 & 1L << 6)) {
+		ret.push_back(HB_SCRIPT_TIBETAN);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 7)) {
+		ret.push_back(HB_SCRIPT_SYRIAC);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 8)) {
+		ret.push_back(HB_SCRIPT_THAANA);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 9)) {
+		ret.push_back(HB_SCRIPT_SINHALA);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 10)) {
+		ret.push_back(HB_SCRIPT_MYANMAR);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 11)) {
+		ret.push_back(HB_SCRIPT_ETHIOPIC);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 12)) {
+		ret.push_back(HB_SCRIPT_CHEROKEE);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 13)) {
+		ret.push_back(HB_SCRIPT_CANADIAN_SYLLABICS);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 14)) {
+		ret.push_back(HB_SCRIPT_OGHAM);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 15)) {
+		ret.push_back(HB_SCRIPT_RUNIC);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 16)) {
+		ret.push_back(HB_SCRIPT_KHMER);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 17)) {
+		ret.push_back(HB_SCRIPT_MONGOLIAN);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 19)) {
+		ret.push_back(HB_SCRIPT_YI);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 20)) {
+		ret.push_back(HB_SCRIPT_TAGALOG);
+		ret.push_back(HB_SCRIPT_HANUNOO);
+		ret.push_back(HB_SCRIPT_TAGBANWA);
+		ret.push_back(HB_SCRIPT_BUHID);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 21)) {
+		ret.push_back(HB_SCRIPT_OLD_ITALIC);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 22)) {
+		ret.push_back(HB_SCRIPT_GOTHIC);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 23)) {
+		ret.push_back(HB_SCRIPT_DESERET);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 29)) {
+		ret.push_back(HB_SCRIPT_LIMBU);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 30)) {
+		ret.push_back(HB_SCRIPT_TAI_LE);
+	}
+	if ((os2->ulUnicodeRange3 & 1L << 31)) {
+		ret.push_back(HB_SCRIPT_NEW_TAI_LUE);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 0)) {
+		ret.push_back(HB_SCRIPT_BUGINESE);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 1)) {
+		ret.push_back(HB_SCRIPT_GLAGOLITIC);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 2)) {
+		ret.push_back(HB_SCRIPT_TIFINAGH);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 4)) {
+		ret.push_back(HB_SCRIPT_SYLOTI_NAGRI);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 5)) {
+		ret.push_back(HB_SCRIPT_LINEAR_B);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 7)) {
+		ret.push_back(HB_SCRIPT_UGARITIC);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 8)) {
+		ret.push_back(HB_SCRIPT_OLD_PERSIAN);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 9)) {
+		ret.push_back(HB_SCRIPT_SHAVIAN);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 10)) {
+		ret.push_back(HB_SCRIPT_OSMANYA);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 11)) {
+		ret.push_back(HB_SCRIPT_CYPRIOT);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 12)) {
+		ret.push_back(HB_SCRIPT_KHAROSHTHI);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 13)) {
+		ret.push_back(HB_SCRIPT_TAI_VIET);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 14)) {
+		ret.push_back(HB_SCRIPT_CUNEIFORM);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 16)) {
+		ret.push_back(HB_SCRIPT_SUNDANESE);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 17)) {
+		ret.push_back(HB_SCRIPT_LEPCHA);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 18)) {
+		ret.push_back(HB_SCRIPT_OL_CHIKI);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 19)) {
+		ret.push_back(HB_SCRIPT_SAURASHTRA);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 20)) {
+		ret.push_back(HB_SCRIPT_KAYAH_LI);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 21)) {
+		ret.push_back(HB_SCRIPT_REJANG);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 22)) {
+		ret.push_back(HB_SCRIPT_CHAM);
+	}
+	if ((os2->ulUnicodeRange4 & 1L << 25)) {
+		ret.push_back(HB_SCRIPT_ANATOLIAN_HIEROGLYPHS);
+	}
+	if (ret.size() == 0) {
+		ret.push_back(HB_SCRIPT_COMMON);
+	}
+	//Bits 27...31 - Reserved
+
+	return ret;
+}
+
+/*
 bool TLDynamicFontFaceAtSize::unicode_range_supported(uint8_t p_bank, uint32_t p_range) const {
 
 	//https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_ucr_xxx
@@ -551,6 +794,7 @@ bool TLDynamicFontFaceAtSize::unicode_range_supported(uint8_t p_bank, uint32_t p
 			return false;
 	}
 }
+*/
 
 double TLDynamicFontFaceAtSize::get_ascent() const {
 
@@ -765,6 +1009,27 @@ bool TLDynamicFontFace::load(String p_resource_path) {
 	return true;
 }
 
+//Array TLDynamicFontFace::unicode_scripts_supported(int p_size) const {
+std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
+
+	if (sizes.size() > 0) {
+		return sizes.begin()->second->unicode_scripts_supported();
+	} else {
+		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
+		f_at_s->set_texture_flags(txt_flags);
+		f_at_s->set_hinting(hinting);
+		f_at_s->set_force_autohinter(force_autohinter);
+		f_at_s->set_oversampling(oversampling);
+
+		if (f_at_s->load(path, 16)) {
+			sizes[16] = f_at_s;
+			return f_at_s->unicode_scripts_supported();
+		}
+	}
+	WARN_PRINTS("Font not loaded!")
+	return std::vector<hb_script_t>();
+}
+/*
 bool TLDynamicFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
 
 	if (sizes.count(p_size) > 0) {
@@ -784,6 +1049,7 @@ bool TLDynamicFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint
 	WARN_PRINTS("Font not loaded!")
 	return false;
 }
+*/
 
 double TLDynamicFontFace::get_ascent(int p_size) const {
 

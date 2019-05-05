@@ -7,27 +7,39 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<demos>
-	</demos>
 	<methods>
-		<method name="get_face" qualifiers="const">
-			<return type="TLFontFace">
+		<method name="add_face">
+			<return type="void">
 			</return>
 			<argument index="0" name="style" type="String">
 			</argument>
+			<argument index="1" name="ref" type="TLFontFace">
+			</argument>
 			<description>
-				Returns main font face of specified style.
 			</description>
 		</method>
-		<method name="get_liked_face_for_script" qualifiers="const">
-			<return type="TLFontFace">
+		<method name="add_face_for_language">
+			<return type="void">
 			</return>
 			<argument index="0" name="style" type="String">
 			</argument>
-			<argument index="1" name="script" type="String">
+			<argument index="1" name="ref" type="TLFontFace">
+			</argument>
+			<argument index="2" name="lang" type="String">
 			</argument>
 			<description>
-				Returns substitution font face of specified style and script.
+			</description>
+		</method>
+		<method name="add_face_for_script">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="ref" type="TLFontFace">
+			</argument>
+			<argument index="2" name="script" type="String">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="has_style" qualifiers="const">
@@ -36,7 +48,6 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
-				Returns [code]true[/code] if font family has specified style.
 			</description>
 		</method>
 		<method name="remove_style">
@@ -45,31 +56,6 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
-				Removes all font faces of specified style from family.
-			</description>
-		</method>
-		<method name="set_face">
-			<return type="void">
-			</return>
-			<argument index="0" name="style" type="String">
-			</argument>
-			<argument index="1" name="ref" type="TLFontFace">
-			</argument>
-			<description>
-				Sets main font face of specified style.
-			</description>
-		</method>
-		<method name="set_liked_face_for_script">
-			<return type="void">
-			</return>
-			<argument index="0" name="style" type="String">
-			</argument>
-			<argument index="1" name="script" type="String">
-			</argument>
-			<argument index="2" name="ref" type="TLFontFace">
-			</argument>
-			<description>
-				Sets substitution font face of specified style and script.
 			</description>
 		</method>
 	</methods>

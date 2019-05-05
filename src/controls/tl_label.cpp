@@ -42,7 +42,8 @@ float TLLabel::_get_base_font_height() const {
 
 	if (s_paragraph->get_base_font().is_valid())
 		if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).is_valid())
-			return s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style())->get_height(s_paragraph->get_base_font_size());
+			if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).value().is_valid())
+				return s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).value()->get_height(s_paragraph->get_base_font_size());
 	return 5.0;
 }
 

@@ -490,15 +490,17 @@ void TLShapedString::_shape_full_string() {
 		ascent = MAX(max_ascent, -max_neg_offset);
 		descent = MAX(max_descent, max_pos_offset);
 	} else {
+		ascent = 15.0f;
+		descent = 5.0f;
 		if (base_font.is_valid()) {
-			Ref<TLFontFace> _font = base_font->get_face(base_style);
-			if (!_font.is_null()) {
-				ascent = _font->get_ascent(base_size);
-				descent = _font->get_descent(base_size);
+			TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+			if (font_iter.is_valid()) {
+				Ref<TLFontFace> _font = font_iter.value();
+				if (!_font.is_null()) {
+					ascent = _font->get_ascent(base_size);
+					descent = _font->get_descent(base_size);
+				}
 			}
-		} else {
-			ascent = 15.0f;
-			descent = 5.0f;
 		}
 	}
 
@@ -586,6 +588,18 @@ void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_r
 
 		if ((script_run_start < p_run_end) && (script_run_end > p_run_start)) {
 			if (base_font.is_valid()) {
+				TLFontFallbackIterator font_iter = base_font->get_face_for_script(base_style, script_run_script);
+				if (language != HB_LANGUAGE_INVALID) {
+					TLFontFallbackIterator _iter = base_font->get_face_for_language(base_style, language);
+					if (_iter.is_linked()) {
+						font_iter = _iter;
+					}
+				}
+				if (!font_iter.is_valid()) {
+					_shape_hex_run(p_run_direction, p_run_start, p_run_end);
+					return;
+				}
+				/*
 				Ref<TLFontFace> _font = base_font->_get_liked_face_for_script(base_style, script_run_script);
 				if (_font.is_null()) {
 					_font = base_font->get_face(base_style);
@@ -594,7 +608,8 @@ void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_r
 						return;
 					}
 				}
-				_shape_bidi_script_run(p_run_direction, script_run_script, MAX(script_run_start, p_run_start), MIN(script_run_end, p_run_end), _font);
+				*/
+				_shape_bidi_script_run(p_run_direction, script_run_script, MAX(script_run_start, p_run_start), MIN(script_run_end, p_run_end), font_iter);
 			} else {
 				_shape_hex_run(p_run_direction, p_run_start, p_run_end);
 			}
@@ -602,15 +617,15 @@ void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_r
 	}
 }
 
-void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font) {
+void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font) {
 
 	//Shape monotone run using HarfBuzz
-	hb_font_t *hb_font = p_font->get_hb_font(base_size);
+	hb_font_t *hb_font = p_font.value()->get_hb_font(base_size);
 	if (!hb_font) {
-		if (p_font->get_fallback().is_null()) {
-			_shape_hex_run(p_run_direction, p_run_start, p_run_end);
+		if (p_font.next().is_valid()) {
+			_shape_bidi_script_run(p_run_direction, p_run_script, p_run_start, p_run_end, p_font.next());
 		} else {
-			_shape_bidi_script_run(p_run_direction, p_run_script, p_run_start, p_run_end, p_font->get_fallback());
+			_shape_hex_run(p_run_direction, p_run_start, p_run_end);
 		}
 		return;
 	}
@@ -652,17 +667,17 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 				new_cluster.lang = language;
 				//debug info
 
-				new_cluster.font_face = p_font.ptr();
+				new_cluster.font_face = p_font.value().ptr();
 				new_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);
 				new_cluster.cl_type = _CLUSTER_TYPE_TEXT;
 
-				new_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font->get_glyph_scale(base_size)) / 64))));
+				new_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font.value()->get_glyph_scale(base_size)) / 64))));
 				new_cluster.valid = ((glyph_info[i].codepoint != 0) || !u_isgraph(get_char(glyph_info[i].cluster)));
 				new_cluster.start = glyph_info[i].cluster;
 				new_cluster.end = glyph_info[i].cluster;
-				new_cluster.ascent = p_font->get_ascent(base_size);
-				new_cluster.descent = p_font->get_descent(base_size);
-				new_cluster.width += (glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64;
+				new_cluster.ascent = p_font.value()->get_ascent(base_size);
+				new_cluster.descent = p_font.value()->get_descent(base_size);
+				new_cluster.width += (glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64;
 
 				//Set previous logical cluster end limit
 				if (i != 0) {
@@ -678,9 +693,9 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 				last_cluster_id = glyph_info[i].cluster;
 			} else {
 				//Add glyphs to existing cluster
-				run_clusters[run_clusters.size() - 1].glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font->get_glyph_scale(base_size)) / 64))));
+				run_clusters[run_clusters.size() - 1].glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font.value()->get_glyph_scale(base_size)) / 64))));
 				run_clusters[run_clusters.size() - 1].valid &= ((glyph_info[i].codepoint != 0) || !u_isgraph(get_char(glyph_info[i].cluster)));
-				run_clusters[run_clusters.size() - 1].width += (glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64;
+				run_clusters[run_clusters.size() - 1].width += (glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64;
 			}
 		}
 		//Set last logical cluster end limit
@@ -700,8 +715,8 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 		for (int64_t i = 0; i < run_clusters.size(); i++) {
 			if (run_clusters[i].valid) {
 				if (failed_subrun_start != p_run_end + 1) {
-					if (!p_font->get_fallback().is_null()) {
-						_shape_bidi_script_run(p_run_direction, p_run_script, failed_subrun_start, failed_subrun_end + 1, p_font->get_fallback());
+					if (p_font.next().is_valid()) {
+						_shape_bidi_script_run(p_run_direction, p_run_script, failed_subrun_start, failed_subrun_end + 1, p_font.next());
 					} else {
 						_shape_hex_run(p_run_direction, failed_subrun_start, failed_subrun_end + 1);
 					}
@@ -715,8 +730,8 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 			}
 		}
 		if (failed_subrun_start != p_run_end + 1) {
-			if (!p_font->get_fallback().is_null() && p_font->get_fallback() != p_font) {
-				_shape_bidi_script_run(p_run_direction, p_run_script, failed_subrun_start, failed_subrun_end + 1, p_font->get_fallback());
+			if (p_font.next().is_valid()) {
+				_shape_bidi_script_run(p_run_direction, p_run_script, failed_subrun_start, failed_subrun_end + 1, p_font.next());
 			} else {
 				_shape_hex_run(p_run_direction, failed_subrun_start, failed_subrun_end + 1);
 			}
@@ -931,14 +946,16 @@ float TLShapedString::get_ascent() const {
 
 	if (!valid) {
 		if (base_font.is_valid()) {
-			Ref<TLFontFace> _font = base_font->get_face(base_style);
-			if (_font.is_null()) {
-				return 0.0f;
+			TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+			if (font_iter.is_valid()) {
+				Ref<TLFontFace> _font = font_iter.value();
+				if (_font.is_null()) {
+					return 0.0f;
+				}
+				return _font->get_ascent(base_size);
 			}
-			return _font->get_ascent(base_size);
-		} else {
-			return 15.0f;
 		}
+		return 15.0f;
 	}
 
 	return ascent;
@@ -951,14 +968,16 @@ float TLShapedString::get_descent() const {
 
 	if (!valid) {
 		if (base_font.is_valid()) {
-			Ref<TLFontFace> _font = base_font->get_face(base_style);
-			if (_font.is_null()) {
-				return 0.0f;
+			TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+			if (font_iter.is_valid()) {
+				Ref<TLFontFace> _font = font_iter.value();
+				if (_font.is_null()) {
+					return 0.0f;
+				}
+				return _font->get_descent(base_size);
 			}
-			return _font->get_descent(base_size);
-		} else {
-			return 5.0f;
 		}
+		return 5.0f;
 	}
 
 	return descent;
@@ -982,14 +1001,16 @@ float TLShapedString::get_height() const {
 
 	if (!valid) {
 		if (base_font.is_valid()) {
-			Ref<TLFontFace> _font = base_font->get_face(base_style);
-			if (_font.is_null()) {
-				return 0.0f;
+			TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+			if (font_iter.is_valid()) {
+				Ref<TLFontFace> _font = font_iter.value();
+				if (_font.is_null()) {
+					return 0.0f;
+				}
+				return _font->get_height(base_size);
 			}
-			return _font->get_height(base_size);
-		} else {
-			return 20.0f;
 		}
+		return 20.0f;
 	}
 
 	return ascent + descent;
@@ -1165,13 +1186,13 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 	return ret;
 }
 
-void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
+void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
 
 	//Shape single cluster using HarfBuzz
-	hb_font_t *hb_font = p_font->get_hb_font(base_size);
+	hb_font_t *hb_font = p_font.value()->get_hb_font(base_size);
 	if (!hb_font) {
-		if (!p_font->get_fallback().is_null()) {
-			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, p_font->get_fallback(), p_cluster);
+		if (p_font.next().is_valid()) {
+			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, p_font.next(), p_cluster);
 		}
 		return;
 	}
@@ -1201,26 +1222,26 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 	p_cluster.lang = language;
 	//debug info
 
-	p_cluster.font_face = p_font.ptr();
+	p_cluster.font_face = p_font.value().ptr();
 	p_cluster.is_rtl = (p_run_direction == HB_DIRECTION_RTL);
 	p_cluster.cl_type = _CLUSTER_TYPE_TEXT;
 	p_cluster.valid = true;
 	p_cluster.start = p_start;
 	p_cluster.end = p_end;
-	p_cluster.ascent = p_font->get_ascent(base_size);
-	p_cluster.descent = p_font->get_descent(base_size);
+	p_cluster.ascent = p_font.value()->get_ascent(base_size);
+	p_cluster.descent = p_font.value()->get_descent(base_size);
 	p_cluster.width = 0.0f;
 
 	if (glyph_count > 0) {
 		for (int64_t i = 0; i < glyph_count; i++) {
-			p_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font->get_glyph_scale(base_size)) / 64))));
+			p_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font.value()->get_glyph_scale(base_size)) / 64))));
 			p_cluster.valid &= ((glyph_info[i].codepoint != 0) || !u_isgraph(p_codepoint));
-			p_cluster.width += (glyph_pos[i].x_advance * p_font->get_glyph_scale(base_size)) / 64;
+			p_cluster.width += (glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64;
 		}
 	}
 	if (!p_cluster.valid) {
-		if (!p_font->get_fallback().is_null()) {
-			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, p_font->get_fallback(), p_cluster);
+		if (p_font.next().is_valid()) {
+			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, p_font.next(), p_cluster);
 		}
 	}
 }
@@ -1279,7 +1300,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 				int64_t j = 1;
 				while (j < visual.size()) {
 					if (visual[j].start == jst_ops[i].position) {
-						_shape_single_cluster(visual[j - 1].end, visual[j].start, HB_DIRECTION_RTL, HB_SCRIPT_ARABIC, 0x0640, visual[j].font_face, ks_cluster);
+						_shape_single_cluster(visual[j - 1].end, visual[j].start, HB_DIRECTION_RTL, HB_SCRIPT_ARABIC, 0x0640, TLFontFallbackIterator(visual[j].font_face), ks_cluster);
 						ks_cluster.ignore_on_input = true;
 
 						//Add new kashda multiple times
@@ -1306,7 +1327,11 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 		if (base_font.is_null()) {
 			return width;
 		}
-		Ref<TLFontFace> _font = base_font->get_face(base_style);
+		Ref<TLFontFace> _font;
+		TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+		if (font_iter.is_valid()) {
+			_font = font_iter.value();
+		}
 		if (_font.is_null()) {
 			return width;
 		}
@@ -2129,17 +2154,21 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			UChar32 ch;
 			U16_GET(data, 0, i, data_size, ch);
 			if (base_font.is_valid()) {
-				Ref<TLFontFace> _font = base_font->get_face(base_style);
-				for (int64_t z = 0; z < visual.size(); z++) {
-					int64_t last = U16_IS_SURROGATE(data[i]) ? i + 1 : i;
-					if (((visual[z].start <= i) && (visual[z].end >= last)) || (visual[z].start == i)) {
-						_font = Ref<TLFontFace>(visual[z].font_face);
-						break;
+				TLFontFallbackIterator font_iter = base_font->get_face(base_style);
+				if (font_iter.is_valid()) {
+					Ref<TLFontFace> _font = font_iter.value();
+
+					for (int64_t z = 0; z < visual.size(); z++) {
+						int64_t last = U16_IS_SURROGATE(data[i]) ? i + 1 : i;
+						if (((visual[z].start <= i) && (visual[z].end >= last)) || (visual[z].start == i)) {
+							_font = Ref<TLFontFace>(visual[z].font_face);
+							break;
+						}
 					}
-				}
-				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
-				if (_font.is_valid()) {
-					_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
+					VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
+					if (_font.is_valid()) {
+						_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
+					}
 				}
 			}
 		}

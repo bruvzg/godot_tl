@@ -19,8 +19,6 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<demos>
-	</demos>
 	<methods>
 		<method name="add_sstring">
 			<return type="void">
@@ -413,6 +411,12 @@
 				Returns an [Array] of [Rect2] enclosing the selection/highlight in the specified range.
 			</description>
 		</method>
+		<method name="get_para_direction" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_utf16" qualifiers="const">
 			<return type="PoolByteArray">
 			</return>
@@ -665,6 +669,8 @@
 		<constant name="TEXT_DIRECTION_AUTO" value="3" enum="TextDirection">
 			Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale's script if text is not strongly directional
 		</constant>
+		<constant name="TEXT_DIRECTION_INVALID" value="4" enum="TextDirection">
+		</constant>
 		<constant name="TEXT_JUSTIFICATION_NONE" value="0" enum="TextJustification">
 			No text justification
 		</constant>
@@ -676,6 +682,14 @@
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_WHITESPACE_ONLY" value="3" enum="TextJustification">
 			Use whitespace elongation to justify text
+		</constant>
+		<constant name="TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR" value="4" enum="TextJustification">
+		</constant>
+		<constant name="TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR" value="5" enum="TextJustification">
+		</constant>
+		<constant name="TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR" value="6" enum="TextJustification">
+		</constant>
+		<constant name="TEXT_JUSTIFICATION_INTERCHAR_ONLY" value="7" enum="TextJustification">
 		</constant>
 		<constant name="TEXT_BREAK_NONE" value="0" enum="TextBreak">
 			No line breaking

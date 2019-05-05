@@ -253,8 +253,8 @@ protected:
 
 	void _shape_substring(TLShapedString *p_ref, int64_t p_start, int64_t p_end, int p_trim) const;
 
-	virtual void _shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, Ref<TLFontFace> p_font, /*out*/ Cluster &p_cluster, bool p_font_override = false) const;
-	virtual void _shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, Ref<TLFontFace> p_font);
+	virtual void _shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override = false) const;
+	virtual void _shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font);
 	virtual void _shape_bidi_run(hb_direction_t p_run_direction, int32_t p_run_start, int32_t p_run_end);
 	virtual void _shape_hex_run(hb_direction_t p_run_direction, int32_t p_run_start, int32_t p_run_end);
 	virtual void _shape_full_string();

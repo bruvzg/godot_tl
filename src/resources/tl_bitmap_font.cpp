@@ -497,11 +497,20 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 	return loaded;
 }
 
+std::vector<hb_script_t> TLBitmapFontFace::unicode_scripts_supported() const {
+
+	std::vector<hb_script_t> ret;
+	ret.push_back(HB_SCRIPT_COMMON);
+	return ret;
+}
+
+/*
 bool TLBitmapFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
 
 	//TODO
 	return false;
 }
+*/
 
 double TLBitmapFontFace::get_ascent(int p_size) const {
 

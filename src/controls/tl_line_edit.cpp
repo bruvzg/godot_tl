@@ -65,7 +65,8 @@ float TLLineEdit::_get_base_font_height() const {
 
 	if (line->get_base_font().is_valid())
 		if (line->get_base_font()->get_face(line->get_base_font_style()).is_valid())
-			return line->get_base_font()->get_face(line->get_base_font_style())->get_height(line->get_base_font_size());
+			if (line->get_base_font()->get_face(line->get_base_font_style()).value().is_valid())
+				return line->get_base_font()->get_face(line->get_base_font_style()).value()->get_height(line->get_base_font_size());
 	return 5.0;
 }
 

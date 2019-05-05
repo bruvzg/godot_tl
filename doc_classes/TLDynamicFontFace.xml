@@ -7,8 +7,6 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<demos>
-	</demos>
 	<methods>
 		<method name="has_graphite" qualifiers="const">
 			<return type="bool">

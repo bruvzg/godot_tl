@@ -9,8 +9,6 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<demos>
-	</demos>
 	<methods>
 		<method name="draw_glyph" qualifiers="const">
 			<return type="void">
@@ -71,6 +69,18 @@
 				Returns descent (distance from the base line to the lowest point characters extend to) of the font.
 			</description>
 		</method>
+		<method name="get_glyph_outline" qualifiers="const">
+			<return type="Array">
+			</return>
+			<argument index="0" name="pos" type="Vector2">
+			</argument>
+			<argument index="1" name="codepoint" type="int">
+			</argument>
+			<argument index="2" name="size" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_height" qualifiers="const">
 			<return type="float">
 			</return>
@@ -89,23 +99,14 @@
 				Loads font from speified file.
 			</description>
 		</method>
-		<method name="unicode_range_supported" qualifiers="const">
-			<return type="bool">
+		<method name="unicode_scripts_supported" qualifiers="const">
+			<return type="Array">
 			</return>
-			<argument index="0" name="size" type="int">
-			</argument>
-			<argument index="1" name="bank" type="int">
-			</argument>
-			<argument index="2" name="range" type="int">
-			</argument>
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="fallback" type="TLFontFace" setter="set_fallback" getter="get_fallback">
-			Fallback font face reference. Default: [code]null[/code]
-		</member>
 		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path">
 		</member>
 		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags">

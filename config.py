@@ -20,7 +20,9 @@ def get_doc_classes():
             "TLShapedAttributedString",
             "TLShapedParagraph",
             "TLProtoControl",
-            "TLProtoControlSelection"
+            "TLProtoControlSelection",
+            "TLLabel",
+            "TLLineEdit"
     ]
 
 def get_doc_path():

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLLabel" inherits="Control" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_line_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_line_height" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_lines_skipped" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_max_lines_visible" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_percent_visible" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_total_character_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_visible_characters" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_visible_line_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_lines_skipped">
+			<return type="void">
+			</return>
+			<argument index="0" name="lines_skipped" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_max_lines_visible">
+			<return type="void">
+			</return>
+			<argument index="0" name="lines_visible" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_percent_visible">
+			<return type="void">
+			</return>
+			<argument index="0" name="percent_visible" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_visible_characters">
+			<return type="void">
+			</return>
+			<argument index="0" name="amount" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="align" type="int" setter="set_align" getter="get_align">
+		</member>
+		<member name="autowrap" type="bool" setter="set_autowrap" getter="has_autowrap">
+		</member>
+		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
+		</member>
+		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size">
+		</member>
+		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style">
+		</member>
+		<member name="clip_text" type="bool" setter="set_clip_text" getter="is_clipping_text">
+		</member>
+		<member name="language" type="String" setter="set_language" getter="get_language">
+		</member>
+		<member name="ot_features" type="String" setter="set_ot_features" getter="get_ot_features">
+		</member>
+		<member name="text" type="String" setter="set_text" getter="get_text">
+		</member>
+		<member name="text_direction" type="int" setter="set_text_direction" getter="get_text_direction">
+		</member>
+		<member name="uppercase" type="bool" setter="set_uppercase" getter="is_uppercase">
+		</member>
+		<member name="valign" type="int" setter="set_valign" getter="get_valign">
+		</member>
+	</members>
+	<constants>
+		<constant name="ALIGN_LEFT" value="0" enum="Align">
+		</constant>
+		<constant name="ALIGN_CENTER" value="1" enum="Align">
+		</constant>
+		<constant name="ALIGN_RIGHT" value="2" enum="Align">
+		</constant>
+		<constant name="ALIGN_FILL" value="3" enum="Align">
+		</constant>
+		<constant name="VALIGN_TOP" value="0" enum="VAlign">
+		</constant>
+		<constant name="VALIGN_CENTER" value="1" enum="VAlign">
+		</constant>
+		<constant name="VALIGN_BOTTOM" value="2" enum="VAlign">
+		</constant>
+		<constant name="VALIGN_FILL" value="3" enum="VAlign">
+		</constant>
+	</constants>
+</class>

@@ -37,8 +37,7 @@ func init():
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
-	#font1.set_face()
+	font1.add_face(\"Default\", face1)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_font_size(72)
@@ -68,7 +67,7 @@ func init():
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_font(font1)
@@ -96,11 +95,11 @@ func init():
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 	
 	var face2 = TLDynamicFontFace.new()
 	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
-	face1.set_fallback(face2)
+	font1.add_face(\"Default\", face2)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_font(font1)
@@ -128,14 +127,14 @@ func init():
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	var face2 = TLDynamicFontFace.new()
 	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
 	
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
-	font1.set_liked_face_for_script(\"Default\", \"GREK\", face2)
+	font1.add_face(\"Default\", face1)
+	font1.add_face_for_script(\"Default\", face2, \"grek\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_font(font1)
@@ -167,8 +166,8 @@ func init():
 	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1en)
-	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+	font1.add_face(\"Default\", face1en)
+	font1.add_face_for_script(\"Default\", face1ar, \"arab\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_LTR)
@@ -207,7 +206,7 @@ func init():
 	face1.load(\"res://fonts/AwamiNastaliq-Regular.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_LTR)
@@ -257,8 +256,8 @@ func init():
 	face1ar.set_texture_flags(Texture.FLAG_MIPMAPS | Texture.FLAG_FILTER | Texture.FLAG_ANISOTROPIC_FILTER)
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1en)
-	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+	font1.add_face(\"Default\", face1en)
+	font1.add_face_for_script(\"Default\", face1ar, \"arab\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_LTR)
@@ -296,7 +295,7 @@ func init():
 	var face1 = TLDynamicFontFace.new()
 	face1.load(\"res://fonts/NotoSerifThai-Regular.ttf\")
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_font(font1)
@@ -348,8 +347,8 @@ func init():
 	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1en)
-	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+	font1.add_face(\"Default\", face1en)
+	font1.add_face_for_script(\"Default\", face1ar, \"arab\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_RTL)
@@ -438,15 +437,15 @@ func init():
 	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1en)
-	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+	font1.add_face(\"Default\", face1en)
+	font1.add_face_for_script(\"Default\", face1ar, \"arab\")
 
 	var face2ar = TLDynamicFontFace.new()
 	face2ar.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
 
 	font2 = TLFontFamily.new()
-	font2.set_face(\"Default\", face1en)
-	font2.set_liked_face_for_script(\"Default\", \"ARAB\", face2ar)
+	font2.add_face(\"Default\", face1en)
+	font2.add_face_for_script(\"Default\", face2ar, \"arab\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_RTL)
@@ -530,7 +529,7 @@ func init():
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_RTL)
@@ -564,17 +563,17 @@ func init():
 	var face1 = TLDynamicFontFace.new()
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	var face2 = TLDynamicFontFace.new()
 	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
 	font2 = TLFontFamily.new()
-	font2.set_face(\"Default\", face2)
+	font2.add_face(\"Default\", face2)
 
 	var face3 = TLDynamicFontFace.new()
 	face3.load(\"res://fonts/NotoColorEmoji-subset.ttf\")
 	font3 = TLFontFamily.new()
-	font3.set_face(\"Default\", face3)
+	font3.add_face(\"Default\", face3)
 
 	#note: On Windows Godot sting unable to handle characters outside BMP, using raw UTF-16 string instead.
 	#text: Attrib Test - 123 - Test [emote] Test
@@ -651,8 +650,8 @@ func init():
 	face1ar.load(\"res://fonts/NotoNaskhArabic-Regular.ttf\")
 
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1en)
-	font1.set_liked_face_for_script(\"Default\", \"ARAB\", face1ar)
+	font1.add_face(\"Default\", face1en)
+	font1.add_face_for_script(\"Default\", face1ar, \"arab\")
 
 	sstring1 = TLShapedString.new()
 	sstring1.set_base_direction(TLShapedString.TEXT_DIRECTION_LTR)
@@ -775,17 +774,17 @@ func init():
 	var face1 = TLDynamicFontFace.new()
 	face1.load(\"res://fonts/Montserrat-Black.ttf\")
 	font1 = TLFontFamily.new()
-	font1.set_face(\"Default\", face1)
+	font1.add_face(\"Default\", face1)
 
 	var face2 = TLDynamicFontFace.new()
 	face2.load(\"res://fonts/NotoSans-Regular.ttf\")
 	font2 = TLFontFamily.new()
-	font2.set_face(\"Default\", face2)
+	font2.add_face(\"Default\", face2)
 
 	var face3 = TLDynamicFontFace.new()
 	face3.load(\"res://fonts/NotoColorEmoji-subset.ttf\")
 	font3 = TLFontFamily.new()
-	font3.set_face(\"Default\", face3)
+	font3.add_face(\"Default\", face3)
 
 	#note: On Windows Godot sting unable to handle characters outside BMP, using raw UTF-16 string instead.
 	#text: Attrib Test - 123 - Test [emote] Test
