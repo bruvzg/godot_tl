@@ -15,3 +15,13 @@ Rich text input control demo: input, cursor and selection, opening and saving `*
 ![disp demo screenshot](disp_sshot.png)
 
 Shapaed string demo: fonts, string construction, rendering, line breaking and justification.
+
+## `ctrls_builtin` and `ctrls_gdnative`
+
+![ctrls demo screenshot](ctrls_sshot.png)
+
+Ported Godot controls (Label and LineEdit) demo.
+
+## `get_sample_texts_builtin` (module only)
+
+Renders Noto font sample text to `.png` files.

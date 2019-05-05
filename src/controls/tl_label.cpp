@@ -33,7 +33,6 @@
 #ifdef GODOT_MODULE
 #include "core/translation.h"
 #else
-#include <StyleBox.hpp>
 #include <TranslationServer.hpp>
 #include <VisualServer.hpp>
 #endif
@@ -114,6 +113,7 @@ void TLLabel::_notification(int p_what) {
 
 		Size2 string_size;
 		Size2 size = get_size();
+#ifdef GODOT_MODULE
 		Ref<StyleBox> style = get_stylebox("normal", "Label");
 		Color font_color = get_color("font_color", "Label");
 		Color font_color_shadow = get_color("font_color_shadow", "Label");
@@ -122,16 +122,28 @@ void TLLabel::_notification(int p_what) {
 		int line_spacing = get_constant("line_spacing", "Label");
 
 		style->draw(ci, Rect2(Point2(0, 0), get_size()));
-
+#else
+		Color font_color = Color(1, 1, 1);
+		Color font_color_shadow = Color(0, 0, 0, 0);
+		bool use_outline = false;
+		Point2 shadow_ofs(2, 2);
+		int line_spacing = 2;
+#endif
 		int vbegin = 0, vsep = 0;
 
 		float total_h = 0.0;
 		int lines_visible = 0;
 		for (int i = lines_skipped; i < s_lines.size(); i++) {
 			total_h += s_lines[i]->get_height() + line_spacing;
+#ifdef GODOT_MODULE
 			if (total_h > (get_size().height - get_stylebox("normal", "Label")->get_minimum_size().height + line_spacing)) {
 				break;
 			}
+#else
+			if (total_h > (get_size().height + line_spacing)) {
+				break;
+			}
+#endif
 			lines_visible++;
 		}
 
@@ -171,22 +183,30 @@ void TLLabel::_notification(int p_what) {
 		}
 
 		Vector2 ofs;
+#ifdef GODOT_MODULE
 		ofs.y = style->get_offset().y + vbegin;
+#else
+		ofs.y = vbegin;
+#endif
 		for (int j = lines_skipped; j < s_lines.size(); j++) {
 			ofs.y += s_lines[j]->get_ascent();
 			switch (align) {
 				case ALIGN_FILL:
 				case ALIGN_LEFT: {
-
+#ifdef GODOT_MODULE
 					ofs.x = style->get_offset().x;
+#endif
 				} break;
 				case ALIGN_CENTER: {
 
 					ofs.x = int(size.width - s_lines[j]->get_width()) / 2;
 				} break;
 				case ALIGN_RIGHT: {
-
+#ifdef GODOT_MODULE
 					ofs.x = int(size.width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) - s_lines[j]->get_width());
+#else
+					ofs.x = int(size.width - s_lines[j]->get_width());
+#endif
 				} break;
 			}
 			if (font_color_shadow.a > 0) {
@@ -216,9 +236,11 @@ void TLLabel::_notification(int p_what) {
 }
 
 Size2 TLLabel::get_minimum_size() const {
-
+#ifdef GODOT_MODULE
 	Size2 min_style = get_stylebox("normal", "Label")->get_minimum_size();
-
+#else
+	Size2 min_style(5, 5);
+#endif
 	// don't want to mutable everything
 	if (_lines_dirty)
 		const_cast<TLLabel *>(this)->_reshape_lines();
@@ -255,9 +277,15 @@ int TLLabel::get_visible_line_count() const {
 	int lines_visible = 0;
 	for (int i = lines_skipped; i < s_lines.size(); i++) {
 		total_h += s_lines[i]->get_height() + line_spacing;
+#ifdef GODOT_MODULE
 		if (total_h > (get_size().height - get_stylebox("normal", "Label")->get_minimum_size().height + line_spacing)) {
 			break;
 		}
+#else
+		if (total_h > (get_size().height + line_spacing)) {
+			break;
+		}
+#endif
 		lines_visible++;
 	}
 
@@ -272,12 +300,18 @@ int TLLabel::get_visible_line_count() const {
 
 void TLLabel::_reshape_lines() {
 
+#ifdef GODOT_MODULE
 	Ref<StyleBox> style = get_stylebox("normal", "Label");
 	int line_spacing = get_constant("line_spacing", "Label");
-
+#else
+	int line_spacing = 2;
+#endif
 	s_lines.clear();
-
+#ifdef GODOT_MODULE
 	int width = (get_size().width - style->get_minimum_size().width);
+#else
+	int width = get_size().width;
+#endif
 
 	if (xl_text.length() == 0) {
 		minsize = Size2(width, _get_base_font_height());
@@ -662,6 +696,8 @@ void TLLabel::_register_methods() {
 	register_property<TLLabel, bool>("autowrap", &TLLabel::set_autowrap, &TLLabel::has_autowrap, false);
 	register_property<TLLabel, bool>("clip_text", &TLLabel::set_clip_text, &TLLabel::is_clipping_text, false);
 	register_property<TLLabel, bool>("uppercase", &TLLabel::set_uppercase, &TLLabel::is_uppercase, false);
+
+	register_method("_notification", &TLLabel::_notification);
 }
 
 #endif

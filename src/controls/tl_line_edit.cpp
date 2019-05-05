@@ -45,7 +45,6 @@
 #include <InputEventMouseMotion.hpp>
 #include <MainLoop.hpp>
 #include <OS.hpp>
-#include <StyleBox.hpp>
 #include <Texture.hpp>
 #include <TranslationServer.hpp>
 #include <VisualServer.hpp>
@@ -671,7 +670,11 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 		return false;
 	}
 	Ref<Texture> icon = Control::get_icon("clear");
+#ifdef GODOT_MODULE
 	int x_ofs = get_stylebox("normal", "LineEdit")->get_offset().x;
+#else
+	int x_ofs = 0;
+#endif
 	if (p_pos.x > get_size().width - icon->get_width() - x_ofs) {
 		return true;
 	}
@@ -725,20 +728,28 @@ void TLLineEdit::_notification(int p_what) {
 
 			RID ci = get_canvas_item();
 
+#ifdef GODOT_MODULE
 			Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+#endif
 			float disabled_alpha = 1.0; // used to set the disabled input text color
 			if (!is_editable()) {
+#ifdef GODOT_MODULE
 				style = get_stylebox("read_only", "LineEdit");
+#endif
 				disabled_alpha = .5;
 				draw_caret = false;
 			}
 
+#ifdef GODOT_MODULE
 			style->draw(ci, Rect2(Point2(), size));
 
 			if (has_focus()) {
-
 				get_stylebox("focus", "LineEdit")->draw(ci, Rect2(Point2(), size));
 			}
+#else
+			VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(), size), Color(0, 0, 0));
+			VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(1, 1), size - Size2(2, 2)), Color(0.2, 0.2, 0.2));
+#endif
 
 			int x_ofs = 0;
 			bool using_placeholder = text.empty();
@@ -747,31 +758,49 @@ void TLLineEdit::_notification(int p_what) {
 
 				case ALIGN_FILL:
 				case ALIGN_LEFT: {
-
+#ifdef GODOT_MODULE
 					x_ofs = style->get_offset().x;
+#endif
 				} break;
 				case ALIGN_CENTER: {
 
-					if (window_pos != 0)
+					if (window_pos != 0) {
+#ifdef GODOT_MODULE
 						x_ofs = style->get_offset().x;
-					else
+#endif
+					} else {
+#ifdef GODOT_MODULE
 						x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - line->get_width()) / 2);
+#else
+						x_ofs = int(size.width - line->get_width()) / 2;
+#endif
+					}
 				} break;
 				case ALIGN_RIGHT: {
-
+#ifdef GODOT_MODULE
 					x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) - line->get_width()));
+#else
+					x_ofs = int(size.width - line->get_width());
+#endif
 				} break;
 			}
-
+#ifdef GODOT_MODULE
 			int ofs_max = width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT));
-
 			int y_area = height - style->get_minimum_size().height;
 			int y_ofs = style->get_offset().y + (y_area - MAX(_get_base_font_height(), line->get_height())) / 2;
-
 			Color selection_color = get_color("selection_color", "LineEdit");
 			Color font_color = get_color("font_color", "LineEdit");
 			Color font_color_selected = get_color("font_color_selected", "LineEdit");
 			Color cursor_color = get_color("cursor_color", "LineEdit");
+#else
+			int ofs_max = width;
+			int y_area = height;
+			int y_ofs = (y_area - MAX(_get_base_font_height(), line->get_height())) / 2;
+			Color selection_color = Color(0.8, 0.8, 0.8);
+			Color font_color = Color(1, 1, 1);
+			Color font_color_selected = Color(0, 0, 0);
+			Color cursor_color = Color(0, 0, 1);
+#endif
 
 			// draw placeholder color
 			if (using_placeholder)
@@ -789,14 +818,26 @@ void TLLineEdit::_notification(int p_what) {
 						color_icon = get_color("clear_button_color", "LineEdit");
 					}
 				}
+#ifdef GODOT_MODULE
 				r_icon->draw(ci, Point2(width - r_icon->get_width() - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)), height / 2 - r_icon->get_height() / 2), color_icon);
+#else
+				r_icon->draw(ci, Point2(width - r_icon->get_width(), height / 2 - r_icon->get_height() / 2), color_icon);
+#endif
 
 				if (align == ALIGN_CENTER) {
 					if (window_pos == 0) {
+#ifdef GODOT_MODULE
 						x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - line->get_width() - r_icon->get_width() - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) * 2) / 2);
+#else
+						x_ofs = int(size.width - line->get_width() - r_icon->get_width()) / 2;
+#endif
 					}
 				} else {
+#ifdef GODOT_MODULE
 					x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), x_ofs - r_icon->get_width() - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)));
+#else
+					x_ofs = x_ofs - r_icon->get_width();
+#endif
 				}
 				ofs_max -= r_icon->get_width();
 			}
@@ -870,9 +911,17 @@ void TLLineEdit::_notification(int p_what) {
 #else
 						VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
 						if (x_ofs + carets[1] - wpos_ofs.x < 0) {
+#ifdef GODOT_MODULE
 							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), style->get_offset().y), inv_caret_circle_size, cursor_color);
+#else
+							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(0, 0), inv_caret_circle_size, cursor_color);
+#endif
 						} else if (x_ofs + carets[1] - wpos_ofs.x > ofs_max) {
+#ifdef GODOT_MODULE
 							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, style->get_offset().y), inv_caret_circle_size, cursor_color);
+#else
+							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, 0), inv_caret_circle_size, cursor_color);
+#endif
 						} else {
 							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[1], y_ofs + caret_height / 2) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
 						}
@@ -1019,7 +1068,9 @@ void TLLineEdit::shift_selection_check_post(bool p_shift) {
 
 void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 
+#ifdef GODOT_MODULE
 	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+#endif
 	Size2 size = get_size();
 
 	//Calc offscreen offset
@@ -1033,19 +1084,30 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 
 		case ALIGN_FILL:
 		case ALIGN_LEFT: {
-
+#ifdef GODOT_MODULE
 			x_ofs = style->get_offset().x;
+#endif
 		} break;
 		case ALIGN_CENTER: {
 
-			if (window_pos != 0)
+			if (window_pos != 0) {
+#ifdef GODOT_MODULE
 				x_ofs = style->get_offset().x;
-			else
+#endif
+			} else {
+#ifdef GODOT_MODULE
 				x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - line->get_width()) / 2);
+#else
+				x_ofs = int(size.width - line->get_width()) / 2;
+#endif
+			}
 		} break;
 		case ALIGN_RIGHT: {
-
+#ifdef GODOT_MODULE
 			x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) - line->get_width()));
+#else
+			x_ofs = int(size.width - line->get_width());
+#endif
 		} break;
 	}
 
@@ -1210,8 +1272,12 @@ float TLLineEdit::get_placeholder_alpha() const {
 
 void TLLineEdit::set_cursor_position(int p_pos) {
 
+#ifdef GODOT_MODULE
 	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
 	float window_width = get_size().width - style->get_minimum_size().width;
+#else
+	float window_width = get_size().width;
+#endif
 
 	if (p_pos > (int)text.length())
 		p_pos = text.length();
@@ -1305,9 +1371,12 @@ void TLLineEdit::clear_internal() {
 
 Size2 TLLineEdit::get_minimum_size() const {
 
+#ifdef GODOT_MODULE
 	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
-
 	Size2 min = style->get_minimum_size();
+#else
+	Size2 min = Size2(10, 10);
+#endif
 	min.height += MAX(_get_base_font_height(), line->get_ascent() + line->get_descent());
 
 	//minimum size of text
@@ -1539,8 +1608,6 @@ void TLLineEdit::set_right_icon(const Ref<Texture> &p_icon) {
 }
 
 void TLLineEdit::_text_reshape() {
-
-	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
 
 	String text_to_draw;
 	if (ime_text.length() > 0) {
@@ -1815,6 +1882,8 @@ void TLLineEdit::_register_methods() {
 	register_property<TLLineEdit, bool>("caret_blink", &TLLineEdit::cursor_set_blink_enabled, &TLLineEdit::cursor_get_blink_enabled, false);
 	register_property<TLLineEdit, float>("caret_blink_speed", &TLLineEdit::cursor_set_blink_speed, &TLLineEdit::cursor_get_blink_speed, 0.65, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RANGE, String("0,10,0.001"));
 	register_property<TLLineEdit, int>("caret_position", &TLLineEdit::set_cursor_position, &TLLineEdit::get_cursor_position, 0);
+
+	register_method("_notification", &TLLineEdit::_notification);
 }
 
 #endif

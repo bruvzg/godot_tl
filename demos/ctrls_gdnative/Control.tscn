@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/libgdtl/classes/tl_label.gdns" type="Script" id=1]
+[ext_resource path="res://fonts/NotoSans-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/libgdtl/classes/tl_line_edit.gdns" type="Script" id=3]
+[ext_resource path="res://fonts/NotoNastaliqUrdu-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
+const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var face1 = TLDynamicFontFace.new()
+	face1.load(\"res://fonts/NotoSans-Bold.ttf\")
+	
+	var font1 = TLFontFamily.new()
+	font1.add_face(\"Default\", face1)
+	
+	$TLLabel.set_base_font(font1)
+	$TLLabel.set_base_font_style(\"Default\")
+	$TLLabel.set_base_font_size(12)
+	
+	var face2 = TLDynamicFontFace.new()
+	face2.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
+	
+	var font2 = TLFontFamily.new()
+	font2.add_face(\"Default\", face2)
+	
+	$TLLineEdit.set_base_font(font2)
+	$TLLineEdit.set_base_font_style(\"Default\")
+	$TLLineEdit.set_base_font_size(12)
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 12
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 12
+font_data = ExtResource( 4 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = -1.0
+script = SubResource( 1 )
+
+[node name="TLLabel" type="Control" parent="."]
+margin_left = 111.0
+margin_top = 35.0
+margin_right = 320.0
+margin_bottom = 145.0
+rect_min_size = Vector2( 209, 110 )
+mouse_filter = 2
+size_flags_vertical = 4
+script = ExtResource( 1 )
+text = "test232
+Godot Label"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 401.0
+margin_top = 37.0
+margin_right = 611.0
+margin_bottom = 151.0
+rect_min_size = Vector2( 210, 114 )
+custom_fonts/font = SubResource( 2 )
+text = "test232
+Godot Label"
+
+[node name="TLLineEdit" type="Control" parent="."]
+margin_left = 100.0
+margin_top = 159.0
+margin_right = 322.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 222, 41 )
+focus_mode = 2
+mouse_default_cursor_shape = 1
+script = ExtResource( 3 )
+text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
+secret_character = "*"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 390.0
+margin_top = 159.0
+margin_right = 612.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 222, 41 )
+custom_fonts/font = SubResource( 3 )
+text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
