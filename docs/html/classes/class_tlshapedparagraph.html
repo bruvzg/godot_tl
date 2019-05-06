@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TLShapedParagraph &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TLShapedString" href="class_tlshapedstring.html" />
+    <link rel="prev" title="TLShapedAttributedString" href="class_tlshapedattributedstring.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">libgdtl API</a> &raquo;</li>
+        
+      <li>TLShapedParagraph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/classes/class_tlshapedparagraph.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tlshapedparagraph">
+<span id="class-tlshapedparagraph"></span><h1>TLShapedParagraph<a class="headerlink" href="#tlshapedparagraph" title="Permalink to this headline">¶</a></h1>
+<p><strong>Inherits:</strong></p>
+<p><strong>Category:</strong> Core</p>
+<div class="section" id="brief-description">
+<h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Color</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-back-color"><span class="std std-ref">back_color</span></a></td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-brk-flags"><span class="std std-ref">brk_flags</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-halign"><span class="std std-ref">halign</span></a></td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-indent"><span class="std std-ref">indent</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-jst-flags"><span class="std std-ref">jst_flags</span></a></td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-line-spacing"><span class="std std-ref">line_spacing</span></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="class_tlshapedattributedstring.html#class-tlshapedattributedstring"><span class="std std-ref">TLShapedAttributedString</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-string"><span class="std std-ref">string</span></a></td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-property-width"><span class="std std-ref">width</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-copy-properties"><span class="std std-ref">copy_properties</span></a> <strong>(</strong> <a class="reference internal" href="#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> source <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="class_tlshapedattributedstring.html#class-tlshapedattributedstring"><span class="std std-ref">TLShapedAttributedString</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-get-line"><span class="std std-ref">get_line</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-get-line-bounds"><span class="std std-ref">get_line_bounds</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-get-lines"><span class="std std-ref">get_lines</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>Vector2</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-get-size"><span class="std std-ref">get_size</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedparagraph-method-get-word-bounds"><span class="std std-ref">get_word_bounds</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedparagraph-signal-paragraph-changed">
+<li><strong>paragraph_changed</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p id="class-tlshapedparagraph-constant-para-halign-fill"><span id="class-tlshapedparagraph-constant-para-halign-right"></span><span id="class-tlshapedparagraph-constant-para-halign-center"></span><span id="class-tlshapedparagraph-constant-para-halign-left"></span><span id="enum-tlshapedparagraph-parahalign"></span>enum <strong>ParaHAlign</strong>:</p>
+<ul class="simple">
+<li><strong>PARA_HALIGN_LEFT</strong> = <strong>0</strong></li>
+<li><strong>PARA_HALIGN_CENTER</strong> = <strong>1</strong></li>
+<li><strong>PARA_HALIGN_RIGHT</strong> = <strong>2</strong></li>
+<li><strong>PARA_HALIGN_FILL</strong> = <strong>3</strong></li>
+</ul>
+</div>
+<div class="section" id="property-descriptions">
+<h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedparagraph-property-back-color">
+<li>Color <strong>back_color</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_back_color(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_back_color()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-brk-flags">
+<li>int <strong>brk_flags</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_brk_flags(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_brk_flags()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-halign">
+<li>int <strong>halign</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_halign(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_halign()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-indent">
+<li>float <strong>indent</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_indent(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_indent()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-jst-flags">
+<li>int <strong>jst_flags</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_jst_flags(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_jst_flags()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-line-spacing">
+<li>float <strong>line_spacing</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_line_spacing(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_line_spacing()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-string">
+<li><a class="reference internal" href="class_tlshapedattributedstring.html#class-tlshapedattributedstring"><span class="std std-ref">TLShapedAttributedString</span></a> <strong>string</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_string(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_string()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlshapedparagraph-property-width">
+<li>float <strong>width</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_width(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_width()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedparagraph-method-copy-properties">
+<li>void <strong>copy_properties</strong> <strong>(</strong> <a class="reference internal" href="#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> source <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedparagraph-method-get-line">
+<li><a class="reference internal" href="class_tlshapedattributedstring.html#class-tlshapedattributedstring"><span class="std std-ref">TLShapedAttributedString</span></a> <strong>get_line</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedparagraph-method-get-line-bounds">
+<li>Array <strong>get_line_bounds</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedparagraph-method-get-lines">
+<li>int <strong>get_lines</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedparagraph-method-get-size">
+<li>Vector2 <strong>get_size</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedparagraph-method-get-word-bounds">
+<li>Array <strong>get_word_bounds</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_tlshapedstring.html" class="btn btn-neutral float-right" title="TLShapedString" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_tlshapedattributedstring.html" class="btn btn-neutral" title="TLShapedAttributedString" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-BY 3.0
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

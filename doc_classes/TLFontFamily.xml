@@ -18,6 +18,16 @@
 			<description>
 			</description>
 		</method>
+		<method name="add_face_unlinked">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="ref" type="TLFontFace">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="add_face_for_language">
 			<return type="void">
 			</return>

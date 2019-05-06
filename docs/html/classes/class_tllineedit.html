@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TLLineEdit &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TLProtoControl" href="class_tlprotocontrol.html" />
+    <link rel="prev" title="TLLabel" href="class_tllabel.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">libgdtl API</a> &raquo;</li>
+        
+      <li>TLLineEdit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/classes/class_tllineedit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tllineedit">
+<span id="class-tllineedit"></span><h1>TLLineEdit<a class="headerlink" href="#tllineedit" title="Permalink to this headline">¶</a></h1>
+<p><strong>Inherits:</strong></p>
+<p><strong>Category:</strong> Core</p>
+<div class="section" id="brief-description">
+<h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tllineedit-property-align"><span class="std std-ref">align</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="class_tlfontfamily.html#class-tlfontfamily"><span class="std std-ref">TLFontFamily</span></a></td>
+<td><a class="reference internal" href="#class-tllineedit-property-base-font"><span class="std std-ref">base_font</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tllineedit-property-base-font-size"><span class="std std-ref">base_font_size</span></a></td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-base-font-style"><span class="std std-ref">base_font_style</span></a></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-caret-blink"><span class="std std-ref">caret_blink</span></a></td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tllineedit-property-caret-blink-speed"><span class="std std-ref">caret_blink_speed</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tllineedit-property-caret-position"><span class="std std-ref">caret_position</span></a></td>
+</tr>
+<tr class="row-even"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-clear-button-enabled"><span class="std std-ref">clear_button_enabled</span></a></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-context-menu-enabled"><span class="std std-ref">context_menu_enabled</span></a></td>
+</tr>
+<tr class="row-even"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-editable"><span class="std std-ref">editable</span></a></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-expand-to-text-length"><span class="std std-ref">expand_to_text_length</span></a></td>
+</tr>
+<tr class="row-even"><td>Control.FocusMode</td>
+<td><a class="reference internal" href="#class-tllineedit-property-focus-mode"><span class="std std-ref">focus_mode</span></a></td>
+</tr>
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-language"><span class="std std-ref">language</span></a></td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tllineedit-property-max-length"><span class="std std-ref">max_length</span></a></td>
+</tr>
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-ot-features"><span class="std std-ref">ot_features</span></a></td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tllineedit-property-placeholder-alpha"><span class="std std-ref">placeholder_alpha</span></a></td>
+</tr>
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-placeholder-text"><span class="std std-ref">placeholder_text</span></a></td>
+</tr>
+<tr class="row-even"><td>bool</td>
+<td><a class="reference internal" href="#class-tllineedit-property-secret"><span class="std std-ref">secret</span></a></td>
+</tr>
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-secret-character"><span class="std std-ref">secret_character</span></a></td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tllineedit-property-text"><span class="std std-ref">text</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tllineedit-property-text-direction"><span class="std std-ref">text_direction</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-append-at-cursor"><span class="std std-ref">append_at_cursor</span></a> <strong>(</strong> String text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-clear"><span class="std std-ref">clear</span></a> <strong>(</strong> <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-deselect"><span class="std std-ref">deselect</span></a> <strong>(</strong> <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>PopupMenu</td>
+<td><a class="reference internal" href="#class-tllineedit-method-get-menu"><span class="std std-ref">get_menu</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-menu-option"><span class="std std-ref">menu_option</span></a> <strong>(</strong> int option <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-select"><span class="std std-ref">select</span></a> <strong>(</strong> int from=0, int to=-1 <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tllineedit-method-select-all"><span class="std std-ref">select_all</span></a> <strong>(</strong> <strong>)</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tllineedit-signal-text-changed">
+<li><strong>text_changed</strong> <strong>(</strong> String new_text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-signal-text-entered">
+<li><strong>text_entered</strong> <strong>(</strong> String new_text <strong>)</strong></li>
+</ul>
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p id="class-tllineedit-constant-align-fill"><span id="class-tllineedit-constant-align-right"></span><span id="class-tllineedit-constant-align-center"></span><span id="class-tllineedit-constant-align-left"></span><span id="enum-tllineedit-align"></span>enum <strong>Align</strong>:</p>
+<ul class="simple">
+<li><strong>ALIGN_LEFT</strong> = <strong>0</strong></li>
+<li><strong>ALIGN_CENTER</strong> = <strong>1</strong></li>
+<li><strong>ALIGN_RIGHT</strong> = <strong>2</strong></li>
+<li><strong>ALIGN_FILL</strong> = <strong>3</strong></li>
+</ul>
+<p id="class-tllineedit-constant-menu-max"><span id="class-tllineedit-constant-menu-redo"></span><span id="class-tllineedit-constant-menu-undo"></span><span id="class-tllineedit-constant-menu-select-all"></span><span id="class-tllineedit-constant-menu-clear"></span><span id="class-tllineedit-constant-menu-paste"></span><span id="class-tllineedit-constant-menu-copy"></span><span id="class-tllineedit-constant-menu-cut"></span><span id="enum-tllineedit-menuitems"></span>enum <strong>MenuItems</strong>:</p>
+<ul class="simple">
+<li><strong>MENU_CUT</strong> = <strong>0</strong></li>
+<li><strong>MENU_COPY</strong> = <strong>1</strong></li>
+<li><strong>MENU_PASTE</strong> = <strong>2</strong></li>
+<li><strong>MENU_CLEAR</strong> = <strong>3</strong></li>
+<li><strong>MENU_SELECT_ALL</strong> = <strong>4</strong></li>
+<li><strong>MENU_UNDO</strong> = <strong>5</strong></li>
+<li><strong>MENU_REDO</strong> = <strong>6</strong></li>
+<li><strong>MENU_MAX</strong> = <strong>7</strong></li>
+</ul>
+</div>
+<div class="section" id="property-descriptions">
+<h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tllineedit-property-align">
+<li>int <strong>align</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_align(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_align()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-base-font">
+<li><a class="reference internal" href="class_tlfontfamily.html#class-tlfontfamily"><span class="std std-ref">TLFontFamily</span></a> <strong>base_font</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-base-font-size">
+<li>int <strong>base_font_size</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font_size(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font_size()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-base-font-style">
+<li>String <strong>base_font_style</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font_style(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font_style()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-caret-blink">
+<li>bool <strong>caret_blink</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>cursor_set_blink_enabled(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>cursor_get_blink_enabled()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-caret-blink-speed">
+<li>float <strong>caret_blink_speed</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>cursor_set_blink_speed(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>cursor_get_blink_speed()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-caret-position">
+<li>int <strong>caret_position</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_cursor_position(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_cursor_position()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-clear-button-enabled">
+<li>bool <strong>clear_button_enabled</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_clear_button_enabled(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>is_clear_button_enabled()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-context-menu-enabled">
+<li>bool <strong>context_menu_enabled</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_context_menu_enabled(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>is_context_menu_enabled()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-editable">
+<li>bool <strong>editable</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_editable(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>is_editable()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-expand-to-text-length">
+<li>bool <strong>expand_to_text_length</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_expand_to_text_length(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_expand_to_text_length()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-focus-mode">
+<li>Control.FocusMode <strong>focus_mode</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_focus_mode(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_focus_mode()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-language">
+<li>String <strong>language</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_language(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_language()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-max-length">
+<li>int <strong>max_length</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_max_length(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_max_length()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-ot-features">
+<li>String <strong>ot_features</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_ot_features(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_ot_features()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-placeholder-alpha">
+<li>float <strong>placeholder_alpha</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_placeholder_alpha(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_placeholder_alpha()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-placeholder-text">
+<li>String <strong>placeholder_text</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_placeholder(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_placeholder()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-secret">
+<li>bool <strong>secret</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_secret(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>is_secret()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-secret-character">
+<li>String <strong>secret_character</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_secret_character(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_secret_character()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-text">
+<li>String <strong>text</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_text(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_text()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tllineedit-property-text-direction">
+<li>int <strong>text_direction</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_text_direction(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_text_direction()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tllineedit-method-append-at-cursor">
+<li>void <strong>append_at_cursor</strong> <strong>(</strong> String text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-clear">
+<li>void <strong>clear</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-deselect">
+<li>void <strong>deselect</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-get-menu">
+<li>PopupMenu <strong>get_menu</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-menu-option">
+<li>void <strong>menu_option</strong> <strong>(</strong> int option <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-select">
+<li>void <strong>select</strong> <strong>(</strong> int from=0, int to=-1 <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tllineedit-method-select-all">
+<li>void <strong>select_all</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_tlprotocontrol.html" class="btn btn-neutral float-right" title="TLProtoControl" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_tllabel.html" class="btn btn-neutral" title="TLLabel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-BY 3.0
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -605,7 +605,7 @@ func _ready():
 
 	var ms_rg_phli = TLDynamicFontFace.new()
 	ms_rg_phli.load(\"res://fonts/NotoFull/NotoSansInscriptionalPahlavi-Regular.ttf\")
-	nt_fam_full.add_face_for_script(\"Regular\", ms_rg_phli, \"phil\")
+	nt_fam_full.add_face_for_script(\"Regular\", ms_rg_phli, \"phli\")
 
 	var ms_rg_prti = TLDynamicFontFace.new()
 	ms_rg_prti.load(\"res://fonts/NotoFull/NotoSansInscriptionalParthian-Regular.ttf\")
@@ -649,7 +649,7 @@ func _ready():
 
 	var ms_rg_lydi = TLDynamicFontFace.new()
 	ms_rg_lydi.load(\"res://fonts/NotoFull/NotoSansLydian-Regular.ttf\")
-	nt_fam_full.add_face_for_script(\"Regular\", ms_rg_lydi, \"lidi\")
+	nt_fam_full.add_face_for_script(\"Regular\", ms_rg_lydi, \"lydi\")
 
 	var ms_rg_mand = TLDynamicFontFace.new()
 	ms_rg_mand.load(\"res://fonts/NotoFull/NotoSansMandaic-Regular.ttf\")

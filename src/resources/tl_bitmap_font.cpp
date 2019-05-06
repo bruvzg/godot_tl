@@ -285,6 +285,11 @@ bool TLBitmapFontFace::has_glyph(uint32_t p_codepoint) const {
 	return (loaded && (glyph_cache.count(p_codepoint) > 0));
 }
 
+void TLBitmapFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
+
+	draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate, p_size);
+}
+
 void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
 
 	if (!loaded)
@@ -500,17 +505,10 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 std::vector<hb_script_t> TLBitmapFontFace::unicode_scripts_supported() const {
 
 	std::vector<hb_script_t> ret;
+	//TODO: detect supported scripts!
 	ret.push_back(HB_SCRIPT_COMMON);
 	return ret;
 }
-
-/*
-bool TLBitmapFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
-
-	//TODO
-	return false;
-}
-*/
 
 double TLBitmapFontFace::get_ascent(int p_size) const {
 

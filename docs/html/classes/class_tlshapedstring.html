@@ -1,0 +1,1029 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TLShapedString &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="TLShapedParagraph" href="class_tlshapedparagraph.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">libgdtl API</a> &raquo;</li>
+        
+      <li>TLShapedString</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/classes/class_tlshapedstring.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tlshapedstring">
+<span id="class-tlshapedstring"></span><h1>TLShapedString<a class="headerlink" href="#tlshapedstring" title="Permalink to this headline">¶</a></h1>
+<p><strong>Inherits:</strong></p>
+<p><strong>Inherited By:</strong> <a class="reference internal" href="class_tlshapedattributedstring.html#class-tlshapedattributedstring"><span class="std std-ref">TLShapedAttributedString</span></a></p>
+<p><strong>Category:</strong> Core</p>
+<div class="section" id="brief-description">
+<h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+<p>Holds shaped line of plain text.</p>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-base-direction"><span class="std std-ref">base_direction</span></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="class_tlfontfamily.html#class-tlfontfamily"><span class="std std-ref">TLFontFamily</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-base-font"><span class="std std-ref">base_font</span></a></td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-base-font-size"><span class="std std-ref">base_font_size</span></a></td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-base-font-style"><span class="std std-ref">base_font_style</span></a></td>
+</tr>
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-features"><span class="std std-ref">features</span></a></td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-language"><span class="std std-ref">language</span></a></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-preserve-control"><span class="std std-ref">preserve_control</span></a></td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tlshapedstring-property-text"><span class="std std-ref">text</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-add-sstring"><span class="std std-ref">add_sstring</span></a> <strong>(</strong> <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-add-text"><span class="std std-ref">add_text</span></a> <strong>(</strong> String text <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-add-utf16"><span class="std std-ref">add_utf16</span></a> <strong>(</strong> PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-add-utf32"><span class="std std-ref">add_utf32</span></a> <strong>(</strong> PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-add-utf8"><span class="std std-ref">add_utf8</span></a> <strong>(</strong> PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-break-jst"><span class="std std-ref">break_jst</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-break-lines"><span class="std std-ref">break_lines</span></a> <strong>(</strong> float width, int flags <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-break-words"><span class="std std-ref">break_words</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-char-count"><span class="std std-ref">char_count</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-clusters"><span class="std std-ref">clusters</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-copy-properties"><span class="std std-ref">copy_properties</span></a> <strong>(</strong> <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> source <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-draw"><span class="std std-ref">draw</span></a> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-draw-as-hex"><span class="std std-ref">draw_as_hex</span></a> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>Vector2</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-draw-cluster"><span class="std std-ref">draw_cluster</span></a> <strong>(</strong> RID canvas_item, Vector2 position, int index, Color modulate <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-draw-dbg"><span class="std std-ref">draw_dbg</span></a> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-draw-logical-as-hex"><span class="std std-ref">draw_logical_as_hex</span></a> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-empty"><span class="std std-ref">empty</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-extend-to-width"><span class="std std-ref">extend_to_width</span></a> <strong>(</strong> float width, int flags <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-ascent"><span class="std std-ref">get_ascent</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#enum-tlshapedstring-textdirection"><span class="std std-ref">TextDirection</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-char-direction"><span class="std std-ref">get_char_direction</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-ascent"><span class="std std-ref">get_cluster_ascent</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>String</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-debug-info"><span class="std std-ref">get_cluster_debug_info</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-descent"><span class="std std-ref">get_cluster_descent</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-end"><span class="std std-ref">get_cluster_end</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-face"><span class="std std-ref">get_cluster_face</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-face-size"><span class="std std-ref">get_cluster_face_size</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-glyph"><span class="std std-ref">get_cluster_glyph</span></a> <strong>(</strong> int index, int glyph <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Vector2</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-glyph-advance"><span class="std std-ref">get_cluster_glyph_advance</span></a> <strong>(</strong> int index, int glyph <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>Vector2</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-glyph-offset"><span class="std std-ref">get_cluster_glyph_offset</span></a> <strong>(</strong> int index, int glyph <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-glyphs"><span class="std std-ref">get_cluster_glyphs</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-height"><span class="std std-ref">get_cluster_height</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-index"><span class="std std-ref">get_cluster_index</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-leading-edge"><span class="std std-ref">get_cluster_leading_edge</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Rect2</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-rect"><span class="std std-ref">get_cluster_rect</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-start"><span class="std std-ref">get_cluster_start</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-trailing-edge"><span class="std std-ref">get_cluster_trailing_edge</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cluster-width"><span class="std std-ref">get_cluster_width</span></a> <strong>(</strong> int index <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-cursor-positions"><span class="std std-ref">get_cursor_positions</span></a> <strong>(</strong> int position, int primary_dir <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-descent"><span class="std std-ref">get_descent</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-height"><span class="std std-ref">get_height</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>Array</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-highlight-shapes"><span class="std std-ref">get_highlight_shapes</span></a> <strong>(</strong> int start, int end <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-para-direction"><span class="std std-ref">get_para_direction</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>PoolByteArray</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-utf16"><span class="std std-ref">get_utf16</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>PoolByteArray</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-utf32"><span class="std std-ref">get_utf32</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>PoolByteArray</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-utf8"><span class="std std-ref">get_utf8</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>float</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-get-width"><span class="std std-ref">get_width</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-hit-test"><span class="std std-ref">hit_test</span></a> <strong>(</strong> float position <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-hit-test-cluster"><span class="std std-ref">hit_test_cluster</span></a> <strong>(</strong> float position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-is-valid"><span class="std std-ref">is_valid</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-length"><span class="std std-ref">length</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-next-safe-bound"><span class="std std-ref">next_safe_bound</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-pos-u16-to-wcs"><span class="std std-ref">pos_u16_to_wcs</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-pos-wcs-to-u16"><span class="std std-ref">pos_wcs_to_u16</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-prev-safe-bound"><span class="std std-ref">prev_safe_bound</span></a> <strong>(</strong> int position <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-replace-sstring"><span class="std std-ref">replace_sstring</span></a> <strong>(</strong> int start, int end, <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-replace-text"><span class="std std-ref">replace_text</span></a> <strong>(</strong> int start, int end, String text <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-replace-utf16"><span class="std std-ref">replace_utf16</span></a> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-replace-utf32"><span class="std std-ref">replace_utf32</span></a> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-replace-utf8"><span class="std std-ref">replace_utf8</span></a> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-set-utf16"><span class="std std-ref">set_utf16</span></a> <strong>(</strong> PoolByteArray data <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-set-utf32"><span class="std std-ref">set_utf32</span></a> <strong>(</strong> PoolByteArray data <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-set-utf8"><span class="std std-ref">set_utf8</span></a> <strong>(</strong> PoolByteArray data <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-shape"><span class="std std-ref">shape</span></a> <strong>(</strong> <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a></td>
+<td><a class="reference internal" href="#class-tlshapedstring-method-substr"><span class="std std-ref">substr</span></a> <strong>(</strong> int start, int end, int trim <strong>)</strong> const</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedstring-signal-string-changed">
+<li><strong>string_changed</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-signal-string-shaped">
+<li><strong>string_shaped</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p id="class-tlshapedstring-constant-text-direction-invalid"><span id="class-tlshapedstring-constant-text-direction-auto"></span><span id="class-tlshapedstring-constant-text-direction-locale"></span><span id="class-tlshapedstring-constant-text-direction-rtl"></span><span id="class-tlshapedstring-constant-text-direction-ltr"></span><span id="enum-tlshapedstring-textdirection"></span>enum <strong>TextDirection</strong>:</p>
+<ul class="simple">
+<li><strong>TEXT_DIRECTION_LTR</strong> = <strong>0</strong> — Left-to-right text writing direction</li>
+<li><strong>TEXT_DIRECTION_RTL</strong> = <strong>1</strong> — Right-to-left text writing direction</li>
+<li><strong>TEXT_DIRECTION_LOCALE</strong> = <strong>2</strong> — Text writing direction is derived from the locale’s script according to the CLDR metadata</li>
+<li><strong>TEXT_DIRECTION_AUTO</strong> = <strong>3</strong> — Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale’s script if text is not strongly directional</li>
+<li><strong>TEXT_DIRECTION_INVALID</strong> = <strong>4</strong></li>
+</ul>
+<p id="class-tlshapedstring-constant-text-justification-interchar-only"><span id="class-tlshapedstring-constant-text-justification-whitespace-and-interchar"></span><span id="class-tlshapedstring-constant-text-justification-kashida-and-interchar"></span><span id="class-tlshapedstring-constant-text-justification-kashida-and-whitespace-and-interchar"></span><span id="class-tlshapedstring-constant-text-justification-whitespace-only"></span><span id="class-tlshapedstring-constant-text-justification-kashida-only"></span><span id="class-tlshapedstring-constant-text-justification-kashida-and-whitespace"></span><span id="class-tlshapedstring-constant-text-justification-none"></span><span id="enum-tlshapedstring-textjustification"></span>enum <strong>TextJustification</strong>:</p>
+<ul class="simple">
+<li><strong>TEXT_JUSTIFICATION_NONE</strong> = <strong>0</strong> — No text justification</li>
+<li><strong>TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE</strong> = <strong>1</strong> — Use kashida and whitespace elongation to justify text</li>
+<li><strong>TEXT_JUSTIFICATION_KASHIDA_ONLY</strong> = <strong>2</strong> — Use kashida elongation to justify text</li>
+<li><strong>TEXT_JUSTIFICATION_WHITESPACE_ONLY</strong> = <strong>3</strong> — Use whitespace elongation to justify text</li>
+<li><strong>TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR</strong> = <strong>4</strong></li>
+<li><strong>TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR</strong> = <strong>5</strong></li>
+<li><strong>TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR</strong> = <strong>6</strong></li>
+<li><strong>TEXT_JUSTIFICATION_INTERCHAR_ONLY</strong> = <strong>7</strong></li>
+</ul>
+<p id="class-tlshapedstring-constant-text-break-mandatory-and-anywhere"><span id="class-tlshapedstring-constant-text-break-mandatory-and-word-bound"></span><span id="class-tlshapedstring-constant-text-break-mandatory"></span><span id="class-tlshapedstring-constant-text-break-none"></span><span id="enum-tlshapedstring-textbreak"></span>enum <strong>TextBreak</strong>:</p>
+<ul class="simple">
+<li><strong>TEXT_BREAK_NONE</strong> = <strong>0</strong> — No line breaking</li>
+<li><strong>TEXT_BREAK_MANDATORY</strong> = <strong>1</strong> — Break lines only at mandatory break points</li>
+<li><strong>TEXT_BREAK_MANDATORY_AND_WORD_BOUND</strong> = <strong>2</strong> — Break lines at mandatory break points and word boundaries</li>
+<li><strong>TEXT_BREAK_MANDATORY_AND_ANYWHERE</strong> = <strong>3</strong> — Break lines at mandatory break points and grapheme cluster boundaries</li>
+</ul>
+<p id="class-tlshapedstring-constant-text-trim-break-and-whitespace"><span id="class-tlshapedstring-constant-text-trim-break"></span><span id="class-tlshapedstring-constant-text-trim-none"></span><span id="enum-tlshapedstring-texttrimmode"></span>enum <strong>TextTrimMode</strong>:</p>
+<ul class="simple">
+<li><strong>TEXT_TRIM_NONE</strong> = <strong>0</strong> — No substring trimming</li>
+<li><strong>TEXT_TRIM_BREAK</strong> = <strong>1</strong> — Trim line break characters for substring ends</li>
+<li><strong>TEXT_TRIM_BREAK_AND_WHITESPACE</strong> = <strong>2</strong> — Trim line break and whitespace characters for substring ends</li>
+</ul>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Note 1: Code points, Characters, Clusters and Glyphs</p>
+<ul class="simple">
+<li>A code point is a single encoding UTF-16 unit (Unicode character or half of the surrogate pair).</li>
+<li>A character is a full Unicode charecter.</li>
+<li>A grapheme cluster is the abstract unit of a writing system (a letter, a digit, or punctuation).</li>
+<li>A glyph is a shape used to render a character or a sequence of characters.</li>
+</ul>
+<p>In general, code point, characters, clusters and glyphs do not have one-to-one correspondence.</p>
+<p>Note 2: Encoding</p>
+<blockquote>
+<div>TLShapedString uses UTF-16 encoding, all positions accepted and returned by TLShapedString function are measured in UTF-16 code points.</div></blockquote>
+</div>
+<div class="section" id="property-descriptions">
+<h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedstring-property-base-direction">
+<li>int <strong>base_direction</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_direction(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_direction()</td>
+</tr>
+</tbody>
+</table>
+<p>Base text writing direction. Default: <code class="docutils literal notranslate"><span class="pre">TEXT_DIRECTION_AUTO</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-base-font">
+<li><a class="reference internal" href="class_tlfontfamily.html#class-tlfontfamily"><span class="std std-ref">TLFontFamily</span></a> <strong>base_font</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font()</td>
+</tr>
+</tbody>
+</table>
+<p>Base font family reference. Default: <code class="docutils literal notranslate"><span class="pre">null</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-base-font-size">
+<li>int <strong>base_font_size</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font_size(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font_size()</td>
+</tr>
+</tbody>
+</table>
+<p>Font size. Default: <code class="docutils literal notranslate"><span class="pre">12</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-base-font-style">
+<li>String <strong>base_font_style</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_base_font_style(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_base_font_style()</td>
+</tr>
+</tbody>
+</table>
+<p>Style name (Regular, Bold, Italic, Oblique etc.). Default: <code class="docutils literal notranslate"><span class="pre">&quot;Regular&quot;</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-features">
+<li>String <strong>features</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_features(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_features()</td>
+</tr>
+</tbody>
+</table>
+<p>Comma separated list of OpenType feature tags. More info: <a class="reference external" href="https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags">https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags</a>. Default: <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-language">
+<li>String <strong>language</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_language(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_language()</td>
+</tr>
+</tbody>
+</table>
+<p>Language code. Default: <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-preserve-control">
+<li>bool <strong>preserve_control</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_preserve_control(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_preserve_control()</td>
+</tr>
+</tbody>
+</table>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code> displays control character. Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<ul class="simple" id="class-tlshapedstring-property-text">
+<li>String <strong>text</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_text(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_text()</td>
+</tr>
+</tbody>
+</table>
+<p>Text string. Default: <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlshapedstring-method-add-sstring">
+<li>void <strong>add_sstring</strong> <strong>(</strong> <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-add-text">
+<li>void <strong>add_text</strong> <strong>(</strong> String text <strong>)</strong></li>
+</ul>
+<p>Appends plain text string.</p>
+<ul class="simple" id="class-tlshapedstring-method-add-utf16">
+<li>void <strong>add_utf16</strong> <strong>(</strong> PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-add-utf32">
+<li>void <strong>add_utf32</strong> <strong>(</strong> PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-add-utf8">
+<li>void <strong>add_utf8</strong> <strong>(</strong> PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-break-jst">
+<li>Array <strong>break_jst</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-break-lines">
+<li>Array <strong>break_lines</strong> <strong>(</strong> float width, int flags <strong>)</strong> const</li>
+</ul>
+<p>Breaks text into lines that fit within a specified width.</p>
+<p>Retunrs Array of line boundaries.</p>
+<ul class="simple" id="class-tlshapedstring-method-break-words">
+<li>Array <strong>break_words</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Breaks text into words.</p>
+<p>Retunrs Array of word boundaries.</p>
+<ul class="simple" id="class-tlshapedstring-method-char-count">
+<li>int <strong>char_count</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns number of characters in the string.</p>
+<ul class="simple" id="class-tlshapedstring-method-clusters">
+<li>int <strong>clusters</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns number of grapheme clusters, clusters are indexed in visual order.</p>
+<ul class="simple" id="class-tlshapedstring-method-copy-properties">
+<li>void <strong>copy_properties</strong> <strong>(</strong> <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> source <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-draw">
+<li>void <strong>draw</strong> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate <strong>)</strong></li>
+</ul>
+<p>Draws a string.</p>
+<ul class="simple" id="class-tlshapedstring-method-draw-as-hex">
+<li>void <strong>draw_as_hex</strong> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-draw-cluster">
+<li>Vector2 <strong>draw_cluster</strong> <strong>(</strong> RID canvas_item, Vector2 position, int index, Color modulate <strong>)</strong></li>
+</ul>
+<p>Draws single grapheme cluster. Returns advance.</p>
+<ul class="simple" id="class-tlshapedstring-method-draw-dbg">
+<li>void <strong>draw_dbg</strong> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-draw-logical-as-hex">
+<li>void <strong>draw_logical_as_hex</strong> <strong>(</strong> RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-empty">
+<li>bool <strong>empty</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if the string is empty.</p>
+<ul class="simple" id="class-tlshapedstring-method-extend-to-width">
+<li>float <strong>extend_to_width</strong> <strong>(</strong> float width, int flags <strong>)</strong></li>
+</ul>
+<p>Increase text width to the specified. Returns new line width.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-ascent">
+<li>float <strong>get_ascent</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns ascent of the line.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-char-direction">
+<li><a class="reference internal" href="#enum-tlshapedstring-textdirection"><span class="std std-ref">TextDirection</span></a> <strong>get_char_direction</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Return writing direction of a character writing direction.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-ascent">
+<li>float <strong>get_cluster_ascent</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster ascent.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-debug-info">
+<li>String <strong>get_cluster_debug_info</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-descent">
+<li>float <strong>get_cluster_descent</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster descent.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-end">
+<li>int <strong>get_cluster_end</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns last character position corresponding cluster.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-face">
+<li><a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> <strong>get_cluster_face</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-face-size">
+<li>float <strong>get_cluster_face_size</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-glyph">
+<li>int <strong>get_cluster_glyph</strong> <strong>(</strong> int index, int glyph <strong>)</strong> const</li>
+</ul>
+<p>Returns glyph ID.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-glyph-advance">
+<li>Vector2 <strong>get_cluster_glyph_advance</strong> <strong>(</strong> int index, int glyph <strong>)</strong> const</li>
+</ul>
+<p>Returns glyph advance.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-glyph-offset">
+<li>Vector2 <strong>get_cluster_glyph_offset</strong> <strong>(</strong> int index, int glyph <strong>)</strong> const</li>
+</ul>
+<p>Returns glyph offset.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-glyphs">
+<li>int <strong>get_cluster_glyphs</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns number of glyphs in cluster.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-height">
+<li>float <strong>get_cluster_height</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster height.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-index">
+<li>int <strong>get_cluster_index</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster index corresponding to a specific character position in string.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-leading-edge">
+<li>float <strong>get_cluster_leading_edge</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster leading edge offset in pixels.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-rect">
+<li>Rect2 <strong>get_cluster_rect</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster bounding rectangle.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-start">
+<li>int <strong>get_cluster_start</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns first character position corresponding cluster.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-trailing-edge">
+<li>float <strong>get_cluster_trailing_edge</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster trailing edge offset in pixels.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cluster-width">
+<li>float <strong>get_cluster_width</strong> <strong>(</strong> int index <strong>)</strong> const</li>
+</ul>
+<p>Returns cluster width.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-cursor-positions">
+<li>Array <strong>get_cursor_positions</strong> <strong>(</strong> int position, int primary_dir <strong>)</strong> const</li>
+</ul>
+<p>Returns an Array of <code class="docutils literal notranslate"><span class="pre">float</span></code> (up to two elements) offsets corresponding to the strong and weak cursor, at the specified character position.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-descent">
+<li>float <strong>get_descent</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns descent of the line.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-height">
+<li>float <strong>get_height</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns height of the line.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-highlight-shapes">
+<li>Array <strong>get_highlight_shapes</strong> <strong>(</strong> int start, int end <strong>)</strong> const</li>
+</ul>
+<p>Returns an Array of Rect2 enclosing the selection/highlight in the specified range.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-para-direction">
+<li>int <strong>get_para_direction</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-get-utf16">
+<li>PoolByteArray <strong>get_utf16</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns raw text string in UTF-16 encoding.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-utf32">
+<li>PoolByteArray <strong>get_utf32</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns raw text string in UTF-32 encoding.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-utf8">
+<li>PoolByteArray <strong>get_utf8</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns raw text string in UTF-8 encoding.</p>
+<ul class="simple" id="class-tlshapedstring-method-get-width">
+<li>float <strong>get_width</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns width of the line.</p>
+<ul class="simple" id="class-tlshapedstring-method-hit-test">
+<li>int <strong>hit_test</strong> <strong>(</strong> float position <strong>)</strong> const</li>
+</ul>
+<p>Returns a cursor position corresponding to the specified pixel offset.</p>
+<ul class="simple" id="class-tlshapedstring-method-hit-test-cluster">
+<li>int <strong>hit_test_cluster</strong> <strong>(</strong> float position <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-is-valid">
+<li>bool <strong>is_valid</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if the string is shaped successfuly.</p>
+<ul class="simple" id="class-tlshapedstring-method-length">
+<li>int <strong>length</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns number of UTF-16 codepoints in the string.</p>
+<ul class="simple" id="class-tlshapedstring-method-next-safe-bound">
+<li>int <strong>next_safe_bound</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Returns next whole character position in the string.</p>
+<ul class="simple" id="class-tlshapedstring-method-pos-u16-to-wcs">
+<li>int <strong>pos_u16_to_wcs</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Returns character position (Characters)</p>
+<ul class="simple" id="class-tlshapedstring-method-pos-wcs-to-u16">
+<li>int <strong>pos_wcs_to_u16</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Retruns character position (UTF-16 codepoints)</p>
+<ul class="simple" id="class-tlshapedstring-method-prev-safe-bound">
+<li>int <strong>prev_safe_bound</strong> <strong>(</strong> int position <strong>)</strong> const</li>
+</ul>
+<p>Returns previous whole character position in the string.</p>
+<ul class="simple" id="class-tlshapedstring-method-replace-sstring">
+<li>void <strong>replace_sstring</strong> <strong>(</strong> int start, int end, <a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-replace-text">
+<li>void <strong>replace_text</strong> <strong>(</strong> int start, int end, String text <strong>)</strong></li>
+</ul>
+<p>Replaces substring.</p>
+<ul class="simple" id="class-tlshapedstring-method-replace-utf16">
+<li>void <strong>replace_utf16</strong> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-replace-utf32">
+<li>void <strong>replace_utf32</strong> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-replace-utf8">
+<li>void <strong>replace_utf8</strong> <strong>(</strong> int start, int end, PoolByteArray text <strong>)</strong></li>
+</ul>
+<ul class="simple" id="class-tlshapedstring-method-set-utf16">
+<li>void <strong>set_utf16</strong> <strong>(</strong> PoolByteArray data <strong>)</strong></li>
+</ul>
+<p>Sets taw text string in UTF-16 encoding</p>
+<ul class="simple" id="class-tlshapedstring-method-set-utf32">
+<li>void <strong>set_utf32</strong> <strong>(</strong> PoolByteArray data <strong>)</strong></li>
+</ul>
+<p>Sets taw text string in UTF-32 encoding</p>
+<ul class="simple" id="class-tlshapedstring-method-set-utf8">
+<li>void <strong>set_utf8</strong> <strong>(</strong> PoolByteArray data <strong>)</strong></li>
+</ul>
+<p>Sets taw text string in UTF-8 encoding</p>
+<ul class="simple" id="class-tlshapedstring-method-shape">
+<li>bool <strong>shape</strong> <strong>(</strong> <strong>)</strong></li>
+</ul>
+<p>Shapes string and returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if the string is shaped successfuly.</p>
+<ul class="simple" id="class-tlshapedstring-method-substr">
+<li><a class="reference internal" href="#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> <strong>substr</strong> <strong>(</strong> int start, int end, int trim <strong>)</strong> const</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="class_tlshapedparagraph.html" class="btn btn-neutral" title="TLShapedParagraph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-BY 3.0
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -58,7 +58,6 @@ public:
 
 	Array _unicode_scripts_supported() const;
 	virtual std::vector<hb_script_t> unicode_scripts_supported() const;
-	//virtual bool unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const;
 
 	//GDNative methods
 	virtual bool load(String p_resource_path);
@@ -74,9 +73,6 @@ public:
 
 	virtual void set_texture_flags(int p_flags);
 	virtual int get_texture_flags() const;
-
-	//void set_fallback(const Ref<TLFontFace> p_fallback);
-	//Ref<TLFontFace> get_fallback() const;
 
 #ifdef GODOT_MODULE
 	static void _bind_methods();

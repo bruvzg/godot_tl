@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TLFontFace &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TLFontFamily" href="class_tlfontfamily.html" />
+    <link rel="prev" title="TLDynamicFontFace" href="class_tldynamicfontface.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">libgdtl API</a> &raquo;</li>
+        
+      <li>TLFontFace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/classes/class_tlfontface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tlfontface">
+<span id="class-tlfontface"></span><h1>TLFontFace<a class="headerlink" href="#tlfontface" title="Permalink to this headline">¶</a></h1>
+<p><strong>Inherits:</strong></p>
+<p><strong>Inherited By:</strong> <a class="reference internal" href="class_tlbitmapfontface.html#class-tlbitmapfontface"><span class="std std-ref">TLBitmapFontFace</span></a>, <a class="reference internal" href="class_tldynamicfontface.html#class-tldynamicfontface"><span class="std std-ref">TLDynamicFontFace</span></a></p>
+<p><strong>Category:</strong> Core</p>
+<div class="section" id="brief-description">
+<h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+<p>*Virtual class*</p>
+<p>A base font face class.</p>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>String</td>
+<td><a class="reference internal" href="#class-tlfontface-property-font-path"><span class="std std-ref">font_path</span></a></td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlfontface-property-texture-flags"><span class="std std-ref">texture_flags</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="96%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontface-method-draw-glyph"><span class="std std-ref">draw_glyph</span></a> <strong>(</strong> RID canvas_item, Vector2 pos, int codepoint, Color modulate, int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontface-method-draw-glyph-outline"><span class="std std-ref">draw_glyph_outline</span></a> <strong>(</strong> RID canvas_item, Vector2 pos, int codepoint, Color modulate, int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlfontface-method-get-ascent"><span class="std std-ref">get_ascent</span></a> <strong>(</strong> int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>int</td>
+<td><a class="reference internal" href="#class-tlfontface-method-get-base-size"><span class="std std-ref">get_base_size</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlfontface-method-get-descent"><span class="std std-ref">get_descent</span></a> <strong>(</strong> int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>Array</td>
+<td><a class="reference internal" href="#class-tlfontface-method-get-glyph-outline"><span class="std std-ref">get_glyph_outline</span></a> <strong>(</strong> Vector2 pos, int codepoint, int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>float</td>
+<td><a class="reference internal" href="#class-tlfontface-method-get-height"><span class="std std-ref">get_height</span></a> <strong>(</strong> int size <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>bool</td>
+<td><a class="reference internal" href="#class-tlfontface-method-load"><span class="std std-ref">load</span></a> <strong>(</strong> String resource_path <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>Array</td>
+<td><a class="reference internal" href="#class-tlfontface-method-unicode-scripts-supported"><span class="std std-ref">unicode_scripts_supported</span></a> <strong>(</strong> <strong>)</strong> const</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="property-descriptions">
+<h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlfontface-property-font-path">
+<li>String <strong>font_path</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_font_path(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_font_path()</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple" id="class-tlfontface-property-texture-flags">
+<li>int <strong>texture_flags</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Setter</em></td>
+<td>set_texture_flags(value)</td>
+</tr>
+<tr class="row-even"><td><em>Getter</em></td>
+<td>get_texture_flags()</td>
+</tr>
+</tbody>
+</table>
+<p>Font texture flags. Default: <code class="docutils literal notranslate"><span class="pre">FLAG_VIDEO_SURFACE</span></code></p>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlfontface-method-draw-glyph">
+<li>void <strong>draw_glyph</strong> <strong>(</strong> RID canvas_item, Vector2 pos, int codepoint, Color modulate, int size <strong>)</strong> const</li>
+</ul>
+<p>Draws a single glyph.</p>
+<ul class="simple" id="class-tlfontface-method-draw-glyph-outline">
+<li>void <strong>draw_glyph_outline</strong> <strong>(</strong> RID canvas_item, Vector2 pos, int codepoint, Color modulate, int size <strong>)</strong> const</li>
+</ul>
+<p>Draws single glyph outline.</p>
+<ul class="simple" id="class-tlfontface-method-get-ascent">
+<li>float <strong>get_ascent</strong> <strong>(</strong> int size <strong>)</strong> const</li>
+</ul>
+<p>Returns ascent (distance from the baseline to the highest position characters extend to) of the font.</p>
+<ul class="simple" id="class-tlfontface-method-get-base-size">
+<li>int <strong>get_base_size</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+<p>Returns default font size for bitmap fonts or <code class="docutils literal notranslate"><span class="pre">0</span></code> for dynamic fonts.</p>
+<ul class="simple" id="class-tlfontface-method-get-descent">
+<li>float <strong>get_descent</strong> <strong>(</strong> int size <strong>)</strong> const</li>
+</ul>
+<p>Returns descent (distance from the base line to the lowest point characters extend to) of the font.</p>
+<ul class="simple" id="class-tlfontface-method-get-glyph-outline">
+<li>Array <strong>get_glyph_outline</strong> <strong>(</strong> Vector2 pos, int codepoint, int size <strong>)</strong> const</li>
+</ul>
+<ul class="simple" id="class-tlfontface-method-get-height">
+<li>float <strong>get_height</strong> <strong>(</strong> int size <strong>)</strong> const</li>
+</ul>
+<p>Returns height (vertical distance between two consecutive baselines) of the font.</p>
+<ul class="simple" id="class-tlfontface-method-load">
+<li>bool <strong>load</strong> <strong>(</strong> String resource_path <strong>)</strong></li>
+</ul>
+<p>Loads font from speified file.</p>
+<ul class="simple" id="class-tlfontface-method-unicode-scripts-supported">
+<li>Array <strong>unicode_scripts_supported</strong> <strong>(</strong> <strong>)</strong> const</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_tlfontfamily.html" class="btn btn-neutral float-right" title="TLFontFamily" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_tldynamicfontface.html" class="btn btn-neutral" title="TLDynamicFontFace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-BY 3.0
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

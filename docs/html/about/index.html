@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>libgdtl Introduction &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="libgdtl API" href="../classes/index.html" />
+    <link rel="prev" title="libgdtl Documentation" href="../index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">libgdtl API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlprotocontrol.html">TLProtoControl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrolselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrolselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>libgdtl Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/about/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="libgdtl-introduction">
+<span id="doc-about-intro"></span><h1>libgdtl Introduction<a class="headerlink" href="#libgdtl-introduction" title="Permalink to this headline">¶</a></h1>
+<p>BiDi, shaping and basic text layout for Godot Engine.</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Godot 3.1+</li>
+<li>C++14 compiler</li>
+<li>Meson build system (for gdnative module build only)</li>
+<li>SCons build system</li>
+</ul>
+</div>
+<div class="section" id="compiling-as-builtin-module">
+<h2>Compiling (as builtin module)<a class="headerlink" href="#compiling-as-builtin-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="build-options">
+<h3>Build options<a class="headerlink" href="#build-options" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="58%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>builtin_runtime</td>
+<td>Use the built-in libraries</td>
+<td>true</td>
+</tr>
+<tr class="row-odd"><td>use_graphite2</td>
+<td>Enable SIL Graphite 2 complementary shaper</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="building-libdgtl-module">
+<h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#building-libdgtl-module" title="Permalink to this headline">¶</a></h3>
+<p>Clone this repository (without <cite>–recursive</cite> flag) into Godot’s <cite>modules</cite> subfolder as <cite>godot_tl</cite>.
+Rebuild Godot engine as ususal.</p>
+</div>
+</div>
+<div class="section" id="compiling-as-gdnative-module">
+<h2>Compiling (as gdnative module)<a class="headerlink" href="#compiling-as-gdnative-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Build options<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="65%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>godot-cpp-lib-name</td>
+<td>godot-cpp static library name (without <cite>.a</cite> or <cite>.lib</cite> extension)</td>
+<td>libgodot-cpp</td>
+</tr>
+<tr class="row-odd"><td>static-runtime</td>
+<td>Link libraries statically for better portability</td>
+<td>false</td>
+</tr>
+<tr class="row-even"><td>builtin-runtime</td>
+<td>Use the built-in libraries</td>
+<td>false</td>
+</tr>
+<tr class="row-odd"><td>use-graphite2</td>
+<td>Enable SIL Graphite 2 complementary shaper</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="building-godot-cpp-static-library">
+<h3>Building <cite>godot-cpp</cite> static library<a class="headerlink" href="#building-godot-cpp-static-library" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference external" href="https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library">https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library</a></p>
+</div>
+<div class="section" id="id2">
+<h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>You can compile this module by executing:</p>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="n">meson</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="n">Godot</span><span class="o">-</span><span class="n">CPP</span><span class="o">-</span><span class="n">Name</span><span class="p">}</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span>
+<span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">The source code of the <strong>libgdtl</strong> module is released under unlicense.</p>
+<p>For more information, see <a class="reference external" href="http://unlicense.org/">http://unlicense.org/</a> or the accompanying UNLICENSE file.</p>
+</li>
+<li><p class="first"><strong>Godot</strong> and <strong>GodotNativeTools</strong> are licensed under MIT license.</p>
+<p>For more information, see <a class="reference external" href="https://github.com/godotengine/godot/blob/master/LICENSE.txt">https://github.com/godotengine/godot/blob/master/LICENSE.txt</a>.</p>
+</li>
+<li><p class="first"><strong>HarfBuzz</strong> is licensed under MIT-like License.</p>
+<p>For more information, see <a class="reference external" href="https://github.com/harfbuzz/harfbuzz/blob/master/COPYING">https://github.com/harfbuzz/harfbuzz/blob/master/COPYING</a></p>
+</li>
+<li><p class="first"><strong>ICU4C</strong> is licensed under Unicode, Inc. License.</p>
+<p>For more information, see <a class="reference external" href="http://www.unicode.org/copyright.html#License">http://www.unicode.org/copyright.html#License</a></p>
+</li>
+<li><p class="first"><strong>FreeType</strong> is licensed under FreeType License (BSD-like) or GNU General Public License (GPL), version 2.</p>
+<p>For more information, see <a class="reference external" href="https://www.freetype.org/license.html">https://www.freetype.org/license.html</a></p>
+</li>
+<li><p class="first"><strong>SIL Graphite engine</strong> is licensed under GNU Lesser General Public License (LGPL), version 2.1+ or GNU General Public License (GPL), version 2 or Mozilla Public License.</p>
+<p>For more information, see <a class="reference external" href="https://github.com/silnrsi/graphite/blob/master/COPYING">https://github.com/silnrsi/graphite/blob/master/COPYING</a></p>
+</li>
+</ul>
+</div>
+<div class="section" id="demo-data">
+<h2>Demo data<a class="headerlink" href="#demo-data" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/JulietaUla/Montserrat/">Montserrat</a>, <a class="reference external" href="https://software.sil.org/awami/download/">Awami Nastaliq</a>, <a class="reference external" href="http://comicneue.com/">Comic Neue</a> and <a class="reference external" href="https://www.google.com/get/noto/">Noto</a> fonts are published under the <a class="reference external" href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=OFL">SIL Open Font License, Version 1.1</a></p>
+<p><a class="reference external" href="https://github.com/google/material-design-icons">Material Design icons by Google</a> are published under the <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.txt">Apache License Version 2.0</a></p>
+<p>Noto Color Emoji font is cut down to single glyph (U+1F604) using <a class="reference external" href="https://github.com/filamentgroup/glyphhanger">glyphhanger</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../classes/index.html" class="btn btn-neutral float-right" title="libgdtl API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="libgdtl Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-BY 3.0
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

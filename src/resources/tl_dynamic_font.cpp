@@ -532,7 +532,6 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size) {
 	return loaded;
 }
 
-//Array TLDynamicFontFaceAtSize::unicode_scripts_supported() const {
 std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() const {
 	//DEBUG
 	/*
@@ -550,6 +549,9 @@ std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() co
 	printf("\n");
 	*/
 	//DEBUG
+
+	//https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_ucr_xxx
+
 	std::vector<hb_script_t> ret;
 	if (!os2)
 		return ret;
@@ -558,6 +560,7 @@ std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() co
 		ret.push_back(HB_SCRIPT_LATIN);
 	}
 	if ((os2->ulUnicodeRange1 & 1L << 4) || (os2->ulUnicodeRange1 & 1L << 5) || (os2->ulUnicodeRange1 & 1L << 6) || (os2->ulUnicodeRange1 & 1L << 31) || (os2->ulUnicodeRange2 & 1L << 0) || (os2->ulUnicodeRange2 & 1L << 1) || (os2->ulUnicodeRange2 & 1L << 2) || (os2->ulUnicodeRange2 & 1L << 3) || (os2->ulUnicodeRange2 & 1L << 4) || (os2->ulUnicodeRange2 & 1L << 5) || (os2->ulUnicodeRange2 & 1L << 6) || (os2->ulUnicodeRange2 & 1L << 7) || (os2->ulUnicodeRange2 & 1L << 8) || (os2->ulUnicodeRange2 & 1L << 9) || (os2->ulUnicodeRange2 & 1L << 10) || (os2->ulUnicodeRange2 & 1L << 11) || (os2->ulUnicodeRange2 & 1L << 12) || (os2->ulUnicodeRange2 & 1L << 13) || (os2->ulUnicodeRange2 & 1L << 14) || (os2->ulUnicodeRange2 & 1L << 15) || (os2->ulUnicodeRange2 & 1L << 30) || (os2->ulUnicodeRange3 & 1L << 0) || (os2->ulUnicodeRange3 & 1L << 1) || (os2->ulUnicodeRange3 & 1L << 2) || (os2->ulUnicodeRange3 & 1L << 4) || (os2->ulUnicodeRange3 & 1L << 5) || (os2->ulUnicodeRange3 & 1L << 18) || (os2->ulUnicodeRange3 & 1L << 24) || (os2->ulUnicodeRange3 & 1L << 25) || (os2->ulUnicodeRange3 & 1L << 26) || (os2->ulUnicodeRange3 & 1L << 27) || (os2->ulUnicodeRange3 & 1L << 28) || (os2->ulUnicodeRange4 & 1L << 3) || (os2->ulUnicodeRange4 & 1L << 6) || (os2->ulUnicodeRange4 & 1L << 15) || (os2->ulUnicodeRange4 & 1L << 23) || (os2->ulUnicodeRange4 & 1L << 24) || (os2->ulUnicodeRange4 & 1L << 26)) {
+		//TODO: add more script sorting
 		ret.push_back(HB_SCRIPT_COMMON);
 	}
 	if ((os2->ulUnicodeRange1 & 1L << 7) || (os2->ulUnicodeRange1 & 1L << 30)) {
@@ -774,28 +777,6 @@ std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() co
 	return ret;
 }
 
-/*
-bool TLDynamicFontFaceAtSize::unicode_range_supported(uint8_t p_bank, uint32_t p_range) const {
-
-	//https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_ucr_xxx
-	if (!os2)
-		return false;
-
-	switch (p_bank) {
-		case 1:
-			return (os2->ulUnicodeRange1 & p_range);
-		case 2:
-			return (os2->ulUnicodeRange2 & p_range);
-		case 3:
-			return (os2->ulUnicodeRange3 & p_range);
-		case 4:
-			return (os2->ulUnicodeRange4 & p_range);
-		default:
-			return false;
-	}
-}
-*/
-
 double TLDynamicFontFaceAtSize::get_ascent() const {
 
 	return loaded ? ascent : 0.0f;
@@ -1009,7 +990,6 @@ bool TLDynamicFontFace::load(String p_resource_path) {
 	return true;
 }
 
-//Array TLDynamicFontFace::unicode_scripts_supported(int p_size) const {
 std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 
 	if (sizes.size() > 0) {
@@ -1029,27 +1009,6 @@ std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 	WARN_PRINTS("Font not loaded!")
 	return std::vector<hb_script_t>();
 }
-/*
-bool TLDynamicFontFace::unicode_range_supported(int p_size, uint8_t p_bank, uint32_t p_range) const {
-
-	if (sizes.count(p_size) > 0) {
-		return sizes.at(p_size)->unicode_range_supported(p_bank, p_range);
-	} else {
-		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
-		f_at_s->set_hinting(hinting);
-		f_at_s->set_force_autohinter(force_autohinter);
-		f_at_s->set_oversampling(oversampling);
-
-		if (f_at_s->load(path, p_size)) {
-			sizes[p_size] = f_at_s;
-			return f_at_s->unicode_range_supported(p_bank, p_range);
-		}
-	}
-	WARN_PRINTS("Font not loaded!")
-	return false;
-}
-*/
 
 double TLDynamicFontFace::get_ascent(int p_size) const {
 

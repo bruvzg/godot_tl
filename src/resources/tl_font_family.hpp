@@ -16,9 +16,6 @@
 using namespace godot;
 
 struct StyleData {
-	//Ref<TLFontFace> main;
-	//std::map<hb_script_t, Ref<TLFontFace> > linked;
-
 	std::vector<Ref<TLFontFace> > main_chain;
 	std::map<hb_script_t, std::vector<Ref<TLFontFace> > > linked_src_chain;
 	std::map<hb_language_t, std::vector<Ref<TLFontFace> > > linked_lang_chain;
@@ -77,9 +74,6 @@ public:
 
 	void _init();
 
-	//Ref<TLFontFace> _get_liked_face_for_script(String p_style, hb_script_t p_script) const;
-
-	//GDNative
 	void remove_style(String p_style);
 	bool has_style(String p_style) const;
 
@@ -87,15 +81,10 @@ public:
 	TLFontFallbackIterator get_face_for_script(String p_style, hb_script_t p_script) const;
 	TLFontFallbackIterator get_face_for_language(String p_style, hb_language_t p_lang) const;
 
-	//void set_face(String p_style, Ref<TLFontFace> p_ref); //remove
-	//Ref<TLFontFace> get_face(String p_style) const; //remove
-
 	void add_face(String p_style, Ref<TLFontFace> p_ref);
+	void add_face_unlinked(String p_style, Ref<TLFontFace> p_ref);
 	void add_face_for_script(String p_style, Ref<TLFontFace> p_ref, String p_script);
 	void add_face_for_language(String p_style, Ref<TLFontFace> p_ref, String p_lang);
-
-	//void set_liked_face_for_script(String p_style, String p_script, Ref<TLFontFace> p_ref); //remove
-	//Ref<TLFontFace> get_liked_face_for_script(String p_style, String p_script) const; //remove
 
 #ifdef GODOT_MODULE
 	bool _set(const StringName &p_name, const Variant &p_value);
