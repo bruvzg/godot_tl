@@ -56,6 +56,7 @@ void register_godot_tl_types() {
 	ClassDB::register_class<TLProtoControlSelection>();
 	ClassDB::register_class<TLLabel>();
 	ClassDB::register_class<TLLineEdit>();
+	ClassDB::register_class<TLFontIterator>();
 
 	//Register editor tools
 #ifdef TOOLS_ENABLED
@@ -110,6 +111,7 @@ extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
 	register_tool_class<TLProtoControlSelection>();
 	register_tool_class<TLLabel>();
 	register_tool_class<TLLineEdit>();
+	register_tool_class<TLFontIterator>();
 }
 
 #endif

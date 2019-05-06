@@ -19,19 +19,25 @@ A set of fonts that make up a font family.
 Methods
 -------
 
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| void | :ref:`add_face<class_TLFontFamily_method_add_face>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**                                        |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| void | :ref:`add_face_unlinked<class_TLFontFamily_method_add_face_unlinked>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**                      |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| void | :ref:`add_face_for_language<class_TLFontFamily_method_add_face_for_language>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String lang **)** |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| void | :ref:`add_face_for_script<class_TLFontFamily_method_add_face_for_script>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String script **)**   |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| bool | :ref:`has_style<class_TLFontFamily_method_has_style>` **(** String style **)** const                                                                         |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| void | :ref:`remove_style<class_TLFontFamily_method_remove_style>` **(** String style **)**                                                                         |
-+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| void                                        | :ref:`add_face<class_TLFontFamily_method_add_face>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**                                        |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| void                                        | :ref:`add_face_for_language<class_TLFontFamily_method_add_face_for_language>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String lang **)** |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| void                                        | :ref:`add_face_for_script<class_TLFontFamily_method_add_face_for_script>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String script **)**   |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| void                                        | :ref:`add_face_unlinked<class_TLFontFamily_method_add_face_unlinked>` **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**                      |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontIterator<class_TLFontIterator>` | :ref:`get_face<class_TLFontFamily_method_get_face>` **(** String style **)** const                                                                           |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontIterator<class_TLFontIterator>` | :ref:`get_face_for_language<class_TLFontFamily_method_get_face_for_language>` **(** String style, String lang **)** const                                    |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontIterator<class_TLFontIterator>` | :ref:`get_face_for_script<class_TLFontFamily_method_get_face_for_script>` **(** String style, String script **)** const                                      |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| bool                                        | :ref:`has_style<class_TLFontFamily_method_has_style>` **(** String style **)** const                                                                         |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| void                                        | :ref:`remove_style<class_TLFontFamily_method_remove_style>` **(** String style **)**                                                                         |
++---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Method Descriptions
 -------------------
@@ -40,10 +46,6 @@ Method Descriptions
 
 - void **add_face** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**
 
-.. _class_TLFontFamily_method_add_face_unlinked:
-
-- void **add_face_unlinked** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**
-
 .. _class_TLFontFamily_method_add_face_for_language:
 
 - void **add_face_for_language** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String lang **)**
@@ -51,6 +53,22 @@ Method Descriptions
 .. _class_TLFontFamily_method_add_face_for_script:
 
 - void **add_face_for_script** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String script **)**
+
+.. _class_TLFontFamily_method_add_face_unlinked:
+
+- void **add_face_unlinked** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**
+
+.. _class_TLFontFamily_method_get_face:
+
+- :ref:`TLFontIterator<class_TLFontIterator>` **get_face** **(** String style **)** const
+
+.. _class_TLFontFamily_method_get_face_for_language:
+
+- :ref:`TLFontIterator<class_TLFontIterator>` **get_face_for_language** **(** String style, String lang **)** const
+
+.. _class_TLFontFamily_method_get_face_for_script:
+
+- :ref:`TLFontIterator<class_TLFontIterator>` **get_face_for_script** **(** String style, String script **)** const
 
 .. _class_TLFontFamily_method_has_style:
 

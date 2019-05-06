@@ -175,6 +175,55 @@ TLFontFallbackIterator::TLFontFallbackIterator(const StyleData *p_data, hb_langu
 
 /*************************************************************************/
 
+TLFontIterator::TLFontIterator() {
+	//NOP
+}
+
+TLFontIterator::~TLFontIterator() {
+	//NOP
+}
+
+void TLFontIterator::_set_iter(const TLFontFallbackIterator &p_iter) {
+	_iter = p_iter;
+}
+
+void TLFontIterator::_init() {
+	//NOP
+}
+
+Variant TLFontIterator::_iter_init(const Array p_iter) {
+	return _iter.is_valid();
+}
+
+Variant TLFontIterator::_iter_next(const Array p_iter) {
+	_iter = _iter.next();
+	return _iter.is_valid();
+}
+
+Variant TLFontIterator::_iter_get(const Array p_iter) {
+	if (_iter.is_valid()) {
+		return _iter.value();
+	} else {
+		return Variant();
+	}
+}
+
+#ifdef GODOT_MODULE
+void TLFontIterator::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_iter_init", "iter"), &TLFontIterator::_iter_init);
+	ClassDB::bind_method(D_METHOD("_iter_get", "iter"), &TLFontIterator::_iter_get);
+	ClassDB::bind_method(D_METHOD("_iter_next", "iter"), &TLFontIterator::_iter_next);
+}
+#else
+void TLFontIterator::_register_methods() {
+	register_method("_iter_init", &TLFontIterator::_iter_init);
+	register_method("_iter_get", &TLFontIterator::_iter_get);
+	register_method("_iter_next", &TLFontIterator::_iter_next);
+}
+#endif
+
+/*************************************************************************/
+
 TLFontFamily::TLFontFamily() {
 
 #ifdef GODOT_MODULE
@@ -300,6 +349,44 @@ void TLFontFamily::add_face_for_language(String p_style, Ref<TLFontFace> p_ref, 
 #endif
 }
 
+Ref<TLFontIterator> TLFontFamily::_get_face(String p_style) const {
+	Ref<TLFontIterator> iter;
+#ifdef GODOT_MODULE
+	iter.instance();
+#else
+	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
+#endif
+	iter->_set_iter(get_face(p_style));
+
+	return iter;
+}
+
+Ref<TLFontIterator> TLFontFamily::_get_face_for_script(String p_style, String p_script) const {
+	Ref<TLFontIterator> iter;
+#ifdef GODOT_MODULE
+	iter.instance();
+#else
+	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
+#endif
+	hb_script_t scr = hb_script_from_string(p_script.ascii().get_data(), -1);
+	iter->_set_iter(get_face_for_script(p_style, scr));
+
+	return iter;
+}
+
+Ref<TLFontIterator> TLFontFamily::_get_face_for_language(String p_style, String p_lang) const {
+	Ref<TLFontIterator> iter;
+#ifdef GODOT_MODULE
+	iter.instance();
+#else
+	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
+#endif
+	hb_language_t lang = hb_language_from_string(p_lang.ascii().get_data(), -1);
+	iter->_set_iter(get_face_for_language(p_style, lang));
+
+	return iter;
+}
+
 #ifdef GODOT_MODULE
 
 bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
@@ -423,6 +510,10 @@ void TLFontFamily::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_face_unlinked", "style", "ref"), &TLFontFamily::add_face_unlinked);
 	ClassDB::bind_method(D_METHOD("add_face_for_script", "style", "ref", "script"), &TLFontFamily::add_face_for_script);
 	ClassDB::bind_method(D_METHOD("add_face_for_language", "style", "ref", "lang"), &TLFontFamily::add_face_for_language);
+
+	ClassDB::bind_method(D_METHOD("get_face", "style"), &TLFontFamily::_get_face);
+	ClassDB::bind_method(D_METHOD("get_face_for_script", "style", "script"), &TLFontFamily::_get_face_for_script);
+	ClassDB::bind_method(D_METHOD("get_face_for_language", "style", "lang"), &TLFontFamily::_get_face_for_language);
 }
 
 #else
@@ -570,6 +661,10 @@ void TLFontFamily::_register_methods() {
 	register_method("_get_property_list", &TLFontFamily::_get_property_list);
 	register_method("_get", &TLFontFamily::_get);
 	register_method("_set", &TLFontFamily::_set);
+
+	register_method("get_face", &TLFontFamily::_get_face);
+	register_method("get_face_for_script", &TLFontFamily::_get_face_for_script);
+	register_method("get_face_for_language", &TLFontFamily::_get_face_for_language);
 }
 
 #endif

@@ -22,7 +22,8 @@ def get_doc_classes():
             "TLProtoControl",
             "TLProtoControlSelection",
             "TLLabel",
-            "TLLineEdit"
+            "TLLineEdit",
+            "TLFontIterator"
     ]
 
 def get_doc_path():

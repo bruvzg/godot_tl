@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TLFontFamily &mdash; libgdtl latest documentation</title>
+  <title>TLFontIterator &mdash; libgdtl latest documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TLFontIterator" href="class_tlfontiterator.html" />
-    <link rel="prev" title="TLFontFace" href="class_tlfontface.html" /> 
+    <link rel="next" title="TLICUDataLoader" href="class_tlicudataloader.html" />
+    <link rel="prev" title="TLFontFamily" href="class_tlfontfamily.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -130,14 +130,14 @@
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">TLFontFamily</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_tlfontiterator.html">TLFontIterator</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#brief-description">Brief Description</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLFontIterator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
@@ -260,13 +260,13 @@
         
           <li><a href="index.html">libgdtl API</a> &raquo;</li>
         
-      <li>TLFontFamily</li>
+      <li>TLFontIterator</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/classes/class_tlfontfamily.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/classes/class_tlfontiterator.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -279,81 +279,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tlfontfamily">
-<span id="class-tlfontfamily"></span><h1>TLFontFamily<a class="headerlink" href="#tlfontfamily" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tlfontiterator">
+<span id="class-tlfontiterator"></span><h1>TLFontIterator<a class="headerlink" href="#tlfontiterator" title="Permalink to this headline">¶</a></h1>
 <p><strong>Inherits:</strong></p>
 <p><strong>Category:</strong> Core</p>
 <div class="section" id="brief-description">
 <h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
-<p>A set of fonts that make up a font family.</p>
-</div>
-<div class="section" id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
-<colgroup>
-<col width="22%" />
-<col width="78%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>void</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-add-face"><span class="std std-ref">add_face</span></a> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></td>
-</tr>
-<tr class="row-even"><td>void</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-add-face-for-language"><span class="std std-ref">add_face_for_language</span></a> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String lang <strong>)</strong></td>
-</tr>
-<tr class="row-odd"><td>void</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-add-face-for-script"><span class="std std-ref">add_face_for_script</span></a> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String script <strong>)</strong></td>
-</tr>
-<tr class="row-even"><td>void</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-add-face-unlinked"><span class="std std-ref">add_face_unlinked</span></a> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face"><span class="std std-ref">get_face</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-language"><span class="std std-ref">get_face_for_language</span></a> <strong>(</strong> String style, String lang <strong>)</strong> const</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-script"><span class="std std-ref">get_face_for_script</span></a> <strong>(</strong> String style, String script <strong>)</strong> const</td>
-</tr>
-<tr class="row-even"><td>bool</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-has-style"><span class="std std-ref">has_style</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
-</tr>
-<tr class="row-odd"><td>void</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-remove-style"><span class="std std-ref">remove_style</span></a> <strong>(</strong> String style <strong>)</strong></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="method-descriptions">
-<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
-<ul class="simple" id="class-tlfontfamily-method-add-face">
-<li>void <strong>add_face</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-add-face-for-language">
-<li>void <strong>add_face_for_language</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String lang <strong>)</strong></li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-add-face-for-script">
-<li>void <strong>add_face_for_script</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String script <strong>)</strong></li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-add-face-unlinked">
-<li>void <strong>add_face_unlinked</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-get-face">
-<li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face</strong> <strong>(</strong> String style <strong>)</strong> const</li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-get-face-for-language">
-<li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face_for_language</strong> <strong>(</strong> String style, String lang <strong>)</strong> const</li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-get-face-for-script">
-<li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face_for_script</strong> <strong>(</strong> String style, String script <strong>)</strong> const</li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-has-style">
-<li>bool <strong>has_style</strong> <strong>(</strong> String style <strong>)</strong> const</li>
-</ul>
-<ul class="simple" id="class-tlfontfamily-method-remove-style">
-<li>void <strong>remove_style</strong> <strong>(</strong> String style <strong>)</strong></li>
-</ul>
 </div>
 </div>
 
@@ -365,10 +296,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="class_tlfontiterator.html" class="btn btn-neutral float-right" title="TLFontIterator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="class_tlicudataloader.html" class="btn btn-neutral float-right" title="TLICUDataLoader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="class_tlfontface.html" class="btn btn-neutral" title="TLFontFace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="class_tlfontfamily.html" class="btn btn-neutral" title="TLFontFamily" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

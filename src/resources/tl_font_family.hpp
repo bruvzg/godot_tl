@@ -62,6 +62,35 @@ public:
 	TLFontFallbackIterator(const StyleData *p_data, hb_language_t p_lang);
 };
 
+/*************************************************************************/
+
+//GDScript/GDNative iterator wrapper
+class TLFontIterator : public Reference {
+	GODOT_CLASS(TLFontIterator, Reference);
+
+	TLFontFallbackIterator _iter;
+
+public:
+	TLFontIterator();
+	~TLFontIterator();
+
+	void _set_iter(const TLFontFallbackIterator &p_iter);
+
+	void _init();
+
+	Variant _iter_init(const Array p_iter);
+	Variant _iter_next(const Array p_iter);
+	Variant _iter_get(const Array p_iter);
+
+#ifdef GODOT_MODULE
+	static void _bind_methods();
+#else
+	static void _register_methods();
+#endif
+};
+
+/*************************************************************************/
+
 class TLFontFamily : public Resource {
 	GODOT_CLASS(TLFontFamily, Resource);
 
@@ -80,6 +109,10 @@ public:
 	TLFontFallbackIterator get_face(String p_style) const;
 	TLFontFallbackIterator get_face_for_script(String p_style, hb_script_t p_script) const;
 	TLFontFallbackIterator get_face_for_language(String p_style, hb_language_t p_lang) const;
+
+	Ref<TLFontIterator> _get_face(String p_style) const;
+	Ref<TLFontIterator> _get_face_for_script(String p_style, String p_script) const;
+	Ref<TLFontIterator> _get_face_for_language(String p_style, String p_lang) const;
 
 	void add_face(String p_style, Ref<TLFontFace> p_ref);
 	void add_face_unlinked(String p_style, Ref<TLFontFace> p_ref);
