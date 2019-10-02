@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="gdtl backported controls (builtin)"
+config/name="libgdtl backported controls (builtin)"
 run/main_scene="res://Control.tscn"
 config/icon="res://icon.png"
 

@@ -59,7 +59,7 @@ TLFontFallbackIterator TLFontFallbackIterator::next() {
 			}
 		}
 		case SCRIPT_CHAIN: {
-			if (index < data->linked_src_chain.at(script).size() - 1) {
+			if ((data->linked_src_chain.count(script) != 0) && (index < data->linked_src_chain.at(script).size() - 1)) {
 				TLFontFallbackIterator next;
 				next.data = data;
 				next.lang = lang;
@@ -82,7 +82,7 @@ TLFontFallbackIterator TLFontFallbackIterator::next() {
 			}
 		}
 		case LANG_CHAIN: {
-			if (index < data->linked_lang_chain.at(lang).size() - 1) {
+			if ((data->linked_lang_chain.count(lang) != 0) && (index < data->linked_lang_chain.at(lang).size() - 1)) {
 				TLFontFallbackIterator next;
 				next.data = data;
 				next.lang = lang;

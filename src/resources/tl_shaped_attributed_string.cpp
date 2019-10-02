@@ -129,7 +129,7 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	hb_font_t *hb_font = _font->get_hb_font(_size);
 	if (!hb_font) {
 		if (_iter.next().is_valid()) {
-			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, _iter.next(), p_cluster);
+			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, _iter.next(), p_cluster, true);
 		}
 		return;
 	}
@@ -203,7 +203,7 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	}
 	if (!p_cluster.valid) {
 		if (_iter.next().is_valid()) {
-			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, _iter.next(), p_cluster);
+			_shape_single_cluster(p_start, p_end, p_run_direction, p_run_script, p_codepoint, _iter.next(), p_cluster, true);
 		}
 	}
 }

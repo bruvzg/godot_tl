@@ -20,7 +20,8 @@ func _ready():
 	for c in $demos.get_children():
 		$demos_opt.add_item(\"Demo: \" + c.get_full_name())
 		c.init()
-	$source_view.text = $demos.get_child(0).get_script().source_code"
+	$source_view.text = $demos.get_child(0).get_script().source_code
+"
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends ColorRect
@@ -629,7 +630,7 @@ func init():
 	#text: Attrib Test - 123 - Test [emote] Test
 
 	var bytes = PoolByteArray([0x41, 0x00, 0x74, 0x00, 0x74, 0x00, 0x72, 0x00, 0x69, 0x00, 0x62, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x20, 0x00, 0x2D, 0x00, 0x20, 0x00, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00, 0x3D, 0xD8, 0x04, 0xDE, 0x54, 0x00, 0x65, 0x00, 0x73, 0x00, 0x74, 0x00])
- 
+
 	sastring1 = TLShapedAttributedString.new()
 	sastring1.set_base_font(font1)
 	sastring1.set_base_font_size(20)
@@ -1122,7 +1123,6 @@ margin_right = 1390.0
 margin_bottom = 570.0
 readonly = true
 syntax_highlighting = true
-
 [connection signal="item_selected" from="demos_opt" to="." method="_on_item_selected"]
 [connection signal="gui_input" from="demos/hit_test" to="demos/hit_test" method="_on_hit_test_gui_input"]
 [connection signal="gui_input" from="demos/hit_test_att" to="demos/hit_test_att" method="_on_hit_test_gui_input"]
