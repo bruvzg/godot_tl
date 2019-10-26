@@ -161,6 +161,8 @@ public:
 	void set_base_font_size(int p_size);
 
 	TLLabel();
+
+	virtual ~TLLabel(){};
 };
 
 #ifdef GODOT_MODULE

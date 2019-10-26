@@ -439,7 +439,7 @@ bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name;
 
 	Vector<String> tokens = name.split("/");
-	if ((tokens.size() >= 2) && (styles.count(tokens[0]))) {
+	if (tokens.size() >= 2) {
 		String style = tokens[0];
 		if (styles.count(style.to_upper()) > 0) {
 			if (tokens.size() == 2) {
@@ -483,19 +483,19 @@ void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (auto it = styles.begin(); it != styles.end(); ++it) {
 
 		for (int i = 0; i < it->second.main_chain.size(); i++) {
-			p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
+			p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
 		}
 
 		for (auto sit = it->second.linked_src_chain.begin(); sit != it->second.linked_src_chain.end(); ++sit) {
 			for (int i = 0; i < sit->second.size(); i++) {
 				char tag[5] = "";
 				hb_tag_to_string(hb_script_to_iso15924_tag(sit->first), tag);
-				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/script/" + tag + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
+				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/script/" + tag + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
 			}
 		}
 		for (auto sit = it->second.linked_lang_chain.begin(); sit != it->second.linked_lang_chain.end(); ++sit) {
 			for (int i = 0; i < sit->second.size(); i++) {
-				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
+				p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
 			}
 		}
 	}
@@ -568,7 +568,7 @@ Variant TLFontFamily::_get(String p_name) const {
 	String name = p_name;
 
 	PoolStringArray tokens = name.split("/");
-	if ((tokens.size() >= 2) && (styles.count(tokens[0]))) {
+	if (tokens.size() >= 2) {
 		String style = tokens[0];
 		if (styles.count(style.to_upper()) > 0) {
 			if (tokens.size() == 2) {

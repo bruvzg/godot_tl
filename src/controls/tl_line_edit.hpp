@@ -261,6 +261,8 @@ public:
 	void set_base_font_size(int p_size);
 
 	TLLineEdit();
+
+	virtual ~TLLineEdit(){};
 };
 
 #ifdef GODOT_MODULE
