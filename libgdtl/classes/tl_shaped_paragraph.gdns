@@ -4,6 +4,6 @@
 
 [resource]
 
-resource_name = "TLShapedString"
-class_name = "TLShapedString"
+resource_name = "TLShapedParagraph"
+class_name = "TLShapedParagraph"
 library = ExtResource( 1 )
