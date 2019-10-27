@@ -21,6 +21,9 @@ namespace godot {};
 #define GODOT_SUBCLASS GDCLASS
 #define GLOBAL_CONST(m_text) m_text
 
+#include "core/core_string_names.h"
+#define _CHANGED CoreStringNames::get_singleton()->changed
+
 #else
 
 #include <nativescript/godot_nativescript.h>
@@ -29,6 +32,7 @@ namespace godot {};
 #include <OS.hpp>
 #include <Reference.hpp>
 #include <Resource.hpp>
+#define _CHANGED "changed"
 
 #define GLOBAL_CONST(m_text) GlobalConstants::m_text
 #define memnew(type) type::_new()

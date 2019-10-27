@@ -415,6 +415,11 @@ Ref<TLFontFamily> TLLabel::get_base_font() const {
 	return s_paragraph->get_base_font();
 }
 
+void TLLabel::_font_changed() {
+	_lines_dirty = true;
+	update();
+}
+
 void TLLabel::set_base_font(const Ref<TLFontFamily> p_font) {
 
 	s_paragraph->set_base_font(p_font);
@@ -576,6 +581,8 @@ int TLLabel::get_total_character_count() const {
 
 void TLLabel::_bind_methods() {
 
+	ClassDB::bind_method(D_METHOD("_font_changed"), &TLLabel::_font_changed);
+
 	ClassDB::bind_method(D_METHOD("set_align", "align"), &TLLabel::set_align);
 	ClassDB::bind_method(D_METHOD("get_align"), &TLLabel::get_align);
 	ClassDB::bind_method(D_METHOD("set_valign", "valign"), &TLLabel::set_valign);
@@ -648,6 +655,8 @@ void TLLabel::_bind_methods() {
 
 void TLLabel::_register_methods() {
 
+	register_method("_font_changed", &TLLabel::_font_changed);
+
 	register_method("set_align", &TLLabel::set_align);
 	register_method("get_align", &TLLabel::get_align);
 	register_method("set_valign", &TLLabel::set_valign);
@@ -719,6 +728,7 @@ TLLabel::TLLabel() {
 void TLLabel::_init() {
 
 	s_paragraph.instance();
+	s_paragraph->connect("string_changed", this, "_font_changed");
 
 	base_direction = TEXT_DIRECTION_AUTO;
 	ot_features = "";

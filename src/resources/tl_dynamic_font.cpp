@@ -977,7 +977,9 @@ Array TLDynamicFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepo
 
 void TLDynamicFontFace::set_font_path(String p_resource_path) {
 
-	load(p_resource_path);
+	if (path != p_resource_path) {
+		load(p_resource_path);
+	}
 }
 
 bool TLDynamicFontFace::load(String p_resource_path) {
@@ -987,6 +989,7 @@ bool TLDynamicFontFace::load(String p_resource_path) {
 		delete it->second;
 	}
 	sizes.clear();
+	emit_signal(_CHANGED);
 	return true;
 }
 
@@ -1072,9 +1075,12 @@ double TLDynamicFontFace::get_height(int p_size) const {
 
 void TLDynamicFontFace::set_texture_flags(int p_flags) {
 
-	txt_flags = p_flags;
-	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
-		it->second->set_texture_flags(p_flags);
+	if (txt_flags != p_flags) {
+		txt_flags = p_flags;
+		for (auto it = sizes.begin(); it != sizes.end(); ++it) {
+			it->second->set_texture_flags(p_flags);
+		}
+		emit_signal(_CHANGED);
 	}
 }
 
@@ -1085,9 +1091,12 @@ int TLDynamicFontFace::get_texture_flags() const {
 
 void TLDynamicFontFace::set_hinting(int p_hinting) {
 
-	hinting = (DynamicFaceHinting)p_hinting;
-	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
-		it->second->set_hinting(p_hinting);
+	if (hinting != (DynamicFaceHinting)p_hinting) {
+		hinting = (DynamicFaceHinting)p_hinting;
+		for (auto it = sizes.begin(); it != sizes.end(); ++it) {
+			it->second->set_hinting(p_hinting);
+		}
+		emit_signal(_CHANGED);
 	}
 }
 
@@ -1098,9 +1107,12 @@ int TLDynamicFontFace::get_hinting() const {
 
 void TLDynamicFontFace::set_force_autohinter(bool p_force) {
 
-	force_autohinter = p_force;
-	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
-		it->second->set_force_autohinter(p_force);
+	if (force_autohinter != p_force) {
+		force_autohinter = p_force;
+		for (auto it = sizes.begin(); it != sizes.end(); ++it) {
+			it->second->set_force_autohinter(p_force);
+		}
+		emit_signal(_CHANGED);
 	}
 }
 
@@ -1111,9 +1123,12 @@ bool TLDynamicFontFace::get_force_autohinter() const {
 
 void TLDynamicFontFace::set_oversampling(float p_oversampling) {
 
-	oversampling = p_oversampling;
-	for (auto it = sizes.begin(); it != sizes.end(); ++it) {
-		it->second->set_oversampling(p_oversampling);
+	if (oversampling != p_oversampling) {
+		oversampling = p_oversampling;
+		for (auto it = sizes.begin(); it != sizes.end(); ++it) {
+			it->second->set_oversampling(p_oversampling);
+		}
+		emit_signal(_CHANGED);
 	}
 }
 

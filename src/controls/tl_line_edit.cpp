@@ -1171,6 +1171,10 @@ Ref<TLFontFamily> TLLineEdit::get_base_font() const {
 	return line->get_base_font();
 }
 
+void TLLineEdit::_font_changed() {
+	update();
+}
+
 void TLLineEdit::set_base_font(const Ref<TLFontFamily> p_font) {
 
 	line->set_base_font(p_font);
@@ -1664,6 +1668,7 @@ void TLLineEdit::_create_undo_state() {
 
 void TLLineEdit::_bind_methods() {
 
+	ClassDB::bind_method(D_METHOD("_font_changed"), &TLLineEdit::_font_changed);
 	ClassDB::bind_method(D_METHOD("_text_changed"), &TLLineEdit::_text_changed);
 	ClassDB::bind_method(D_METHOD("_toggle_draw_caret"), &TLLineEdit::_toggle_draw_caret);
 
@@ -1772,6 +1777,7 @@ void TLLineEdit::_bind_methods() {
 
 void TLLineEdit::_register_methods() {
 
+	register_method("_font_changed", &TLLineEdit::_font_changed);
 	register_method("_text_changed", &TLLineEdit::_text_changed);
 	register_method("_toggle_draw_caret", &TLLineEdit::_toggle_draw_caret);
 
@@ -1876,6 +1882,7 @@ TLLineEdit::TLLineEdit() {
 
 void TLLineEdit::_init() {
 	line.instance();
+	line->connect("string_changed", this, "_font_changed");
 
 	base_direction = TEXT_DIRECTION_AUTO;
 	last_input_direction = TEXT_DIRECTION_AUTO;
