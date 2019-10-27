@@ -544,7 +544,13 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 
 	p_ref->base_direction = base_direction;
 	p_ref->para_direction = para_direction;
+	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
+		p_ref->base_font->disconnect(_CHANGED, p_ref, "_font_changed");
+	}
 	p_ref->base_font = base_font;
+	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
+		p_ref->base_font->connect(_CHANGED, p_ref, "_font_changed");
+	}
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
 
@@ -808,6 +814,11 @@ void TLShapedString::set_base_direction(int p_base_direction) {
 	}
 }
 
+void TLShapedString::_font_changed() {
+	_clear_visual();
+	emit_signal("string_changed");
+}
+
 Ref<TLFontFamily> TLShapedString::get_base_font() const {
 
 	return base_font;
@@ -820,7 +831,14 @@ void TLShapedString::set_base_font(const Ref<TLFontFamily> p_font) {
 		return;
 	}
 	if (base_font != p_font) {
+		if (base_font.is_valid() && base_font->is_connected(_CHANGED, this, "_font_changed")) {
+			base_font->disconnect(_CHANGED, this, "_font_changed");
+		}
 		base_font = p_font;
+		if (base_font.is_valid() && !base_font->is_connected(_CHANGED, this, "_font_changed")) {
+			base_font->connect(_CHANGED, this, "_font_changed");
+		}
+
 		_clear_visual();
 		emit_signal("string_changed");
 	}
@@ -1173,6 +1191,9 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 	ret->base_direction = base_direction;
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;
+	if (ret->base_font.is_valid()) {
+		ret->base_font->connect(_CHANGED, ret.ptr(), "_font_changed");
+	}
 	ret->base_style = base_style;
 	ret->base_size = base_size;
 	ret->language = language;
@@ -2795,7 +2816,13 @@ void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
 	base_direction = p_source->base_direction;
 	language = p_source->language;
 	font_features = p_source->font_features;
+	if (base_font.is_valid() && base_font->is_connected(_CHANGED, this, "_font_changed")) {
+		base_font->disconnect(_CHANGED, this, "_font_changed");
+	}
 	base_font = p_source->base_font;
+	if (base_font.is_valid() && !base_font->is_connected(_CHANGED, this, "_font_changed")) {
+		base_font->connect(_CHANGED, this, "_font_changed");
+	}
 	base_size = p_source->base_size;
 	base_style = p_source->base_style;
 
@@ -2806,6 +2833,8 @@ void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
 #ifdef GODOT_MODULE
 
 void TLShapedString::_bind_methods() {
+
+	ClassDB::bind_method(D_METHOD("_font_changed"), &TLShapedString::_font_changed);
 
 	ClassDB::bind_method(D_METHOD("copy_properties", "source"), &TLShapedString::copy_properties);
 
@@ -2956,6 +2985,8 @@ void TLShapedString::_bind_methods() {
 #else
 
 void TLShapedString::_register_methods() {
+
+	register_method("_font_changed", &TLShapedString::_font_changed);
 
 	register_method("copy_properties", &TLShapedString::copy_properties);
 

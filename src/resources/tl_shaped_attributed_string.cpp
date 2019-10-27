@@ -51,7 +51,13 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	p_ref->data_size = (p_end - p_start);
 	p_ref->base_direction = base_direction;
 	p_ref->para_direction = para_direction;
+	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
+		p_ref->base_font->disconnect(_CHANGED, p_ref, "_font_changed");
+	}
 	p_ref->base_font = base_font;
+	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
+		p_ref->base_font->connect(_CHANGED, p_ref, "_font_changed");
+	}
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
 
@@ -69,6 +75,7 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 		p_ref->style_attributes[MAX(0, attrib->key() - p_start)] = attrib->get();
 		attrib = attrib->next();
 	}
+	p_ref->_reconnect_fonts();
 
 	UErrorCode err = U_ZERO_ERROR;
 	//Create temporary line bidi & shape
@@ -638,6 +645,9 @@ Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_
 	ret->base_direction = base_direction;
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;
+	if (ret->base_font.is_valid()) {
+		ret->base_font->connect(_CHANGED, ret.ptr(), "_font_changed");
+	}
 	ret->base_style = base_style;
 	ret->base_size = base_size;
 	ret->language = language;
@@ -649,6 +659,32 @@ Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_
 
 	_shape_substring(ret.ptr(), prev_safe_bound(p_start), next_safe_bound(p_end), p_trim);
 	return ret;
+}
+
+void TLShapedAttributedString::_disconnect_fonts() {
+	for (auto E = format_attributes.front(); E; E = E->next()) {
+		for (auto F = E->get().front(); F; F = F->next()) {
+			if (F->key() == TEXT_ATTRIBUTE_FONT) {
+				Ref<TLFontFamily> font = F->get();
+				if (font.is_valid() && font != base_font && font->is_connected(_CHANGED, this, "_font_changed")) {
+					font->disconnect(_CHANGED, this, "_font_changed");
+				}
+			}
+		}
+	}
+}
+
+void TLShapedAttributedString::_reconnect_fonts() {
+	for (auto E = format_attributes.front(); E; E = E->next()) {
+		for (auto F = E->get().front(); F; F = F->next()) {
+			if (F->key() == TEXT_ATTRIBUTE_FONT) {
+				Ref<TLFontFamily> font = F->get();
+				if (font.is_valid() && font != base_font && !font->is_connected(_CHANGED, this, "_font_changed")) {
+					font->connect(_CHANGED, this, "_font_changed");
+				}
+			}
+		}
+	}
 }
 
 void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_value, int64_t p_start, int64_t p_end) {
@@ -675,6 +711,7 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 	}
 
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
+		_disconnect_fonts();
 		_ensure_break(0, format_attributes);
 		_ensure_break(p_start, format_attributes);
 
@@ -689,6 +726,7 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 			attrib = attrib->next();
 		}
 		_optimize_attributes(format_attributes);
+		_reconnect_fonts();
 		_clear_visual();
 	} else {
 		_ensure_break(0, style_attributes);
@@ -715,6 +753,7 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 	}
 
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
+		_disconnect_fonts();
 		_ensure_break(p_start, format_attributes);
 
 		if (p_end < data_size) _ensure_break(p_end, format_attributes);
@@ -725,6 +764,7 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 			attrib = attrib->next();
 		}
 		_optimize_attributes(format_attributes);
+		_reconnect_fonts();
 		_clear_props();
 	} else {
 		_ensure_break(p_start, style_attributes);
@@ -750,6 +790,8 @@ void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end)
 		ERR_FAIL_COND(true);
 	}
 
+	_disconnect_fonts();
+
 	_ensure_break(p_start, format_attributes);
 	_ensure_break(p_start, style_attributes);
 
@@ -771,12 +813,15 @@ void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end)
 
 	_optimize_attributes(format_attributes);
 	_optimize_attributes(style_attributes);
+
+	_reconnect_fonts();
 	_clear_props();
 	emit_signal("string_changed");
 }
 
 void TLShapedAttributedString::clear_attributes() {
 
+	_disconnect_fonts();
 	format_attributes.clear();
 	style_attributes.clear();
 	_clear_props();
@@ -1131,6 +1176,7 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 			run.clear();
 		}
 	}
+	_reconnect_fonts();
 	_clear_props();
 	emit_signal("string_changed");
 }
@@ -1280,6 +1326,8 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 
 	_len = data_size - _len;
 
+	_disconnect_fonts();
+
 	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
@@ -1289,6 +1337,8 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
+
+	_reconnect_fonts();
 
 	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
@@ -1311,6 +1361,8 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 
 	_len = data_size - _len;
 
+	_disconnect_fonts();
+
 	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
@@ -1320,6 +1372,8 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
+
+	_reconnect_fonts();
 
 	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
@@ -1342,6 +1396,8 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 
 	_len = data_size - _len;
 
+	_disconnect_fonts();
+
 	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
@@ -1351,6 +1407,8 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
+
+	_reconnect_fonts();
 
 	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
@@ -1373,6 +1431,8 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 
 	_len = data_size - _len;
 
+	_disconnect_fonts();
+
 	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
@@ -1382,6 +1442,8 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 			new_format_attributes[it->key() + _len] = it->get();
 	}
 	format_attributes = new_format_attributes;
+
+	_reconnect_fonts();
 
 	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
@@ -1406,6 +1468,8 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 
 	TLShapedAttributedString *at_ref = cast_to<TLShapedAttributedString>(*p_text);
 
+	_disconnect_fonts();
+
 	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
@@ -1420,6 +1484,8 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 		}
 	}
 	format_attributes = new_format_attributes;
+
+	_reconnect_fonts();
 
 	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
@@ -1463,9 +1529,11 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 	data_size = data_size + at_ref->data_size;
 
 	//copy attributes
+	_disconnect_fonts();
 	for (auto it = at_ref->format_attributes.front(); it; it = it->next()) {
 		format_attributes[it->key() + _len] = it->get();
 	}
+	_reconnect_fonts();
 	for (auto it = at_ref->style_attributes.front(); it; it = it->next()) {
 		style_attributes[it->key() + _len] = it->get();
 	}

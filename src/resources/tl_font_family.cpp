@@ -241,6 +241,20 @@ TLFontFamily::~TLFontFamily() {
 
 void TLFontFamily::remove_style(String p_style) {
 
+	for (auto E = styles[p_style.to_upper()].main_chain.begin(); E != styles[p_style.to_upper()].main_chain.end(); ++E) {
+		_dec_ref(*E);
+	}
+	for (auto E = styles[p_style.to_upper()].linked_src_chain.begin(); E != styles[p_style.to_upper()].linked_src_chain.end(); ++E) {
+		for (auto F = E->second.begin(); F != E->second.end(); ++F) {
+			_dec_ref(*F);
+		}
+	}
+	for (auto E = styles[p_style.to_upper()].linked_lang_chain.begin(); E != styles[p_style.to_upper()].linked_lang_chain.end(); ++E) {
+		for (auto F = E->second.begin(); F != E->second.end(); ++F) {
+			_dec_ref(*F);
+		}
+	}
+
 	styles.erase(p_style.to_upper());
 }
 
@@ -293,9 +307,11 @@ void TLFontFamily::add_face(String p_style, Ref<TLFontFace> p_ref) {
 	for (int i = 0; i < scripts.size(); i++) {
 		if (scripts[i] != HB_SCRIPT_COMMON) {
 			//add to scr chain
+			_inc_ref(p_ref);
 			styles[p_style.to_upper()].linked_src_chain[scripts[i]].push_back(p_ref);
 		} else {
 			//add to main chain
+			_inc_ref(p_ref);
 			styles[p_style.to_upper()].main_chain.push_back(p_ref);
 		}
 	}
@@ -312,6 +328,8 @@ void TLFontFamily::add_face_unlinked(String p_style, Ref<TLFontFace> p_ref) {
 		return;
 	}
 
+	_inc_ref(p_ref);
+
 	styles[p_style.to_upper()].main_chain.push_back(p_ref);
 
 #ifdef GODOT_MODULE
@@ -325,6 +343,8 @@ void TLFontFamily::add_face_for_script(String p_style, Ref<TLFontFace> p_ref, St
 		ERR_PRINTS("Type mismatch");
 		return;
 	}
+
+	_inc_ref(p_ref);
 
 	hb_script_t scr = hb_script_from_string(p_script.ascii().get_data(), -1);
 	styles[p_style.to_upper()].linked_src_chain[scr].push_back(p_ref);
@@ -340,6 +360,8 @@ void TLFontFamily::add_face_for_language(String p_style, Ref<TLFontFace> p_ref, 
 		ERR_PRINTS("Type mismatch");
 		return;
 	}
+
+	_inc_ref(p_ref);
 
 	hb_language_t lang = hb_language_from_string(p_lang.ascii().get_data(), -1);
 	styles[p_style.to_upper()].linked_lang_chain[lang].push_back(p_ref);
@@ -387,6 +409,35 @@ Ref<TLFontIterator> TLFontFamily::_get_face_for_language(String p_style, String 
 	return iter;
 }
 
+void TLFontFamily::_font_changed() {
+	emit_signal(_CHANGED);
+#ifdef GODOT_MODULE
+	_change_notify();
+#endif
+}
+
+void TLFontFamily::_inc_ref(Ref<TLFontFace> &p_font) {
+	if (p_font.is_null()) return;
+	if (_ref_count.count(p_font) == 0) {
+		p_font->connect(_CHANGED, this, "_font_changed");
+		_ref_count[p_font] = 1;
+	} else {
+		_ref_count[p_font]++;
+	}
+}
+
+void TLFontFamily::_dec_ref(Ref<TLFontFace> &p_font) {
+	if (p_font.is_null()) return;
+	if (_ref_count.count(p_font) == 1) {
+		if (p_font->is_connected(_CHANGED, this, "_font_changed")) {
+			p_font->disconnect(_CHANGED, this, "_font_changed");
+		}
+		_ref_count.erase(p_font);
+	} else {
+		_ref_count[p_font]--;
+	}
+}
+
 #ifdef GODOT_MODULE
 
 bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
@@ -399,10 +450,15 @@ bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
 		if (tokens.size() == 2) {
 			int index = (int)tokens[1].to_int();
 			if (index == styles[style.to_upper()].main_chain.size()) {
-				styles[style.to_upper()].main_chain.push_back(p_value);
+				Ref<TLFontFace> face = p_value;
+				_inc_ref(face);
+				styles[style.to_upper()].main_chain.push_back(face);
 				return true;
 			} else if ((index >= 0) && (index < styles[style.to_upper()].main_chain.size())) {
-				styles[style.to_upper()].main_chain[index] = p_value;
+				Ref<TLFontFace> face = p_value;
+				_dec_ref(styles[style.to_upper()].main_chain[index]);
+				_inc_ref(face);
+				styles[style.to_upper()].main_chain[index] = face;
 				return true;
 			}
 		} else if (tokens.size() == 4) {
@@ -411,20 +467,30 @@ bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
 				//add script
 				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == styles[style.to_upper()].linked_src_chain[scr].size()) {
-					styles[style.to_upper()].linked_src_chain[scr].push_back(p_value);
+					Ref<TLFontFace> face = p_value;
+					_inc_ref(face);
+					styles[style.to_upper()].linked_src_chain[scr].push_back(face);
 					return true;
 				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_src_chain[scr].size())) {
-					styles[style.to_upper()].linked_src_chain[scr][index] = p_value;
+					Ref<TLFontFace> face = p_value;
+					_dec_ref(styles[style.to_upper()].linked_src_chain[scr][index]);
+					_inc_ref(face);
+					styles[style.to_upper()].linked_src_chain[scr][index] = face;
 					return true;
 				}
 			} else if (tokens[1] == "lang") {
 				//add lang
 				hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == styles[style.to_upper()].linked_lang_chain[lang].size()) {
-					styles[style.to_upper()].linked_lang_chain[lang].push_back(p_value);
+					Ref<TLFontFace> face = p_value;
+					_inc_ref(face);
+					styles[style.to_upper()].linked_lang_chain[lang].push_back(face);
 					return true;
 				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_lang_chain[lang].size())) {
-					styles[style.to_upper()].linked_lang_chain[lang][index] = p_value;
+					Ref<TLFontFace> face = p_value;
+					_dec_ref(styles[style.to_upper()].linked_lang_chain[lang][index]);
+					_inc_ref(face);
+					styles[style.to_upper()].linked_lang_chain[lang][index] = face;
 					return true;
 				}
 			}
@@ -503,6 +569,8 @@ void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
 
 void TLFontFamily::_bind_methods() {
 
+	ClassDB::bind_method(D_METHOD("_font_changed"), &TLFontFamily::_font_changed);
+
 	ClassDB::bind_method(D_METHOD("remove_style", "style"), &TLFontFamily::remove_style);
 	ClassDB::bind_method(D_METHOD("has_style", "style"), &TLFontFamily::has_style);
 
@@ -528,10 +596,15 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 		if (tokens.size() == 2) {
 			int index = (int)tokens[1].to_int();
 			if (index == styles[style.to_upper()].main_chain.size()) {
-				styles[style.to_upper()].main_chain.push_back(p_value);
+				Ref<TLFontFace> face = p_value;
+				_inc_ref(face);
+				styles[style.to_upper()].main_chain.push_back(face);
 				return true;
 			} else if ((index >= 0) && (index < styles[style.to_upper()].main_chain.size())) {
-				styles[style.to_upper()].main_chain[index] = p_value;
+				Ref<TLFontFace> face = p_value;
+				_dec_ref(styles[style.to_upper()].main_chain[index]);
+				_inc_ref(face);
+				styles[style.to_upper()].main_chain[index] = face;
 				return true;
 			}
 		} else if (tokens.size() == 4) {
@@ -540,20 +613,30 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 				//add script
 				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == styles[style.to_upper()].linked_src_chain[scr].size()) {
-					styles[style.to_upper()].linked_src_chain[scr].push_back(p_value);
+					Ref<TLFontFace> face = p_value;
+					_inc_ref(face);
+					styles[style.to_upper()].linked_src_chain[scr].push_back(face);
 					return true;
 				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_src_chain[scr].size())) {
-					styles[style.to_upper()].linked_src_chain[scr][index] = p_value;
+					Ref<TLFontFace> face = p_value;
+					_dec_ref(styles[style.to_upper()].linked_src_chain[scr][index]);
+					_inc_ref(face);
+					styles[style.to_upper()].linked_src_chain[scr][index] = face;
 					return true;
 				}
 			} else if (tokens[1] == "lang") {
 				//add lang
 				hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == styles[style.to_upper()].linked_lang_chain[lang].size()) {
-					styles[style.to_upper()].linked_lang_chain[lang].push_back(p_value);
+					Ref<TLFontFace> face = p_value;
+					_inc_ref(face);
+					styles[style.to_upper()].linked_lang_chain[lang].push_back(face);
 					return true;
 				} else if ((index >= 0) && (index < styles[style.to_upper()].linked_lang_chain[lang].size())) {
-					styles[style.to_upper()].linked_lang_chain[lang][index] = p_value;
+					Ref<TLFontFace> face = p_value;
+					_dec_ref(styles[style.to_upper()].linked_lang_chain[lang][index]);
+					_inc_ref(face);
+					styles[style.to_upper()].linked_lang_chain[lang][index] = face;
 					return true;
 				}
 			}
@@ -649,6 +732,8 @@ Array TLFontFamily::_get_property_list() const {
 }
 
 void TLFontFamily::_register_methods() {
+
+	register_method("_font_changed", &TLFontFamily::_font_changed);
 
 	register_method("remove_style", &TLFontFamily::remove_style);
 	register_method("has_style", &TLFontFamily::has_style);

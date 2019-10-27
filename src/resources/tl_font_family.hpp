@@ -96,6 +96,7 @@ class TLFontFamily : public Resource {
 
 protected:
 	std::map<String, StyleData> styles;
+	std::map<Ref<TLFontFace>, int> _ref_count;
 
 public:
 	TLFontFamily();
@@ -118,6 +119,10 @@ public:
 	void add_face_unlinked(String p_style, Ref<TLFontFace> p_ref);
 	void add_face_for_script(String p_style, Ref<TLFontFace> p_ref, String p_script);
 	void add_face_for_language(String p_style, Ref<TLFontFace> p_ref, String p_lang);
+
+	void _font_changed();
+	void _inc_ref(Ref<TLFontFace> &p_font);
+	void _dec_ref(Ref<TLFontFace> &p_font);
 
 #ifdef GODOT_MODULE
 	bool _set(const StringName &p_name, const Variant &p_value);

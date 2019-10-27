@@ -136,6 +136,7 @@ private:
 	Timer *caret_blink_timer;
 
 	Ref<TLShapedString> line;
+	void _font_changed();
 	void _text_reshape();
 	void _emit_text_change();
 	bool expand_to_text_length;

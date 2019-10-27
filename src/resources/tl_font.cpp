@@ -141,8 +141,6 @@ void TLFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint3
 }
 
 Array TLFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const {
-
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return Array();
 }
 
@@ -153,7 +151,6 @@ float TLFontFace::get_glyph_scale(int p_size) const {
 
 hb_font_t *TLFontFace::get_hb_font(int p_size) const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return NULL;
 }
 
@@ -179,25 +176,21 @@ Array TLFontFace::_unicode_scripts_supported() const {
 
 std::vector<hb_script_t> TLFontFace::unicode_scripts_supported() const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return std::vector<hb_script_t>();
 }
 
 double TLFontFace::get_ascent(int p_size) const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return 0.0f;
 }
 
 double TLFontFace::get_descent(int p_size) const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return 0.0f;
 }
 
 double TLFontFace::get_height(int p_size) const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return 0.0f;
 }
 
@@ -208,18 +201,17 @@ void TLFontFace::set_texture_flags(int p_flags) {
 
 int TLFontFace::get_texture_flags() const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return 0;
 }
 
 int TLFontFace::get_base_size() const {
 
-	WARN_PRINTS("Not implemented, pure virtual function call!")
 	return 0;
 }
 
 void TLFontFace::set_font_path(String p_resource_path) {
 
+	WARN_PRINTS("Not implemented, pure virtual function call!")
 	path = p_resource_path;
 }
 

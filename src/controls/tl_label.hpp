@@ -105,6 +105,8 @@ public:
 #endif
 	void _init();
 
+	void _font_changed();
+
 	virtual Size2 get_minimum_size() const;
 
 	void set_align(int p_align);

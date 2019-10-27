@@ -384,6 +384,8 @@ public:
 	int64_t next_safe_bound(int64_t p_offset) const;
 	int64_t prev_safe_bound(int64_t p_offset) const;
 
+	void _font_changed();
+
 #ifdef GODOT_MODULE
 	static void _bind_methods();
 #else

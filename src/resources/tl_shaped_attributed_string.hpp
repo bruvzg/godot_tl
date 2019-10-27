@@ -61,6 +61,9 @@ protected:
 	Map<int, Map<TextAttribute, Variant> > format_attributes;
 	Map<int, Map<TextAttribute, Variant> > style_attributes;
 
+	virtual void _disconnect_fonts();
+	virtual void _reconnect_fonts();
+
 	virtual bool _compare_attributes(const Map<TextAttribute, Variant> &p_first, const Map<TextAttribute, Variant> &p_second) const;
 	virtual void _ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant> > &p_attributes);
 	virtual void _optimize_attributes(Map<int, Map<TextAttribute, Variant> > &p_attributes);
