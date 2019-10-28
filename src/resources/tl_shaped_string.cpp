@@ -1853,7 +1853,7 @@ int64_t TLShapedString::prev_safe_bound(int64_t p_offset) const {
 		return 0;
 
 	if (p_offset >= data_size)
-		p_offset = data_size - 1;
+		return data_size;
 
 	return MAX((U16_IS_SURROGATE(data[p_offset]) && U16_IS_SURROGATE_TRAIL(data[p_offset])) ? p_offset - 1 : p_offset, 0);
 }

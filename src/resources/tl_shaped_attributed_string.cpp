@@ -1525,8 +1525,9 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 	int32_t _len = data_size;
 
 	//copy data
-	data = (UChar *)std::realloc(data, (data_size + at_ref->data_size) * sizeof(UChar));
+	data = (UChar *)std::realloc(data, (data_size + at_ref->data_size + 1) * sizeof(UChar));
 	std::memcpy(&data[data_size], at_ref->data, at_ref->data_size * sizeof(UChar));
+	data[data_size + at_ref->data_size] = 0x0000;
 	data_size = data_size + at_ref->data_size;
 
 	//copy attributes
