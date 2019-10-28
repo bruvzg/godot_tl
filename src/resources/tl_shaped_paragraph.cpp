@@ -120,7 +120,7 @@ std::vector<int> TLShapedParagraph::get_line_bounds() const {
 Array TLShapedParagraph::_get_word_bounds() const {
 
 	Array ret;
-	for (int i = 0; i < word_bounds.size(); i++) {
+	for (size_t i = 0; i < word_bounds.size(); i++) {
 		ret.push_back(word_bounds[i]);
 	}
 	return ret;
@@ -129,7 +129,7 @@ Array TLShapedParagraph::_get_word_bounds() const {
 Array TLShapedParagraph::_get_line_bounds() const {
 
 	Array ret;
-	for (int i = 0; i < line_bounds.size(); i++) {
+	for (size_t i = 0; i < line_bounds.size(); i++) {
 		ret.push_back(line_bounds[i]);
 	}
 	return ret;
@@ -236,16 +236,15 @@ int TLShapedParagraph::get_jst_flags() const {
 	return jst_flags;
 }
 
-void TLShapedParagraph::set_halign(int p_haligh) {
+void TLShapedParagraph::set_halign(int p_halign) {
 
-	if (p_haligh != halign) {
-		halign = (ParaHAlign)p_haligh;
+	if (p_halign != halign) {
+		halign = (ParaHAlign)p_halign;
 		_update_paragraph();
 	}
 }
 
 int TLShapedParagraph::get_halign() const {
-
 	return halign;
 }
 

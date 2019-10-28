@@ -865,6 +865,8 @@ TLDynamicFontFace::~TLDynamicFontFace() {
 
 hb_font_t *TLDynamicFontFace::get_hb_font(int p_size) const {
 
+	if (p_size < 1) return NULL;
+
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_hb_font();
 	} else {
@@ -883,6 +885,8 @@ hb_font_t *TLDynamicFontFace::get_hb_font(int p_size) const {
 }
 
 float TLDynamicFontFace::get_glyph_scale(int p_size) const {
+
+	if (p_size < 1) return 1.0f;
 
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_glyph_scale();
@@ -1015,6 +1019,8 @@ std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 
 double TLDynamicFontFace::get_ascent(int p_size) const {
 
+	if (p_size < 1) return 0.0f;
+
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_ascent();
 	} else {
@@ -1035,6 +1041,8 @@ double TLDynamicFontFace::get_ascent(int p_size) const {
 
 double TLDynamicFontFace::get_descent(int p_size) const {
 
+	if (p_size < 1) return 0.0f;
+
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_descent();
 	} else {
@@ -1054,6 +1062,8 @@ double TLDynamicFontFace::get_descent(int p_size) const {
 }
 
 double TLDynamicFontFace::get_height(int p_size) const {
+
+	if (p_size < 1) return 0.0f;
 
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_height();

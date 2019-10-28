@@ -58,6 +58,26 @@ if get_option('use-graphite2')
 	cpp_args += ['-DHAVE_GRAPHITE2']
 endif
 
+if get_option('use-ubsan')
+	cpp_args += ['-fsanitize=undefined']
+	link_args += ['-fsanitize=undefined']
+endif
+
+if get_option('use-asan')
+	cpp_args += ['-fsanitize=address']
+	link_args += ['-fsanitize=address']
+endif
+
+if get_option('use-lsan')
+	cpp_args += ['-fsanitize=leak']
+	link_args += ['-fsanitize=leak']
+endif
+
+if get_option('use-tsan')
+	cpp_args += ['-fsanitize=thread']
+	link_args += ['-fsanitize=thread']
+endif
+
 if host_machine.system() == 'linux'
 	cpp_args += [
 		'-std=c++14',

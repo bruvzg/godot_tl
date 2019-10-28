@@ -46,9 +46,10 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	}
 
 	//Copy substring data
-	p_ref->data = (UChar *)std::malloc((p_end - p_start) * sizeof(UChar));
-	memcpy(p_ref->data, data + p_start, (p_end - p_start) * sizeof(UChar));
+	p_ref->data = (UChar *)std::malloc((p_end - p_start + 1) * sizeof(UChar));
+	memcpy(p_ref->data, &data[p_start], (p_end - p_start) * sizeof(UChar));
 	p_ref->data_size = (p_end - p_start);
+	p_ref->data[p_end - p_start] = 0x0000;
 	p_ref->base_direction = base_direction;
 	p_ref->para_direction = para_direction;
 	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
@@ -1525,7 +1526,7 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 
 	//copy data
 	data = (UChar *)std::realloc(data, (data_size + at_ref->data_size) * sizeof(UChar));
-	std::memcpy(data + data_size, at_ref->data, at_ref->data_size * sizeof(UChar));
+	std::memcpy(&data[data_size], at_ref->data, at_ref->data_size * sizeof(UChar));
 	data_size = data_size + at_ref->data_size;
 
 	//copy attributes

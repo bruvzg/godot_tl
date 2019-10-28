@@ -907,16 +907,20 @@ func _on_StyleStrikeColorPickerButton_color_changed(color):
 		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, color)
 
 func _on_HalL_toggled(button_pressed):
-	$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_LEFT)
+	if button_pressed:
+		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_LEFT)
 
 func _on_HalC_toggled(button_pressed):
-	$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_CENTER)
+	if button_pressed:
+		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_CENTER)
 
 func _on_HalR_toggled(button_pressed):
-	$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_RIGHT)
+	if button_pressed:
+		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_RIGHT)
 
 func _on_HalJ_toggled(button_pressed):
-	$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(),TLShapedParagraph.PARA_HALIGN_FILL)
+	if button_pressed:
+		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(),TLShapedParagraph.PARA_HALIGN_FILL)
 
 func _on_TextColorPickerButton_color_changed(color):
 	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, color)

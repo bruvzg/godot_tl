@@ -198,7 +198,7 @@ TLProtoControl::TLProtoControl() {
 
 TLProtoControl::~TLProtoControl() {
 
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
 	}
 }
@@ -250,7 +250,7 @@ void TLProtoControl::_init() {
 
 void TLProtoControl::clear() {
 
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
 	}
 	paragraphs.clear();
@@ -276,7 +276,7 @@ void TLProtoControl::clear() {
 void TLProtoControl::_update_ctx_rect() {
 
 	content_size = Size2(0, 0);
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (ime_temp_para.is_valid()) {
 			if (i == selection->start.p) {
 				Size2 _size = ime_temp_para->get_size();
@@ -411,7 +411,7 @@ void TLProtoControl::set_selection(Ref<TLProtoControlSelection> p_selection) {
 
 void TLProtoControl::add_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute, Variant p_value) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
 		paragraphs[i]->get_string()->add_attribute(p_attribute, p_value, _start, _end);
@@ -420,7 +420,7 @@ void TLProtoControl::add_attribute(Ref<TLProtoControlSelection> p_selection, int
 
 void TLProtoControl::remove_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
 		paragraphs[i]->get_string()->remove_attribute(p_attribute, _start, _end);
@@ -429,7 +429,7 @@ void TLProtoControl::remove_attribute(Ref<TLProtoControlSelection> p_selection, 
 
 void TLProtoControl::remove_attributes(Ref<TLProtoControlSelection> p_selection) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
 		paragraphs[i]->get_string()->remove_attributes(_start, _end);
@@ -438,49 +438,49 @@ void TLProtoControl::remove_attributes(Ref<TLProtoControlSelection> p_selection)
 
 void TLProtoControl::set_paragraph_width(Ref<TLProtoControlSelection> p_selection, float p_width) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_width(p_width);
 	}
 }
 
 void TLProtoControl::set_paragraph_indent(Ref<TLProtoControlSelection> p_selection, float p_indent) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_indent(p_indent);
 	}
 }
 
 void TLProtoControl::set_paragraph_back_color(Ref<TLProtoControlSelection> p_selection, Color p_bcolor) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_back_color(p_bcolor);
 	}
 }
 
 void TLProtoControl::set_paragraph_line_spacing(Ref<TLProtoControlSelection> p_selection, float p_line_spacing) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_line_spacing(p_line_spacing);
 	}
 }
 
 void TLProtoControl::set_paragraph_brk_flags(Ref<TLProtoControlSelection> p_selection, int p_flags) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_brk_flags(p_flags);
 	}
 }
 
 void TLProtoControl::set_paragraph_jst_flags(Ref<TLProtoControlSelection> p_selection, int p_flags) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_jst_flags(p_flags);
 	}
 }
 
 void TLProtoControl::set_paragraph_halign(Ref<TLProtoControlSelection> p_selection, int p_halign) {
 
-	for (int i = p_selection->start.p; i <= p_selection->end.p; i++) {
+	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_halign(p_halign);
 	}
 }
@@ -496,7 +496,7 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			if ((p_position.y >= y_ofs) && (p_position.y < y_ofs + paragraphs[i]->get_string()->get_height() * paragraphs[i]->get_line_spacing())) {
 				TLProtoControlSelection::Cursor mod = selection->caret;
@@ -564,7 +564,7 @@ Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return Rect2();
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return Rect2();
 		} else {
@@ -603,7 +603,7 @@ Array TLProtoControl::get_cluster_glyphs_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return glyphs;
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return glyphs;
 		} else {
@@ -649,7 +649,7 @@ String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return String();
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return String();
 		} else {
@@ -1388,7 +1388,7 @@ void TLProtoControl::debug_draw(RID p_canvas_item, const Point2 p_position, cons
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1411,7 +1411,7 @@ void TLProtoControl::debug_draw_as_hex(RID p_canvas_item, const Point2 p_positio
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1434,7 +1434,7 @@ void TLProtoControl::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (int i = 0; i < paragraphs.size(); i++) {
+	for (size_t i = 0; i < paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1642,7 +1642,7 @@ void TLProtoControl::_notification(int p_what) {
 
 			//real draw
 			float y_ofs = margin[MARGIN_TOP];
-			for (int i = 0; i < paragraphs.size(); i++) {
+			for (size_t i = 0; i < paragraphs.size(); i++) {
 				if (ime_temp_para.is_valid()) {
 					//skip paragraphs in selection range
 					if (i == selection->start.p) {
