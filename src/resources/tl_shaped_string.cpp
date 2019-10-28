@@ -116,6 +116,12 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 		UScriptCode script_code;
 	};
 
+	if (p_start >= p_length)
+		p_start = p_length - 1;
+
+	if (p_start < 0)
+		p_start = 0;
+
 	ParenStackEntry paren_stack[128];
 
 	int32_t script_start;
@@ -282,7 +288,7 @@ void TLShapedString::_generate_kashida_justification_opportunies(int64_t p_start
 void TLShapedString::_generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
 
 	UErrorCode err = U_ZERO_ERROR;
-	UBreakIterator *bi = ubrk_open(UBRK_WORD, p_lang, data + p_start, p_end - p_start, &err);
+	UBreakIterator *bi = ubrk_open(UBRK_WORD, p_lang, &data[p_start], p_end - p_start, &err);
 	if (U_FAILURE(err)) {
 		//No data - use fallback
 		_generate_justification_opportunies_fallback(p_start, p_end, p_ops);
@@ -333,7 +339,7 @@ void TLShapedString::_generate_justification_opportunies_fallback(int32_t p_star
 void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const {
 
 	UErrorCode err = U_ZERO_ERROR;
-	UBreakIterator *bi = ubrk_open(UBRK_LINE, p_lang, data + p_start, p_end - p_start, &err);
+	UBreakIterator *bi = ubrk_open(UBRK_LINE, p_lang, &data[p_start], p_end - p_start, &err);
 	if (U_FAILURE(err)) {
 		//No data - use fallback
 		_generate_break_opportunies_fallback(p_start, p_end, p_ops);
@@ -537,8 +543,9 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 	}
 
 	//Copy substring data
-	p_ref->data = (UChar *)std::malloc((p_end - p_start) * sizeof(UChar));
-	std::memcpy(p_ref->data, data + p_start, (p_end - p_start) * sizeof(UChar));
+	p_ref->data = (UChar *)std::malloc((p_end - p_start + 1) * sizeof(UChar));
+	std::memcpy(p_ref->data, &data[p_start], (p_end - p_start) * sizeof(UChar));
+	p_ref->data[p_end - p_start] = 0x0000;
 	p_ref->data_size = (p_end - p_start);
 	p_ref->char_size = u_countChar32(p_ref->data, p_ref->data_size);
 
@@ -806,6 +813,9 @@ int TLShapedString::get_para_direction() const {
 }
 
 void TLShapedString::set_base_direction(int p_base_direction) {
+
+	if (p_base_direction < 0 || p_base_direction > TEXT_DIRECTION_AUTO)
+		return;
 
 	if (base_direction != (TextDirection)p_base_direction) {
 		base_direction = (TextDirection)p_base_direction;
@@ -1088,6 +1098,9 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 
 	std::vector<int> ret;
 
+	if (p_flags < 0 || p_flags > TEXT_BREAK_MANDATORY_AND_ANYWHERE)
+		return ret;
+
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1254,7 +1267,7 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 	p_cluster.width = 0.0f;
 
 	if (glyph_count > 0) {
-		for (int64_t i = 0; i < glyph_count; i++) {
+		for (size_t i = 0; i < glyph_count; i++) {
 			p_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font.value()->get_glyph_scale(base_size)) / 64))));
 			p_cluster.valid &= ((glyph_info[i].codepoint != 0) || !u_isgraph(p_codepoint));
 			p_cluster.width += (glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64;
@@ -1268,6 +1281,9 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 }
 
 float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) {
+
+	if (p_flags < 0 || p_flags > TEXT_JUSTIFICATION_INTERCHAR_ONLY)
+		return width;
 
 	if (!valid)
 		_shape_full_string();
@@ -1299,7 +1315,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	_generate_justification_opportunies(_start, _end, hb_language_to_string(language), jst_ops);
 	int64_t ks_count = 0;
 	int64_t ws_count = 0;
-	for (int64_t i = 0; i < jst_ops.size(); i++) {
+	for (size_t i = 0; i < jst_ops.size(); i++) {
 		if ((jst_ops[i].position <= 0) || jst_ops[i].position >= data_size - 1)
 			continue;
 		if (jst_ops[i].kashida) {
@@ -1314,7 +1330,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_ONLY) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR)) {
 		Cluster ks_cluster;
 		float ks_width_per_op = (p_width - width) / ks_count;
-		for (int64_t i = 0; i < jst_ops.size(); i++) {
+		for (size_t i = 0; i < jst_ops.size(); i++) {
 			if ((jst_ops[i].position <= 0) || jst_ops[i].position >= data_size - 1)
 				continue;
 			if (jst_ops[i].kashida) {
@@ -1754,6 +1770,9 @@ std::vector<Rect2> TLShapedString::get_highlight_shapes(int64_t p_start, int64_t
 
 std::vector<float> TLShapedString::get_cursor_positions(int64_t p_position, TextDirection p_primary_dir) const {
 
+	if (p_primary_dir < 0 || p_primary_dir > TEXT_DIRECTION_AUTO)
+		return std::vector<float>();
+
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1832,7 +1851,7 @@ TextDirection TLShapedString::get_char_direction(int64_t p_position) const {
 
 int64_t TLShapedString::next_safe_bound(int64_t p_offset) const {
 
-	if (p_offset < 0)
+	if (p_offset < 0 || data_size == 0)
 		p_offset = 0;
 
 	if (p_offset >= data_size)
@@ -1843,7 +1862,7 @@ int64_t TLShapedString::next_safe_bound(int64_t p_offset) const {
 
 int64_t TLShapedString::prev_safe_bound(int64_t p_offset) const {
 
-	if (p_offset < 0)
+	if (p_offset < 0 || data_size == 0)
 		return 0;
 
 	if (p_offset >= data_size)
@@ -2142,9 +2161,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 	}
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < data_size; i++) {
+	for (size_t i = 0; i < data_size; i++) {
 		if (p_draw_brk_ops) {
-			for (int k = 0; k < brk_ops.size(); k++) {
+			for (size_t k = 0; k < brk_ops.size(); k++) {
 				if (brk_ops[k].position == i) {
 					if (brk_ops[k].hard) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0, 0), 2);
@@ -2155,7 +2174,7 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			}
 		}
 		if (p_draw_jst_ops) {
-			for (int k = 0; k < jst_ops.size(); k++) {
+			for (size_t k = 0; k < jst_ops.size(); k++) {
 				if (jst_ops[k].position == i) {
 					if (jst_ops[k].kashida) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0, 1), 2);
@@ -2179,7 +2198,7 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 				if (font_iter.is_valid()) {
 					Ref<TLFontFace> _font = font_iter.value();
 
-					for (int64_t z = 0; z < visual.size(); z++) {
+					for (size_t z = 0; z < visual.size(); z++) {
 						int64_t last = U16_IS_SURROGATE(data[i]) ? i + 1 : i;
 						if (((visual[z].start <= i) && (visual[z].end >= last)) || (visual[z].start == i)) {
 							_font = Ref<TLFontFace>(visual[z].font_face);
@@ -2212,8 +2231,8 @@ void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Colo
 #endif
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual.size(); i++) {
-		for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+	for (size_t i = 0; i < visual.size(); i++) {
+		for (size_t j = 0; j < visual[i].glyphs.size(); j++) {
 			if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, p_modulate);
 			} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
@@ -2233,7 +2252,7 @@ Array TLShapedString::_break_words() const {
 	Array ret;
 
 	std::vector<int> words = break_words();
-	for (int64_t i = 0; i < words.size(); i++) {
+	for (size_t i = 0; i < words.size(); i++) {
 		ret.push_back(words[i]);
 	}
 
@@ -2245,7 +2264,7 @@ Array TLShapedString::_break_jst() const {
 	Array ret;
 
 	std::vector<int> jst = break_jst();
-	for (int64_t i = 0; i < jst.size(); i++) {
+	for (size_t i = 0; i < jst.size(); i++) {
 		ret.push_back(jst[i]);
 	}
 
@@ -2255,9 +2274,11 @@ Array TLShapedString::_break_jst() const {
 Array TLShapedString::_break_lines(float p_width, int64_t p_flags) const {
 
 	Array ret;
+	if (p_flags < 0 || p_flags > TEXT_BREAK_MANDATORY_AND_ANYWHERE)
+		return ret;
 
 	std::vector<int> lines = break_lines(p_width, (TextBreak)p_flags);
-	for (int64_t i = 0; i < lines.size(); i++) {
+	for (size_t i = 0; i < lines.size(); i++) {
 		ret.push_back(lines[i]);
 	}
 
@@ -2268,7 +2289,7 @@ Array TLShapedString::_get_highlight_shapes(int64_t p_start, int64_t p_end) cons
 
 	Array ret;
 	std::vector<Rect2> rects = get_highlight_shapes(p_start, p_end);
-	for (int64_t i = 0; i < rects.size(); i++) {
+	for (size_t i = 0; i < rects.size(); i++) {
 		ret.push_back(rects[i]);
 	}
 
@@ -2278,8 +2299,11 @@ Array TLShapedString::_get_highlight_shapes(int64_t p_start, int64_t p_end) cons
 Array TLShapedString::_get_cursor_positions(int64_t p_position, int64_t p_primary_dir) const {
 
 	Array ret;
+	if (p_primary_dir < 0 || p_primary_dir > TEXT_DIRECTION_AUTO)
+		return ret;
+
 	std::vector<float> cpos = get_cursor_positions(p_position, (TextDirection)p_primary_dir);
-	for (int64_t i = 0; i < cpos.size(); i++) {
+	for (size_t i = 0; i < cpos.size(); i++) {
 		ret.push_back(cpos[i]);
 	}
 
@@ -2287,6 +2311,9 @@ Array TLShapedString::_get_cursor_positions(int64_t p_position, int64_t p_primar
 }
 
 float TLShapedString::_extend_to_width(float p_width, int64_t p_flags) {
+
+	if (p_flags < 0 || p_flags > TEXT_JUSTIFICATION_INTERCHAR_ONLY)
+		return width;
 
 	return extend_to_width(p_width, (TextJustification)p_flags);
 }
@@ -2472,8 +2499,9 @@ void TLShapedString::set_text(const String p_text) {
 		return;
 	} else {
 		err = U_ZERO_ERROR;
-		data = (UChar *)std::malloc(_real_length * sizeof(UChar));
+		data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
 		u_strFromWCS(data, _real_length, &_real_length, _data, _length, &err);
+		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
 			ERR_PRINTS(u_errorName(err));
 			return;
@@ -2508,8 +2536,9 @@ void TLShapedString::set_utf8(const PoolByteArray p_text) {
 		return;
 	} else {
 		err = U_ZERO_ERROR;
-		data = (UChar *)std::malloc(_real_length * sizeof(UChar));
+		data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
 		u_strFromUTF8WithSub(data, _real_length, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
 			ERR_PRINTS(u_errorName(err));
 			return;
@@ -2538,10 +2567,11 @@ void TLShapedString::set_utf16(const PoolByteArray p_text) {
 		return;
 
 	_real_length = _length / sizeof(UChar);
-	data = (UChar *)std::malloc(_length * sizeof(UChar));
+	data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
 	if (!data)
 		return;
-	std::memcpy(data, p_text.read().ptr(), _length * sizeof(UChar));
+	std::memcpy(data, p_text.read().ptr(), _real_length * sizeof(UChar));
+	data[_real_length] = 0x0000;
 	data_size += _real_length;
 	char_size = u_countChar32(data, data_size);
 	emit_signal("string_changed");
@@ -2571,8 +2601,9 @@ void TLShapedString::set_utf32(const PoolByteArray p_text) {
 		return;
 	} else {
 		err = U_ZERO_ERROR;
-		data = (UChar *)std::malloc(_real_length * sizeof(UChar));
+		data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
 		u_strFromUTF32WithSub(data, _real_length, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
 			ERR_PRINTS(u_errorName(err));
 			return;
@@ -2610,7 +2641,7 @@ void TLShapedString::add_sstring(Ref<TLShapedString> p_text) {
 
 void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p_text) {
 
-	if ((p_start > p_end) || (p_end > data_size)) {
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINTS("Invalid range");
 		return;
 	}
@@ -2637,21 +2668,22 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 		}
 	}
 
-	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length) * sizeof(UChar));
+	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length + 1) * sizeof(UChar));
 	if (!new_data)
 		return;
 	if (data) {
-		std::memcpy(new_data, data, p_start * sizeof(UChar));
-		std::memcpy(new_data + p_start + _real_length, data + p_end, (data_size - p_end) * sizeof(UChar));
+		std::memcpy(&new_data[0], &data[0], p_start * sizeof(UChar));
+		std::memcpy(&new_data[p_start + _real_length], &data[p_end], (data_size - p_end) * sizeof(UChar));
 		std::free(data);
 	}
 	data = new_data;
 
-	u_strFromWCS(data + p_start, _real_length, &_real_length, _data, _length, &err);
+	u_strFromWCS(&data[p_start], _real_length, &_real_length, _data, _length, &err);
 	if (U_FAILURE(err)) {
 		ERR_PRINTS(u_errorName(err));
 		return;
 	}
+	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 	data_size = data_size - (p_end - p_start) + _real_length;
 	char_size = u_countChar32(data, data_size);
 	emit_signal("string_changed");
@@ -2659,7 +2691,7 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 
 void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
 
-	if ((p_start > p_end) || (p_end > data_size)) {
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINTS("Invalid range");
 		return;
 	}
@@ -2681,21 +2713,22 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByte
 		}
 	}
 
-	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length) * sizeof(UChar));
+	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length + 1) * sizeof(UChar));
 	if (!new_data)
 		return;
 	if (data) {
-		std::memcpy(new_data, data, p_start * sizeof(UChar));
-		std::memcpy(new_data + p_start + _real_length, data + p_end, (data_size - p_end) * sizeof(UChar));
+		std::memcpy(&new_data[0], &data[0], p_start * sizeof(UChar));
+		std::memcpy(&new_data[p_start + _real_length], &data[p_end], (data_size - p_end) * sizeof(UChar));
 		std::free(data);
 	}
 	data = new_data;
 
-	u_strFromUTF8WithSub(data + p_start, _real_length, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF8WithSub(&data[p_start], _real_length, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
 	if (U_FAILURE(err)) {
 		ERR_PRINTS(u_errorName(err));
 		return;
 	}
+	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 	data_size = data_size - (p_end - p_start) + _real_length;
 	char_size = u_countChar32(data, data_size);
 	emit_signal("string_changed");
@@ -2703,7 +2736,7 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByte
 
 void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
 
-	if ((p_start > p_end) || (p_end > data_size)) {
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINTS("Invalid range");
 		return;
 	}
@@ -2717,17 +2750,18 @@ void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByt
 		_real_length = _length / sizeof(UChar);
 	}
 
-	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length) * sizeof(UChar));
+	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length + 1) * sizeof(UChar));
 	if (!new_data)
 		return;
 	if (data) {
-		std::memcpy(new_data, data, p_start * sizeof(UChar));
-		std::memcpy(new_data + p_start + _real_length, data + p_end, (data_size - p_end) * sizeof(UChar));
+		std::memcpy(&new_data[0], &data[0], p_start * sizeof(UChar));
+		std::memcpy(&new_data[p_start + _real_length], &data[p_end], (data_size - p_end) * sizeof(UChar));
 		std::free(data);
 	}
 	data = new_data;
 
-	std::memcpy(data + p_start, p_text.read().ptr(), _length * sizeof(UChar));
+	std::memcpy(&data[p_start], p_text.read().ptr(), _real_length * sizeof(UChar));
+	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 
 	data_size = data_size - (p_end - p_start) + _real_length;
 	char_size = u_countChar32(data, data_size);
@@ -2736,7 +2770,7 @@ void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByt
 
 void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
 
-	if ((p_start > p_end) || (p_end > data_size)) {
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINTS("Invalid range");
 		return;
 	}
@@ -2757,22 +2791,22 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByt
 			err = U_ZERO_ERROR;
 		}
 	}
-
-	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length) * sizeof(UChar));
+	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length + 1) * sizeof(UChar));
 	if (!new_data)
 		return;
 	if (data) {
-		std::memcpy(new_data, data, p_start * sizeof(UChar));
-		std::memcpy(new_data + p_start + _real_length, data + p_end, (data_size - p_end) * sizeof(UChar));
+		std::memcpy(&new_data[0], &data[0], p_start * sizeof(UChar));
+		std::memcpy(&new_data[p_start + _real_length], &data[p_end], (data_size - p_end) * sizeof(UChar));
 		std::free(data);
 	}
 	data = new_data;
 
-	u_strFromUTF32WithSub(data + p_start, _real_length, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF32WithSub(&data[p_start], _real_length, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
 	if (U_FAILURE(err)) {
 		ERR_PRINTS(u_errorName(err));
 		return;
 	}
+	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 	data_size = data_size - (p_end - p_start) + _real_length;
 	char_size = u_countChar32(data, data_size);
 	emit_signal("string_changed");
@@ -2780,31 +2814,27 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByt
 
 void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
 
-	if ((p_start > p_end) || (p_end > data_size)) {
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINTS("Invalid range");
 		return;
 	}
 
 	_clear_props();
 
-	int64_t _length = p_text->length();
-	int32_t _real_length = 0;
+	int32_t _real_length = p_text->length();
 
-	if (_length != 0) {
-		_real_length = _length / sizeof(UChar);
-	}
-
-	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length) * sizeof(UChar));
+	UChar *new_data = (UChar *)std::malloc((data_size - (p_end - p_start) + _real_length + 1) * sizeof(UChar));
 	if (!new_data)
 		return;
 	if (data) {
-		std::memcpy(new_data, data, p_start * sizeof(UChar));
-		std::memcpy(new_data + p_start + _real_length, data + p_end, (data_size - p_end) * sizeof(UChar));
+		std::memcpy(&new_data[0], &data[0], p_start * sizeof(UChar));
+		std::memcpy(&new_data[p_start + _real_length], &data[p_end], (data_size - p_end) * sizeof(UChar));
 		std::free(data);
 	}
 	data = new_data;
 
-	std::memcpy(data + p_start, p_text->data, _length * sizeof(UChar));
+	std::memcpy(&data[p_start], p_text->data, _real_length * sizeof(UChar));
+	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 
 	data_size = data_size - (p_end - p_start) + _real_length;
 	char_size = u_countChar32(data, data_size);

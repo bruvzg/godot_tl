@@ -310,6 +310,8 @@ void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_
 
 hb_font_t *TLBitmapFontFace::get_hb_font(int p_size) const {
 
+	if (p_size < 1) return NULL;
+
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 
@@ -517,6 +519,8 @@ std::vector<hb_script_t> TLBitmapFontFace::unicode_scripts_supported() const {
 
 double TLBitmapFontFace::get_ascent(int p_size) const {
 
+	if (p_size < 1) return 0.0f;
+
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
@@ -525,6 +529,8 @@ double TLBitmapFontFace::get_ascent(int p_size) const {
 
 double TLBitmapFontFace::get_descent(int p_size) const {
 
+	if (p_size < 1) return 0.0f;
+
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
@@ -532,6 +538,8 @@ double TLBitmapFontFace::get_descent(int p_size) const {
 }
 
 double TLBitmapFontFace::get_height(int p_size) const {
+
+	if (p_size < 1) return 0.0f;
 
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)

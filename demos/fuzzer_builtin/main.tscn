@@ -1,0 +1,491 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+const FileList = [\"\", \"gqergerth45y245hygn\", \"AwamiNastaliq-Regular.ttf\", \"Montserrat-BlackItalic.ttf\", \"NotoNaskhArabicUI.fnt\", \"NotoSans-Regular.ttf\", \"ComicNeue-Bold.otf\", \"Montserrat-Italic.ttf\", \"NotoNaskhArabicUI_0.png\", \"NotoSansRegular.fnt\", \"ComicNeue-BoldOblique.otf\", \"Montserrat-Regular.ttf\", \"NotoNaskhArabicUI_0.png.import\", \"NotoSansRegular_0.png\", \"ComicNeue-Oblique.otf\", \"NotoColorEmoji-subset.ttf\", \"NotoNastaliqUrdu-Regular.ttf\", \"NotoSansRegular_0.png.import\", \"ComicNeue-Regular.otf\", \"NotoFull\", \"NotoSans-Bold.ttf\", \"NotoSansThai-Bold.ttf\", \"LICENSE_OFL.txt\", \"NotoNaskhArabic-Bold.ttf\", \"NotoSans-BoldItalic.ttf\", \"NotoSerifThai-Regular.ttf\", \"Montserrat-Black.ttf\", \"NotoNaskhArabic-Regular.ttf\", \"NotoSans-Italic.ttf\"]
+
+var RANGE : int = 65000
+var tooo = -10
+
+func _ready():
+	randomize()
+	var data_loader = TLICUDataLoader.new()
+	data_loader.load(\"res://icudt63l.dat\")
+
+var xxx = PoolByteArray([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0])
+func _randintarray():
+	for i in range(xxx.size() - 1):
+		xxx[i] = randi() % 255 + 1
+	return xxx
+
+func _randstr():
+	return _randintarray().get_string_from_utf8()
+
+func _process(delta):
+	if (tooo < 0):
+		#skip some frames
+		tooo = tooo + 1
+		update()
+	else:
+		_fuzz_tlshapedparagraph()
+
+func _fuzz_tlshapedparagraph():
+	var para1 = TLShapedParagraph.new()
+	var para2 = TLShapedParagraph.new()
+
+	for i in range(10):
+		if randi() % 6 == 0:
+			para1.copy_properties(para2)
+
+		para1.get_lines()
+		para1.get_line(randi() % RANGE - RANGE / 2)
+
+		if randi() % 3 == 0:
+			para1.set_width(randf() * 1000)
+		para1.get_width()
+
+		if randi() % 3 == 0:
+			para1.set_indent(randf() * 10)
+		para1.get_indent()
+
+		if randi() % 3 == 0:
+			para1.set_back_color(Color(randf(),randf(),randf(),randf()))
+		para1.get_back_color()
+
+		if randi() % 3 == 0:
+			para1.set_line_spacing(randf() * 10)
+		para1.get_line_spacing()
+		
+		if randi() % 3 == 0:
+			para1.set_string(_fuzz_tlattributedshapedstring())
+		if randi() % 3 == 0:
+			para1.set_string(_fuzz_tlshapedstring())
+		para1.get_string()
+
+		if randi() % 3 == 0:
+			para1.set_brk_flags(randi() % RANGE - RANGE / 2)
+		para1.get_brk_flags()
+
+		if randi() % 3 == 0:
+			para1.set_jst_flags(randi() % RANGE - RANGE / 2)
+		para1.get_jst_flags()
+
+		if randi() % 3 == 0:
+			para1.set_halign(randi() % RANGE - RANGE / 2)
+		para1.get_halign()
+
+		para1.get_size()
+		para1.get_word_bounds()
+		para1.get_line_bounds()
+
+		if randi() % 3 == 0:
+			para2 = para1
+	return para1
+
+func _fuzz_tlattributedshapedstring():
+	var str1 = TLShapedAttributedString.new()
+	var str2 = TLShapedAttributedString.new()
+
+	for i in range(10):
+		if randi() % 6 == 0:
+			str1.add_attribute(randi() % RANGE - RANGE / 2, _randintarray(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		if randi() % 2 == 0:
+			str1.add_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, _fuzz_tlfontfamily(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		if randi() % 3 == 0:
+			str1.remove_attribute(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.has_attribute(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_attribute(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_attribute_start(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_attribute_end(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		if randi() % 10 == 0:
+			str1.remove_attributes(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		if randi() % 10 == 0:
+			str1.clear_attributes()
+
+		str1.get_embedded_rects()
+
+		if randi() % 6 == 0:
+			str1.load_attributes_dict(_randintarray())
+		str1.save_attributes_dict()
+
+		if randi() % 3 == 0:
+			str2 = _fuzz_tlshapedstring()
+		if randi() % 3 == 0:
+			str1.copy_properties(str2)
+		if randi() % 3 == 0:
+			str1.add_sstring(str2)
+		if randi() % 3 == 0:
+			str1.replace_sstring(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, str2)
+
+		if randi() % 3 == 0:
+			str1.set_base_direction(randi() % RANGE - RANGE / 2)
+		str1.get_base_direction()
+		str1.get_para_direction()
+
+		if randi() % 3 == 0:
+			str1.set_text(_randstr())
+			str1.get_text()
+			str1.add_text(_randstr())
+			str1.replace_text(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randstr())
+		elif randi() % 3 == 1:
+			str1.get_utf8()
+			str1.set_utf8(_randintarray())
+			str1.add_utf8(_randintarray())
+			str1.replace_utf8(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+		elif randi() % 3 == 2:
+			str1.get_utf16()
+			str1.set_utf16(_randintarray())
+			str1.add_utf16(_randintarray())
+			str1.replace_utf16(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+		else:
+			str1.get_utf32()
+			str1.set_utf32(_randintarray())
+			str1.add_utf32(_randintarray())
+			str1.replace_utf32(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+
+		str1.set_base_font(_fuzz_tlfontfamily())
+		str1.get_base_font();
+
+		if randi() % 3 == 0:
+			str1.set_base_font_style(_randstr())
+		str1.get_base_font_style();
+
+		if randi() % 3 == 0:
+			str1.set_base_font_size(randf() * 255)
+		str1.get_base_font_size()
+
+		if randi() % 3 == 0:
+			str1.set_features(_randstr())
+		str1.get_features()
+
+		if randi() % 3 == 0:
+			str1.set_language(_randstr())
+		str1.get_language();
+
+		if randi() % 3 == 0:
+			str1.set_preserve_control(bool(randi()%2))
+		str1.get_preserve_control()
+
+		if randi() % 3 == 0:
+			str1.shape()
+		str1.is_valid()
+		str1.empty()
+		str1.length()
+		str1.char_count()
+
+		str1.get_ascent()
+		str1.get_descent()
+		str1.get_width()
+		str1.get_height()
+
+		str1.break_words()
+		str1.break_jst()
+		if randi() % 3 == 0:
+			str1.break_lines(randf() * 1000, randi() % RANGE - RANGE / 2)
+		if randi() % 3 == 0:
+			str2 = str1.substr(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, bool(randi()%2))
+		if randi() % 3 == 0:
+			str1.extend_to_width(randf() * 1000, randi() % RANGE - RANGE / 2);
+
+		str1.clusters();
+		str1.get_cluster_index(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_face(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_face_size(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_trailing_edge(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_leading_edge(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_start(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_end(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_ascent(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_descent(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_width(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_height(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_rect(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_debug_info(randi() % RANGE - RANGE / 2)
+
+		str1.get_cluster_glyphs(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph_offset(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph_advance(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+
+		str1.get_highlight_shapes(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cursor_positions(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_char_direction(randi() % RANGE - RANGE / 2)
+		str1.hit_test(randf())
+		str1.hit_test_cluster(randf())
+
+		str1.draw_cluster(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()))
+		str1.draw(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()))
+
+		str1.draw_dbg(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+		str1.draw_as_hex(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+		str1.draw_logical_as_hex(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+
+		str1.pos_u16_to_wcs(randi() % RANGE - RANGE / 2)
+		str1.pos_wcs_to_u16(randi() % RANGE - RANGE / 2)
+
+		str1.next_safe_bound(randi() % RANGE - RANGE / 2)
+		str1.prev_safe_bound(randi() % RANGE - RANGE / 2)
+	return str1
+
+func _fuzz_tlshapedstring():
+	var str1 = TLShapedString.new()
+	var str2 = TLShapedString.new()
+
+	for i in range(10):
+		if randi() % 3 == 0:
+			str1.copy_properties(str2)
+		if randi() % 3 == 0:
+			str1.add_sstring(str2)
+		if randi() % 3 == 0:
+			str1.replace_sstring(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, str2)
+
+		if randi() % 3 == 0:
+			str1.set_base_direction(randi() % RANGE - RANGE / 2)
+		str1.get_base_direction()
+		str1.get_para_direction()
+
+		if randi() % 3 == 0:
+			str1.set_text(_randstr())
+			str1.get_text()
+			str1.add_text(_randstr())
+			str1.replace_text(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randstr())
+		elif randi() % 3 == 1:
+			str1.get_utf8()
+			str1.set_utf8(_randintarray())
+			str1.add_utf8(_randintarray())
+			str1.replace_utf8(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+		elif randi() % 3 == 2:
+			str1.get_utf16()
+			str1.set_utf16(_randintarray())
+			str1.add_utf16(_randintarray())
+			str1.replace_utf16(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+		else:
+			str1.get_utf32()
+			str1.set_utf32(_randintarray())
+			str1.add_utf32(_randintarray())
+			str1.replace_utf32(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, _randintarray())
+
+		str1.set_base_font(_fuzz_tlfontfamily())
+		str1.get_base_font();
+
+		if randi() % 3 == 0:
+			str1.set_base_font_style(_randstr())
+		str1.get_base_font_style();
+
+		if randi() % 3 == 0:
+			str1.set_base_font_size(randf() * 255)
+		str1.get_base_font_size()
+
+		if randi() % 3 == 0:
+			str1.set_features(_randstr())
+		str1.get_features()
+
+		if randi() % 3 == 0:
+			str1.set_language(_randstr())
+		str1.get_language();
+
+		if randi() % 3 == 0:
+			str1.set_preserve_control(bool(randi()%2))
+		str1.get_preserve_control()
+
+		if randi() % 3 == 0:
+			str1.shape()
+		str1.is_valid()
+		str1.empty()
+		str1.length()
+		str1.char_count()
+
+		str1.get_ascent()
+		str1.get_descent()
+		str1.get_width()
+		str1.get_height()
+
+		str1.break_words()
+		str1.break_jst()
+		if randi() % 3 == 0:
+			str1.break_lines(randf() * 1000, randi() % RANGE - RANGE / 2)
+		if randi() % 3 == 0:
+			str2 = str1.substr(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, bool(randi()%2))
+		if randi() % 3 == 0:
+			str1.extend_to_width(randf() * 1000, randi() % RANGE - RANGE / 2);
+
+		str1.clusters();
+		str1.get_cluster_index(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_face(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_face_size(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_trailing_edge(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_leading_edge(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_start(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_end(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_ascent(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_descent(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_width(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_height(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_rect(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_debug_info(randi() % RANGE - RANGE / 2)
+
+		str1.get_cluster_glyphs(randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph_offset(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cluster_glyph_advance(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+
+		str1.get_highlight_shapes(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_cursor_positions(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+		str1.get_char_direction(randi() % RANGE - RANGE / 2)
+		str1.hit_test(randf())
+		str1.hit_test_cluster(randf())
+
+		str1.draw_cluster(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()))
+		str1.draw(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()))
+
+		str1.draw_dbg(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+		str1.draw_as_hex(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+		str1.draw_logical_as_hex(get_canvas_item(), Vector2(randf(),randf()), Color(randf(),randf(),randf(),randf()), bool(randi()%2), bool(randi()%2))
+
+		str1.pos_u16_to_wcs(randi() % RANGE - RANGE / 2)
+		str1.pos_wcs_to_u16(randi() % RANGE - RANGE / 2)
+
+		str1.next_safe_bound(randi() % RANGE - RANGE / 2)
+		str1.prev_safe_bound(randi() % RANGE - RANGE / 2)
+	return str1
+
+func _fuzz_tlfontfamily():
+	var fam = TLFontFamily.new()
+	for i in range(10):
+		var s = _randstr()
+		if randi() % 3 == 0:
+			s = \"Regular\"
+		
+		if randi() % 3 == 0:
+			fam.remove_style(s)
+		if randi() % 3 == 0:
+			fam.has_style(s)
+
+		if randi() % 3 == 0:
+			fam.add_face(s, _fuzz_tlfontface())
+		if randi() % 3 == 0:
+			fam.add_face_unlinked(s, _fuzz_tlfontface())
+		if randi() % 3 == 0:
+			fam.add_face_for_script(s, _fuzz_tlfontface(), _randstr())
+		if randi() % 3 == 0:
+			fam.add_face_for_language(s, _fuzz_tlfontface(), _randstr())
+
+		if randi() % 3 == 0:
+			fam.add_face(s, _fuzz_tldynamicfontface())
+		if randi() % 3 == 0:
+			fam.add_face_unlinked(s, _fuzz_tldynamicfontface())
+		if randi() % 3 == 0:
+			fam.add_face_for_script(s, _fuzz_tldynamicfontface(), _randstr())
+		if randi() % 3 == 0:
+			fam.add_face_for_language(s, _fuzz_tldynamicfontface(), _randstr())
+
+		if randi() % 3 == 0:
+			fam.add_face(s, _fuzz_tlbitmapfontface())
+		if randi() % 3 == 0:
+			fam.add_face_unlinked(s, _fuzz_tlbitmapfontface())
+		if randi() % 3 == 0:
+			fam.add_face_for_script(s, _fuzz_tlbitmapfontface(), _randstr())
+		if randi() % 3 == 0:
+			fam.add_face_for_language(s, _fuzz_tlbitmapfontface(), _randstr())
+
+		fam.get_face(s)
+		fam.get_face_for_script(s, _randstr())
+		fam.get_face_for_language(s, _randstr())
+	return fam
+
+func _fuzz_tlfontface():
+	var face1 = TLFontFace.new()
+	var f = randi() % (FileList.size() + 1)
+	if f != FileList.size():
+		face1.load(\"res://fonts/\" + FileList[f])
+
+	for i in range(10):
+		face1.draw_glyph(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.draw_glyph_outline(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.get_glyph_outline(Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, randf() * 256)
+
+		face1.get_ascent(randi() % RANGE - RANGE / 2)
+		face1.get_descent(randi() % RANGE - RANGE / 2)
+		face1.get_height(randi() % RANGE - RANGE / 2)
+
+		face1.get_base_size()
+
+		face1.get_font_path();
+
+		if randi() % 3 == 0:
+			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
+		face1.get_texture_flags()
+
+		face1.unicode_scripts_supported()
+	return face1
+
+func _fuzz_tlbitmapfontface():
+	var face1 = TLBitmapFontFace.new()
+	var f = randi() % (FileList.size() + 1)
+	if f != FileList.size():
+		face1.load(\"res://fonts/\" + FileList[f])
+
+	for i in range(10):
+		face1.draw_glyph(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.draw_glyph_outline(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.get_glyph_outline(Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, randf() * 256)
+
+		face1.get_ascent(randi() % RANGE - RANGE / 2)
+		face1.get_descent(randi() % RANGE - RANGE / 2)
+		face1.get_height(randi() % RANGE - RANGE / 2)
+
+		face1.get_base_size()
+
+		face1.get_font_path();
+
+		if randi() % 3 == 0:
+			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
+		face1.get_texture_flags()
+
+		face1.unicode_scripts_supported()
+	return face1
+
+func _fuzz_tldynamicfontface():
+	var face1 = TLDynamicFontFace.new()
+	var f = randi() % (FileList.size() + 1)
+	if f != FileList.size():
+		face1.load(\"res://fonts/\" + FileList[f])
+
+	for i in range(10):
+		if randi() % 3 == 0:
+			face1.set_force_autohinter(bool(randi()%2))
+		face1.get_force_autohinter()
+		if randi() % 3 == 0:
+			face1.set_hinting(bool(randi()%2))
+		face1.get_hinting()
+		if randi() % 3 == 0:
+			face1.set_oversampling(bool(randi()%2))
+		face1.get_oversampling()
+		face1.has_graphite()
+
+		face1.draw_glyph(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.draw_glyph_outline(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
+		face1.get_glyph_outline(Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, randf() * 256)
+
+		face1.get_ascent(randi() % RANGE - RANGE / 2)
+		face1.get_descent(randi() % RANGE - RANGE / 2)
+		face1.get_height(randi() % RANGE - RANGE / 2)
+
+		face1.get_base_size()
+
+		face1.get_font_path();
+
+		if randi() % 3 == 0:
+			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
+		face1.get_texture_flags()
+
+		face1.unicode_scripts_supported()
+	return face1
+
+"
+
+[node name="root" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
