@@ -198,7 +198,7 @@ TLProtoControl::TLProtoControl() {
 
 TLProtoControl::~TLProtoControl() {
 
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
 	}
 }
@@ -250,7 +250,7 @@ void TLProtoControl::_init() {
 
 void TLProtoControl::clear() {
 
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
 	}
 	paragraphs.clear();
@@ -276,7 +276,7 @@ void TLProtoControl::clear() {
 void TLProtoControl::_update_ctx_rect() {
 
 	content_size = Size2(0, 0);
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (ime_temp_para.is_valid()) {
 			if (i == selection->start.p) {
 				Size2 _size = ime_temp_para->get_size();
@@ -310,7 +310,7 @@ int TLProtoControl::get_paragraphs() {
 
 Ref<TLShapedParagraph> TLProtoControl::get_paragraph(int p_index) const {
 
-	if ((p_index < 0) || (p_index >= paragraphs.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return Ref<TLShapedParagraph>();
 
 	return paragraphs[p_index];
@@ -318,7 +318,7 @@ Ref<TLShapedParagraph> TLProtoControl::get_paragraph(int p_index) const {
 
 void TLProtoControl::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 
-	if ((p_index < 0) || (p_index >= paragraphs.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
 	paragraphs[p_index]->disconnect("paragraph_changed", this, "_update_ctx_rect");
@@ -330,7 +330,7 @@ void TLProtoControl::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 
 int TLProtoControl::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 
-	if ((p_index < 0) || (p_index > paragraphs.size()))
+	if ((p_index < 0) || (p_index > (int64_t)paragraphs.size()))
 		return -1;
 
 	int index = (p_index > 0) ? p_index - 1 : p_index;
@@ -359,7 +359,7 @@ int TLProtoControl::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 
 void TLProtoControl::remove_paragraph(int p_index) {
 
-	if ((p_index < 0) || (p_index >= paragraphs.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
 	paragraphs[p_index]->disconnect("paragraph_changed", this, "_update_ctx_rect");
@@ -376,19 +376,19 @@ void TLProtoControl::remove_paragraph(int p_index) {
 void TLProtoControl::_fix_selection() {
 
 	if (selection->start.p < 0) selection->start.p = 0;
-	if (selection->start.p >= paragraphs.size()) selection->start.p = paragraphs.size() - 1;
+	if (selection->start.p >= (int64_t)paragraphs.size()) selection->start.p = (int64_t)paragraphs.size() - 1;
 
 	if (selection->start.o < 0) selection->start.o = 0;
 	if (selection->start.o >= paragraphs[selection->start.p]->get_string()->length()) selection->start.o = paragraphs[selection->start.p]->get_string()->length();
 
 	if (selection->end.p < 0) selection->end.p = 0;
-	if (selection->end.p >= paragraphs.size()) selection->end.p = paragraphs.size() - 1;
+	if (selection->end.p >= (int64_t)paragraphs.size()) selection->end.p = (int64_t)paragraphs.size() - 1;
 
 	if (selection->end.o < 0) selection->end.o = 0;
 	if (selection->end.o >= paragraphs[selection->end.p]->get_string()->length()) selection->end.o = paragraphs[selection->end.p]->get_string()->length();
 
 	if (selection->caret.p < 0) selection->caret.p = 0;
-	if (selection->caret.p >= paragraphs.size()) selection->caret.p = paragraphs.size() - 1;
+	if (selection->caret.p >= (int64_t)paragraphs.size()) selection->caret.p = (int64_t)paragraphs.size() - 1;
 
 	if (selection->caret.o < 0) selection->caret.o = 0;
 	if (selection->caret.o >= paragraphs[selection->caret.p]->get_string()->length()) selection->caret.o = paragraphs[selection->caret.p]->get_string()->length();
@@ -496,7 +496,7 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			if ((p_position.y >= y_ofs) && (p_position.y < y_ofs + paragraphs[i]->get_string()->get_height() * paragraphs[i]->get_line_spacing())) {
 				TLProtoControlSelection::Cursor mod = selection->caret;
@@ -564,7 +564,7 @@ Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return Rect2();
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return Rect2();
 		} else {
@@ -603,7 +603,7 @@ Array TLProtoControl::get_cluster_glyphs_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return glyphs;
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return glyphs;
 		} else {
@@ -649,7 +649,7 @@ String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return String();
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			return String();
 		} else {
@@ -670,14 +670,14 @@ String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 						String info = paragraphs[i]->get_line(j)->get_cluster_debug_info(cl);
 						info += String("Para: ") + String::num_int64(i) + String(" [");
 						std::vector<int> lines = paragraphs[i]->get_line_bounds();
-						for (int k = 0; k < lines.size(); k++) {
+						for (int64_t k = 0; k < (int64_t)lines.size(); k++) {
 							info += String::num_int64(lines[k]) + String(",");
 						}
 						info += String("]; ");
 						info += String("Line: ") + String::num_int64(j) + String(" (") + String::num_int64(paragraphs[i]->get_line(j)->length()) + String("); ");
 						info += String("Pos: ") + String::num_int64(paragraphs[i]->get_line(j)->get_cluster_start(cl)) + String("/") + String::num_int64(paragraphs[i]->get_line(j)->get_cluster_end(cl)) + String("; ");
 						info += String("Glyphs: [");
-						for (int k = 0; k < paragraphs[i]->get_line(j)->get_cluster_glyphs(cl); k++) {
+						for (int64_t k = 0; k < paragraphs[i]->get_line(j)->get_cluster_glyphs(cl); k++) {
 							info += String::num_int64(paragraphs[i]->get_line(j)->get_cluster_glyph(cl, k)) + String(",");
 						}
 						info += String("]");
@@ -713,7 +713,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		case FWD_CHAR: {
 			if (mod.o < paragraphs[mod.p]->get_string()->length()) {
 				ret.o = paragraphs[mod.p]->get_string()->next_safe_bound(mod.o + 1);
-			} else if (mod.p < paragraphs.size() - 1) {
+			} else if (mod.p < (int64_t)paragraphs.size() - 1) {
 				ret.p++;
 				ret.o = 0;
 			}
@@ -728,7 +728,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		} break;
 		case FWD_WORD: {
 			if (mod.o == paragraphs[ret.p]->get_string()->length()) {
-				if (mod.p < paragraphs.size() - 1) {
+				if (mod.p < (int64_t)paragraphs.size() - 1) {
 					ret.p++;
 					ret.o = 0;
 				}
@@ -736,7 +736,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 			}
 			bool found_wb = false;
 			std::vector<int> bounds = paragraphs[mod.p]->get_word_bounds();
-			for (int i = 0; i < bounds.size(); i++) {
+			for (int64_t i = 0; i < (int64_t)bounds.size(); i++) {
 				if (bounds[i] > mod.o) {
 					ret.o = bounds[i];
 					found_wb = true;
@@ -757,7 +757,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 			}
 			bool found_wb = false;
 			std::vector<int> bounds = paragraphs[mod.p]->get_word_bounds();
-			for (int i = bounds.size() - 1; i >= 0; i--) {
+			for (int64_t i = (int64_t)bounds.size() - 1; i >= 0; i--) {
 				if (bounds[i] < mod.o) {
 					ret.o = bounds[i];
 					found_wb = true;
@@ -770,24 +770,24 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		} break;
 		case FWD_LINE: {
 			if (paragraphs[mod.p]->get_string()->length() == 0) {
-				if (mod.p < paragraphs.size() - 1) {
+				if (mod.p < (int64_t)paragraphs.size() - 1) {
 					ret.p++;
 					ret.o = 0;
 				}
 				break;
 			}
-			if ((mod.p < paragraphs.size() - 1) && (paragraphs[mod.p + 1]->get_string()->length() == 0)) {
+			if ((mod.p < (int64_t)paragraphs.size() - 1) && (paragraphs[mod.p + 1]->get_string()->length() == 0)) {
 				ret.p++;
 				ret.o = 0;
 				break;
 			}
-			int line = -1;
-			int l_start = 0;
-			int n_para = mod.p;
-			int n_line = -1;
+			int64_t line = -1;
+			int64_t l_start = 0;
+			int64_t n_para = mod.p;
+			int64_t n_line = -1;
 			std::vector<int> bounds = paragraphs[mod.p]->get_line_bounds();
-			for (int i = 0; i < bounds.size(); i++) {
-				if (i == bounds.size() - 1) {
+			for (int64_t i = 0; i < (int64_t)bounds.size(); i++) {
+				if (i == (int64_t)bounds.size() - 1) {
 					if ((mod.o >= l_start) && (mod.o <= bounds[i])) {
 						line = i;
 						n_line = i + 1;
@@ -802,8 +802,8 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 				}
 				l_start = bounds[i];
 			}
-			if (line == bounds.size() - 1) {
-				if (n_para == paragraphs.size() - 1) {
+			if (line == (int64_t)bounds.size() - 1) {
+				if (n_para == (int64_t)paragraphs.size() - 1) {
 					break;
 				}
 				n_para++;
@@ -844,13 +844,13 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 				ret.o = 0;
 				break;
 			}
-			int line = -1;
-			int l_start = 0;
-			int n_para = mod.p;
-			int n_line = -1;
+			int64_t line = -1;
+			int64_t l_start = 0;
+			int64_t n_para = mod.p;
+			int64_t n_line = -1;
 			std::vector<int> bounds = paragraphs[mod.p]->get_line_bounds();
-			for (int i = 0; i < bounds.size(); i++) {
-				if (i == bounds.size() - 1) {
+			for (int64_t i = 0; i < (int64_t)bounds.size(); i++) {
+				if (i == (int64_t)bounds.size() - 1) {
 					if ((mod.o >= l_start) && (mod.o <= bounds[i])) {
 						line = i;
 						n_line = i - 1;
@@ -873,7 +873,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 				if (paragraphs[n_para]->get_line_bounds().size() == 0) {
 					break;
 				}
-				n_line = paragraphs[n_para]->get_line_bounds().size() - 1;
+				n_line = (int64_t)paragraphs[n_para]->get_line_bounds().size() - 1;
 			}
 			if (line == -1) {
 				break;
@@ -906,7 +906,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		} break;
 		case PARA_END: {
 			if (mod.o == paragraphs[ret.p]->get_string()->length()) {
-				if (mod.p < paragraphs.size() - 1) {
+				if (mod.p < (int64_t)paragraphs.size() - 1) {
 					ret.p++;
 					ret.o = 0;
 				}
@@ -917,8 +917,8 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		case LINE_START: {
 			int l_start = 0;
 			std::vector<int> bounds = paragraphs[mod.p]->get_line_bounds();
-			for (int i = 0; i < bounds.size(); i++) {
-				if (i == bounds.size() - 1) {
+			for (int64_t i = 0; i < (int64_t)bounds.size(); i++) {
+				if (i == (int64_t)bounds.size() - 1) {
 					if ((mod.o >= l_start) && (mod.o <= bounds[i])) {
 						ret.o = l_start;
 						break;
@@ -935,8 +935,8 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		case LINE_END: {
 			int l_start = 0;
 			std::vector<int> bounds = paragraphs[mod.p]->get_line_bounds();
-			for (int i = 0; i < bounds.size(); i++) {
-				if (i == bounds.size() - 1) {
+			for (int64_t i = 0; i < (int64_t)bounds.size(); i++) {
+				if (i == (int64_t)bounds.size() - 1) {
 					if ((mod.o >= l_start) && (mod.o <= bounds[i])) {
 						ret.o = bounds[i];
 						break;
@@ -955,7 +955,7 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 			ret.o = 0;
 		} break;
 		case TEXT_END: {
-			ret.p = paragraphs.size() - 1;
+			ret.p = (int64_t)paragraphs.size() - 1;
 			ret.o = paragraphs[ret.p]->get_string()->length();
 		} break;
 	}
@@ -1388,7 +1388,7 @@ void TLProtoControl::debug_draw(RID p_canvas_item, const Point2 p_position, cons
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1411,7 +1411,7 @@ void TLProtoControl::debug_draw_as_hex(RID p_canvas_item, const Point2 p_positio
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1434,7 +1434,7 @@ void TLProtoControl::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
 	}
-	for (size_t i = 0; i < paragraphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() > 0) {
 			std::vector<int> bounds = paragraphs[i]->get_line_bounds();
 			for (int j = 0; j < paragraphs[i]->get_lines(); j++) {
@@ -1482,9 +1482,9 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 		}
 		p_offset += p_para->get_string()->get_height() * p_para->get_line_spacing();
 	} else {
-		int prev = 0;
+		int64_t prev = 0;
 		std::vector<int> bounds = p_para->get_line_bounds();
-		for (int j = 0; j < p_para->get_lines(); j++) {
+		for (int64_t j = 0; j < p_para->get_lines(); j++) {
 			float x_ofs = margin[MARGIN_LEFT];
 			if (p_para->get_width() > 0) {
 				if (p_para->get_halign() == PARA_HALIGN_RIGHT) {
@@ -1521,7 +1521,7 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 								}
 								if (_start != _end && _start != -1 && _end != -1) {
 									std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(_start, _end);
-									for (int k = 0; k < rects.size(); k++) {
+									for (int64_t k = 0; k < (int64_t)rects.size(); k++) {
 										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), ime_selection_color);
 									}
 								}
@@ -1543,7 +1543,7 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 								}
 								if (_start != _end && _start != -1 && _end != -1) {
 									std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(_start, _end);
-									for (int k = 0; k < rects.size(); k++) {
+									for (int64_t k = 0; k < (int64_t)rects.size(); k++) {
 										Rect2 _rect = Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size);
 										Point2 n_caret_pos = _rect.position + Point2(0, _rect.size.height);
 										if (n_caret_pos != caret_pos) {
@@ -1586,7 +1586,7 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 							}
 							if (_start != _end && _start != -1 && _end != -1) {
 								std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(MIN(_start, _end), MAX(_start, _end));
-								for (int k = 0; k < rects.size(); k++) {
+								for (int64_t k = 0; k < (int64_t)rects.size(); k++) {
 									VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), selection_color);
 								}
 							}
@@ -1599,10 +1599,10 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 					//draw cursor
 					if (in_focus && selectable) {
 						if (selection->caret.p == p_index) {
-							if ((selection->caret.o >= prev && selection->caret.o < bounds[j]) || ((j == bounds.size() - 1) && (selection->caret.o == bounds[j]))) {
+							if ((selection->caret.o >= prev && selection->caret.o < bounds[j]) || ((j == (int64_t)bounds.size() - 1) && (selection->caret.o == bounds[j]))) {
 								if (p_para->get_line(j)->length() > 0) {
 									std::vector<float> cur_ofs = p_para->get_line(j)->get_cursor_positions(selection->caret.o - prev, last_inp_dir);
-									for (int k = 0; k < cur_ofs.size(); k++) {
+									for (int64_t k = 0; k < (int64_t)cur_ofs.size(); k++) {
 										Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs + cur_ofs[k], p_offset - p_para->get_line(j)->get_ascent());
 										if (n_caret_pos != caret_pos) {
 											caret_pos = n_caret_pos;
@@ -1642,7 +1642,7 @@ void TLProtoControl::_notification(int p_what) {
 
 			//real draw
 			float y_ofs = margin[MARGIN_TOP];
-			for (size_t i = 0; i < paragraphs.size(); i++) {
+			for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 				if (ime_temp_para.is_valid()) {
 					//skip paragraphs in selection range
 					if (i == selection->start.p) {

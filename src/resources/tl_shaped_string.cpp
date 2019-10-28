@@ -17,15 +17,18 @@
 /*  TLShapedString::Glyph                                                */
 /*************************************************************************/
 
-TLShapedString::Glyph::Glyph() {
+TLShapedString::Glyph::Glyph(const Glyph &p_a) {
+	codepoint = p_a.codepoint;
+	offset = p_a.offset;
+	advance = p_a.advance;
+}
 
+TLShapedString::Glyph::Glyph() {
 	codepoint = 0;
 }
 
 TLShapedString::Glyph::Glyph(uint32_t p_codepoint, Point2 p_offset, Point2 p_advance) {
-
 	codepoint = p_codepoint;
-
 	offset = p_offset;
 	advance = p_advance;
 }
@@ -34,8 +37,30 @@ TLShapedString::Glyph::Glyph(uint32_t p_codepoint, Point2 p_offset, Point2 p_adv
 /*  TLShapedString::Cluster                                              */
 /*************************************************************************/
 
-TLShapedString::Cluster::Cluster() {
+TLShapedString::Cluster::Cluster(const Cluster &p_a) {
+	start = p_a.start;
+	end = p_a.end;
 
+	offset = p_a.offset;
+	ascent = p_a.ascent;
+	descent = p_a.descent;
+	width = p_a.width;
+
+	valid = p_a.valid;
+	is_rtl = p_a.is_rtl;
+	ignore_on_input = p_a.ignore_on_input;
+
+	font_face = p_a.font_face;
+
+	script = p_a.script;
+	dir = p_a.dir;
+	lang = p_a.lang;
+
+	cl_type = p_a.cl_type;
+	glyphs = p_a.glyphs;
+}
+
+TLShapedString::Cluster::Cluster() {
 	start = -1;
 	end = -1;
 	offset = 0.0f;
@@ -57,23 +82,20 @@ TLShapedString::Cluster::Cluster() {
 /*************************************************************************/
 
 bool TLShapedString::ScriptIterator::same_script(int32_t p_script_one, int32_t p_script_two) {
-
 	return p_script_one <= USCRIPT_INHERITED || p_script_two <= USCRIPT_INHERITED || p_script_one == p_script_two;
 }
 
 bool TLShapedString::ScriptIterator::next() {
-
 	if (is_rtl) {
 		cur--;
 	} else {
 		cur++;
 	}
-	return (cur >= 0) && (cur < script_ranges.size());
+	return (cur >= 0) && (cur < (int64_t)script_ranges.size());
 }
 
 int32_t TLShapedString::ScriptIterator::get_start() const {
-
-	if ((cur >= 0) && (cur < script_ranges.size())) {
+	if ((cur >= 0) && (cur < (int64_t)script_ranges.size())) {
 		return script_ranges[cur].start;
 	} else {
 		return -1;
@@ -81,8 +103,7 @@ int32_t TLShapedString::ScriptIterator::get_start() const {
 }
 
 int32_t TLShapedString::ScriptIterator::get_end() const {
-
-	if ((cur >= 0) && (cur < script_ranges.size())) {
+	if ((cur >= 0) && (cur < (int64_t)script_ranges.size())) {
 		return script_ranges[cur].end;
 	} else {
 		return -1;
@@ -90,8 +111,7 @@ int32_t TLShapedString::ScriptIterator::get_end() const {
 }
 
 hb_script_t TLShapedString::ScriptIterator::get_script() const {
-
-	if ((cur >= 0) && (cur < script_ranges.size())) {
+	if ((cur >= 0) && (cur < (int64_t)script_ranges.size())) {
 		return script_ranges[cur].script;
 	} else {
 		return HB_SCRIPT_INVALID;
@@ -99,18 +119,16 @@ hb_script_t TLShapedString::ScriptIterator::get_script() const {
 }
 
 void TLShapedString::ScriptIterator::reset(hb_direction_t p_run_direction) {
-
 	if (p_run_direction == HB_DIRECTION_LTR) {
 		cur = -1;
 		is_rtl = false;
 	} else {
-		cur = script_ranges.size();
+		cur = (int64_t)script_ranges.size();
 		is_rtl = true;
 	}
 }
 
 TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_start, int32_t p_length) {
-
 	struct ParenStackEntry {
 		int32_t pair_index;
 		UScriptCode script_code;
@@ -134,7 +152,6 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 	do {
 		script_code = USCRIPT_COMMON;
 		for (script_start = script_end; script_end < p_length; script_end = next_bound(p_chars, script_end + 1, p_length)) {
-
 			UChar32 ch;
 			U16_GET(p_chars, 0, script_end, p_length, ch);
 
@@ -164,14 +181,14 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 				}
 				if ((u_getIntPropertyValue(ch, UCHAR_BIDI_PAIRED_BRACKET_TYPE) == U_BPT_CLOSE) && paren_sp >= 0) {
 					paren_sp -= 1;
-					start_sp -= 1;
+					if (start_sp >= 0) {
+						start_sp -= 1;
+					}
 				}
 			} else {
 				break;
 			}
 		}
-
-		//printf("SC:%d %d %d %d\n", script_code, script_start, script_end, p_length);
 
 		ScriptRange rng;
 		rng.script = hb_icu_script_to_script(script_code);
@@ -187,7 +204,6 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 /*************************************************************************/
 
 void TLShapedString::_clear_props() {
-
 	if (bidi_iter) {
 		ubidi_close(bidi_iter);
 		bidi_iter = NULL;
@@ -209,7 +225,6 @@ void TLShapedString::_clear_visual() {
 }
 
 void TLShapedString::_generate_kashida_justification_opportunies(int64_t p_start, int64_t p_end, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
-
 	int32_t kashida_pos = -1;
 	int8_t priority = 100;
 	int64_t i = p_start;
@@ -286,7 +301,6 @@ void TLShapedString::_generate_kashida_justification_opportunies(int64_t p_start
 }
 
 void TLShapedString::_generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
-
 	UErrorCode err = U_ZERO_ERROR;
 	UBreakIterator *bi = ubrk_open(UBRK_WORD, p_lang, &data[p_start], p_end - p_start, &err);
 	if (U_FAILURE(err)) {
@@ -315,7 +329,6 @@ void TLShapedString::_generate_justification_opportunies(int32_t p_start, int32_
 }
 
 void TLShapedString::_generate_justification_opportunies_fallback(int32_t p_start, int32_t p_end, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
-
 	int64_t limit = p_start;
 	for (int64_t i = p_start; i < p_end; i++) {
 		if (u_isWhitespace(get_char(i))) {
@@ -337,7 +350,6 @@ void TLShapedString::_generate_justification_opportunies_fallback(int32_t p_star
 }
 
 void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const {
-
 	UErrorCode err = U_ZERO_ERROR;
 	UBreakIterator *bi = ubrk_open(UBRK_LINE, p_lang, &data[p_start], p_end - p_start, &err);
 	if (U_FAILURE(err)) {
@@ -355,21 +367,17 @@ void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end,
 			op.hard = (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD);
 			p_ops.push_back(op);
 		}
-		//printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
-		//if (op.hard) printf("brk %d [%s]\n", op.position, op.hard ? "H" : "S");
 	}
 	ubrk_close(bi);
 }
 
 void TLShapedString::_generate_break_opportunies_fallback(int32_t p_start, int32_t p_end, /*out*/ std::vector<BreakOpportunity> &p_ops) const {
-
 	for (int64_t i = p_start; i < p_end; i++) {
 		if (is_break(get_char(i))) {
 			BreakOpportunity op;
 			op.position = i + 1;
 			op.hard = true;
 			p_ops.push_back(op);
-			//printf("brk %d [Hf]\n", op.position);
 		} else if (u_isWhitespace(get_char(i))) {
 			UChar32 nch;
 			U16_GET(data, 0, i + 1, data_size, nch);
@@ -379,7 +387,6 @@ void TLShapedString::_generate_break_opportunies_fallback(int32_t p_start, int32
 				op.hard = false;
 				p_ops.push_back(op);
 			}
-			//printf("brk %d [Sf]\n", op.position);
 		}
 	}
 	BreakOpportunity op;
@@ -389,7 +396,6 @@ void TLShapedString::_generate_break_opportunies_fallback(int32_t p_start, int32
 }
 
 void TLShapedString::_shape_full_string() {
-
 	//Already shaped, nothing to do
 	if (valid) {
 		return;
@@ -472,7 +478,7 @@ void TLShapedString::_shape_full_string() {
 		float max_descent = 0.0f;
 		float offset = 0.0f;
 
-		for (int64_t i = 0; i < visual.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 			//Calc max ascent / descent
 			if (max_ascent < visual[i].ascent) {
 				max_ascent = visual[i].ascent;
@@ -481,7 +487,7 @@ void TLShapedString::_shape_full_string() {
 				max_descent = visual[i].descent;
 			}
 			width += visual[i].width;
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				//Calc max offsets for glyphs shifted from baseline and add glyphs width
 				if (visual[i].glyphs[j].offset.y > max_pos_offset) {
 					max_pos_offset = visual[i].glyphs[j].offset.y;
@@ -516,7 +522,6 @@ void TLShapedString::_shape_full_string() {
 }
 
 void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, int64_t p_end, int p_trim) const {
-
 	if (!p_ref)
 		return;
 
@@ -588,7 +593,6 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 }
 
 void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_run_start, int32_t p_run_end) {
-
 #ifdef DEBUG_PRINT_RUNS
 	printf(" Shape BiDi Run %d %d %s\n", p_run_start, p_run_end, hb_direction_to_string(p_run_direction));
 #endif
@@ -631,7 +635,6 @@ void TLShapedString::_shape_bidi_run(hb_direction_t p_run_direction, int32_t p_r
 }
 
 void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font) {
-
 	//Shape monotone run using HarfBuzz
 	hb_font_t *hb_font = p_font.value()->get_hb_font(base_size);
 	if (!hb_font) {
@@ -664,13 +667,13 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 	hb_glyph_position_t *glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
 
 	if (glyph_count > 0) {
-		uint32_t last_cluster_id = -1;
-		for (int64_t i = 0; i < glyph_count; i++) {
+		int64_t last_cluster_id = -1;
+		for (unsigned int i = 0; i < glyph_count; i++) {
 			if (glyph_info[i].cluster >= data_size) {
 				ERR_PRINTS("HarfBuzz return invalid cluster index");
 				ERR_FAIL_COND(true);
 			}
-			if (last_cluster_id != glyph_info[i].cluster) {
+			if (last_cluster_id != (int64_t)glyph_info[i].cluster) {
 				//Start new cluster
 				Cluster new_cluster;
 
@@ -700,7 +703,6 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 						new_cluster.end = run_clusters[run_clusters.size() - 1].start - 1;
 					}
 				}
-
 				run_clusters.push_back(new_cluster);
 
 				last_cluster_id = glyph_info[i].cluster;
@@ -723,9 +725,10 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 
 	//Reshape sub-runs with invalid clusters using fallback fonts
 	if (run_clusters.size() > 0) {
-		uint32_t failed_subrun_start = p_run_end + 1;
-		uint32_t failed_subrun_end = p_run_start;
-		for (int64_t i = 0; i < run_clusters.size(); i++) {
+		int64_t failed_subrun_start = p_run_end + 1;
+		int64_t failed_subrun_end = p_run_start;
+		visual.reserve(visual.size() + run_clusters.size());
+		for (int64_t i = 0; i < (int64_t)run_clusters.size(); i++) {
 			if (run_clusters[i].valid) {
 				if (failed_subrun_start != p_run_end + 1) {
 					if (p_font.next().is_valid()) {
@@ -753,7 +756,7 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 }
 
 void TLShapedString::_shape_hex_run(hb_direction_t p_run_direction, int32_t p_run_start, int32_t p_run_end) {
-
+	visual.reserve(visual.size() + p_run_end - p_run_start);
 	//"Shape" monotone run using HexBox fallback
 	if (p_run_direction == HB_DIRECTION_LTR) {
 		int32_t i = p_run_start;
@@ -797,12 +800,10 @@ void TLShapedString::_shape_hex_run(hb_direction_t p_run_direction, int32_t p_ru
 }
 
 int TLShapedString::get_base_direction() const {
-
 	return base_direction;
 }
 
 int TLShapedString::get_para_direction() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -813,7 +814,6 @@ int TLShapedString::get_para_direction() const {
 }
 
 void TLShapedString::set_base_direction(int p_base_direction) {
-
 	if (p_base_direction < 0 || p_base_direction > TEXT_DIRECTION_AUTO)
 		return;
 
@@ -830,12 +830,10 @@ void TLShapedString::_font_changed() {
 }
 
 Ref<TLFontFamily> TLShapedString::get_base_font() const {
-
 	return base_font;
 }
 
 void TLShapedString::set_base_font(const Ref<TLFontFamily> p_font) {
-
 	if (!cast_to<TLFontFamily>(*p_font)) {
 		ERR_PRINTS("Type mismatch");
 		return;
@@ -855,12 +853,10 @@ void TLShapedString::set_base_font(const Ref<TLFontFamily> p_font) {
 }
 
 String TLShapedString::get_base_font_style() const {
-
 	return base_style;
 }
 
 void TLShapedString::set_base_font_style(const String p_style) {
-
 	if (base_style != p_style) {
 		base_style = p_style;
 		_clear_visual();
@@ -869,12 +865,10 @@ void TLShapedString::set_base_font_style(const String p_style) {
 }
 
 int TLShapedString::get_base_font_size() const {
-
 	return base_size;
 }
 
 void TLShapedString::set_base_font_size(int p_size) {
-
 	if (base_size != p_size) {
 		base_size = p_size;
 		_clear_visual();
@@ -883,13 +877,12 @@ void TLShapedString::set_base_font_size(int p_size) {
 }
 
 String TLShapedString::get_features() const {
-
 	String ret;
 	char _feature[255];
-	for (int64_t i = 0; i < font_features.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)font_features.size(); i++) {
 		hb_feature_to_string(const_cast<hb_feature_t *>(&font_features[i]), _feature, 255);
 		ret += String(_feature);
-		if (i != font_features.size() - 1) ret += String(",");
+		if (i != (int64_t)font_features.size() - 1) ret += String(",");
 	}
 	return ret;
 }
@@ -901,7 +894,7 @@ void TLShapedString::set_features(const String p_features) {
 #else
 	PoolStringArray v_features = p_features.split(",");
 #endif
-	for (int64_t i = 0; i < v_features.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)v_features.size(); i++) {
 		hb_feature_t feature;
 		if (hb_feature_from_string(v_features[i].ascii().get_data(), -1, &feature)) {
 			//feature.start = 0;
@@ -1087,7 +1080,7 @@ std::vector<int> TLShapedString::break_jst() const {
 	std::vector<JustificationOpportunity> jst_ops;
 	_generate_justification_opportunies(0, data_size, hb_language_to_string(language), jst_ops);
 
-	for (int i = 0; i < jst_ops.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)jst_ops.size(); i++) {
 		ret.push_back(jst_ops[i].position);
 	}
 
@@ -1129,15 +1122,13 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 
 	int64_t b = 0;
 	int64_t i = 0;
-	while (i < logical.size()) {
-		//printf(" B: %d %d\n", brk_ops[b].position, logical[i].start);
-		if ((b < brk_ops.size()) && (brk_ops[b].position <= logical[i].start)) {
+	while (i < (int64_t)logical.size()) {
+		if ((b < (int64_t)brk_ops.size()) && (brk_ops[b].position <= logical[i].start)) {
 			last_safe_brk = b;
 			last_safe_brk_cluster = i;
 			b++;
 			if (brk_ops[last_safe_brk].hard) {
 				ret.push_back(logical[i].start);
-				//printf("->H: %d %d\n", logical[i].end);
 
 				width = 0.0f;
 				line_start = logical[i].end;
@@ -1151,7 +1142,6 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 		if (p_flags == TEXT_BREAK_MANDATORY_AND_WORD_BOUND) {
 			if ((p_width > 0) && (width >= p_width) && (last_safe_brk != -1) && (brk_ops[last_safe_brk].position != line_start)) {
 				ret.push_back(brk_ops[last_safe_brk].position);
-				//printf("->W: %d %d\n", brk_ops[last_safe_brk].position);
 
 				width = 0.0f;
 				i = last_safe_brk_cluster;
@@ -1163,7 +1153,6 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 		} else if (p_flags == TEXT_BREAK_MANDATORY_AND_ANYWHERE) {
 			if ((p_width > 0) && (width >= p_width)) {
 				ret.push_back(logical[i].end);
-				//printf("->A: %d %d\n", logical[i].end);
 
 				width = 0.0f;
 				line_start = logical[i].end;
@@ -1176,9 +1165,8 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 		i++;
 	}
 	//still opts left, check for hard break after end of line
-	while (b < brk_ops.size()) {
+	while (b < (int64_t)brk_ops.size()) {
 		if ((brk_ops[b].position == data_size) && (brk_ops[b].hard)) {
-			//printf("->X: %d %d\n", data_size);
 			ret.push_back(data_size);
 			break;
 		}
@@ -1186,7 +1174,6 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 	}
 	if (line_start < data_size) {
 		//Shape clusters after last safe break
-		//printf("->F: %d %d\n", data_size);
 		ret.push_back(data_size);
 	}
 
@@ -1267,7 +1254,7 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 	p_cluster.width = 0.0f;
 
 	if (glyph_count > 0) {
-		for (size_t i = 0; i < glyph_count; i++) {
+		for (unsigned int i = 0; i < glyph_count; i++) {
 			p_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64, ((glyph_pos[i].y_advance * p_font.value()->get_glyph_scale(base_size)) / 64))));
 			p_cluster.valid &= ((glyph_info[i].codepoint != 0) || !u_isgraph(p_codepoint));
 			p_cluster.width += (glyph_pos[i].x_advance * p_font.value()->get_glyph_scale(base_size)) / 64;
@@ -1315,7 +1302,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	_generate_justification_opportunies(_start, _end, hb_language_to_string(language), jst_ops);
 	int64_t ks_count = 0;
 	int64_t ws_count = 0;
-	for (size_t i = 0; i < jst_ops.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)jst_ops.size(); i++) {
 		if ((jst_ops[i].position <= 0) || jst_ops[i].position >= data_size - 1)
 			continue;
 		if (jst_ops[i].kashida) {
@@ -1330,12 +1317,12 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_ONLY) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR)) {
 		Cluster ks_cluster;
 		float ks_width_per_op = (p_width - width) / ks_count;
-		for (size_t i = 0; i < jst_ops.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)jst_ops.size(); i++) {
 			if ((jst_ops[i].position <= 0) || jst_ops[i].position >= data_size - 1)
 				continue;
 			if (jst_ops[i].kashida) {
 				int64_t j = 1;
-				while (j < visual.size()) {
+				while (j < (int64_t)visual.size()) {
 					if (visual[j].start == jst_ops[i].position) {
 						_shape_single_cluster(visual[j - 1].end, visual[j].start, HB_DIRECTION_RTL, HB_SCRIPT_ARABIC, 0x0640, TLFontFallbackIterator(visual[j].font_face), ks_cluster);
 						ks_cluster.ignore_on_input = true;
@@ -1383,12 +1370,12 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 		ws_cluster.glyphs.push_back(Glyph(0, Point2(), Point2(ws_width_per_op, 0)));
 		ws_cluster.ignore_on_input = true;
 
-		for (int64_t i = 0; i < jst_ops.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)jst_ops.size(); i++) {
 			if ((jst_ops[i].position <= 0) || jst_ops[i].position >= data_size - 1)
 				continue;
 			if (!jst_ops[i].kashida) {
 				int64_t j = 0;
-				while (j < visual.size()) {
+				while (j < (int64_t)visual.size()) {
 					if (visual[j].start == jst_ops[i].position) {
 						if ((visual[j].glyphs.size() == 1) && u_isWhitespace(get_char(visual[j].start))) {
 							//Extend existing whitespace
@@ -1424,7 +1411,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 	//Step 3: Non joined interchar justification
 	if ((p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR) || (p_flags == TEXT_JUSTIFICATION_INTERCHAR_ONLY)) {
 		std::vector<int64_t> ic_jst_ops;
-		for (int64_t j = 1; j < visual.size(); j++) {
+		for (int64_t j = 1; j < (int64_t)visual.size(); j++) {
 			UChar32 ch, pch;
 			U16_GET(data, 0, visual[j].start, data_size, ch);
 			U16_GET(data, 0, visual[j].start - 1, data_size, pch);
@@ -1433,8 +1420,8 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 				ic_jst_ops.push_back(j);
 			}
 		}
-		float ic_width_per_op = (p_width - width) / ic_jst_ops.size();
-		for (int64_t j = 0; j < ic_jst_ops.size(); j++) {
+		float ic_width_per_op = (p_width - width) / (int64_t)ic_jst_ops.size();
+		for (int64_t j = 0; j < (int64_t)ic_jst_ops.size(); j++) {
 			visual[ic_jst_ops[j] - 1].glyphs[visual[ic_jst_ops[j] - 1].glyphs.size() - 1].advance.x += ic_width_per_op;
 			visual[ic_jst_ops[j] - 1].width += ic_width_per_op;
 			width += ic_width_per_op;
@@ -1443,7 +1430,7 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 
 	float offset = 0.0f;
 
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		visual[i].offset = offset;
 		offset += visual[i].width;
 	}
@@ -1459,7 +1446,7 @@ int64_t TLShapedString::get_cluster_index(int64_t p_position) const {
 	if (!valid)
 		return -1;
 
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if (visual[i].start == p_position) {
 			return i;
 		}
@@ -1480,7 +1467,7 @@ Ref<TLFontFace> TLShapedString::get_cluster_face(int64_t p_index) const {
 	if (!valid)
 		return Ref<TLFontFace>();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Ref<TLFontFace>();
 
 	return Ref<TLFontFace>(visual[p_index].font_face);
@@ -1494,7 +1481,7 @@ int64_t TLShapedString::get_cluster_glyphs(int64_t p_index) const {
 	if (!valid)
 		return 0;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0;
 
 	return visual[p_index].glyphs.size();
@@ -1508,10 +1495,10 @@ uint32_t TLShapedString::get_cluster_glyph(int64_t p_index, int64_t p_glyph) con
 	if (!valid)
 		return 0;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0;
 
-	if ((p_glyph < 0) || (p_glyph >= visual[p_index].glyphs.size()))
+	if ((p_glyph < 0) || (p_glyph >= (int64_t)visual[p_index].glyphs.size()))
 		return 0;
 
 	return visual[p_index].glyphs[p_glyph].codepoint;
@@ -1525,10 +1512,10 @@ Point2 TLShapedString::get_cluster_glyph_offset(int64_t p_index, int64_t p_glyph
 	if (!valid)
 		return Point2();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Point2();
 
-	if ((p_glyph < 0) || (p_glyph >= visual[p_index].glyphs.size()))
+	if ((p_glyph < 0) || (p_glyph >= (int64_t)visual[p_index].glyphs.size()))
 		return Point2();
 
 	return visual[p_index].glyphs[p_glyph].offset;
@@ -1542,10 +1529,10 @@ Point2 TLShapedString::get_cluster_glyph_advance(int64_t p_index, int64_t p_glyp
 	if (!valid)
 		return Point2();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Point2();
 
-	if ((p_glyph < 0) || (p_glyph >= visual[p_index].glyphs.size()))
+	if ((p_glyph < 0) || (p_glyph >= (int64_t)visual[p_index].glyphs.size()))
 		return Point2();
 
 	return visual[p_index].glyphs[p_glyph].advance;
@@ -1559,7 +1546,7 @@ Rect2 TLShapedString::get_cluster_rect(int64_t p_index) const {
 	if (!valid)
 		return Rect2();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Rect2();
 
 	return Rect2(Point2(visual[p_index].offset, -visual[p_index].ascent), Size2(visual[p_index].width, visual[p_index].ascent + visual[p_index].descent));
@@ -1573,7 +1560,7 @@ String TLShapedString::get_cluster_debug_info(int64_t p_index) const {
 	if (!valid)
 		return String();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return String();
 
 	String info;
@@ -1596,7 +1583,7 @@ float TLShapedString::get_cluster_leading_edge(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	float ret = visual[p_index].offset;
@@ -1614,7 +1601,7 @@ float TLShapedString::get_cluster_trailing_edge(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	float ret = visual[p_index].offset;
@@ -1632,7 +1619,7 @@ int64_t TLShapedString::get_cluster_start(int64_t p_index) const {
 	if (!valid)
 		return -1;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return -1;
 
 	return visual[p_index].start;
@@ -1646,7 +1633,7 @@ int64_t TLShapedString::get_cluster_end(int64_t p_index) const {
 	if (!valid)
 		return -1;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return -1;
 
 	return visual[p_index].end;
@@ -1660,7 +1647,7 @@ float TLShapedString::get_cluster_ascent(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	return visual[p_index].ascent;
@@ -1674,7 +1661,7 @@ float TLShapedString::get_cluster_descent(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	return visual[p_index].descent;
@@ -1688,7 +1675,7 @@ float TLShapedString::get_cluster_width(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	return visual[p_index].width;
@@ -1702,7 +1689,7 @@ float TLShapedString::get_cluster_height(int64_t p_index) const {
 	if (!valid)
 		return 0.0f;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return 0.0f;
 
 	return visual[p_index].ascent + visual[p_index].descent;
@@ -1719,7 +1706,7 @@ std::vector<Rect2> TLShapedString::get_highlight_shapes(int64_t p_start, int64_t
 	std::vector<Rect2> ret;
 
 	float prev = 0.0f;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		float width = 0.0f;
 
 		width += visual[i].width;
@@ -1753,9 +1740,9 @@ std::vector<Rect2> TLShapedString::get_highlight_shapes(int64_t p_start, int64_t
 
 	//merge intersectiong ranges
 	int64_t i = 0;
-	while (i < ret.size()) {
+	while (i < (int64_t)ret.size()) {
 		int64_t j = i + 1;
-		while (j < ret.size()) {
+		while (j < (int64_t)ret.size()) {
 			if (ret[i].position.x + ret[i].size.x == ret[j].position.x) {
 				ret[i].size.x += ret[j].size.x;
 				ret.erase(ret.begin() + j);
@@ -1796,7 +1783,7 @@ std::vector<float> TLShapedString::get_cursor_positions(int64_t p_position, Text
 		return ret;
 	}
 
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if (!visual[i].ignore_on_input) {
 			if (((visual[i].start >= p_position) && (visual[i].end <= p_position)) || (visual[i].start == p_position)) {
 				trailing_cluster = i;
@@ -1841,7 +1828,7 @@ TextDirection TLShapedString::get_char_direction(int64_t p_position) const {
 	if (!valid)
 		return TEXT_DIRECTION_LTR;
 
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if ((p_position >= visual[i].start) && (p_position <= visual[i].end)) {
 			return visual[i].is_rtl ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_LTR;
 		}
@@ -1920,7 +1907,7 @@ int64_t TLShapedString::hit_test_cluster(float p_position) const {
 	}
 
 	float offset = 0.0f;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if ((p_position >= offset) && (p_position <= offset + visual[i].width)) {
 			//Dircet hit
 			return i;
@@ -1954,7 +1941,7 @@ int64_t TLShapedString::hit_test(float p_position) const {
 	}
 
 	float offset = 0.0f;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if ((p_position >= offset) && (p_position <= offset + visual[i].width)) {
 			//Dircet hit
 			float char_width = visual[i].width / (visual[i].end + 1 - visual[i].start);
@@ -1995,11 +1982,11 @@ Vector2 TLShapedString::draw_cluster(RID p_canvas_item, const Point2 p_position,
 	if (!valid)
 		return Vector2();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Vector2();
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual[p_index].glyphs.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual[p_index].glyphs.size(); i++) {
 		if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 			TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[p_index].ascent), visual[p_index].glyphs[i].codepoint, p_modulate);
 		} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_TEXT) {
@@ -2034,15 +2021,15 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 	}
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		float w = 0.0;
 		if (visual[i].is_rtl) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				w += (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 			}
 		}
 		if (p_draw_brk_ops) {
-			for (int k = 0; k < brk_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
 					if (brk_ops[k].hard) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
@@ -2053,7 +2040,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 			}
 		}
 		if (p_draw_jst_ops) {
-			for (int k = 0; k < jst_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
 					if (jst_ops[k].kashida) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
@@ -2066,7 +2053,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, 30), visual[i].start, p_modulate);
 		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, 40), visual[i].end, p_modulate);
 		if (visual[i].glyphs.size() > 0) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(w, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
 				if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
@@ -2105,15 +2092,15 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 	}
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		float w = 0.0;
 		if (visual[i].is_rtl) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				w += (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 			}
 		}
 		if (p_draw_brk_ops) {
-			for (int k = 0; k < brk_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
 					if (brk_ops[k].hard) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
@@ -2124,7 +2111,7 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 			}
 		}
 		if (p_draw_jst_ops) {
-			for (int k = 0; k < jst_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
 					if (jst_ops[k].kashida) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
@@ -2135,7 +2122,7 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 			}
 		}
 		if (visual[i].glyphs.size() > 0) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
 				ofs += Vector2(w, 0);
@@ -2161,9 +2148,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 	}
 
 	Vector2 ofs;
-	for (size_t i = 0; i < data_size; i++) {
+	for (int64_t i = 0; i < data_size; i++) {
 		if (p_draw_brk_ops) {
-			for (size_t k = 0; k < brk_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if (brk_ops[k].position == i) {
 					if (brk_ops[k].hard) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0, 0), 2);
@@ -2174,7 +2161,7 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			}
 		}
 		if (p_draw_jst_ops) {
-			for (size_t k = 0; k < jst_ops.size(); k++) {
+			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if (jst_ops[k].position == i) {
 					if (jst_ops[k].kashida) {
 						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0, 1), 2);
@@ -2198,7 +2185,7 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 				if (font_iter.is_valid()) {
 					Ref<TLFontFace> _font = font_iter.value();
 
-					for (size_t z = 0; z < visual.size(); z++) {
+					for (int64_t z = 0; z < (int64_t)visual.size(); z++) {
 						int64_t last = U16_IS_SURROGATE(data[i]) ? i + 1 : i;
 						if (((visual[z].start <= i) && (visual[z].end >= last)) || (visual[z].start == i)) {
 							_font = Ref<TLFontFace>(visual[z].font_face);
@@ -2231,8 +2218,8 @@ void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Colo
 #endif
 
 	Vector2 ofs;
-	for (size_t i = 0; i < visual.size(); i++) {
-		for (size_t j = 0; j < visual[i].glyphs.size(); j++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
+		for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 			if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, p_modulate);
 			} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
@@ -2252,7 +2239,7 @@ Array TLShapedString::_break_words() const {
 	Array ret;
 
 	std::vector<int> words = break_words();
-	for (size_t i = 0; i < words.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)words.size(); i++) {
 		ret.push_back(words[i]);
 	}
 
@@ -2264,7 +2251,7 @@ Array TLShapedString::_break_jst() const {
 	Array ret;
 
 	std::vector<int> jst = break_jst();
-	for (size_t i = 0; i < jst.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)jst.size(); i++) {
 		ret.push_back(jst[i]);
 	}
 
@@ -2278,7 +2265,7 @@ Array TLShapedString::_break_lines(float p_width, int64_t p_flags) const {
 		return ret;
 
 	std::vector<int> lines = break_lines(p_width, (TextBreak)p_flags);
-	for (size_t i = 0; i < lines.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)lines.size(); i++) {
 		ret.push_back(lines[i]);
 	}
 
@@ -2289,7 +2276,7 @@ Array TLShapedString::_get_highlight_shapes(int64_t p_start, int64_t p_end) cons
 
 	Array ret;
 	std::vector<Rect2> rects = get_highlight_shapes(p_start, p_end);
-	for (size_t i = 0; i < rects.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)rects.size(); i++) {
 		ret.push_back(rects[i]);
 	}
 
@@ -2303,7 +2290,7 @@ Array TLShapedString::_get_cursor_positions(int64_t p_position, int64_t p_primar
 		return ret;
 
 	std::vector<float> cpos = get_cursor_positions(p_position, (TextDirection)p_primary_dir);
-	for (size_t i = 0; i < cpos.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)cpos.size(); i++) {
 		ret.push_back(cpos[i]);
 	}
 

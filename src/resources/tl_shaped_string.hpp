@@ -88,6 +88,7 @@ protected:
 		Point2 advance;
 
 		Glyph();
+		Glyph(const Glyph &p_a);
 		Glyph(uint32_t p_codepoint, Point2 p_offset, Point2 p_advance);
 	};
 
@@ -117,6 +118,7 @@ protected:
 
 		std::vector<Glyph> glyphs;
 
+		Cluster(const Cluster &p_a);
 		Cluster();
 	};
 
