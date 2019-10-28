@@ -13,7 +13,7 @@ TLShapedParagraph::TLShapedParagraph() {
 
 TLShapedParagraph::~TLShapedParagraph() {
 
-	for (unsigned int i = 0; i < line_ctx.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
 		line_ctx[i]->disconnect("string_changed", this, "_line_change_warning");
 	}
 }
@@ -64,7 +64,7 @@ void TLShapedParagraph::_line_change_warning() {
 
 void TLShapedParagraph::_update_paragraph() {
 
-	for (unsigned int i = 0; i < line_ctx.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
 		line_ctx[i]->disconnect("string_changed", this, "_line_change_warning");
 	}
 	line_ctx.clear();
@@ -82,8 +82,8 @@ void TLShapedParagraph::_update_paragraph() {
 		if (max_line_width < min_paragraph_width)
 			max_line_width = min_paragraph_width;
 	} else {
-		uint32_t prev = 0;
-		for (unsigned int i = 0; i < line_bounds.size(); i++) {
+		int64_t prev = 0;
+		for (int64_t i = 0; i < (int64_t)line_bounds.size(); i++) {
 			Ref<TLShapedAttributedString> line = ctx->substr(prev, line_bounds[i], TEXT_TRIM_BREAK);
 			line->shape();
 			line->connect("string_changed", this, "_line_change_warning");
@@ -120,7 +120,7 @@ std::vector<int> TLShapedParagraph::get_line_bounds() const {
 Array TLShapedParagraph::_get_word_bounds() const {
 
 	Array ret;
-	for (size_t i = 0; i < word_bounds.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)word_bounds.size(); i++) {
 		ret.push_back(word_bounds[i]);
 	}
 	return ret;
@@ -129,7 +129,7 @@ Array TLShapedParagraph::_get_word_bounds() const {
 Array TLShapedParagraph::_get_line_bounds() const {
 
 	Array ret;
-	for (size_t i = 0; i < line_bounds.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)line_bounds.size(); i++) {
 		ret.push_back(line_bounds[i]);
 	}
 	return ret;
@@ -255,7 +255,7 @@ int TLShapedParagraph::get_lines() const {
 
 Ref<TLShapedAttributedString> TLShapedParagraph::get_line(int p_index) const {
 
-	if ((p_index < 0) || (p_index >= line_ctx.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)line_ctx.size()))
 		return Ref<TLShapedAttributedString>();
 
 	return line_ctx[p_index];

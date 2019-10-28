@@ -144,9 +144,9 @@ protected:
 
 	Ref<TLProtoControlSelection> selection;
 	Point2 caret_pos;
-	uint64_t ime_cursor;
-	uint64_t ime_selection_len;
-	uint64_t ime_len;
+	int64_t ime_cursor;
+	int64_t ime_selection_len;
+	int64_t ime_len;
 	TextDirection last_inp_dir;
 
 	float para_spacing;

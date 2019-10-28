@@ -167,7 +167,7 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 		PoolStringArray v_features = s_features.split(",");
 #endif
 		std::vector<hb_feature_t> _font_features;
-		for (int64_t i = 0; i < v_features.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)v_features.size(); i++) {
 			hb_feature_t feature;
 			if (hb_feature_from_string(v_features[i].ascii().get_data(), -1, &feature)) {
 				feature.start = 0;
@@ -203,7 +203,7 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	p_cluster.width = 0.0f;
 
 	if (glyph_count > 0) {
-		for (int64_t i = 0; i < glyph_count; i++) {
+		for (unsigned int i = 0; i < glyph_count; i++) {
 			p_cluster.glyphs.push_back(Glyph(glyph_info[i].codepoint, Point2((glyph_pos[i].x_offset) / 64, -(glyph_pos[i].y_offset / 64)), Point2((glyph_pos[i].x_advance * _font->get_glyph_scale(_size)) / 64, ((glyph_pos[i].y_advance * _font->get_glyph_scale(_size)) / 64))));
 			p_cluster.valid &= ((glyph_info[i].codepoint != 0) || !u_isgraph(p_codepoint));
 			p_cluster.width += (glyph_pos[i].x_advance * _font->get_glyph_scale(_size)) / 64;
@@ -496,7 +496,7 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 		PoolStringArray v_features = s_features.split(",");
 #endif
 		std::vector<hb_feature_t> _font_features;
-		for (int64_t i = 0; i < v_features.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)v_features.size(); i++) {
 			hb_feature_t feature;
 			if (hb_feature_from_string(v_features[i].ascii().get_data(), -1, &feature)) {
 				feature.start = 0;
@@ -517,8 +517,8 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	hb_glyph_position_t *glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
 
 	if (glyph_count > 0) {
-		uint32_t last_cluster_id = -1;
-		for (int64_t i = 0; i < glyph_count; i++) {
+		int64_t last_cluster_id = -1;
+		for (unsigned int i = 0; i < glyph_count; i++) {
 			if (glyph_info[i].cluster >= data_size) {
 				ERR_FAIL_COND(true);
 			}
@@ -574,9 +574,9 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 
 	//Reshape sub-runs with invalid clusters using fallback fonts
 	if (run_clusters.size() > 0) {
-		uint32_t failed_subrun_start = p_run_end + 1;
-		uint32_t failed_subrun_end = p_run_start;
-		for (int64_t i = 0; i < run_clusters.size(); i++) {
+		int64_t failed_subrun_start = p_run_end + 1;
+		int64_t failed_subrun_end = p_run_start;
+		for (int64_t i = 0; i < (int64_t)run_clusters.size(); i++) {
 			if (run_clusters[i].valid) {
 				if (failed_subrun_start != p_run_end + 1) {
 					if (_iter.next().is_valid()) {
@@ -630,7 +630,7 @@ void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, 
 		}
 	}
 
-	for (int64_t i = 0; i < erase_list.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)erase_list.size(); i++) {
 		p_attributes.erase(erase_list[i]);
 	}
 }
@@ -840,7 +840,7 @@ Array TLShapedAttributedString::get_embedded_rects() {
 		return ret;
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 		if (visual[i].cl_type == (int)_CLUSTER_TYPE_RECT) {
 			Dictionary ifo;
 			auto attrib = format_attributes.find_closest(visual[i].start);
@@ -867,7 +867,7 @@ float TLShapedAttributedString::get_cluster_face_size(int64_t p_index) const {
 	if (!valid)
 		return base_size;
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return base_size;
 
 	int64_t _size = base_size;
@@ -887,16 +887,16 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 	if (!valid)
 		return Vector2();
 
-	if ((p_index < 0) || (p_index >= visual.size()))
+	if ((p_index < 0) || (p_index >= (int64_t)visual.size()))
 		return Vector2();
 
 	Vector2 ofs;
 	if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
-		for (int64_t i = 0; i < visual[p_index].glyphs.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)visual[p_index].glyphs.size(); i++) {
 			TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[p_index].ascent), visual[p_index].glyphs[i].codepoint, p_modulate);
 		}
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_TEXT) {
-		for (int64_t i = 0; i < visual[p_index].glyphs.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)visual[p_index].glyphs.size(); i++) {
 			int64_t _size = base_size;
 			auto fattrib = format_attributes.find_closest(visual[p_index].start);
 			if (fattrib && fattrib->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
@@ -979,17 +979,17 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 #endif
 
 	Vector2 ofs;
-	for (int64_t i = 0; i < visual.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 #ifdef DEBUG_DISPLAY_METRICS
 		VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), Color(1, 0.5, 0.5, 0.2), 3);
 #endif
 		if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, p_modulate);
 				ofs += visual[i].glyphs[j].advance;
 			}
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
-			for (int64_t j = 0; j < visual[i].glyphs.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				int64_t _size = base_size;
 				auto fattrib = format_attributes.find_closest(visual[i].start);
 				if (fattrib && fattrib->get().has(TEXT_ATTRIBUTE_FONT_SIZE)) {
@@ -1113,14 +1113,14 @@ Variant TLShapedAttributedString::get_attribute(int64_t p_attribute, int64_t p_i
 void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 
 	clear_attributes();
-	for (int i = 0; i < p_array.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)p_array.size(); i++) {
 		Dictionary item = p_array[i];
 		if (item.has("index") && item.has("format")) {
-			int index = item["index"];
+			int64_t index = item["index"];
 			Dictionary run = item["format"];
 			Array keys = run.keys();
 			format_attributes[index] = Map<TextAttribute, Variant>();
-			for (int j = 0; j < keys.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)keys.size(); j++) {
 				String key = keys[j];
 				if (key == String("font")) {
 					Ref<TLFontFamily> ff = run[key];
@@ -1145,11 +1145,11 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 			}
 			run.clear();
 		} else if (item.has("index") && item.has("style")) {
-			int index = item["index"];
+			int64_t index = item["index"];
 			Dictionary run = item["style"];
 			Array keys = run.keys();
 			style_attributes[index] = Map<TextAttribute, Variant>();
-			for (int j = 0; j < keys.size(); j++) {
+			for (int64_t j = 0; j < (int64_t)keys.size(); j++) {
 				String key = keys[j];
 				String pref = "meta_";
 				if (key == String("color")) {
