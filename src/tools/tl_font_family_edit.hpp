@@ -6,6 +6,7 @@
 #define TL_FONT_FAMILY_EDIT_HPP
 
 #include "resources/tl_font_family.hpp"
+#include "resources/tl_shaped_string.hpp"
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
@@ -148,6 +149,28 @@ public:
 	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
 	void set_sname(const String &p_sname) { sname = p_sname; };
 	void set_lang(const String &p_lang) { lang = p_lang; };
+};
+
+/*************************************************************************/
+
+class TLFontFamilyPreview : public VBoxContainer {
+
+	GDCLASS(TLFontFamilyPreview, VBoxContainer);
+
+	Control *preview;
+	Ref<TLShapedString> str;
+	LineEdit *ctl;
+
+	void _ff_changed(const String &p_text);
+	void _redraw();
+
+protected:
+	static void _bind_methods();
+
+public:
+	void set_ff(const Ref<TLFontFamily> &p_ff, const String &p_style);
+
+	TLFontFamilyPreview();
 };
 
 /*************************************************************************/

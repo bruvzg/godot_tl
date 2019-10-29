@@ -22,6 +22,7 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		new_name->set_placeholder("Style name");
 		hbox->add_child(new_name);
 		ButtonAddStyle *new_btn = memnew(ButtonAddStyle);
+		new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 		new_btn->set_ff(ff);
 		new_btn->set_ctl(new_name);
 		new_btn->set_text("Add style");
@@ -31,7 +32,12 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 	}
 	Vector<String> tokens = p_path.split("/");
 	if (tokens.size() == 2) {
-		if (tokens[1] == "_remove_style") {
+		if (tokens[1] == "_prev_style") {
+			TLFontFamilyPreview *prev = memnew(TLFontFamilyPreview);
+			prev->set_ff(ff, tokens[0]);
+			add_custom_control(prev);
+			return true;
+		} else if (tokens[1] == "_remove_style") {
 			ButtonDelStyle *rem_btn = memnew(ButtonDelStyle);
 			rem_btn->set_text("Remove \"" + tokens[0] + "\" style");
 			rem_btn->set_ff(ff);
@@ -43,9 +49,10 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			LineEdit *new_name = memnew(LineEdit);
 			new_name->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 			new_name->set_max_length(4);
-			new_name->set_placeholder("ISO script code");
+			new_name->set_placeholder("ISO language code");
 			hbox->add_child(new_name);
 			ButtonAddLang *new_btn = memnew(ButtonAddLang);
+			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 			new_btn->set_ff(ff);
 			new_btn->set_sname(tokens[0]);
 			new_btn->set_ctl(new_name);
@@ -58,9 +65,10 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			LineEdit *new_name = memnew(LineEdit);
 			new_name->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 			new_name->set_max_length(4);
-			new_name->set_placeholder("ISO language code");
+			new_name->set_placeholder("ISO script code");
 			hbox->add_child(new_name);
 			ButtonAddScript *new_btn = memnew(ButtonAddScript);
+			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 			new_btn->set_ff(ff);
 			new_btn->set_sname(tokens[0]);
 			new_btn->set_ctl(new_name);
@@ -93,4 +101,41 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 }
 
 void EditorInspectorPluginTLFontFamily::parse_end() {
+	//NOP
+}
+
+/*************************************************************************/
+
+void TLFontFamilyPreview::_ff_changed(const String &p_text) {
+	str->set_text(p_text);
+	preview->update();
+}
+
+void TLFontFamilyPreview::_redraw() {
+	VisualServer::get_singleton()->canvas_item_add_rect(preview->get_canvas_item(), Rect2(Point2(), preview->get_size()), Color(0.8, 0.8, 0.8, 1));
+	str->draw(preview->get_canvas_item(), Point2((preview->get_rect().size.x - str->get_width()) / 2, (preview->get_rect().size.y - str->get_height()) / 2 + str->get_ascent()), Color(0, 0, 0, 1));
+}
+
+void TLFontFamilyPreview::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_ff_changed", "text"), &TLFontFamilyPreview::_ff_changed);
+	ClassDB::bind_method(D_METHOD("_redraw"), &TLFontFamilyPreview::_redraw);
+}
+
+void TLFontFamilyPreview::set_ff(const Ref<TLFontFamily> &p_ff, const String &p_style) {
+	str->set_base_font(p_ff);
+	str->set_base_font_style(p_style);
+}
+
+TLFontFamilyPreview::TLFontFamilyPreview() {
+	str.instance();
+	str->set_base_font_size(18.0);
+	str->set_text("Etaoin shrdlu");
+	preview = memnew(Control);
+	preview->set_custom_minimum_size(Size2(0, 50 * EDSCALE));
+	preview->connect("draw", this, "_redraw");
+	add_margin_child(TTR("Preview:"), preview);
+	ctl = memnew(LineEdit);
+	ctl->set_text("Etaoin shrdlu");
+	ctl->connect("text_changed", this, "_ff_changed");
+	add_child(ctl);
 }
