@@ -7,6 +7,7 @@ def configure(env):
     envvars = Variables()
     envvars.Add(BoolVariable('builtin_runtime', 'Use the built-in libraries', True))
     envvars.Add(BoolVariable('use_graphite2', 'Enable Graphite2 complementary shaper', True))
+    envvars.Add(BoolVariable('use_font_wrapper', 'Enable Godot font wrapper', False))
     envvars.Update(env)
 
 def get_doc_classes():
@@ -23,7 +24,8 @@ def get_doc_classes():
             "TLProtoControlSelection",
             "TLLabel",
             "TLLineEdit",
-            "TLFontIterator"
+            "TLFontIterator",
+            "TLGDFontWrapper"
     ]
 
 def get_doc_path():

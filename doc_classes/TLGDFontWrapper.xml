@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TLGDFontWrapper" inherits="Font" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+		Note: This class is only available if module is built with [code]use_font_wrapper=true[/code] flag.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
+		</member>
+		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size" default="12">
+		</member>
+		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style" default="&quot;Regular&quot;">
+		</member>
+		<member name="cache_depth" type="int" setter="set_cache_depth" getter="get_cache_depth" default="100">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

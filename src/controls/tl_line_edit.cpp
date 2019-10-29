@@ -1743,12 +1743,12 @@ void TLLineEdit::_bind_methods() {
 	BIND_ENUM_CONSTANT(MENU_REDO);
 	BIND_ENUM_CONSTANT(MENU_MAX);
 
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text"), "set_text", "get_text");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "align", PROPERTY_HINT_ENUM, "Left,Center,Right,Fill"), "set_align", "get_align");
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "base_font", PROPERTY_HINT_RESOURCE_TYPE, "TLFontFamily"), "set_base_font", "get_base_font");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "base_font_size"), "set_base_font_size", "get_base_font_size");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "base_font_style"), "set_base_font_style", "get_base_font_style");
-
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text"), "set_text", "get_text");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "align", PROPERTY_HINT_ENUM, "Left,Center,Right,Fill"), "set_align", "get_align");
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "text_direction", PROPERTY_HINT_ENUM, "LTR,RTL,Locale,Auto"), "set_text_direction", "get_text_direction");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "ot_features"), "set_ot_features", "get_ot_features");

@@ -25,6 +25,15 @@ sources = [
 	'controls/tl_line_edit.cpp',
 ]
 
+if env['use_font_wrapper']:
+	sources += [
+		'resources/tl_gd_font_wrapper.cpp'
+	]
+	env_godot_tl.Append(CXXFLAGS=['-DHAVE_WRAPPER'])
+
+if env['use_graphite2']:
+	env_godot_tl.Append(CXXFLAGS=['-DHAVE_GRAPHITE2'])
+
 if env['tools']:
 	sources += [
 		'tools/tl_editor_node.cpp',

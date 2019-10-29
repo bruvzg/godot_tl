@@ -141,6 +141,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontiterator.html#brief-description">Brief Description</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html">TLGDFontWrapper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../classes/class_tlicudataloader.html">TLICUDataLoader</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#brief-description">Brief Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#properties">Properties</a></li>
@@ -299,8 +306,8 @@
 <table border="1" class="docutils">
 <colgroup>
 <col width="22%" />
-<col width="58%" />
-<col width="20%" />
+<col width="59%" />
+<col width="19%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Name</th>
@@ -317,8 +324,13 @@
 <td>Enable SIL Graphite 2 complementary shaper</td>
 <td>true</td>
 </tr>
+<tr class="row-even"><td>use_font_wrapper</td>
+<td>Enable Godot font wrapper for default controls</td>
+<td>false</td>
+</tr>
 </tbody>
 </table>
+<p>If <cite>use_font_wrapper</cite> is enabled, apply <cite>patch_font.diff</cite> from the root of this repository to the Godot engine source first.</p>
 </div>
 <div class="section" id="building-libdgtl-module">
 <h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#building-libdgtl-module" title="Permalink to this headline">¶</a></h3>
