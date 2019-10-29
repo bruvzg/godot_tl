@@ -104,8 +104,15 @@ public:
 
 	void _init();
 
+	void add_style(String p_style);
 	void remove_style(String p_style);
 	bool has_style(String p_style) const;
+
+	void add_script(String p_style, String p_script);
+	void remove_script(String p_style, String p_script);
+
+	void add_language(String p_style, String p_lang);
+	void remove_language(String p_style, String p_lang);
 
 	TLFontFallbackIterator get_face(String p_style) const;
 	TLFontFallbackIterator get_face_for_script(String p_style, hb_script_t p_script) const;

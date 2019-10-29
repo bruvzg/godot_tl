@@ -7,6 +7,7 @@
 
 #include "icons/icons.gen.h"
 #include "tl_editor_node.h"
+#include "tl_font_family_edit.hpp"
 
 TLEditorNode *TLEditorNode::singleton = NULL;
 
@@ -46,6 +47,11 @@ TLEditorNode::TLEditorNode(EditorNode *p_editor) {
 			type_icons[tl_icons_names[i]] = icon; //TL*
 		}
 	}
+
+	Ref<EditorInspectorPluginTLFontFamily> inspector_plugin;
+	inspector_plugin.instance();
+
+	EditorInspector::add_inspector_plugin(inspector_plugin);
 };
 
 TLEditorNode::~TLEditorNode() {

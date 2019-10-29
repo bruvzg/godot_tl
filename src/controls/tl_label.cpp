@@ -702,7 +702,7 @@ void TLLabel::_register_methods() {
 	register_property<TLLabel, int>("align", &TLLabel::set_align, &TLLabel::get_align, ALIGN_LEFT, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Left,Center,Right,Fill"));
 	register_property<TLLabel, int>("valign", &TLLabel::set_valign, &TLLabel::get_valign, VALIGN_TOP, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Top,Center,Bottom,Fill"));
 
-	register_property<TLLabel, Ref<TLFontFamily> >("base_font", &TLLabel::set_base_font, &TLLabel::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
+	register_property<TLLabel, Ref<TLFontFamily> >("base_font", &TLLabel::set_base_font, &TLLabel::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLLabel, String>("base_font_style", &TLLabel::set_base_font_style, &TLLabel::get_base_font_style, String("Regular"));
 	register_property<TLLabel, int>("base_font_size", &TLLabel::set_base_font_size, &TLLabel::get_base_font_size, 12);
 

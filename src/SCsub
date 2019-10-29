@@ -27,7 +27,8 @@ sources = [
 
 if env['tools']:
 	sources += [
-		'tools/tl_editor_node.cpp'
+		'tools/tl_editor_node.cpp',
+		'tools/tl_font_family_edit.cpp'
 	]
 
 env_godot_tl.Append(CPPPATH=['.', '../subprojects/graphite2/include', '../subprojects/harfbuzz/src', '../subprojects/icu4c/source/common', '#thirdparty/freetype/include', '#thirdparty/nanosvg/'])
