@@ -645,7 +645,7 @@ bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
 void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
 
 	for (auto it = styles.begin(); it != styles.end(); ++it) {
-
+		p_list->push_back(PropertyInfo(Variant::NIL, it->first.to_lower() + "/" + "_prev_style", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		for (int64_t i = 0; i < (int64_t)it->second.main_chain.size(); i++) {
 			p_list->push_back(PropertyInfo(Variant::OBJECT, it->first.to_lower() + "/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace"));
 		}
