@@ -49,21 +49,21 @@
 		</method>
 	</methods>
 	<members>
-		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color">
+		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color" default="Color( 1, 1, 1, 0 )">
 		</member>
-		<member name="brk_flags" type="int" setter="set_brk_flags" getter="get_brk_flags">
+		<member name="brk_flags" type="int" setter="set_brk_flags" getter="get_brk_flags" default="2">
 		</member>
-		<member name="halign" type="int" setter="set_halign" getter="get_halign">
+		<member name="halign" type="int" setter="set_halign" getter="get_halign" default="0">
 		</member>
-		<member name="indent" type="float" setter="set_indent" getter="get_indent">
+		<member name="indent" type="float" setter="set_indent" getter="get_indent" default="0.0">
 		</member>
-		<member name="jst_flags" type="int" setter="set_jst_flags" getter="get_jst_flags">
+		<member name="jst_flags" type="int" setter="set_jst_flags" getter="get_jst_flags" default="1">
 		</member>
-		<member name="line_spacing" type="float" setter="set_line_spacing" getter="get_line_spacing">
+		<member name="line_spacing" type="float" setter="set_line_spacing" getter="get_line_spacing" default="1.0">
 		</member>
 		<member name="string" type="TLShapedAttributedString" setter="set_string" getter="get_string">
 		</member>
-		<member name="width" type="float" setter="set_width" getter="get_width">
+		<member name="width" type="float" setter="set_width" getter="get_width" default="-1.0">
 		</member>
 	</members>
 	<signals>

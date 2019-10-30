@@ -110,6 +110,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
 </ul>
 </li>
@@ -252,6 +253,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -266,7 +269,10 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/classes/class_tlfontfamily.rst.txt" rel="nofollow"> View page source</a>
+            
+              <!-- User defined GitHub URL -->
+              <a href="hide" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -307,19 +313,34 @@
 <tr class="row-even"><td>void</td>
 <td><a class="reference internal" href="#class-tlfontfamily-method-add-face-unlinked"><span class="std std-ref">add_face_unlinked</span></a> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face"><span class="std std-ref">get_face</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-add-language"><span class="std std-ref">add_language</span></a> <strong>(</strong> String style, String language <strong>)</strong></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-language"><span class="std std-ref">get_face_for_language</span></a> <strong>(</strong> String style, String lang <strong>)</strong> const</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-script"><span class="std std-ref">get_face_for_script</span></a> <strong>(</strong> String style, String script <strong>)</strong> const</td>
-</tr>
-<tr class="row-even"><td>bool</td>
-<td><a class="reference internal" href="#class-tlfontfamily-method-has-style"><span class="std std-ref">has_style</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-add-script"><span class="std std-ref">add_script</span></a> <strong>(</strong> String style, String script <strong>)</strong></td>
 </tr>
 <tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-add-style"><span class="std std-ref">add_style</span></a> <strong>(</strong> String style <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-get-face"><span class="std std-ref">get_face</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-language"><span class="std std-ref">get_face_for_language</span></a> <strong>(</strong> String style, String lang <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a></td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-get-face-for-script"><span class="std std-ref">get_face_for_script</span></a> <strong>(</strong> String style, String script <strong>)</strong> const</td>
+</tr>
+<tr class="row-odd"><td>bool</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-has-style"><span class="std std-ref">has_style</span></a> <strong>(</strong> String style <strong>)</strong> const</td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-remove-language"><span class="std std-ref">remove_language</span></a> <strong>(</strong> String style, String language <strong>)</strong></td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td><a class="reference internal" href="#class-tlfontfamily-method-remove-script"><span class="std std-ref">remove_script</span></a> <strong>(</strong> String style, String script <strong>)</strong></td>
+</tr>
+<tr class="row-even"><td>void</td>
 <td><a class="reference internal" href="#class-tlfontfamily-method-remove-style"><span class="std std-ref">remove_style</span></a> <strong>(</strong> String style <strong>)</strong></td>
 </tr>
 </tbody>
@@ -330,27 +351,55 @@
 <ul class="simple" id="class-tlfontfamily-method-add-face">
 <li>void <strong>add_face</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-add-face-for-language">
 <li>void <strong>add_face_for_language</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String lang <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-add-face-for-script">
 <li>void <strong>add_face_for_script</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref, String script <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-add-face-unlinked">
 <li>void <strong>add_face_unlinked</strong> <strong>(</strong> String style, <a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> ref <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontfamily-method-add-language">
+<li>void <strong>add_language</strong> <strong>(</strong> String style, String language <strong>)</strong></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontfamily-method-add-script">
+<li>void <strong>add_script</strong> <strong>(</strong> String style, String script <strong>)</strong></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontfamily-method-add-style">
+<li>void <strong>add_style</strong> <strong>(</strong> String style <strong>)</strong></li>
+</ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-get-face">
 <li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face</strong> <strong>(</strong> String style <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-get-face-for-language">
 <li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face_for_language</strong> <strong>(</strong> String style, String lang <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-get-face-for-script">
 <li><a class="reference internal" href="class_tlfontiterator.html#class-tlfontiterator"><span class="std std-ref">TLFontIterator</span></a> <strong>get_face_for_script</strong> <strong>(</strong> String style, String script <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-has-style">
 <li>bool <strong>has_style</strong> <strong>(</strong> String style <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontfamily-method-remove-language">
+<li>void <strong>remove_language</strong> <strong>(</strong> String style, String language <strong>)</strong></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontfamily-method-remove-script">
+<li>void <strong>remove_script</strong> <strong>(</strong> String style, String script <strong>)</strong></li>
+</ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlfontfamily-method-remove-style">
 <li>void <strong>remove_style</strong> <strong>(</strong> String style <strong>)</strong></li>
 </ul>

@@ -110,6 +110,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
 </ul>
 </li>
@@ -252,6 +253,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -266,7 +269,10 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/classes/class_tlprotocontrol.rst.txt" rel="nofollow"> View page source</a>
+            
+              <!-- User defined GitHub URL -->
+              <a href="hide" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -291,21 +297,30 @@
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="91%" />
+<col width="17%" />
+<col width="65%" />
+<col width="18%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Color</td>
 <td><a class="reference internal" href="#class-tlprotocontrol-property-back-color"><span class="std std-ref">back_color</span></a></td>
+<td>Color( 1, 1, 1, 0 )</td>
 </tr>
-<tr class="row-even"><td>float</td>
+<tr class="row-even"><td>Control.FocusMode</td>
+<td>focus_mode</td>
+<td><strong>O:</strong> 2</td>
+</tr>
+<tr class="row-odd"><td>float</td>
 <td><a class="reference internal" href="#class-tlprotocontrol-property-paragraph-spacing"><span class="std std-ref">paragraph_spacing</span></a></td>
-</tr>
-<tr class="row-odd"><td>bool</td>
-<td><a class="reference internal" href="#class-tlprotocontrol-property-readonly"><span class="std std-ref">readonly</span></a></td>
+<td>3.0</td>
 </tr>
 <tr class="row-even"><td>bool</td>
+<td><a class="reference internal" href="#class-tlprotocontrol-property-readonly"><span class="std std-ref">readonly</span></a></td>
+<td>false</td>
+</tr>
+<tr class="row-odd"><td>bool</td>
 <td><a class="reference internal" href="#class-tlprotocontrol-property-selectable"><span class="std std-ref">selectable</span></a></td>
+<td>true</td>
 </tr>
 </tbody>
 </table>
@@ -416,6 +431,7 @@
 <ul class="simple" id="class-tlprotocontrol-signal-cursor-changed">
 <li><strong>cursor_changed</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-signal-paragraph-changed">
 <li><strong>paragraph_changed</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
@@ -427,37 +443,66 @@
 </ul>
 <table border="1" class="docutils">
 <colgroup>
-<col width="30%" />
-<col width="70%" />
+<col width="32%" />
+<col width="68%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><em>Setter</em></td>
+<tr class="row-odd"><td><em>Default</em></td>
+<td>Color( 1, 1, 1, 0 )</td>
+</tr>
+<tr class="row-even"><td><em>Setter</em></td>
 <td>set_back_color(value)</td>
 </tr>
-<tr class="row-even"><td><em>Getter</em></td>
+<tr class="row-odd"><td><em>Getter</em></td>
 <td>get_back_color()</td>
 </tr>
 </tbody>
 </table>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-property-paragraph-spacing">
 <li>float <strong>paragraph_spacing</strong></li>
 </ul>
 <table border="1" class="docutils">
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col width="27%" />
+<col width="73%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><em>Setter</em></td>
+<tr class="row-odd"><td><em>Default</em></td>
+<td>3.0</td>
+</tr>
+<tr class="row-even"><td><em>Setter</em></td>
 <td>set_paragraph_spacing(value)</td>
 </tr>
-<tr class="row-even"><td><em>Getter</em></td>
+<tr class="row-odd"><td><em>Getter</em></td>
 <td>get_paragraph_spacing()</td>
 </tr>
 </tbody>
 </table>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-property-readonly">
 <li>bool <strong>readonly</strong></li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>Default</em></td>
+<td>false</td>
+</tr>
+<tr class="row-even"><td><em>Setter</em></td>
+<td>set_readonly(value)</td>
+</tr>
+<tr class="row-odd"><td><em>Getter</em></td>
+<td>get_readonly()</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<ul class="simple" id="class-tlprotocontrol-property-selectable">
+<li>bool <strong>selectable</strong></li>
 </ul>
 <table border="1" class="docutils">
 <colgroup>
@@ -465,27 +510,13 @@
 <col width="68%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><em>Setter</em></td>
-<td>set_readonly(value)</td>
+<tr class="row-odd"><td><em>Default</em></td>
+<td>true</td>
 </tr>
-<tr class="row-even"><td><em>Getter</em></td>
-<td>get_readonly()</td>
-</tr>
-</tbody>
-</table>
-<ul class="simple" id="class-tlprotocontrol-property-selectable">
-<li>bool <strong>selectable</strong></li>
-</ul>
-<table border="1" class="docutils">
-<colgroup>
-<col width="30%" />
-<col width="70%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Setter</em></td>
+<tr class="row-even"><td><em>Setter</em></td>
 <td>set_selectable(value)</td>
 </tr>
-<tr class="row-even"><td><em>Getter</em></td>
+<tr class="row-odd"><td><em>Getter</em></td>
 <td>get_selectable()</td>
 </tr>
 </tbody>
@@ -496,90 +527,119 @@
 <ul class="simple" id="class-tlprotocontrol-method-add-attribute">
 <li>void <strong>add_attribute</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, int attribute, Variant value <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-clear">
 <li>void <strong>clear</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-debug-draw">
 <li>void <strong>debug_draw</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-debug-draw-as-hex">
 <li>void <strong>debug_draw_as_hex</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-debug-draw-logical-as-hex">
 <li>void <strong>debug_draw_logical_as_hex</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-caret-position">
 <li>Vector2 <strong>get_caret_position</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-cluster-debug-info-hit-test">
 <li>String <strong>get_cluster_debug_info_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-cluster-glyphs-hit-test">
 <li>Array <strong>get_cluster_glyphs_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-cluster-rect-hit-test">
 <li>Rect2 <strong>get_cluster_rect_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-paragraph">
 <li><a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> <strong>get_paragraph</strong> <strong>(</strong> int index <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-paragraphs">
 <li>int <strong>get_paragraphs</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-get-selection">
 <li><a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> <strong>get_selection</strong> <strong>(</strong> <strong>)</strong> const</li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-insert-paragraph">
 <li>int <strong>insert_paragraph</strong> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-remove-attribute">
 <li>void <strong>remove_attribute</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, int attribute <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-remove-attributes">
 <li>void <strong>remove_attributes</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-remove-paragraph">
 <li>void <strong>remove_paragraph</strong> <strong>(</strong> int index <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-replace-sstring">
 <li>void <strong>replace_sstring</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, <a class="reference internal" href="class_tlshapedstring.html#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-replace-text">
 <li>void <strong>replace_text</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, String text <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-replace-utf16">
 <li>void <strong>replace_utf16</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, PoolByteArray text <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-replace-utf32">
 <li>void <strong>replace_utf32</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, PoolByteArray text <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-replace-utf8">
 <li>void <strong>replace_utf8</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, PoolByteArray text <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph">
 <li>void <strong>set_paragraph</strong> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-back-color">
 <li>void <strong>set_paragraph_back_color</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, Color bcolor <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-brk-flags">
 <li>void <strong>set_paragraph_brk_flags</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, int flags <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-halign">
 <li>void <strong>set_paragraph_halign</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, int halign <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-indent">
 <li>void <strong>set_paragraph_indent</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, float indent <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-jst-flags">
 <li>void <strong>set_paragraph_jst_flags</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, int flags <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-line-spacing">
 <li>void <strong>set_paragraph_line_spacing</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, float line_spacing <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-paragraph-width">
 <li>void <strong>set_paragraph_width</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection, float width <strong>)</strong></li>
 </ul>
+<hr class="docutils" />
 <ul class="simple" id="class-tlprotocontrol-method-set-selection">
 <li>void <strong>set_selection</strong> <strong>(</strong> <a class="reference internal" href="class_tlprotocontrolselection.html#class-tlprotocontrolselection"><span class="std std-ref">TLProtoControlSelection</span></a> selection <strong>)</strong></li>
 </ul>

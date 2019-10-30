@@ -80,7 +80,7 @@ bool TLLabel::is_uppercase() const {
 int TLLabel::get_line_height() const {
 
 	float total_h = 0.0;
-	for (int i = 0; i < s_lines.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)s_lines.size(); i++) {
 		total_h += s_lines[i]->get_height();
 	}
 
@@ -127,7 +127,6 @@ void TLLabel::_notification(int p_what) {
 		if (theme.is_null()) {
 			theme.instance();
 			theme->copy_default_theme();
-			set_theme(theme);
 		}
 		Ref<StyleBox> style = theme->get_stylebox("normal", "Label");
 		Color font_color = theme->get_color("font_color", "Label");
@@ -141,8 +140,8 @@ void TLLabel::_notification(int p_what) {
 		int vbegin = 0, vsep = 0;
 
 		float total_h = 0.0;
-		int lines_visible = 0;
-		for (int i = lines_skipped; i < s_lines.size(); i++) {
+		int64_t lines_visible = 0;
+		for (int64_t i = lines_skipped; i < (int64_t)s_lines.size(); i++) {
 			total_h += s_lines[i]->get_height() + line_spacing;
 			if (total_h > (get_size().height - style->get_minimum_size().height + line_spacing)) {
 				break;
@@ -150,8 +149,8 @@ void TLLabel::_notification(int p_what) {
 			lines_visible++;
 		}
 
-		if (lines_visible > s_lines.size())
-			lines_visible = s_lines.size();
+		if (lines_visible > (int64_t)s_lines.size())
+			lines_visible = (int64_t)s_lines.size();
 
 		if (max_lines_visible >= 0 && lines_visible > max_lines_visible)
 			lines_visible = max_lines_visible;
@@ -187,7 +186,7 @@ void TLLabel::_notification(int p_what) {
 
 		Vector2 ofs;
 		ofs.y = style->get_offset().y + vbegin;
-		for (int j = lines_skipped; j < s_lines.size(); j++) {
+		for (int64_t j = lines_skipped; j < (int64_t)s_lines.size(); j++) {
 			ofs.y += s_lines[j]->get_ascent();
 			switch (align) {
 				case ALIGN_FILL:
@@ -236,7 +235,6 @@ Size2 TLLabel::get_minimum_size() const {
 	if (theme.is_null()) {
 		theme.instance();
 		theme->copy_default_theme();
-		const_cast<TLLabel *>(this)->set_theme(theme);
 	}
 	Size2 min_style = theme->get_stylebox("normal", "Label")->get_minimum_size();
 #endif
@@ -273,8 +271,8 @@ int TLLabel::get_visible_line_count() const {
 		const_cast<TLLabel *>(this)->_reshape_lines();
 
 	float total_h = 0.0;
-	int lines_visible = 0;
-	for (int i = lines_skipped; i < s_lines.size(); i++) {
+	int64_t lines_visible = 0;
+	for (int64_t i = lines_skipped; i < (int64_t)s_lines.size(); i++) {
 		total_h += s_lines[i]->get_height() + line_spacing;
 #ifdef GODOT_MODULE
 		if (total_h > (get_size().height - get_stylebox("normal", "Label")->get_minimum_size().height + line_spacing)) {
@@ -285,7 +283,6 @@ int TLLabel::get_visible_line_count() const {
 		if (theme.is_null()) {
 			theme.instance();
 			theme->copy_default_theme();
-			const_cast<TLLabel *>(this)->set_theme(theme);
 		}
 		if (total_h > (get_size().height - theme->get_stylebox("normal", "Label")->get_minimum_size().height + line_spacing)) {
 			break;
@@ -294,8 +291,8 @@ int TLLabel::get_visible_line_count() const {
 		lines_visible++;
 	}
 
-	if (lines_visible > s_lines.size())
-		lines_visible = s_lines.size();
+	if (lines_visible > (int64_t)s_lines.size())
+		lines_visible = (int64_t)s_lines.size();
 
 	if (max_lines_visible >= 0 && lines_visible > max_lines_visible)
 		lines_visible = max_lines_visible;
@@ -313,7 +310,6 @@ void TLLabel::_reshape_lines() {
 	if (theme.is_null()) {
 		theme.instance();
 		theme->copy_default_theme();
-		set_theme(theme);
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "Label");
 	int line_spacing = theme->get_constant("line_spacing", "Label");
@@ -329,7 +325,7 @@ void TLLabel::_reshape_lines() {
 	std::vector<int> l_lines = s_paragraph->break_lines(width, (autowrap) ? TEXT_BREAK_MANDATORY_AND_WORD_BOUND : TEXT_BREAK_MANDATORY);
 
 	int line_start = 0;
-	for (int i = 0; i < l_lines.size(); i++) {
+	for (int64_t i = 0; i < (int64_t)l_lines.size(); i++) {
 		Ref<TLShapedString> _ln = s_paragraph->substr(line_start, l_lines[i], TEXT_TRIM_BREAK_AND_WHITESPACE);
 		if (!_ln.is_null()) s_lines.push_back(_ln);
 		line_start = l_lines[i];
@@ -337,21 +333,21 @@ void TLLabel::_reshape_lines() {
 
 	if (!autowrap) {
 		minsize.width = 0.0f;
-		for (int i = 0; i < s_lines.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)s_lines.size(); i++) {
 			if (minsize.width < s_lines[i]->get_width()) {
 				minsize.width = s_lines[i]->get_width();
 			}
 		}
 	}
 
-	if (max_lines_visible > 0 && s_lines.size() > max_lines_visible) {
+	if (max_lines_visible > 0 && (int64_t)s_lines.size() > max_lines_visible) {
 		minsize.height = (_get_base_font_height() * max_lines_visible) + (line_spacing * (max_lines_visible - 1));
 	} else {
-		minsize.height = (_get_base_font_height() * s_lines.size()) + (line_spacing * (s_lines.size() - 1));
+		minsize.height = (_get_base_font_height() * s_lines.size()) + (line_spacing * ((int64_t)s_lines.size() - 1));
 	}
 
 	if (align == ALIGN_FILL) {
-		for (int i = 0; i < s_lines.size(); i++) {
+		for (int64_t i = 0; i < (int64_t)s_lines.size(); i++) {
 			s_lines[i]->extend_to_width(width, TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE);
 		}
 	}

@@ -19,7 +19,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="data_path" type="String" setter="set_data_path" getter="get_data_path">
+		<member name="data_path" type="String" setter="set_data_path" getter="get_data_path" default="&quot;&quot;">
 		</member>
 	</members>
 	<constants>

@@ -17,15 +17,16 @@
 		</method>
 	</methods>
 	<members>
-		<member name="force_autohinter" type="bool" setter="set_force_autohinter" getter="get_force_autohinter">
+		<member name="force_autohinter" type="bool" setter="set_force_autohinter" getter="get_force_autohinter" default="false">
 			If [code]true[/code], prefers FreeType auto-hinter over the font's native hinter. Default: [code]false[/code]
 		</member>
-		<member name="hinting" type="int" setter="set_hinting" getter="get_hinting">
+		<member name="hinting" type="int" setter="set_hinting" getter="get_hinting" default="2">
 			The font hinting mode used by FreeType auto-hinter. Default: [code]DF_HINTING_NONE[/code]
 		</member>
-		<member name="oversampling" type="float" setter="set_oversampling" getter="get_oversampling">
+		<member name="oversampling" type="float" setter="set_oversampling" getter="get_oversampling" default="1.0">
 			Font oversampling factor. Default: [code]1.0[/code]
 		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" override="true" default="2048" />
 	</members>
 	<constants>
 		<constant name="DF_HINTING_NONE" value="0" enum="DynamicFaceHinting">

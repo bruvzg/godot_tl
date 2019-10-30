@@ -300,13 +300,14 @@
 		</method>
 	</methods>
 	<members>
-		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color">
+		<member name="back_color" type="Color" setter="set_back_color" getter="get_back_color" default="Color( 1, 1, 1, 0 )">
 		</member>
-		<member name="paragraph_spacing" type="float" setter="set_paragraph_spacing" getter="get_paragraph_spacing">
+		<member name="focus_mode" type="int" setter="set_focus_mode" getter="get_focus_mode" override="true" enum="Control.FocusMode" default="2" />
+		<member name="paragraph_spacing" type="float" setter="set_paragraph_spacing" getter="get_paragraph_spacing" default="3.0">
 		</member>
-		<member name="readonly" type="bool" setter="set_readonly" getter="get_readonly">
+		<member name="readonly" type="bool" setter="set_readonly" getter="get_readonly" default="false">
 		</member>
-		<member name="selectable" type="bool" setter="set_selectable" getter="get_selectable">
+		<member name="selectable" type="bool" setter="set_selectable" getter="get_selectable" default="true">
 		</member>
 	</members>
 	<signals>
