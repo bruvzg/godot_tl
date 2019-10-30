@@ -51,6 +51,7 @@ ninja -C {Target-Folder}
 ## Documentation
 
 [Documentation](https://bruvzg.github.io/godot_tl/docs/html/index.html)
+
 [Class reference](https://bruvzg.github.io/godot_tl/docs/html/classes/index.html)
 
 ## Screenshots
