@@ -1629,6 +1629,8 @@ void TLLineEdit::_emit_text_change() {
 	emit_signal("text_changed", text);
 #ifdef GODOT_MODULE
 	_change_notify("text");
+#else
+	property_list_changed_notify();
 #endif
 	text_changed_dirty = false;
 }
@@ -1839,7 +1841,7 @@ void TLLineEdit::_register_methods() {
 	register_property<TLLineEdit, String>("text", &TLLineEdit::set_text, &TLLineEdit::get_text, String(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_MULTILINE_TEXT, String(""));
 	register_property<TLLineEdit, int>("align", &TLLineEdit::set_align, &TLLineEdit::get_align, ALIGN_LEFT, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Left,Center,Right,Fill"));
 
-	register_property<TLLineEdit, Ref<TLFontFamily> >("base_font", &TLLineEdit::set_base_font, &TLLineEdit::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
+	register_property<TLLineEdit, Ref<TLFontFamily> >("base_font", &TLLineEdit::set_base_font, &TLLineEdit::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLLineEdit, String>("base_font_style", &TLLineEdit::set_base_font_style, &TLLineEdit::get_base_font_style, String("Regular"));
 	register_property<TLLineEdit, int>("base_font_size", &TLLineEdit::set_base_font_size, &TLLineEdit::get_base_font_size, 12);
 

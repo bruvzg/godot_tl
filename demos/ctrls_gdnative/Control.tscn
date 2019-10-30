@@ -1,44 +1,41 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/libgdtl/classes/tl_label.gdns" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans-Bold.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://addons/libgdtl/classes/tl_line_edit.gdns" type="Script" id=3]
 [ext_resource path="res://fonts/NotoNastaliqUrdu-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/libgdtl/classes/tl_font_family.gdns" type="Script" id=5]
+[ext_resource path="res://addons/libgdtl/classes/tl_dynamic_font_face.gdns" type="Script" id=6]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Control
+[sub_resource type="Resource" id=2]
+script = ExtResource( 6 )
+font_path = "res://fonts/NotoSans-Bold.ttf"
+texture_flags = 2048
+force_autohinter = false
+hinting = 2
+oversampling = 1.0
 
-const TLFontFamily = preload(\"res://addons/libgdtl/classes/tl_font_family.gdns\")
-const TLDynamicFontFace = preload(\"res://addons/libgdtl/classes/tl_dynamic_font_face.gdns\")
+[sub_resource type="Resource" id=3]
+script = ExtResource( 5 )
+regular/0 = SubResource( 2 )
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	var face1 = TLDynamicFontFace.new()
-	face1.load(\"res://fonts/NotoSans-Bold.ttf\")
-	
-	var font1 = TLFontFamily.new()
-	font1.add_face(\"Default\", face1)
-	
-	$TLLabel.set_base_font(font1)
-	$TLLabel.set_base_font_style(\"Default\")
-	$TLLabel.set_base_font_size(12)
-	
-	var face2 = TLDynamicFontFace.new()
-	face2.load(\"res://fonts/NotoNastaliqUrdu-Regular.ttf\")
-	
-	var font2 = TLFontFamily.new()
-	font2.add_face(\"Default\", face2)
-	
-	$TLLineEdit.set_base_font(font2)
-	$TLLineEdit.set_base_font_style(\"Default\")
-	$TLLineEdit.set_base_font_size(12)
-"
-
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=4]
 size = 12
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="Resource" id=6]
+script = ExtResource( 6 )
+font_path = "res://fonts/NotoNastaliqUrdu-Regular.ttf"
+texture_flags = 2048
+force_autohinter = false
+hinting = 2
+oversampling = 1.0
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 5 )
+regular/0 = SubResource( 6 )
+
+[sub_resource type="DynamicFont" id=5]
 size = 12
 font_data = ExtResource( 4 )
 
@@ -49,7 +46,6 @@ margin_left = 1.0
 margin_top = -1.0
 margin_right = 1.0
 margin_bottom = -1.0
-script = SubResource( 1 )
 
 [node name="TLLabel" type="Control" parent="."]
 margin_left = 111.0
@@ -60,8 +56,12 @@ rect_min_size = Vector2( 209, 110 )
 mouse_filter = 2
 size_flags_vertical = 4
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 text = "test232
 Godot Label"
+base_font = SubResource( 3 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 401.0
@@ -69,20 +69,21 @@ margin_top = 37.0
 margin_right = 611.0
 margin_bottom = 151.0
 rect_min_size = Vector2( 210, 114 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 text = "test232
 Godot Label"
 
 [node name="TLLineEdit" type="Control" parent="."]
-margin_left = 100.0
+margin_left = 99.0
 margin_top = 159.0
-margin_right = 322.0
+margin_right = 321.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 222, 41 )
 focus_mode = 2
 mouse_default_cursor_shape = 1
 script = ExtResource( 3 )
 text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
+base_font = SubResource( 7 )
 secret_character = "*"
 
 [node name="LineEdit" type="LineEdit" parent="."]
@@ -91,5 +92,5 @@ margin_top = 159.0
 margin_right = 612.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 222, 41 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 5 )
 text = "اور بازار سے لے آئے اگر ٹوٹ گیا"

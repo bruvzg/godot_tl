@@ -3117,7 +3117,7 @@ void TLShapedString::_register_methods() {
 
 	register_property<TLShapedString, int>("base_direction", &TLShapedString::set_base_direction, &TLShapedString::get_base_direction, TEXT_DIRECTION_AUTO, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("LTR,RTL,Locale,Auto"));
 	register_property<TLShapedString, String>("text", &TLShapedString::set_text, &TLShapedString::get_text, String());
-	register_property<TLShapedString, Ref<TLFontFamily> >("base_font", &TLShapedString::set_base_font, &TLShapedString::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
+	register_property<TLShapedString, Ref<TLFontFamily> >("base_font", &TLShapedString::set_base_font, &TLShapedString::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLShapedString, String>("base_font_style", &TLShapedString::set_base_font_style, &TLShapedString::get_base_font_style, String("Regular"));
 	register_property<TLShapedString, int>("base_font_size", &TLShapedString::set_base_font_size, &TLShapedString::get_base_font_size, 12);
 	register_property<TLShapedString, String>("features", &TLShapedString::set_features, &TLShapedString::get_features, String());
