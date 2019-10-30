@@ -48,6 +48,11 @@ meson {Target-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
 ninja -C {Target-Folder}
 ```
 
+## Documentation
+
+[Documentation](https://bruvzg.github.io/godot_tl/docs/html/index.html)
+[Class reference](https://bruvzg.github.io/godot_tl/docs/html/classes/index.html)
+
 ## Screenshots
 
 ![libgdtl all scripts screenshot](scripts_scr.png)
