@@ -13,146 +13,6 @@
 
 /*************************************************************************/
 
-class ButtonAddStyle : public Button {
-	GDCLASS(ButtonAddStyle, Button);
-
-	Ref<TLFontFamily> ff;
-	LineEdit *ctl;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid() && ctl && ctl->get_text() != String()) {
-			ff->add_style(ctl->get_text());
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_ctl(LineEdit *p_clt) { ctl = p_clt; };
-
-	ButtonAddStyle() {
-		ctl = NULL;
-	}
-};
-
-/*************************************************************************/
-
-class ButtonDelStyle : public Button {
-	GDCLASS(ButtonDelStyle, Button);
-
-	Ref<TLFontFamily> ff;
-	String sname;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid()) {
-			ff->remove_style(sname);
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_sname(const String &p_sname) { sname = p_sname; };
-};
-
-/*************************************************************************/
-
-class ButtonAddScript : public Button {
-	GDCLASS(ButtonAddScript, Button);
-
-	Ref<TLFontFamily> ff;
-	String sname;
-	LineEdit *ctl;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid() && ctl && ctl->get_text() != String()) {
-			ff->add_script(sname, ctl->get_text());
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_sname(const String &p_sname) { sname = p_sname; };
-	void set_ctl(LineEdit *p_clt) { ctl = p_clt; };
-
-	ButtonAddScript() {
-		ctl = NULL;
-	}
-};
-
-/*************************************************************************/
-
-class ButtonDelScript : public Button {
-	GDCLASS(ButtonDelScript, Button);
-
-	Ref<TLFontFamily> ff;
-	String sname;
-	String scr;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid()) {
-			ff->remove_script(sname, scr);
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_sname(const String &p_sname) { sname = p_sname; };
-	void set_scr(const String &p_scr) { scr = p_scr; };
-};
-
-/*************************************************************************/
-
-class ButtonAddLang : public Button {
-	GDCLASS(ButtonAddLang, Button);
-
-	Ref<TLFontFamily> ff;
-	String sname;
-	LineEdit *ctl;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid() && ctl && ctl->get_text() != String()) {
-			ff->add_language(sname, ctl->get_text());
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_sname(const String &p_sname) { sname = p_sname; };
-	void set_ctl(LineEdit *p_clt) { ctl = p_clt; };
-
-	ButtonAddLang() {
-		ctl = NULL;
-	}
-};
-
-/*************************************************************************/
-
-class ButtonDelLang : public Button {
-	GDCLASS(ButtonDelLang, Button);
-
-	Ref<TLFontFamily> ff;
-	String sname;
-	String lang;
-
-protected:
-	virtual void pressed() {
-		if (ff.is_valid()) {
-			ff->remove_language(sname, lang);
-		}
-	}
-
-public:
-	void set_ff(const Ref<TLFontFamily> &p_ff) { ff = p_ff; };
-	void set_sname(const String &p_sname) { sname = p_sname; };
-	void set_lang(const String &p_lang) { lang = p_lang; };
-};
-
-/*************************************************************************/
-
 class TLFontFamilyPreview : public VBoxContainer {
 
 	GDCLASS(TLFontFamilyPreview, VBoxContainer);
@@ -177,6 +37,16 @@ public:
 
 class EditorInspectorPluginTLFontFamily : public EditorInspectorPlugin {
 	GDCLASS(EditorInspectorPluginTLFontFamily, EditorInspectorPlugin);
+
+	void _new_style(Object *p_object, Object *p_ctl);
+	void _remove_style(Object *p_object, String p_style);
+	void _new_lang(Object *p_object, String p_style, Object *p_ctl);
+	void _new_script(Object *p_object, String p_style, Object *p_ctl);
+	void _remove_lang(Object *p_object, String p_style, String p_lang);
+	void _remove_script(Object *p_object, String p_style, String p_script);
+
+protected:
+	static void _bind_methods();
 
 public:
 	virtual bool can_handle(Object *p_object);

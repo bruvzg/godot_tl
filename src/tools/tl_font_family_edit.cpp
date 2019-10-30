@@ -4,8 +4,55 @@
 
 #include "tl_font_family_edit.hpp"
 
-bool EditorInspectorPluginTLFontFamily::can_handle(Object *p_object) {
+void EditorInspectorPluginTLFontFamily::_new_style(Object *p_object, Object *p_ctl) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	LineEdit *ctl = Object::cast_to<LineEdit>(p_ctl);
+	if (object.is_valid() && ctl && ctl->get_text() != "")
+		object->add_style(ctl->get_text());
+}
 
+void EditorInspectorPluginTLFontFamily::_remove_style(Object *p_object, String p_style) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	if (object.is_valid())
+		object->remove_style(p_style);
+}
+
+void EditorInspectorPluginTLFontFamily::_new_lang(Object *p_object, String p_style, Object *p_ctl) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	LineEdit *ctl = Object::cast_to<LineEdit>(p_ctl);
+	if (object.is_valid() && ctl && ctl->get_text() != "")
+		object->add_language(p_style, ctl->get_text());
+}
+
+void EditorInspectorPluginTLFontFamily::_new_script(Object *p_object, String p_style, Object *p_ctl) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	LineEdit *ctl = Object::cast_to<LineEdit>(p_ctl);
+	if (object.is_valid() && ctl && ctl->get_text() != "")
+		object->add_script(p_style, ctl->get_text());
+}
+
+void EditorInspectorPluginTLFontFamily::_remove_lang(Object *p_object, String p_style, String p_lang) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	if (object.is_valid())
+		object->remove_language(p_style, p_lang);
+}
+
+void EditorInspectorPluginTLFontFamily::_remove_script(Object *p_object, String p_style, String p_script) {
+	Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+	if (object.is_valid())
+		object->remove_script(p_style, p_script);
+}
+
+void EditorInspectorPluginTLFontFamily::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_new_style", "object", "ctl"), &EditorInspectorPluginTLFontFamily::_new_style);
+	ClassDB::bind_method(D_METHOD("_remove_style", "object", "style"), &EditorInspectorPluginTLFontFamily::_remove_style);
+	ClassDB::bind_method(D_METHOD("_new_lang", "object", "style", "ctl"), &EditorInspectorPluginTLFontFamily::_new_lang);
+	ClassDB::bind_method(D_METHOD("_new_script", "object", "style", "ctl"), &EditorInspectorPluginTLFontFamily::_new_script);
+	ClassDB::bind_method(D_METHOD("_remove_lang", "object", "style", "lang"), &EditorInspectorPluginTLFontFamily::_remove_lang);
+	ClassDB::bind_method(D_METHOD("_remove_script", "object", "style", "script"), &EditorInspectorPluginTLFontFamily::_remove_script);
+}
+
+bool EditorInspectorPluginTLFontFamily::can_handle(Object *p_object) {
 	return Object::cast_to<TLFontFamily>(p_object) != NULL;
 }
 
@@ -14,17 +61,15 @@ void EditorInspectorPluginTLFontFamily::parse_begin(Object *p_object) {
 }
 
 bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant::Type p_type, const String &p_path, PropertyHint p_hint, const String &p_hint_text, int p_usage) {
-	Ref<TLFontFamily> ff = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
 	if (p_path == "_new_style") {
 		HBoxContainer *hbox = memnew(HBoxContainer);
 		LineEdit *new_name = memnew(LineEdit);
 		new_name->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 		new_name->set_placeholder("Style name");
 		hbox->add_child(new_name);
-		ButtonAddStyle *new_btn = memnew(ButtonAddStyle);
+		Button *new_btn = memnew(Button);
 		new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-		new_btn->set_ff(ff);
-		new_btn->set_ctl(new_name);
+		new_btn->connect("pressed", this, "_new_style", varray(p_object, new_name));
 		new_btn->set_text("Add style");
 		hbox->add_child(new_btn);
 		add_custom_control(hbox);
@@ -34,14 +79,14 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 	if (tokens.size() == 2) {
 		if (tokens[1] == "_prev_style") {
 			TLFontFamilyPreview *prev = memnew(TLFontFamilyPreview);
-			prev->set_ff(ff, tokens[0]);
+			Ref<TLFontFamily> object = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_object));
+			prev->set_ff(object, tokens[0]);
 			add_custom_control(prev);
 			return true;
 		} else if (tokens[1] == "_remove_style") {
-			ButtonDelStyle *rem_btn = memnew(ButtonDelStyle);
+			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[0] + "\" style");
-			rem_btn->set_ff(ff);
-			rem_btn->set_sname(tokens[0]);
+			rem_btn->connect("pressed", this, "_remove_style", varray(p_object, tokens[0]));
 			add_custom_control(rem_btn);
 			return true;
 		} else if (tokens[1] == "_add_lang") {
@@ -51,11 +96,9 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			new_name->set_max_length(4);
 			new_name->set_placeholder("ISO language code");
 			hbox->add_child(new_name);
-			ButtonAddLang *new_btn = memnew(ButtonAddLang);
+			Button *new_btn = memnew(Button);
 			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-			new_btn->set_ff(ff);
-			new_btn->set_sname(tokens[0]);
-			new_btn->set_ctl(new_name);
+			new_btn->connect("pressed", this, "_new_lang", varray(p_object, tokens[0], new_name));
 			new_btn->set_text("Add language");
 			hbox->add_child(new_btn);
 			add_custom_control(hbox);
@@ -67,11 +110,9 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			new_name->set_max_length(4);
 			new_name->set_placeholder("ISO script code");
 			hbox->add_child(new_name);
-			ButtonAddScript *new_btn = memnew(ButtonAddScript);
+			Button *new_btn = memnew(Button);
 			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-			new_btn->set_ff(ff);
-			new_btn->set_sname(tokens[0]);
-			new_btn->set_ctl(new_name);
+			new_btn->connect("pressed", this, "_new_script", varray(p_object, tokens[0], new_name));
 			new_btn->set_text("Add script");
 			hbox->add_child(new_btn);
 			add_custom_control(hbox);
@@ -79,20 +120,16 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		}
 	} else if (tokens.size() == 4) {
 		if (tokens[3] == "_remove_script" && tokens[1] == "script") {
-			ButtonDelScript *rem_btn = memnew(ButtonDelScript);
+			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[2] + "\" script");
-			rem_btn->set_ff(ff);
-			rem_btn->set_sname(tokens[0]);
-			rem_btn->set_scr(tokens[2]);
+			rem_btn->connect("pressed", this, "_remove_script", varray(p_object, tokens[0], tokens[2]));
 			add_custom_control(rem_btn);
 			return true;
 		}
 		if (tokens[3] == "_remove_lang" && tokens[1] == "lang") {
-			ButtonDelLang *rem_btn = memnew(ButtonDelLang);
+			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[2] + "\" language");
-			rem_btn->set_ff(ff);
-			rem_btn->set_sname(tokens[0]);
-			rem_btn->set_lang(tokens[2]);
+			rem_btn->connect("pressed", this, "_remove_lang", varray(p_object, tokens[0], tokens[2]));
 			add_custom_control(rem_btn);
 			return true;
 		}
@@ -133,7 +170,7 @@ TLFontFamilyPreview::TLFontFamilyPreview() {
 	preview = memnew(Control);
 	preview->set_custom_minimum_size(Size2(0, 50 * EDSCALE));
 	preview->connect("draw", this, "_redraw");
-	add_margin_child(TTR("Preview:"), preview);
+	add_child(preview);
 	ctl = memnew(LineEdit);
 	ctl->set_text("Etaoin shrdlu");
 	ctl->connect("text_changed", this, "_ff_changed");

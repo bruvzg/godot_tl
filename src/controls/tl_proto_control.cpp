@@ -354,6 +354,8 @@ int TLProtoControl::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 	_update_ctx_rect();
 #ifdef GODOT_MODULE
 	_change_notify();
+#else
+	property_list_changed_notify();
 #endif
 
 	return std::distance(paragraphs.begin(), paragraphs.insert(paragraphs.begin() + p_index, new_para));
@@ -370,6 +372,8 @@ void TLProtoControl::remove_paragraph(int p_index) {
 	_update_ctx_rect();
 #ifdef GODOT_MODULE
 	_change_notify();
+#else
+	property_list_changed_notify();
 #endif
 
 	emit_signal("cursor_changed");

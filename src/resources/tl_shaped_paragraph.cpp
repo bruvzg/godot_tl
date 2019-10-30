@@ -347,7 +347,7 @@ void TLShapedParagraph::_register_methods() {
 
 	register_method("set_string", &TLShapedParagraph::set_string);
 	register_method("get_string", &TLShapedParagraph::get_string);
-	register_property<TLShapedParagraph, Ref<TLShapedAttributedString> >("string", &TLShapedParagraph::set_string, &TLShapedParagraph::get_string, Ref<TLShapedAttributedString>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLShapedAttributedString"));
+	register_property<TLShapedParagraph, Ref<TLShapedAttributedString> >("string", &TLShapedParagraph::set_string, &TLShapedParagraph::get_string, Ref<TLShapedAttributedString>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLShapedAttributedString"));
 
 	register_method("set_brk_flags", &TLShapedParagraph::set_brk_flags);
 	register_method("get_brk_flags", &TLShapedParagraph::get_brk_flags);
