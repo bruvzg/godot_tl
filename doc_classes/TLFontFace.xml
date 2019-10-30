@@ -107,9 +107,9 @@
 		</method>
 	</methods>
 	<members>
-		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path">
+		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path" default="&quot;&quot;">
 		</member>
-		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags">
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="0">
 			Font texture flags. Default: [code]FLAG_VIDEO_SURFACE[/code]
 		</member>
 	</members>

@@ -34,7 +34,7 @@ void TLShapedParagraph::_init() {
 	brk_flags = TEXT_BREAK_MANDATORY_AND_WORD_BOUND;
 	jst_flags = TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE;
 	halign = PARA_HALIGN_LEFT;
-	back_color = Color(1, 1, 1);
+	back_color = Color(1, 1, 1, 0);
 	line_spacing = 1.0f;
 	indent = 0.0f;
 
@@ -339,7 +339,7 @@ void TLShapedParagraph::_register_methods() {
 
 	register_method("set_back_color", &TLShapedParagraph::set_back_color);
 	register_method("get_back_color", &TLShapedParagraph::get_back_color);
-	register_property<TLShapedParagraph, Color>("back_color", &TLShapedParagraph::set_back_color, &TLShapedParagraph::get_back_color, Color(1, 1, 1));
+	register_property<TLShapedParagraph, Color>("back_color", &TLShapedParagraph::set_back_color, &TLShapedParagraph::get_back_color, Color(1, 1, 1, 0));
 
 	register_method("set_line_spacing", &TLShapedParagraph::set_line_spacing);
 	register_method("get_line_spacing", &TLShapedParagraph::get_line_spacing);

@@ -11,6 +11,9 @@
 	</tutorials>
 	<methods>
 	</methods>
+	<members>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" override="true" default="2048" />
+	</members>
 	<constants>
 	</constants>
 </class>

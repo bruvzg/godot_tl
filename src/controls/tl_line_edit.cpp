@@ -845,7 +845,7 @@ void TLLineEdit::_notification(int p_what) {
 				//Draw selection rects
 				if (selection.enabled) {
 					std::vector<Rect2> sranges = line->get_highlight_shapes(selection.begin, selection.end);
-					for (int i = 0; i < sranges.size(); i++) {
+					for (int64_t i = 0; i < (int64_t)sranges.size(); i++) {
 						float s_st = x_ofs + sranges[i].position.x - wpos_ofs.x >= 0 ? x_ofs + sranges[i].position.x - wpos_ofs.x : x_ofs;
 						if (s_st < ofs_max) {
 							float s_wdt = s_st + sranges[i].size.x <= ofs_max ? sranges[i].size.x : ofs_max - s_st;
@@ -1047,7 +1047,6 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 	if (theme.is_null()) {
 		theme.instance();
 		theme->copy_default_theme();
-		const_cast<TLLineEdit *>(this)->set_theme(theme);
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "LineEdit");
 #endif
@@ -1251,7 +1250,6 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 	if (theme.is_null()) {
 		theme.instance();
 		theme->copy_default_theme();
-		const_cast<TLLineEdit *>(this)->set_theme(theme);
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "LineEdit");
 #endif
@@ -1356,7 +1354,6 @@ Size2 TLLineEdit::get_minimum_size() const {
 	if (theme.is_null()) {
 		theme.instance();
 		theme->copy_default_theme();
-		const_cast<TLLineEdit *>(this)->set_theme(theme);
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "LineEdit");
 #endif

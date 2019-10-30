@@ -52,6 +52,34 @@
 			<description>
 			</description>
 		</method>
+		<method name="add_language">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="language" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_script">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="script" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_style">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_face" qualifiers="const">
 			<return type="TLFontIterator">
 			</return>
@@ -84,6 +112,26 @@
 			<return type="bool">
 			</return>
 			<argument index="0" name="style" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_language">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="language" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_script">
+			<return type="void">
+			</return>
+			<argument index="0" name="style" type="String">
+			</argument>
+			<argument index="1" name="script" type="String">
 			</argument>
 			<description>
 			</description>

@@ -110,6 +110,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
 </ul>
 </li>
@@ -252,6 +253,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -266,7 +269,10 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/classes/class_tlshapedattributedstring.rst.txt" rel="nofollow"> View page source</a>
+            
+              <!-- User defined GitHub URL -->
+              <a href="hide" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -355,6 +361,7 @@
 <li><strong>TEXT_ATTRIBUTE_HIGHLIGHT_COLOR</strong> = <strong>71</strong> — Highlight color. Attribute type: Color</li>
 <li><strong>TEXT_ATTRIBUTE_META</strong> = <strong>100</strong> — User defined data, use <code class="docutils literal notranslate"><span class="pre">TEXT_ATTRIBUTE_META</span> <span class="pre">+</span> <span class="pre">x</span></code> to define moultiple user attributes. Attribute type: Variant</li>
 </ul>
+<hr class="docutils" />
 <p id="class-tlshapedattributedstring-constant-text-valign-bottom"><span id="class-tlshapedattributedstring-constant-text-valign-center"></span><span id="class-tlshapedattributedstring-constant-text-valign-top"></span><span id="enum-tlshapedattributedstring-textvalign"></span>enum <strong>TextVAlign</strong>:</p>
 <ul class="simple">
 <li><strong>TEXT_VALIGN_TOP</strong> = <strong>0</strong> — Inline vertical top alignment</li>
@@ -368,42 +375,52 @@
 <li>void <strong>add_attribute</strong> <strong>(</strong> int attribute, Variant value, int start, int end <strong>)</strong></li>
 </ul>
 <p>Sets <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">value</span></code> for specified text range.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-clear-attributes">
 <li>void <strong>clear_attributes</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
 <p>Removes all attributes.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-get-attribute">
 <li>Variant <strong>get_attribute</strong> <strong>(</strong> int attribute, int index <strong>)</strong> const</li>
 </ul>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute value for specified text position.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-get-attribute-end">
 <li>int <strong>get_attribute_end</strong> <strong>(</strong> int attribute, int index <strong>)</strong> const</li>
 </ul>
 <p>Returns last position of <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute run enclosing specified position.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-get-attribute-start">
 <li>int <strong>get_attribute_start</strong> <strong>(</strong> int attribute, int index <strong>)</strong> const</li>
 </ul>
 <p>Returns first position of <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute run enclosing specified position.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-get-embedded-rects">
 <li>Array <strong>get_embedded_rects</strong> <strong>(</strong> <strong>)</strong></li>
 </ul>
 <p>Returns bounding rects of embedded objects (<code class="docutils literal notranslate"><span class="pre">TEXT_ATTRIBUTE_REPLACEMENT_RECT</span></code> attributes).</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-has-attribute">
 <li>bool <strong>has_attribute</strong> <strong>(</strong> int attribute, int index <strong>)</strong> const</li>
 </ul>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if spceified position has <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute set.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-load-attributes-dict">
 <li>void <strong>load_attributes_dict</strong> <strong>(</strong> Array array <strong>)</strong></li>
 </ul>
 <p>Loads attributes from Array of Dictionary.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-remove-attribute">
 <li>void <strong>remove_attribute</strong> <strong>(</strong> int attribute, int start, int end <strong>)</strong></li>
 </ul>
 <p>Removes <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute for specified text range.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-remove-attributes">
 <li>void <strong>remove_attributes</strong> <strong>(</strong> int start, int end <strong>)</strong></li>
 </ul>
 <p>Removes all attributes for specified text range.</p>
+<hr class="docutils" />
 <ul class="simple" id="class-tlshapedattributedstring-method-save-attributes-dict">
 <li>Array <strong>save_attributes_dict</strong> <strong>(</strong> <strong>)</strong> const</li>
 </ul>

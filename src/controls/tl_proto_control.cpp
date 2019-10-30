@@ -20,7 +20,9 @@
 #include <InputEventMouseMotion.hpp>
 #include <MainLoop.hpp>
 #include <OS.hpp>
+#include <StyleBox.hpp>
 #include <Texture.hpp>
+#include <Theme.hpp>
 #include <VisualServer.hpp>
 #endif
 
@@ -217,7 +219,7 @@ void TLProtoControl::_init() {
 	cursor_color = Color(0, 0, 1);
 	selection_color = Color(0, 0.5, 0.5, 0.5);
 	ime_selection_color = Color(0, 0, 0.5, 0.2);
-	bg_color = Color(1, 1, 1, 0.5);
+	bg_color = Color(1, 1, 1, 0);
 
 	content_size = Size2(0, 0);
 
@@ -1636,6 +1638,28 @@ void TLProtoControl::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
 			RID ci = get_canvas_item();
+			Size2 size = get_size();
+			Ref<Theme> theme = get_theme();
+			if (theme.is_valid()) {
+#ifdef GODOT_MODULE
+				Ref<StyleBox> style = get_stylebox("normal", "TextEdit");
+				if (style.is_valid()) {
+					style->draw(ci, Rect2(Point2(), size));
+				}
+#else
+				Ref<StyleBox> style = theme->get_stylebox("normal", "TextEdit");
+				if (style.is_valid()) {
+					style->draw(ci, Rect2(Point2(), size));
+				}
+
+				cursor_color = theme->get_color("caret_color", "TextEdit");
+				selection_color = theme->get_color("selection_color", "TextEdit");
+#endif
+			} else {
+				cursor_color = Color(0, 0, 1);
+				selection_color = Color(0, 0.5, 0.5, 0.5);
+			}
+
 			VisualServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
 
 			VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(margin[MARGIN_LEFT], margin[MARGIN_TOP]), content_size), bg_color);
@@ -1736,6 +1760,9 @@ void TLProtoControl::_notification(int p_what) {
 				}
 				update();
 			}
+		} break;
+		case NOTIFICATION_THEME_CHANGED: {
+			update();
 		} break;
 	}
 }
@@ -1859,7 +1886,7 @@ void TLProtoControl::_register_methods() {
 
 	register_method("set_back_color", &TLProtoControl::set_back_color);
 	register_method("get_back_color", &TLProtoControl::get_back_color);
-	register_property<TLProtoControl, Color>("back_color", &TLProtoControl::set_back_color, &TLProtoControl::get_back_color, Color(1, 1, 1, 0.5));
+	register_property<TLProtoControl, Color>("back_color", &TLProtoControl::set_back_color, &TLProtoControl::get_back_color, Color(1, 1, 1, 0));
 
 	register_method("set_paragraph_spacing", &TLProtoControl::set_paragraph_spacing);
 	register_method("get_paragraph_spacing", &TLProtoControl::get_paragraph_spacing);

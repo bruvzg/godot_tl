@@ -89,29 +89,31 @@
 		</method>
 	</methods>
 	<members>
-		<member name="align" type="int" setter="set_align" getter="get_align">
+		<member name="align" type="int" setter="set_align" getter="get_align" default="0">
 		</member>
-		<member name="autowrap" type="bool" setter="set_autowrap" getter="has_autowrap">
+		<member name="autowrap" type="bool" setter="set_autowrap" getter="has_autowrap" default="false">
 		</member>
 		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
 		</member>
-		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size">
+		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size" default="12">
 		</member>
-		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style">
+		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style" default="&quot;Regular&quot;">
 		</member>
-		<member name="clip_text" type="bool" setter="set_clip_text" getter="is_clipping_text">
+		<member name="clip_text" type="bool" setter="set_clip_text" getter="is_clipping_text" default="false">
 		</member>
-		<member name="language" type="String" setter="set_language" getter="get_language">
+		<member name="language" type="String" setter="set_language" getter="get_language" default="&quot;&quot;">
 		</member>
-		<member name="ot_features" type="String" setter="set_ot_features" getter="get_ot_features">
+		<member name="mouse_filter" type="int" setter="set_mouse_filter" getter="get_mouse_filter" override="true" enum="Control.MouseFilter" default="2" />
+		<member name="ot_features" type="String" setter="set_ot_features" getter="get_ot_features" default="&quot;&quot;">
 		</member>
-		<member name="text" type="String" setter="set_text" getter="get_text">
+		<member name="size_flags_vertical" type="int" setter="set_v_size_flags" getter="get_v_size_flags" override="true" default="4" />
+		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
 		</member>
-		<member name="text_direction" type="int" setter="set_text_direction" getter="get_text_direction">
+		<member name="text_direction" type="int" setter="set_text_direction" getter="get_text_direction" default="3">
 		</member>
-		<member name="uppercase" type="bool" setter="set_uppercase" getter="is_uppercase">
+		<member name="uppercase" type="bool" setter="set_uppercase" getter="is_uppercase" default="false">
 		</member>
-		<member name="valign" type="int" setter="set_valign" getter="get_valign">
+		<member name="valign" type="int" setter="set_valign" getter="get_valign" default="0">
 		</member>
 	</members>
 	<constants>

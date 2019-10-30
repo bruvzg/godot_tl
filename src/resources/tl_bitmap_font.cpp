@@ -292,6 +292,8 @@ void TLBitmapFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_
 
 void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
 
+	if (p_size < 1) return;
+
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 

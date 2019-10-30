@@ -621,28 +621,28 @@
 		</method>
 	</methods>
 	<members>
-		<member name="base_direction" type="int" setter="set_base_direction" getter="get_base_direction">
+		<member name="base_direction" type="int" setter="set_base_direction" getter="get_base_direction" default="3">
 			Base text writing direction. Default: [code]TEXT_DIRECTION_AUTO[/code]
 		</member>
 		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
 			Base font family reference. Default: [code]null[/code]
 		</member>
-		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size">
+		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size" default="12">
 			Font size. Default: [code]12[/code]
 		</member>
-		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style">
+		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style" default="&quot;Regular&quot;">
 			Style name (Regular, Bold, Italic, Oblique etc.). Default: [code]"Regular"[/code]
 		</member>
-		<member name="features" type="String" setter="set_features" getter="get_features">
+		<member name="features" type="String" setter="set_features" getter="get_features" default="&quot;&quot;">
 			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Default: [code]""[/code]
 		</member>
-		<member name="language" type="String" setter="set_language" getter="get_language">
+		<member name="language" type="String" setter="set_language" getter="get_language" default="&quot;en&quot;">
 			Language code. Default: [code]""[/code]
 		</member>
-		<member name="preserve_control" type="bool" setter="set_preserve_control" getter="get_preserve_control">
+		<member name="preserve_control" type="bool" setter="set_preserve_control" getter="get_preserve_control" default="false">
 			If [code]true[/code] displays control character. Default: [code]false[/code]
 		</member>
-		<member name="text" type="String" setter="set_text" getter="get_text">
+		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
 			Text string. Default: [code]""[/code]
 		</member>
 	</members>

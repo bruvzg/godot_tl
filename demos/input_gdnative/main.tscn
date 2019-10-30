@@ -1173,6 +1173,10 @@ func _on_DebugDdr_toggled(button_pressed):
 	$FormatToolbar/DebugJBrk.disabled = !button_pressed
 	$ScrollContainer.visible = button_pressed
 	$ScrollContainer/PanelDbgD.update()
+
+func _on_Button_pressed():
+	$FormatToolbar/W.visible = false
+	$FormatToolbar/DebugJBrk2.pressed = false
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -1273,10 +1277,10 @@ rect_min_size = Vector2( 1200, 400 )
 script = SubResource( 1 )
 
 [node name="TLProtoControl" type="Control" parent="."]
-margin_left = 5.0
-margin_top = 115.0
-margin_right = 1143.0
-margin_bottom = 661.0
+margin_left = 15.0
+margin_top = 120.0
+margin_right = 1015.0
+margin_bottom = 620.0
 rect_min_size = Vector2( 1000, 500 )
 focus_mode = 2
 script = ExtResource( 1 )
@@ -1284,6 +1288,7 @@ __meta__ = {
 "_edit_use_anchors_": false,
 "_editor_icon": ExtResource( 2 )
 }
+back_color = Color( 1, 1, 1, 1 )
 selectable = true
 
 [node name="Panel" type="Panel" parent="TLProtoControl"]
@@ -1901,6 +1906,13 @@ rect_min_size = Vector2( 5000, 380 )
 color = Color( 0, 0, 0, 1 )
 script = ExtResource( 41 )
 
+[node name="Button" type="Button" parent="FormatToolbar/W/Panel"]
+margin_left = 460.0
+margin_top = 6.0
+margin_right = 479.0
+margin_bottom = 22.0
+text = "x"
+
 [node name="HSlider" type="HSlider" parent="FormatToolbar/W/Panel"]
 margin_left = 5.0
 margin_top = 5.0
@@ -2099,6 +2111,7 @@ margin_bottom = 121.0
 [connection signal="color_changed" from="FormatToolbar/OutColor/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor/ColorPickerButton" to="." method="_on_BackColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor2/ColorPickerButton" to="." method="_on_Color2PickerButton_color_changed"]
+[connection signal="pressed" from="FormatToolbar/W/Panel/Button" to="." method="_on_Button_pressed"]
 [connection signal="value_changed" from="FormatToolbar/W/Panel/HSlider" to="FormatToolbar/W/Panel" method="_on_HSlider_value_changed"]
 [connection signal="file_selected" from="FileDialogSave" to="." method="_on_FileDialogSave_file_selected"]
 [connection signal="file_selected" from="FileDialogLoad" to="." method="_on_FileDialogLoad_file_selected"]

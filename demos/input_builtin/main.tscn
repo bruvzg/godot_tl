@@ -1165,6 +1165,10 @@ func _on_DebugDdr_toggled(button_pressed):
 	$FormatToolbar/DebugJBrk.disabled = !button_pressed
 	$ScrollContainer.visible = button_pressed
 	$ScrollContainer/PanelDbgD.update()
+
+func _on_Button_pressed():
+	$FormatToolbar/W.visible = false
+	$FormatToolbar/DebugJBrk2.pressed = false
 "
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -1269,6 +1273,10 @@ margin_left = 5.0
 margin_top = 115.0
 margin_right = 1195.0
 margin_bottom = 765.0
+back_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Panel" type="Panel" parent="TLProtoControl"]
 visible = false
@@ -1730,7 +1738,6 @@ hint_tooltip = "Font OpenType features"
 focus_mode = 1
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
-focus_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/FontFtr"]
 margin_right = 30.0
@@ -1764,7 +1771,6 @@ hint_tooltip = "Language"
 focus_mode = 1
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
-focus_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="FormatToolbar/Lang"]
 margin_right = 30.0
@@ -1881,6 +1887,9 @@ visible = false
 margin_left = 1082.0
 margin_right = 1570.0
 margin_bottom = 394.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Panel" type="ColorRect" parent="FormatToolbar/W"]
 margin_right = 5000.0
@@ -1899,6 +1908,16 @@ min_value = 1.0
 max_value = 10.0
 step = 0.5
 value = 3.0
+
+[node name="Button" type="Button" parent="FormatToolbar/W/Panel"]
+margin_left = 462.0
+margin_top = 4.0
+margin_right = 481.0
+margin_bottom = 20.0
+text = "x"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="StatBar" type="ColorRect" parent="."]
 margin_top = 780.0
@@ -2086,6 +2105,7 @@ margin_bottom = 121.0
 [connection signal="color_changed" from="FormatToolbar/BackColor/ColorPickerButton" to="." method="_on_BackColorPickerButton_color_changed"]
 [connection signal="color_changed" from="FormatToolbar/BackColor2/ColorPickerButton" to="." method="_on_Color2PickerButton_color_changed"]
 [connection signal="value_changed" from="FormatToolbar/W/Panel/HSlider" to="FormatToolbar/W/Panel" method="_on_HSlider_value_changed"]
+[connection signal="pressed" from="FormatToolbar/W/Panel/Button" to="." method="_on_Button_pressed"]
 [connection signal="file_selected" from="FileDialogSave" to="." method="_on_FileDialogSave_file_selected"]
 [connection signal="file_selected" from="FileDialogLoad" to="." method="_on_FileDialogLoad_file_selected"]
 [connection signal="value_changed" from="HScrollBar" to="." method="_on_HScrollBar_value_changed"]

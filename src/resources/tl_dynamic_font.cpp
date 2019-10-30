@@ -456,6 +456,9 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size) {
 		loaded = false;
 	}
 
+	if (p_size <= 0)
+		p_size = 1;
+
 	if (FT_Init_FreeType(&ft_library) != 0) {
 		ERR_PRINTS("Error initializing FreeType library");
 		clear_cache();
@@ -907,6 +910,8 @@ float TLDynamicFontFace::get_glyph_scale(int p_size) const {
 
 void TLDynamicFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
 
+	if (p_size < 1) return;
+
 	if (sizes.count(p_size) > 0) {
 		sizes.at(p_size)->draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate);
 	} else {
@@ -924,6 +929,8 @@ void TLDynamicFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32
 }
 
 void TLDynamicFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
+
+	if (p_size < 1) return;
 
 	//raw char for debug only, do not use
 	if (sizes.count(p_size) > 0) {
@@ -944,6 +951,8 @@ void TLDynamicFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32
 
 void TLDynamicFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
 
+	if (p_size < 1) return;
+
 	if (sizes.count(p_size) > 0) {
 		sizes.at(p_size)->draw_glyph_outline(p_canvas_item, p_pos, p_codepoint, p_modulate);
 	} else {
@@ -961,6 +970,8 @@ void TLDynamicFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos
 }
 
 Array TLDynamicFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, int p_size) const {
+
+	if (p_size < 1) return Array();
 
 	if (sizes.count(p_size) > 0) {
 		return sizes.at(p_size)->get_glyph_outline(p_pos, p_codepoint);

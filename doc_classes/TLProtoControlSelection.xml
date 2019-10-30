@@ -9,17 +9,17 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="caret_offset" type="int" setter="set_caret_offset" getter="get_caret_offset">
+		<member name="caret_offset" type="int" setter="set_caret_offset" getter="get_caret_offset" default="0">
 		</member>
-		<member name="caret_para" type="int" setter="set_caret_para" getter="get_caret_para">
+		<member name="caret_para" type="int" setter="set_caret_para" getter="get_caret_para" default="0">
 		</member>
-		<member name="end_offset" type="int" setter="set_end_offset" getter="get_end_offset">
+		<member name="end_offset" type="int" setter="set_end_offset" getter="get_end_offset" default="0">
 		</member>
-		<member name="end_para" type="int" setter="set_end_para" getter="get_end_para">
+		<member name="end_para" type="int" setter="set_end_para" getter="get_end_para" default="0">
 		</member>
-		<member name="start_offset" type="int" setter="set_start_offset" getter="get_start_offset">
+		<member name="start_offset" type="int" setter="set_start_offset" getter="get_start_offset" default="0">
 		</member>
-		<member name="start_para" type="int" setter="set_start_para" getter="get_start_para">
+		<member name="start_para" type="int" setter="set_start_para" getter="get_start_para" default="0">
 		</member>
 	</members>
 	<signals>
