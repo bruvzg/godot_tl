@@ -13,3 +13,4 @@ _build*
 *.o
 icons.gen.h
 .DS_Store
+docs/source/classes
