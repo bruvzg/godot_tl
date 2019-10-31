@@ -15,8 +15,8 @@ const TLConstants = preload(\"res://addons/libgdtl/constants.gd\")
 
 const FileList = [\"\", \"gqergerth45y245hygn\", \"AwamiNastaliq-Regular.ttf\", \"Montserrat-BlackItalic.ttf\", \"NotoNaskhArabicUI.fnt\", \"NotoSans-Regular.ttf\", \"ComicNeue-Bold.otf\", \"Montserrat-Italic.ttf\", \"NotoNaskhArabicUI_0.png\", \"NotoSansRegular.fnt\", \"ComicNeue-BoldOblique.otf\", \"Montserrat-Regular.ttf\", \"NotoNaskhArabicUI_0.png.import\", \"NotoSansRegular_0.png\", \"ComicNeue-Oblique.otf\", \"NotoColorEmoji-subset.ttf\", \"NotoNastaliqUrdu-Regular.ttf\", \"NotoSansRegular_0.png.import\", \"ComicNeue-Regular.otf\", \"NotoFull\", \"NotoSans-Bold.ttf\", \"NotoSansThai-Bold.ttf\", \"LICENSE_OFL.txt\", \"NotoNaskhArabic-Bold.ttf\", \"NotoSans-BoldItalic.ttf\", \"NotoSerifThai-Regular.ttf\", \"Montserrat-Black.ttf\", \"NotoNaskhArabic-Regular.ttf\", \"NotoSans-Italic.ttf\"]
 
-var RANGE : int = 65000
-var tooo = -10
+var RANGE : int = 650001
+var tooo = -2
 
 func _ready():
 	randomize()
@@ -33,9 +33,10 @@ func _randstr():
 	return _randintarray().get_string_from_utf8()
 
 func _process(delta):
-	if (tooo < 0):
+	OS.set_window_title(\"Run: \" + str(tooo))
+	tooo = tooo + 1
+	if (tooo <= 0):
 		#skip some frames
-		tooo = tooo + 1
 		update()
 	else:
 		_fuzz_tlshapedparagraph()
@@ -44,7 +45,7 @@ func _fuzz_tlshapedparagraph():
 	var para1 = TLShapedParagraph.new()
 	var para2 = TLShapedParagraph.new()
 
-	for i in range(10):
+	for i in range(2):
 		if randi() % 6 == 0:
 			para1.copy_properties(para2)
 
@@ -97,7 +98,7 @@ func _fuzz_tlattributedshapedstring():
 	var str1 = TLShapedAttributedString.new()
 	var str2 = TLShapedAttributedString.new()
 
-	for i in range(10):
+	for i in range(2):
 		if randi() % 6 == 0:
 			str1.add_attribute(randi() % RANGE - RANGE / 2, _randintarray(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
 		if randi() % 2 == 0:
@@ -242,7 +243,7 @@ func _fuzz_tlshapedstring():
 	var str1 = TLShapedString.new()
 	var str2 = TLShapedString.new()
 
-	for i in range(10):
+	for i in range(2):
 		if randi() % 3 == 0:
 			str1.copy_properties(str2)
 		if randi() % 3 == 0:
@@ -362,7 +363,7 @@ func _fuzz_tlshapedstring():
 
 func _fuzz_tlfontfamily():
 	var fam = TLFontFamily.new()
-	for i in range(10):
+	for i in range(2):
 		var s = _randstr()
 		if randi() % 3 == 0:
 			s = \"Regular\"
@@ -410,7 +411,7 @@ func _fuzz_tlfontface():
 	if f != FileList.size():
 		face1.load(\"res://fonts/\" + FileList[f])
 
-	for i in range(10):
+	for i in range(2):
 		face1.draw_glyph(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
 		face1.draw_glyph_outline(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
 		face1.get_glyph_outline(Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, randf() * 256)
@@ -436,7 +437,7 @@ func _fuzz_tlbitmapfontface():
 	if f != FileList.size():
 		face1.load(\"res://fonts/\" + FileList[f])
 
-	for i in range(10):
+	for i in range(2):
 		face1.draw_glyph(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
 		face1.draw_glyph_outline(get_canvas_item(), Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, Color(randf(),randf(),randf(),randf()), randf() * 256)
 		face1.get_glyph_outline(Vector2(randf(),randf()), randi() % RANGE - RANGE / 2, randf() * 256)
@@ -462,7 +463,7 @@ func _fuzz_tldynamicfontface():
 	if f != FileList.size():
 		face1.load(\"res://fonts/\" + FileList[f])
 
-	for i in range(10):
+	for i in range(2):
 		if randi() % 3 == 0:
 			face1.set_force_autohinter(bool(randi()%2))
 		face1.get_force_autohinter()

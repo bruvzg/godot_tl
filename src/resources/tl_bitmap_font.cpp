@@ -354,10 +354,10 @@ void TLBitmapFontFace::set_font_path(String p_resource_path) {
 bool TLBitmapFontFace::load(String p_resource_path) {
 
 	path = p_resource_path;
+	bool was_loaded = loaded;
 	if (loaded) {
 		//unload existing
 		clear_cache();
-
 		loaded = false;
 	}
 
@@ -365,7 +365,7 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 	file.instance();
 	if (file->open(p_resource_path, File::READ) != Error::OK) {
 		ERR_PRINTS("Can't open bitmap font file: \"" + p_resource_path + "\"");
-		emit_signal(_CHANGED);
+		if (was_loaded) emit_signal(_CHANGED); //Only emit when old valid font is unloaded during this call, to prevent cyclic calls
 		return false;
 	}
 
@@ -435,7 +435,7 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 					ERR_PRINTS("Can't load bitmap font texture: \"" + file_name + "\"");
 					clear_cache();
 					file->close();
-					emit_signal(_CHANGED);
+					if (was_loaded) emit_signal(_CHANGED);
 					return false;
 				} else {
 					tex->set_flags(txt_flags);
