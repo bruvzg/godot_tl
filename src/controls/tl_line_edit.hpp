@@ -167,6 +167,9 @@ public:
 	static void _bind_methods();
 #else
 	void _gui_input(InputEvent *p_event);
+	bool _set(String p_name, Variant p_value);
+	Variant _get(String p_name) const;
+	Array _get_property_list() const;
 	static void _register_methods();
 #endif
 

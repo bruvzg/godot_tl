@@ -1817,6 +1817,52 @@ bool TLProtoControl::get_selectable() const {
 
 #ifdef GODOT_MODULE
 
+bool TLProtoControl::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+	Vector<String> tokens = name.split("/");
+	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
+		int64_t index = (int64_t)tokens[1].to_int();
+		if (index < 0) return false;
+		if (index < (int64_t)paragraphs.size()) {
+			Object *p_obj = p_value;
+			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
+			if (p.is_null()) {
+				remove_paragraph(index);
+			} else {
+				set_paragraph(p, index);
+			}
+		}
+		if (index == (int64_t)paragraphs.size()) {
+			Object *p_obj = p_value;
+			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
+			if (p.is_valid()) {
+				insert_paragraph(p, paragraphs.size());
+			}
+		}
+	}
+	return false;
+}
+
+bool TLProtoControl::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+	Vector<String> tokens = name.split("/");
+	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
+		int64_t index = (int64_t)tokens[1].to_int();
+		if (index >= 0 && index < (int64_t)paragraphs.size()) {
+			r_ret = get_paragraph(index);
+			return true;
+		}
+	}
+	return false;
+}
+
+void TLProtoControl::_get_property_list(List<PropertyInfo> *p_list) const {
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "paragraphs/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLShapedParagraph"));
+	}
+	p_list->push_back(PropertyInfo(Variant::OBJECT, "paragraphs/" + String::num_int64((int64_t)paragraphs.size()), PROPERTY_HINT_RESOURCE_TYPE, "TLShapedParagraph"));
+}
+
 void TLProtoControl::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear"), &TLProtoControl::clear);
@@ -1883,6 +1929,68 @@ void TLProtoControl::_bind_methods() {
 
 #else
 
+bool TLProtoControl::_set(String p_name, Variant p_value) {
+	String name = p_name;
+	PoolStringArray tokens = name.split("/");
+	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
+		int64_t index = (int64_t)tokens[1].to_int();
+		if (index < 0) return false;
+		if (index < (int64_t)paragraphs.size()) {
+			Object *p_obj = p_value;
+			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
+			if (p.is_null()) {
+				remove_paragraph(index);
+			} else {
+				set_paragraph(p, index);
+			}
+		}
+		if (index == (int64_t)paragraphs.size()) {
+			Object *p_obj = p_value;
+			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
+			if (p.is_valid()) {
+				insert_paragraph(p, paragraphs.size());
+			}
+		}
+	}
+	return false;
+}
+
+Variant TLProtoControl::_get(String p_name) const {
+
+	String name = p_name;
+	PoolStringArray tokens = name.split("/");
+	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
+		int64_t index = (int64_t)tokens[1].to_int();
+		if (index >= 0 && index < (int64_t)paragraphs.size()) return get_paragraph(index);
+	}
+	return Variant();
+}
+
+Array TLProtoControl::_get_property_list() const {
+	Array ret;
+
+	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
+		Dictionary prop;
+		prop["name"] = "paragraphs/" + String::num_int64(i);
+		prop["type"] = GlobalConstants::TYPE_OBJECT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+		prop["hint_string"] = "TLShapedParagraph";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR | GlobalConstants::PROPERTY_USAGE_STORAGE;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "paragraphs/" + String::num_int64((int64_t)paragraphs.size());
+		prop["type"] = GlobalConstants::TYPE_OBJECT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+		prop["hint_string"] = "TLShapedParagraph";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+
+	return ret;
+}
+
 void TLProtoControl::_register_methods() {
 
 	register_method("clear", &TLProtoControl::clear);
@@ -1945,6 +2053,10 @@ void TLProtoControl::_register_methods() {
 	register_method("debug_draw_logical_as_hex", &TLProtoControl::debug_draw_logical_as_hex);
 
 	register_method("_notification", &TLProtoControl::_notification);
+
+	register_method("_get_property_list", &TLProtoControl::_get_property_list);
+	register_method("_get", &TLProtoControl::_get);
+	register_method("_set", &TLProtoControl::_set);
 
 	register_signal<TLProtoControl>("cursor_changed");
 	register_signal<TLProtoControl>("paragraph_changed");

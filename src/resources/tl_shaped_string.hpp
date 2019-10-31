@@ -391,6 +391,9 @@ public:
 #ifdef GODOT_MODULE
 	static void _bind_methods();
 #else
+	bool _set(String p_name, Variant p_value);
+	Variant _get(String p_name) const;
+	Array _get_property_list() const;
 	static void _register_methods();
 #endif
 };

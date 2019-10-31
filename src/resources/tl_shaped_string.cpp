@@ -3001,6 +3001,37 @@ void TLShapedString::_bind_methods() {
 
 #else
 
+bool TLShapedString::_set(String p_name, Variant p_value) {
+	if (p_name == "base_font") {
+		Object *p_obj = p_value;
+		Ref<TLFontFamily> font = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
+		if (font.is_valid()) {
+			set_base_font(font);
+			return true;
+		}
+	}
+	return false;
+}
+
+Variant TLShapedString::_get(String p_name) const {
+	if (p_name == "base_font") {
+		return get_base_font();
+	}
+	return Variant();
+}
+
+Array TLShapedString::_get_property_list() const {
+	Array ret;
+	Dictionary prop;
+	prop["name"] = "base_font";
+	prop["type"] = GlobalConstants::TYPE_OBJECT;
+	prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+	prop["hint_string"] = "TLFontFamily";
+	prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE;
+	ret.push_back(prop);
+	return ret;
+}
+
 void TLShapedString::_register_methods() {
 
 	register_method("_font_changed", &TLShapedString::_font_changed);
@@ -3116,8 +3147,7 @@ void TLShapedString::_register_methods() {
 	register_method("prev_safe_bound", &TLShapedString::prev_safe_bound);
 
 	register_property<TLShapedString, int>("base_direction", &TLShapedString::set_base_direction, &TLShapedString::get_base_direction, TEXT_DIRECTION_AUTO, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("LTR,RTL,Locale,Auto"));
-	register_property<TLShapedString, String>("text", &TLShapedString::set_text, &TLShapedString::get_text, String());
-	register_property<TLShapedString, Ref<TLFontFamily> >("base_font", &TLShapedString::set_base_font, &TLShapedString::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
+	register_property<TLShapedString, String>("text", &TLShapedString::set_text, &TLShapedString::get_text, String(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_MULTILINE_TEXT, "");
 	register_property<TLShapedString, String>("base_font_style", &TLShapedString::set_base_font_style, &TLShapedString::get_base_font_style, String("Regular"));
 	register_property<TLShapedString, int>("base_font_size", &TLShapedString::set_base_font_size, &TLShapedString::get_base_font_size, 12);
 	register_property<TLShapedString, String>("features", &TLShapedString::set_features, &TLShapedString::get_features, String());
@@ -3126,6 +3156,10 @@ void TLShapedString::_register_methods() {
 
 	register_signal<TLShapedString>("string_changed");
 	register_signal<TLShapedString>("string_shaped");
+
+	register_method("_get_property_list", &TLShapedString::_get_property_list);
+	register_method("_get", &TLShapedString::_get);
+	register_method("_set", &TLShapedString::_set);
 }
 
 #endif

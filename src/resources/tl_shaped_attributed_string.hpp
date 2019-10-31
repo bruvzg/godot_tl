@@ -52,6 +52,11 @@ enum TextVAlign {
 class TLShapedAttributedString : public TLShapedString {
 	GODOT_SUBCLASS(TLShapedAttributedString, TLShapedString);
 
+	TextAttribute _edited_attrib = TEXT_ATTRIBUTE_COLOR;
+	Variant _edited_attrib_value;
+	int64_t _edited_attrib_start = 0;
+	int64_t _edited_attrib_end = 0;
+
 protected:
 	enum {
 		_CLUSTER_TYPE_IMAGE = 11, //Embedded image
@@ -101,6 +106,8 @@ public:
 	virtual int64_t get_attribute_start(int64_t p_attribute, int64_t p_index) const;
 	virtual int64_t get_attribute_end(int64_t p_attribute, int64_t p_index) const;
 
+	virtual void commit_attribute();
+
 	virtual void load_attributes_dict(Array p_array);
 	virtual Array save_attributes_dict() const;
 
@@ -110,8 +117,16 @@ public:
 	Array get_embedded_rects();
 
 #ifdef GODOT_MODULE
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+
 	static void _bind_methods();
 #else
+	bool _set(String p_name, Variant p_value);
+	Variant _get(String p_name) const;
+	Array _get_property_list() const;
+
 	static void _register_methods();
 #endif
 };

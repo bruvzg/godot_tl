@@ -12,7 +12,7 @@ func _enter_tree():
     add_custom_type("TLDynamicFontFace", "Resource", preload("res://addons/libgdtl/classes/tl_dynamic_font_face.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_dynamic_font_face.svg"))
     add_custom_type("TLFontFamily", "Resource", preload("res://addons/libgdtl/classes/tl_font_family.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_font_family.svg"))
     add_custom_type("TLShapedString", "Resource", preload("res://addons/libgdtl/classes/tl_shaped_string.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_shaped_string.svg"))
-    add_custom_type("TLShapedAttributedString", "TLShapedString", preload("res://addons/libgdtl/classes/tl_shaped_attributed_string.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_shaped_attributed_string.svg"))
+    add_custom_type("TLShapedAttributedString", "Resource", preload("res://addons/libgdtl/classes/tl_shaped_attributed_string.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_shaped_attributed_string.svg"))
     add_custom_type("TLShapedParagraph", "Resource", preload("res://addons/libgdtl/classes/tl_shaped_paragraph.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_shaped_paragraph.svg"))
     add_custom_type("TLProtoControl", "Control", preload("res://addons/libgdtl/classes/tl_proto_control.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_proto_control.svg"))
     add_custom_type("TLProtoControlSelection", "Reference", preload("res://addons/libgdtl/classes/tl_proto_control_selection.gdns"), preload("res://addons/libgdtl/icons/icon_t_l_proto_control_selection.svg"))
