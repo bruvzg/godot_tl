@@ -86,6 +86,10 @@ file_insertion_enabled = False
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
+latex_elements = {
+    'papersize': 'a4paper'
+}
+
 latex_show_urls = 'inline'
 latex_documents = [
   (master_doc, 'libgdtl.tex', 'libgdtl Documentation', '', 'manual'),

@@ -34,9 +34,13 @@ Properties
 Methods
 -------
 
-+------+------------------------------------------------------------------------------------+
-| bool | :ref:`has_graphite<class_TLDynamicFontFace_method_has_graphite>` **(** **)** const |
-+------+------------------------------------------------------------------------------------+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +------+------------------------------------------------------------------------------------+
+   | bool | :ref:`has_graphite<class_TLDynamicFontFace_method_has_graphite>` **(** **)** const |
+   +------+------------------------------------------------------------------------------------+
 
 Enumerations
 ------------
@@ -64,13 +68,17 @@ Property Descriptions
 
 - bool **force_autohinter**
 
-+-----------+-----------------------------+
-| *Default* | false                       |
-+-----------+-----------------------------+
-| *Setter*  | set_force_autohinter(value) |
-+-----------+-----------------------------+
-| *Getter*  | get_force_autohinter()      |
-+-----------+-----------------------------+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+-----------------------------+
+   | *Default* | false                       |
+   +-----------+-----------------------------+
+   | *Setter*  | set_force_autohinter(value) |
+   +-----------+-----------------------------+
+   | *Getter*  | get_force_autohinter()      |
+   +-----------+-----------------------------+
 
 If ``true``, prefers FreeType auto-hinter over the font's native hinter. Default: ``false``
 
@@ -80,13 +88,17 @@ If ``true``, prefers FreeType auto-hinter over the font's native hinter. Default
 
 - int **hinting**
 
-+-----------+--------------------+
-| *Default* | 2                  |
-+-----------+--------------------+
-| *Setter*  | set_hinting(value) |
-+-----------+--------------------+
-| *Getter*  | get_hinting()      |
-+-----------+--------------------+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+--------------------+
+   | *Default* | 2                  |
+   +-----------+--------------------+
+   | *Setter*  | set_hinting(value) |
+   +-----------+--------------------+
+   | *Getter*  | get_hinting()      |
+   +-----------+--------------------+
 
 The font hinting mode used by FreeType auto-hinter. Default: ``DF_HINTING_NONE``
 
@@ -96,13 +108,17 @@ The font hinting mode used by FreeType auto-hinter. Default: ``DF_HINTING_NONE``
 
 - float **oversampling**
 
-+-----------+-------------------------+
-| *Default* | 1.0                     |
-+-----------+-------------------------+
-| *Setter*  | set_oversampling(value) |
-+-----------+-------------------------+
-| *Getter*  | get_oversampling()      |
-+-----------+-------------------------+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+-------------------------+
+   | *Default* | 1.0                     |
+   +-----------+-------------------------+
+   | *Setter*  | set_oversampling(value) |
+   +-----------+-------------------------+
+   | *Getter*  | get_oversampling()      |
+   +-----------+-------------------------+
 
 Font oversampling factor. Default: ``1.0``
 

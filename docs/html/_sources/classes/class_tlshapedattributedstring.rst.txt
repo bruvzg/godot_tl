@@ -21,31 +21,35 @@ Golds shaped line of text with associated attributes.
 Methods
 -------
 
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`add_attribute<class_TLShapedAttributedString_method_add_attribute>` **(** int attribute, Variant value, int start, int end **)** |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`clear_attributes<class_TLShapedAttributedString_method_clear_attributes>` **(** **)**                                            |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>` **(** **)**                                            |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| Variant | :ref:`get_attribute<class_TLShapedAttributedString_method_get_attribute>` **(** int attribute, int index **)** const                   |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| int     | :ref:`get_attribute_end<class_TLShapedAttributedString_method_get_attribute_end>` **(** int attribute, int index **)** const           |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| int     | :ref:`get_attribute_start<class_TLShapedAttributedString_method_get_attribute_start>` **(** int attribute, int index **)** const       |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| Array   | :ref:`get_embedded_rects<class_TLShapedAttributedString_method_get_embedded_rects>` **(** **)**                                        |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| bool    | :ref:`has_attribute<class_TLShapedAttributedString_method_has_attribute>` **(** int attribute, int index **)** const                   |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`load_attributes_dict<class_TLShapedAttributedString_method_load_attributes_dict>` **(** Array array **)**                        |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`remove_attribute<class_TLShapedAttributedString_method_remove_attribute>` **(** int attribute, int start, int end **)**          |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| void    | :ref:`remove_attributes<class_TLShapedAttributedString_method_remove_attributes>` **(** int start, int end **)**                       |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
-| Array   | :ref:`save_attributes_dict<class_TLShapedAttributedString_method_save_attributes_dict>` **(** **)** const                              |
-+---------+----------------------------------------------------------------------------------------------------------------------------------------+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`add_attribute<class_TLShapedAttributedString_method_add_attribute>` **(** int attribute, Variant value, int start, int end **)** |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`clear_attributes<class_TLShapedAttributedString_method_clear_attributes>` **(** **)**                                            |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>` **(** **)**                                            |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | Variant | :ref:`get_attribute<class_TLShapedAttributedString_method_get_attribute>` **(** int attribute, int index **)** const                   |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | int     | :ref:`get_attribute_end<class_TLShapedAttributedString_method_get_attribute_end>` **(** int attribute, int index **)** const           |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | int     | :ref:`get_attribute_start<class_TLShapedAttributedString_method_get_attribute_start>` **(** int attribute, int index **)** const       |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | Array   | :ref:`get_embedded_rects<class_TLShapedAttributedString_method_get_embedded_rects>` **(** **)**                                        |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | bool    | :ref:`has_attribute<class_TLShapedAttributedString_method_has_attribute>` **(** int attribute, int index **)** const                   |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`load_attributes_dict<class_TLShapedAttributedString_method_load_attributes_dict>` **(** Array array **)**                        |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`remove_attribute<class_TLShapedAttributedString_method_remove_attribute>` **(** int attribute, int start, int end **)**          |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | void    | :ref:`remove_attributes<class_TLShapedAttributedString_method_remove_attributes>` **(** int start, int end **)**                       |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+   | Array   | :ref:`save_attributes_dict<class_TLShapedAttributedString_method_save_attributes_dict>` **(** **)** const                              |
+   +---------+----------------------------------------------------------------------------------------------------------------------------------------+
 
 Enumerations
 ------------
