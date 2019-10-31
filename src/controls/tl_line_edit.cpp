@@ -1773,6 +1773,54 @@ void TLLineEdit::_bind_methods() {
 }
 
 #else
+bool TLLineEdit::_set(String p_name, Variant p_value) {
+	if (p_name == "base_font") {
+		Object *p_obj = p_value;
+		Ref<TLFontFamily> font = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
+		if (font.is_valid()) {
+			set_base_font(font);
+			return true;
+		}
+	} else if (p_name == "focus_mode") {
+		int64_t fm = p_value;
+		set_focus_mode(fm);
+		return true;
+	}
+	return false;
+}
+
+Variant TLLineEdit::_get(String p_name) const {
+	if (p_name == "base_font") {
+		return get_base_font();
+	} else if (p_name == "focus_mode") {
+		return get_focus_mode();
+	}
+	return Variant();
+}
+
+Array TLLineEdit::_get_property_list() const {
+	Array ret;
+	{
+		Dictionary prop;
+		prop["name"] = "base_font";
+		prop["type"] = GlobalConstants::TYPE_OBJECT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+		prop["hint_string"] = "TLFontFamily";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "focus_mode";
+		prop["type"] = GlobalConstants::TYPE_INT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_ENUM;
+		prop["hint_string"] = String("None,Click,All");
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_DEFAULT;
+		ret.push_back(prop);
+	}
+
+	return ret;
+}
 
 void TLLineEdit::_register_methods() {
 
@@ -1841,7 +1889,6 @@ void TLLineEdit::_register_methods() {
 	register_property<TLLineEdit, String>("text", &TLLineEdit::set_text, &TLLineEdit::get_text, String(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_MULTILINE_TEXT, String(""));
 	register_property<TLLineEdit, int>("align", &TLLineEdit::set_align, &TLLineEdit::get_align, ALIGN_LEFT, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Left,Center,Right,Fill"));
 
-	register_property<TLLineEdit, Ref<TLFontFamily> >("base_font", &TLLineEdit::set_base_font, &TLLineEdit::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLLineEdit, String>("base_font_style", &TLLineEdit::set_base_font_style, &TLLineEdit::get_base_font_style, String("Regular"));
 	register_property<TLLineEdit, int>("base_font_size", &TLLineEdit::set_base_font_size, &TLLineEdit::get_base_font_size, 12);
 
@@ -1856,8 +1903,6 @@ void TLLineEdit::_register_methods() {
 	register_property<TLLineEdit, String>("secret_character", &TLLineEdit::set_secret_character, &TLLineEdit::get_secret_character, String());
 	register_property<TLLineEdit, bool>("expand_to_text_length", &TLLineEdit::set_expand_to_text_length, &TLLineEdit::get_expand_to_text_length, false);
 
-	//register_property<TLLineEdit, int>("focus_mode", &TLLineEdit::set_focus_mode, &TLLineEdit::get_focus_mode, FOCUS_ALL, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("None,Click,All"));
-
 	register_property<TLLineEdit, bool>("context_menu_enabled", &TLLineEdit::set_context_menu_enabled, &TLLineEdit::is_context_menu_enabled, true);
 	register_property<TLLineEdit, bool>("clear_button_enabled", &TLLineEdit::set_clear_button_enabled, &TLLineEdit::is_clear_button_enabled, false);
 
@@ -1869,6 +1914,10 @@ void TLLineEdit::_register_methods() {
 	register_property<TLLineEdit, int>("caret_position", &TLLineEdit::set_cursor_position, &TLLineEdit::get_cursor_position, 0);
 
 	register_method("_notification", &TLLineEdit::_notification);
+
+	register_method("_get_property_list", &TLLineEdit::_get_property_list);
+	register_method("_get", &TLLineEdit::_get);
+	register_method("_set", &TLLineEdit::_set);
 }
 
 #endif

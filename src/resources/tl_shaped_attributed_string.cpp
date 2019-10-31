@@ -1545,10 +1545,163 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 	emit_signal("string_changed");
 }
 
+void TLShapedAttributedString::commit_attribute() {
+	add_attribute(_edited_attrib, _edited_attrib_value, _edited_attrib_start, _edited_attrib_end);
+	_edited_attrib = TEXT_ATTRIBUTE_COLOR;
+	_edited_attrib_value = Variant();
+	_edited_attrib_start = 0;
+	_edited_attrib_end = 0;
 #ifdef GODOT_MODULE
+	_change_notify();
+#else
+	property_list_changed_notify();
+#endif
+}
+
+#ifdef GODOT_MODULE
+bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+	if (name == "attribute/type") {
+		int64_t v = p_value;
+		switch (v) {
+			case 0: _edited_attrib = TEXT_ATTRIBUTE_FONT; break;
+			case 1: _edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE; break;
+			case 2: _edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE; break;
+			case 3: _edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES; break;
+			case 4: _edited_attrib = TEXT_ATTRIBUTE_LANGUAGE; break;
+			case 5: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE; break;
+			case 6: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT; break;
+			case 7: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID; break;
+			case 8: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN; break;
+			case 9: _edited_attrib = TEXT_ATTRIBUTE_COLOR; break;
+			case 10: _edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR; break;
+			case 11: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR; break;
+			case 12: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH; break;
+			case 13: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR; break;
+			case 14: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH; break;
+			case 15: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR; break;
+			case 16: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH; break;
+			case 17: _edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR; break;
+			default: return false;
+		}
+		_change_notify();
+		return true;
+	} else if (name == "attribute/value") {
+		if (_edited_attrib == TEXT_ATTRIBUTE_FONT) {
+			Object *p_obj = p_value;
+			Ref<TLFontFamily> v = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
+			if (v.is_null()) return false;
+		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
+			Object *p_obj = p_value;
+			Ref<Texture> v = Ref<Texture>(Object::cast_to<Texture>(p_obj));
+			if (v.is_null()) return false;
+		}
+		_edited_attrib_value = p_value;
+		_change_notify();
+		return true;
+	} else if (name == "attribute/start") {
+		_edited_attrib_start = (int64_t)p_value;
+		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
+		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
+		_change_notify();
+		return true;
+	} else if (name == "attribute/end") {
+		_edited_attrib_end = (int64_t)p_value;
+		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
+		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
+		_change_notify();
+		return true;
+	}
+	return false;
+}
+
+bool TLShapedAttributedString::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+	if (name == "attribute/type") {
+		switch (_edited_attrib) {
+			case TEXT_ATTRIBUTE_FONT: r_ret = 0; break;
+			case TEXT_ATTRIBUTE_FONT_STYLE: r_ret = 1; break;
+			case TEXT_ATTRIBUTE_FONT_SIZE: r_ret = 2; break;
+			case TEXT_ATTRIBUTE_FONT_FEATURES: r_ret = 3; break;
+			case TEXT_ATTRIBUTE_LANGUAGE: r_ret = 4; break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: r_ret = 5; break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: r_ret = 6; break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID: r_ret = 7; break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: r_ret = 8; break;
+			case TEXT_ATTRIBUTE_COLOR: r_ret = 9; break;
+			case TEXT_ATTRIBUTE_OUTLINE_COLOR: r_ret = 10; break;
+			case TEXT_ATTRIBUTE_UNDERLINE_COLOR: r_ret = 11; break;
+			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH: r_ret = 12; break;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR: r_ret = 13; break;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH: r_ret = 14; break;
+			case TEXT_ATTRIBUTE_OVERLINE_COLOR: r_ret = 15; break;
+			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: r_ret = 16; break;
+			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR: r_ret = 17; break;
+			default: return false;
+		}
+		return true;
+	} else if (name == "attribute/value") {
+		r_ret = _edited_attrib_value;
+		return true;
+	} else if (name == "attribute/start") {
+		r_ret = _edited_attrib_start;
+		return true;
+	} else if (name == "attribute/end") {
+		r_ret = _edited_attrib_end;
+		return true;
+	}
+	return false;
+}
+
+void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) const {
+	p_list->push_back(PropertyInfo(Variant::INT, "attribute/type", PROPERTY_HINT_ENUM, "Font,Font Style,Font Size,Font Features,Language,Replacement Image,Replacement Rect,Replacement Id,Replacement Valign,Color,Outline Color,Underline Color,Underline Width,Strikethrough Color,Strikethrough Width,Overline Color,Overline Width,Highlight Color", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+	switch (_edited_attrib) {
+		case TEXT_ATTRIBUTE_FONT: {
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "attribute/value", PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_LANGUAGE:
+		case TEXT_ATTRIBUTE_FONT_FEATURES:
+		case TEXT_ATTRIBUTE_FONT_STYLE: {
+			p_list->push_back(PropertyInfo(Variant::STRING, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_FONT_SIZE:
+		case TEXT_ATTRIBUTE_REPLACEMENT_ID:
+		case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
+		case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
+		case TEXT_ATTRIBUTE_OVERLINE_WIDTH: {
+			p_list->push_back(PropertyInfo(Variant::INT, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: {
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "attribute/value", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_REPLACEMENT_RECT: {
+			p_list->push_back(PropertyInfo(Variant::VECTOR2, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: {
+			p_list->push_back(PropertyInfo(Variant::INT, "attribute/value", PROPERTY_HINT_ENUM, "Top,Center,Botto", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		case TEXT_ATTRIBUTE_OUTLINE_COLOR:
+		case TEXT_ATTRIBUTE_UNDERLINE_COLOR:
+		case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR:
+		case TEXT_ATTRIBUTE_OVERLINE_COLOR:
+		case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR:
+		case TEXT_ATTRIBUTE_COLOR: {
+			p_list->push_back(PropertyInfo(Variant::COLOR, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+		default: {
+			p_list->push_back(PropertyInfo(Variant::NIL, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+		} break;
+	}
+	p_list->push_back(PropertyInfo(Variant::INT, "attribute/start", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+	p_list->push_back(PropertyInfo(Variant::INT, "attribute/end", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+	p_list->push_back(PropertyInfo(Variant::NIL, "attribute/_commit", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+}
+
 void TLShapedAttributedString::_bind_methods() {
 
 	//Attribute control
+	ClassDB::bind_method(D_METHOD("commit_attribute"), &TLShapedAttributedString::commit_attribute);
+
 	ClassDB::bind_method(D_METHOD("add_attribute", "attribute", "value", "start", "end"), &TLShapedAttributedString::add_attribute);
 	ClassDB::bind_method(D_METHOD("remove_attribute", "attribute", "start", "end"), &TLShapedAttributedString::remove_attribute);
 	ClassDB::bind_method(D_METHOD("has_attribute", "attribute", "index"), &TLShapedAttributedString::has_attribute);
@@ -1588,9 +1741,202 @@ void TLShapedAttributedString::_bind_methods() {
 	BIND_ENUM_CONSTANT(TEXT_VALIGN_BOTTOM);
 }
 #else
+
+bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
+	String name = p_name;
+	if (name == "attribute/type") {
+		int64_t v = p_value;
+		switch (v) {
+			case 0: _edited_attrib = TEXT_ATTRIBUTE_FONT; break;
+			case 1: _edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE; break;
+			case 2: _edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE; break;
+			case 3: _edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES; break;
+			case 4: _edited_attrib = TEXT_ATTRIBUTE_LANGUAGE; break;
+			case 5: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE; break;
+			case 6: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT; break;
+			case 7: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID; break;
+			case 8: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN; break;
+			case 9: _edited_attrib = TEXT_ATTRIBUTE_COLOR; break;
+			case 10: _edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR; break;
+			case 11: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR; break;
+			case 12: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH; break;
+			case 13: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR; break;
+			case 14: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH; break;
+			case 15: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR; break;
+			case 16: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH; break;
+			case 17: _edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR; break;
+			default: return false;
+		}
+		property_list_changed_notify();
+		return true;
+	} else if (name == "attribute/value") {
+		if (_edited_attrib == TEXT_ATTRIBUTE_FONT) {
+			Object *p_obj = p_value;
+			Ref<TLFontFamily> v = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
+			if (v.is_null()) return false;
+		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
+			Object *p_obj = p_value;
+			Ref<Texture> v = Ref<Texture>(Object::cast_to<Texture>(p_obj));
+			if (v.is_null()) return false;
+		}
+		_edited_attrib_value = p_value;
+		property_list_changed_notify();
+		return true;
+	} else if (name == "attribute/start") {
+		_edited_attrib_start = (int64_t)p_value;
+		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
+		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
+		property_list_changed_notify();
+		return true;
+	} else if (name == "attribute/end") {
+		_edited_attrib_end = (int64_t)p_value;
+		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
+		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
+		property_list_changed_notify();
+		return true;
+	}
+	return false;
+}
+
+Variant TLShapedAttributedString::_get(String p_name) const {
+	String name = p_name;
+	if (name == "attribute/type") {
+		switch (_edited_attrib) {
+			case TEXT_ATTRIBUTE_FONT: return 0;
+			case TEXT_ATTRIBUTE_FONT_STYLE: return 1;
+			case TEXT_ATTRIBUTE_FONT_SIZE: return 2;
+			case TEXT_ATTRIBUTE_FONT_FEATURES: return 3;
+			case TEXT_ATTRIBUTE_LANGUAGE: return 4;
+			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: return 5;
+			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: return 6;
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID: return 7;
+			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: return 8;
+			case TEXT_ATTRIBUTE_COLOR: return 9;
+			case TEXT_ATTRIBUTE_OUTLINE_COLOR: return 10;
+			case TEXT_ATTRIBUTE_UNDERLINE_COLOR: return 11;
+			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH: return 12;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR: return 13;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH: return 14;
+			case TEXT_ATTRIBUTE_OVERLINE_COLOR: return 15;
+			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: return 16;
+			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR: return 17;
+			default: return Variant();
+		}
+	} else if (name == "attribute/value") {
+		return _edited_attrib_value;
+	} else if (name == "attribute/start") {
+		return _edited_attrib_start;
+	} else if (name == "attribute/end") {
+		return _edited_attrib_end;
+	}
+	return Variant();
+}
+
+Array TLShapedAttributedString::_get_property_list() const {
+	Array ret;
+	{
+		Dictionary prop;
+		prop["name"] = "attribute/type";
+		prop["type"] = GlobalConstants::TYPE_INT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_ENUM;
+		prop["hint_string"] = "Font,Font Style,Font Size,Font Features,Language,Replacement Image,Replacement Rect,Replacement Id,Replacement Valign,Color,Outline Color,Underline Color,Underline Width,Strikethrough Color,Strikethrough Width,Overline Color,Overline Width,Highlight Color";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "attribute/value";
+		switch (_edited_attrib) {
+			case TEXT_ATTRIBUTE_FONT: {
+				prop["type"] = GlobalConstants::TYPE_OBJECT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+				prop["hint_string"] = "TLFontFamily";
+			} break;
+			case TEXT_ATTRIBUTE_LANGUAGE:
+			case TEXT_ATTRIBUTE_FONT_FEATURES:
+			case TEXT_ATTRIBUTE_FONT_STYLE: {
+				prop["type"] = GlobalConstants::TYPE_STRING;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				prop["hint_string"] = "";
+			} break;
+			case TEXT_ATTRIBUTE_FONT_SIZE:
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID:
+			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
+			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: {
+				prop["type"] = GlobalConstants::TYPE_INT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				prop["hint_string"] = "";
+			} break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: {
+				prop["type"] = GlobalConstants::TYPE_OBJECT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+				prop["hint_string"] = "Texture";
+			} break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: {
+				prop["type"] = GlobalConstants::TYPE_VECTOR2;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				prop["hint_string"] = "";
+			} break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: {
+				prop["type"] = GlobalConstants::TYPE_INT;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_ENUM;
+				prop["hint_string"] = "Top,Center,Bottom";
+			} break;
+			case TEXT_ATTRIBUTE_OUTLINE_COLOR:
+			case TEXT_ATTRIBUTE_UNDERLINE_COLOR:
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR:
+			case TEXT_ATTRIBUTE_OVERLINE_COLOR:
+			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR:
+			case TEXT_ATTRIBUTE_COLOR: {
+				prop["type"] = GlobalConstants::TYPE_COLOR;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				prop["hint_string"] = "";
+			} break;
+			default: {
+				prop["type"] = GlobalConstants::TYPE_NIL;
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				prop["hint_string"] = "";
+			} break;
+		}
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "attribute/start";
+		prop["type"] = GlobalConstants::TYPE_INT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+		prop["hint_string"] = "";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "attribute/end";
+		prop["type"] = GlobalConstants::TYPE_INT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+		prop["hint_string"] = "";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+	{
+		Dictionary prop;
+		prop["name"] = "attribute/_commit";
+		prop["type"] = GlobalConstants::TYPE_NIL;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+		prop["hint_string"] = "";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+	return ret;
+}
+
 void TLShapedAttributedString::_register_methods() {
 
 	//Attribute control
+	register_method("commit_attribute", &TLShapedAttributedString::commit_attribute);
+
 	register_method("add_attribute", &TLShapedAttributedString::add_attribute);
 	register_method("remove_attribute", &TLShapedAttributedString::remove_attribute);
 	register_method("has_attribute", &TLShapedAttributedString::has_attribute);
@@ -1604,5 +1950,9 @@ void TLShapedAttributedString::_register_methods() {
 
 	register_method("load_attributes_dict", &TLShapedAttributedString::load_attributes_dict);
 	register_method("save_attributes_dict", &TLShapedAttributedString::save_attributes_dict);
+
+	register_method("_get_property_list", &TLShapedAttributedString::_get_property_list);
+	register_method("_get", &TLShapedAttributedString::_get);
+	register_method("_set", &TLShapedAttributedString::_set);
 }
 #endif

@@ -319,6 +319,37 @@ void TLShapedParagraph::_bind_methods() {
 
 #else
 
+bool TLShapedParagraph::_set(String p_name, Variant p_value) {
+	if (p_name == "string") {
+		Object *p_obj = p_value;
+		Ref<TLShapedAttributedString> sstr = Ref<TLShapedAttributedString>(Object::cast_to<TLShapedAttributedString>(p_obj));
+		if (sstr.is_valid()) {
+			set_string(sstr);
+			return true;
+		}
+	}
+	return false;
+}
+
+Variant TLShapedParagraph::_get(String p_name) const {
+	if (p_name == "string") {
+		return get_string();
+	}
+	return Variant();
+}
+
+Array TLShapedParagraph::_get_property_list() const {
+	Array ret;
+	Dictionary prop;
+	prop["name"] = "string";
+	prop["type"] = GlobalConstants::TYPE_OBJECT;
+	prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+	prop["hint_string"] = "TLShapedAttributedString";
+	prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE;
+	ret.push_back(prop);
+	return ret;
+}
+
 void TLShapedParagraph::_register_methods() {
 
 	register_method("copy_properties", &TLShapedParagraph::copy_properties);
@@ -347,7 +378,6 @@ void TLShapedParagraph::_register_methods() {
 
 	register_method("set_string", &TLShapedParagraph::set_string);
 	register_method("get_string", &TLShapedParagraph::get_string);
-	register_property<TLShapedParagraph, Ref<TLShapedAttributedString> >("string", &TLShapedParagraph::set_string, &TLShapedParagraph::get_string, Ref<TLShapedAttributedString>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLShapedAttributedString"));
 
 	register_method("set_brk_flags", &TLShapedParagraph::set_brk_flags);
 	register_method("get_brk_flags", &TLShapedParagraph::get_brk_flags);
@@ -366,6 +396,10 @@ void TLShapedParagraph::_register_methods() {
 	register_method("get_line_bounds", &TLShapedParagraph::_get_line_bounds);
 
 	register_signal<TLShapedParagraph>("paragraph_changed");
+
+	register_method("_get_property_list", &TLShapedParagraph::_get_property_list);
+	register_method("_get", &TLShapedParagraph::_get);
+	register_method("_set", &TLShapedParagraph::_set);
 }
 
 #endif

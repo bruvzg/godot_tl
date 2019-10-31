@@ -6,6 +6,7 @@
 #define TL_FONT_FAMILY_EDIT_HPP
 
 #include "resources/tl_font_family.hpp"
+#include "resources/tl_shaped_attributed_string.hpp"
 #include "resources/tl_shaped_string.hpp"
 
 #include "editor/editor_node.h"
@@ -44,6 +45,8 @@ class EditorInspectorPluginTLFontFamily : public EditorInspectorPlugin {
 	void _new_script(Object *p_object, String p_style, Object *p_ctl);
 	void _remove_lang(Object *p_object, String p_style, String p_lang);
 	void _remove_script(Object *p_object, String p_style, String p_script);
+	void _clear(Object *p_object);
+	void _commit(Object *p_object);
 
 protected:
 	static void _bind_methods();

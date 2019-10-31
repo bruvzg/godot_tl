@@ -30,6 +30,12 @@
 				Removes all attributes.
 			</description>
 		</method>
+		<method name="commit_attribute">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_attribute" qualifiers="const">
 			<return type="Variant">
 			</return>

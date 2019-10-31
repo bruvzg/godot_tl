@@ -743,7 +743,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 		if (tokens.size() == 2) {
 			int64_t index = (int64_t)tokens[1].to_int();
 			if (index == (int64_t)styles[style.to_upper()].main_chain.size()) {
-				Ref<TLFontFace> face = p_value;
+				Object *p_obj = p_value;
+				Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 				if (face.is_valid()) {
 					_inc_ref(face);
 					styles[style.to_upper()].main_chain.push_back(face);
@@ -752,7 +753,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 					return true;
 				}
 			} else if ((index >= 0) && (index < (int64_t)styles[style.to_upper()].main_chain.size())) {
-				Ref<TLFontFace> face = p_value;
+				Object *p_obj = p_value;
+				Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 				if (face.is_null()) {
 					_dec_ref(styles[style.to_upper()].main_chain[index]);
 					styles[style.to_upper()].main_chain.erase(styles[style.to_upper()].main_chain.begin() + index);
@@ -774,7 +776,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 				//add script
 				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == (int64_t)styles[style.to_upper()].linked_src_chain[scr].size()) {
-					Ref<TLFontFace> face = p_value;
+					Object *p_obj = p_value;
+					Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 					if (face.is_valid()) {
 						_inc_ref(face);
 						styles[style.to_upper()].linked_src_chain[scr].push_back(face);
@@ -783,7 +786,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 						return true;
 					}
 				} else if ((index >= 0) && (index < (int64_t)styles[style.to_upper()].linked_src_chain[scr].size())) {
-					Ref<TLFontFace> face = p_value;
+					Object *p_obj = p_value;
+					Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 					if (face.is_null()) {
 						_dec_ref(styles[style.to_upper()].linked_src_chain[scr][index]);
 						styles[style.to_upper()].linked_src_chain[scr].erase(styles[style.to_upper()].linked_src_chain[scr].begin() + index);
@@ -803,7 +807,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 				//add lang
 				hb_language_t lang = hb_language_from_string(tokens[2].ascii().get_data(), -1);
 				if (index == (int64_t)styles[style.to_upper()].linked_lang_chain[lang].size()) {
-					Ref<TLFontFace> face = p_value;
+					Object *p_obj = p_value;
+					Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 					if (face.is_valid()) {
 						_inc_ref(face);
 						styles[style.to_upper()].linked_lang_chain[lang].push_back(face);
@@ -812,7 +817,8 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 						return true;
 					}
 				} else if ((index >= 0) && (index < (int64_t)styles[style.to_upper()].linked_lang_chain[lang].size())) {
-					Ref<TLFontFace> face = p_value;
+					Object *p_obj = p_value;
+					Ref<TLFontFace> face = Ref<TLFontFace>(Object::cast_to<TLFontFace>(p_obj));
 					if (face.is_null()) {
 						_dec_ref(styles[style.to_upper()].linked_lang_chain[lang][index]);
 						styles[style.to_upper()].linked_lang_chain[lang].erase(styles[style.to_upper()].linked_lang_chain[lang].begin() + index);

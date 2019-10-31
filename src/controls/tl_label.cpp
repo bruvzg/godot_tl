@@ -653,6 +653,37 @@ void TLLabel::_bind_methods() {
 
 #else
 
+bool TLLabel::_set(String p_name, Variant p_value) {
+	if (p_name == "base_font") {
+		Object *p_obj = p_value;
+		Ref<TLFontFamily> font = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
+		if (font.is_valid()) {
+			set_base_font(font);
+			return true;
+		}
+	}
+	return false;
+}
+
+Variant TLLabel::_get(String p_name) const {
+	if (p_name == "base_font") {
+		return get_base_font();
+	}
+	return Variant();
+}
+
+Array TLLabel::_get_property_list() const {
+	Array ret;
+	Dictionary prop;
+	prop["name"] = "base_font";
+	prop["type"] = GlobalConstants::TYPE_OBJECT;
+	prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+	prop["hint_string"] = "TLFontFamily";
+	prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE;
+	ret.push_back(prop);
+	return ret;
+}
+
 void TLLabel::_register_methods() {
 
 	register_method("_font_changed", &TLLabel::_font_changed);
@@ -702,7 +733,6 @@ void TLLabel::_register_methods() {
 	register_property<TLLabel, int>("align", &TLLabel::set_align, &TLLabel::get_align, ALIGN_LEFT, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Left,Center,Right,Fill"));
 	register_property<TLLabel, int>("valign", &TLLabel::set_valign, &TLLabel::get_valign, VALIGN_TOP, GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, String("Top,Center,Bottom,Fill"));
 
-	register_property<TLLabel, Ref<TLFontFamily> >("base_font", &TLLabel::set_base_font, &TLLabel::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_EDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLLabel, String>("base_font_style", &TLLabel::set_base_font_style, &TLLabel::get_base_font_style, String("Regular"));
 	register_property<TLLabel, int>("base_font_size", &TLLabel::set_base_font_size, &TLLabel::get_base_font_size, 12);
 
@@ -715,6 +745,10 @@ void TLLabel::_register_methods() {
 	register_property<TLLabel, bool>("uppercase", &TLLabel::set_uppercase, &TLLabel::is_uppercase, false);
 
 	register_method("_notification", &TLLabel::_notification);
+
+	register_method("_get_property_list", &TLLabel::_get_property_list);
+	register_method("_get", &TLLabel::_get);
+	register_method("_set", &TLLabel::_set);
 }
 
 #endif

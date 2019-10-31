@@ -26,6 +26,8 @@ Methods
 +---------+----------------------------------------------------------------------------------------------------------------------------------------+
 | void    | :ref:`clear_attributes<class_TLShapedAttributedString_method_clear_attributes>` **(** **)**                                            |
 +---------+----------------------------------------------------------------------------------------------------------------------------------------+
+| void    | :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>` **(** **)**                                            |
++---------+----------------------------------------------------------------------------------------------------------------------------------------+
 | Variant | :ref:`get_attribute<class_TLShapedAttributedString_method_get_attribute>` **(** int attribute, int index **)** const                   |
 +---------+----------------------------------------------------------------------------------------------------------------------------------------+
 | int     | :ref:`get_attribute_end<class_TLShapedAttributedString_method_get_attribute_end>` **(** int attribute, int index **)** const           |
@@ -162,6 +164,12 @@ Sets ``attribute`` attribute to ``value`` for specified text range.
 - void **clear_attributes** **(** **)**
 
 Removes all attributes.
+
+----
+
+.. _class_TLShapedAttributedString_method_commit_attribute:
+
+- void **commit_attribute** **(** **)**
 
 ----
 
