@@ -6,6 +6,10 @@ import re
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
+#This file is based in part on Godot's BitmapFont implementation, licensed under MIT license.
+#For more information, see https://github.com/godotengine/godot/blob/master/LICENSE.txt
+#For original source, see https://github.com/godotengine/godot/blob/master/doc/tools/makerst.py
+
 # Uncomment to do type checks. I have it commented out so it works below Python 3.5
 #from typing import List, Dict, TextIO, Tuple, Iterable, Optional, DefaultDict, Any, Union
 

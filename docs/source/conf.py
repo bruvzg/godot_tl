@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# Godot Engine documentation build configuration file
 
 import sys
 import os
@@ -46,14 +44,9 @@ highlight_language = 'gdscript'
 
 # -- Options for HTML output ----------------------------------------------
 
-# on_rtd is whether we are on readthedocs.org, this line of code grabbed from docs.readthedocs.org
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-
 import sphinx_rtd_theme
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-if on_rtd:
-    using_rtd_theme = True
 
 # Theme options
 html_theme_options = {
@@ -64,11 +57,6 @@ html_theme_options = {
     'collapse_navigation': False,  # Collapse navigation (False makes it tree-like)
     # 'display_version': True,  # Display the docs version
     # 'navigation_depth': 4,  # Depth of the headers shown in the navigation bar
-}
-
-# VCS options: https://docs.readthedocs.io/en/latest/vcs.html#github
-html_context = {
-    "display_github": False, # Integrate GitHub
 }
 
 html_logo = 'img/docs_logo.png'
@@ -101,11 +89,3 @@ latex_documents = [
 linkcheck_anchors = False
 
 linkcheck_timeout = 10
-
-# -- I18n settings --------------------------------------------------------
-
-locale_dirs = ['../sphinx/po/']
-gettext_compact = False
-# Exclude class reference when marked with tag i18n.
-if tags.has('i18n'):
-    exclude_patterns = ['classes']

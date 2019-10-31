@@ -536,23 +536,6 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size) {
 }
 
 std::vector<hb_script_t> TLDynamicFontFaceAtSize::unicode_scripts_supported() const {
-	//DEBUG
-	/*
-	for (int i = 31; i >= 0; i--)
-		printf("%s", ((os2->ulUnicodeRange1 >> i) & 1) ? "+" : "-");
-	printf(" ");
-	for (int i = 31; i >= 0; i--)
-		printf("%s", ((os2->ulUnicodeRange2 >> i) & 1) ? "+" : "-");
-	printf(" ");
-	for (int i = 31; i >= 0; i--)
-		printf("%s", ((os2->ulUnicodeRange3 >> i) & 1) ? "+" : "-");
-	printf(" ");
-	for (int i = 31; i >= 0; i--)
-		printf("%s", ((os2->ulUnicodeRange4 >> i) & 1) ? "+" : "-");
-	printf("\n");
-	*/
-	//DEBUG
-
 	//https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_ucr_xxx
 
 	std::vector<hb_script_t> ret;
