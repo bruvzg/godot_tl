@@ -27,6 +27,10 @@ using namespace godot;
 
 #ifdef GODOT_MODULE
 
+#ifdef HAVE_WRAPPER
+#include "resources/tl_gd_font_wrapper.hpp"
+#endif
+
 #ifdef TOOLS_ENABLED
 
 #include "tools/tl_editor_node.h"
@@ -57,6 +61,9 @@ void register_godot_tl_types() {
 	ClassDB::register_class<TLLabel>();
 	ClassDB::register_class<TLLineEdit>();
 	ClassDB::register_class<TLFontIterator>();
+#ifdef HAVE_WRAPPER
+	ClassDB::register_class<TLGDFontWrapper>();
+#endif
 
 	//Register editor tools
 #ifdef TOOLS_ENABLED

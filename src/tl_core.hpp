@@ -33,6 +33,7 @@ namespace godot {};
 #include <Reference.hpp>
 #include <Resource.hpp>
 #define _CHANGED "changed"
+#define CharType wchar_t
 
 #define GLOBAL_CONST(m_text) GlobalConstants::m_text
 #define memnew(type) type::_new()
