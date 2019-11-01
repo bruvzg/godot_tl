@@ -2806,6 +2806,11 @@ void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShape
 		return;
 	}
 
+	if (p_text.is_null()) {
+		ERR_PRINTS("Invalid string");
+		return;
+	}
+
 	_clear_props();
 
 	int32_t _real_length = p_text->length();
@@ -2829,6 +2834,11 @@ void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShape
 }
 
 void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
+
+	if (p_source.is_null()) {
+		ERR_PRINTS("Invalid string");
+		return;
+	}
 
 	base_direction = p_source->base_direction;
 	language = p_source->language;

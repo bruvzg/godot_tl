@@ -1461,6 +1461,16 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 
 void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
 
+	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
+		ERR_PRINTS("Invalid range");
+		return;
+	}
+
+	if (p_text.is_null()) {
+		ERR_PRINTS("Invalid string");
+		return;
+	}
+
 	int32_t _len = data_size;
 
 	TLShapedString::replace_sstring(p_start, p_end, p_text);
@@ -1508,8 +1518,10 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 
 void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 
-	if (p_ref.is_null())
+	if (p_ref.is_null()) {
+		ERR_PRINTS("Invalid string");
 		return;
+	}
 
 	TLShapedAttributedString *at_ref = cast_to<TLShapedAttributedString>(*p_ref);
 	if (!at_ref) {
@@ -1602,12 +1614,14 @@ bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_v
 	} else if (name == "attribute/start") {
 		_edited_attrib_start = (int64_t)p_value;
 		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
+		if (_edited_attrib_start > data_size) _edited_attrib_start = data_size;
 		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
 		_change_notify();
 		return true;
 	} else if (name == "attribute/end") {
 		_edited_attrib_end = (int64_t)p_value;
 		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
+		if (_edited_attrib_end > data_size) _edited_attrib_end = data_size;
 		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
 		_change_notify();
 		return true;
@@ -1785,12 +1799,14 @@ bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
 	} else if (name == "attribute/start") {
 		_edited_attrib_start = (int64_t)p_value;
 		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
+		if (_edited_attrib_start > data_size) _edited_attrib_start = data_size;
 		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
 		property_list_changed_notify();
 		return true;
 	} else if (name == "attribute/end") {
 		_edited_attrib_end = (int64_t)p_value;
 		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
+		if (_edited_attrib_end > data_size) _edited_attrib_end = data_size;
 		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
 		property_list_changed_notify();
 		return true;
