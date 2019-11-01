@@ -98,5 +98,4 @@ Demo data
 
 `Material Design icons by Google <https://github.com/google/material-design-icons>`_ are published under the `Apache License Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0.txt>`_
 
-
 Noto Color Emoji font is cut down to single glyph (U+1F604) using `glyphhanger <https://github.com/filamentgroup/glyphhanger>`_.

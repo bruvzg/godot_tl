@@ -74,6 +74,7 @@ file_insertion_enabled = False
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
+latex_engine = 'xelatex'
 latex_elements = {
     'papersize': 'a4paper'
 }

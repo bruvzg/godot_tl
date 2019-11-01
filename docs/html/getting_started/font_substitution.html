@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>libgdtl Introduction &mdash; libgdtl latest documentation</title>
+  <title>Font substitution &mdash; libgdtl latest documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Installation" href="../getting_started/installation.html" />
-    <link rel="prev" title="libgdtl Documentation" href="../index.html" /> 
+    <link rel="next" title="libgdtl API" href="../classes/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -86,33 +86,33 @@
             
             
               <p class="caption"><span class="caption-text">General</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">libgdtl Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#build-options">Build options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Build options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Building <cite>libdgtl</cite> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#demo-data">Demo data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Getting started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#module">Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#gdnative">GDNative</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#gdnative">GDNative</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/font_substitution.html">Font substitution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Font substitution</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Class reference</span></p>
 <ul>
@@ -275,7 +275,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>libgdtl Introduction</li>
+      <li>Font substitution</li>
     
     
 
@@ -296,135 +296,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="libgdtl-introduction">
-<span id="doc-about-intro"></span><h1>libgdtl Introduction<a class="headerlink" href="#libgdtl-introduction" title="Permalink to this headline">¶</a></h1>
-<p>BiDi, shaping and basic text layout for Godot Engine.</p>
-<div class="section" id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Godot 3.1+</li>
-<li>C++14 compiler</li>
-<li>Meson build system (for gdnative module build only)</li>
-<li>SCons build system</li>
-</ul>
-</div>
-<div class="section" id="compiling-as-builtin-module">
-<h2>Compiling (as builtin module)<a class="headerlink" href="#compiling-as-builtin-module" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="build-options">
-<h3>Build options<a class="headerlink" href="#build-options" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="22%" />
-<col width="59%" />
-<col width="19%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Name</th>
-<th class="head">Description</th>
-<th class="head">Default value</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>builtin_runtime</td>
-<td>Use the built-in libraries</td>
-<td>true</td>
-</tr>
-<tr class="row-odd"><td>use_graphite2</td>
-<td>Enable SIL Graphite 2 complementary shaper</td>
-<td>true</td>
-</tr>
-<tr class="row-even"><td>use_font_wrapper</td>
-<td>Enable Godot font wrapper for default controls</td>
-<td>false</td>
-</tr>
-</tbody>
-</table>
-<p>If <cite>use_font_wrapper</cite> is enabled, apply <cite>patch_font.diff</cite> from the root of this repository to the Godot engine source first.</p>
-</div>
-<div class="section" id="building-libdgtl-module">
-<h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#building-libdgtl-module" title="Permalink to this headline">¶</a></h3>
-<p>Clone this repository (without <cite>–recursive</cite> flag) into Godot’s <cite>modules</cite> subfolder as <cite>godot_tl</cite>.
-Rebuild Godot engine as ususal.</p>
-</div>
-</div>
-<div class="section" id="compiling-as-gdnative-module">
-<h2>Compiling (as gdnative module)<a class="headerlink" href="#compiling-as-gdnative-module" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Build options<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="20%" />
-<col width="65%" />
-<col width="15%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Name</th>
-<th class="head">Description</th>
-<th class="head">Default value</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>godot-cpp-lib-name</td>
-<td>godot-cpp static library name (without <cite>.a</cite> or <cite>.lib</cite> extension)</td>
-<td>libgodot-cpp</td>
-</tr>
-<tr class="row-odd"><td>static-runtime</td>
-<td>Link libraries statically for better portability</td>
-<td>false</td>
-</tr>
-<tr class="row-even"><td>builtin-runtime</td>
-<td>Use the built-in libraries</td>
-<td>false</td>
-</tr>
-<tr class="row-odd"><td>use-graphite2</td>
-<td>Enable SIL Graphite 2 complementary shaper</td>
-<td>true</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="building-godot-cpp-static-library">
-<h3>Building <cite>godot-cpp</cite> static library<a class="headerlink" href="#building-godot-cpp-static-library" title="Permalink to this headline">¶</a></h3>
-<p>See <a class="reference external" href="https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library">https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library</a></p>
-</div>
-<div class="section" id="id2">
-<h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>You can compile this module by executing:</p>
-<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="n">meson</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="n">Godot</span><span class="o">-</span><span class="n">CPP</span><span class="o">-</span><span class="n">Name</span><span class="p">}</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span>
-<span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="license">
-<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">The source code of the <strong>libgdtl</strong> module is released under unlicense.</p>
-<p>For more information, see <a class="reference external" href="http://unlicense.org/">http://unlicense.org/</a> or the accompanying UNLICENSE file.</p>
-</li>
-<li><p class="first"><strong>Godot</strong> and <strong>GodotNativeTools</strong> are licensed under MIT license.</p>
-<p>For more information, see <a class="reference external" href="https://github.com/godotengine/godot/blob/master/LICENSE.txt">https://github.com/godotengine/godot/blob/master/LICENSE.txt</a>.</p>
-</li>
-<li><p class="first"><strong>HarfBuzz</strong> is licensed under MIT-like License.</p>
-<p>For more information, see <a class="reference external" href="https://github.com/harfbuzz/harfbuzz/blob/master/COPYING">https://github.com/harfbuzz/harfbuzz/blob/master/COPYING</a></p>
-</li>
-<li><p class="first"><strong>ICU4C</strong> is licensed under Unicode, Inc. License.</p>
-<p>For more information, see <a class="reference external" href="http://www.unicode.org/copyright.html#License">http://www.unicode.org/copyright.html#License</a></p>
-</li>
-<li><p class="first"><strong>FreeType</strong> is licensed under FreeType License (BSD-like) or GNU General Public License (GPL), version 2.</p>
-<p>For more information, see <a class="reference external" href="https://www.freetype.org/license.html">https://www.freetype.org/license.html</a></p>
-</li>
-<li><p class="first"><strong>SIL Graphite engine</strong> is licensed under GNU Lesser General Public License (LGPL), version 2.1+ or GNU General Public License (GPL), version 2 or Mozilla Public License.</p>
-<p>For more information, see <a class="reference external" href="https://github.com/silnrsi/graphite/blob/master/COPYING">https://github.com/silnrsi/graphite/blob/master/COPYING</a></p>
-</li>
-</ul>
-</div>
-<div class="section" id="demo-data">
-<h2>Demo data<a class="headerlink" href="#demo-data" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/JulietaUla/Montserrat/">Montserrat</a>, <a class="reference external" href="https://software.sil.org/awami/download/">Awami Nastaliq</a>, <a class="reference external" href="http://comicneue.com/">Comic Neue</a> and <a class="reference external" href="https://www.google.com/get/noto/">Noto</a> fonts are published under the <a class="reference external" href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=OFL">SIL Open Font License, Version 1.1</a></p>
-<p><a class="reference external" href="https://github.com/google/material-design-icons">Material Design icons by Google</a> are published under the <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.txt">Apache License Version 2.0</a></p>
-<p>Noto Color Emoji font is cut down to single glyph (U+1F604) using <a class="reference external" href="https://github.com/filamentgroup/glyphhanger">glyphhanger</a>.</p>
-</div>
+  <div class="section" id="font-substitution">
+<span id="doc-font-substitution"></span><h1>Font substitution<a class="headerlink" href="#font-substitution" title="Permalink to this headline">¶</a></h1>
+<p>Font substitution is used to find a replacement for an unavailable character.</p>
+<p>In addition to main list of the substitution fonts, you can specify preferred fonts for the script (writing system) and language.</p>
+<p>Use <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> codes for the language names, and <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_15924">ISO 15924</a> for the script names.</p>
+<p>Substitution lists have following priority: <cite>Language</cite>, <cite>Script</cite>, <cite>Main List</cite>. Providing script and language information is not required, but can improve shaping speed if large number of fonts used.</p>
 </div>
 
 
@@ -435,10 +312,10 @@ Rebuild Godot engine as ususal.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../getting_started/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../classes/index.html" class="btn btn-neutral float-right" title="libgdtl API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="libgdtl Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

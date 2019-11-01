@@ -976,7 +976,7 @@ Array TLFontFamily::_get_property_list() const {
 			}
 			{
 				Dictionary prop;
-				prop["name"] = it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + "_remove_script";
+				prop["name"] = it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + "_remove_lang";
 				prop["type"] = GlobalConstants::TYPE_NIL;
 				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
 				prop["hint_string"] = "";
