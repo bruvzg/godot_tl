@@ -660,7 +660,7 @@ func _fuzz_tlattributedshapedstring():
 		if randi() % 3 == 0:
 			str1.set_base_font(_fuzz_tlfontfamily())
 		else:
-			str1.set_base_font(nt_fam_full[randi() % (nt_fam_full.size() - 1)])
+			str1.set_base_font(nt_fam_full)
 		str1.get_base_font();
 
 		if randi() % 3 == 0:
@@ -787,7 +787,7 @@ func _fuzz_tlshapedstring():
 		if randi() % 3 == 0:
 			str1.set_base_font(_fuzz_tlfontfamily())
 		else:
-			str1.set_base_font(nt_fam_full[randi() % (nt_fam_full.size() - 1)])
+			str1.set_base_font(nt_fam_full)
 		str1.get_base_font();
 
 		if randi() % 3 == 0:

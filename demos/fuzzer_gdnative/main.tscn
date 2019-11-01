@@ -611,7 +611,7 @@ func _fuzz_tlattributedshapedstring():
 		if randi() % 6 == 0:
 			str1.add_attribute(randi() % RANGE - RANGE / 2, _randintarray(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
 		if randi() % 2 == 0:
-			str1.add_attribute(TLConstants.TEXT_ATTRIBUTE_FONT, _fuzz_tlfontfamily(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
+			str1.add_attribute(1, _fuzz_tlfontfamily(), randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
 		if randi() % 3 == 0:
 			str1.remove_attribute(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
 		str1.has_attribute(randi() % RANGE - RANGE / 2, randi() % RANGE - RANGE / 2)
@@ -669,7 +669,7 @@ func _fuzz_tlattributedshapedstring():
 		if randi() % 3 == 0:
 			str1.set_base_font(_fuzz_tlfontfamily())
 		else:
-			str1.set_base_font(nt_fam_full[randi() % (nt_fam_full.size() - 1)])
+			str1.set_base_font(nt_fam_full)
 		str1.get_base_font();
 
 		if randi() % 3 == 0:
@@ -796,7 +796,7 @@ func _fuzz_tlshapedstring():
 		if randi() % 3 == 0:
 			str1.set_base_font(_fuzz_tlfontfamily())
 		else:
-			str1.set_base_font(nt_fam_full[randi() % (nt_fam_full.size() - 1)])
+			str1.set_base_font(nt_fam_full)
 		str1.get_base_font();
 
 		if randi() % 3 == 0:

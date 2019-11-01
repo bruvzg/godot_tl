@@ -1279,14 +1279,14 @@ int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
 		auto attrib = format_attributes.find_closest(p_index);
-		if (attrib) {
+		if (!attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
 	} else {
 		auto attrib = style_attributes.find_closest(p_index);
-		if (attrib) {
+		if (!attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
@@ -1302,16 +1302,24 @@ int64_t TLShapedAttributedString::get_attribute_end(int64_t p_attribute, int64_t
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
 		auto attrib = format_attributes.find_closest(p_index);
+		if (!attrib) {
+			ERR_PRINTS("Attribute not set");
+			ERR_FAIL_COND_V(true, -1);
+		}
 		attrib = attrib->next();
-		if (attrib) {
+		if (!attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
 	} else {
 		auto attrib = style_attributes.find_closest(p_index);
+		if (!attrib) {
+			ERR_PRINTS("Attribute not set");
+			ERR_FAIL_COND_V(true, -1);
+		}
 		attrib = attrib->next();
-		if (attrib) {
+		if (!attrib) {
 			ERR_PRINTS("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
