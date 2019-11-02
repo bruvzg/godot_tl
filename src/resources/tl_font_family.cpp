@@ -3,7 +3,7 @@
 /*************************************************************************/
 
 #include "resources/tl_font_family.hpp"
-Ref<TLFontFace> TLFontFallbackIterator::value() {
+Ref<TLFontFace> TLFontFallbackIterator::value() const {
 	if (index >= 0) {
 		switch (chain_id) {
 			case SINGLE_FONT: {
@@ -32,15 +32,15 @@ Ref<TLFontFace> TLFontFallbackIterator::value() {
 	return NULL;
 }
 
-bool TLFontFallbackIterator::is_valid() {
+bool TLFontFallbackIterator::is_valid() const {
 	return (index >= 0) && (chain_id != INVALID_CHAIN);
 }
 
-bool TLFontFallbackIterator::is_linked() {
+bool TLFontFallbackIterator::is_linked() const {
 	return (index >= 0) && ((chain_id == SCRIPT_CHAIN) || (chain_id == LANG_CHAIN));
 }
 
-TLFontFallbackIterator TLFontFallbackIterator::next() {
+TLFontFallbackIterator TLFontFallbackIterator::next() const {
 	switch (chain_id) {
 		case SINGLE_FONT: {
 			return TLFontFallbackIterator();
@@ -191,34 +191,40 @@ void TLFontIterator::_init() {
 	//NOP
 }
 
-Variant TLFontIterator::_iter_init(const Array p_iter) {
+bool TLFontIterator::is_valid() const {
 	return _iter.is_valid();
 }
 
-Variant TLFontIterator::_iter_next(const Array p_iter) {
+bool TLFontIterator::is_linked() const {
+	return _iter.is_linked();
+}
+
+bool TLFontIterator::next() {
 	_iter = _iter.next();
 	return _iter.is_valid();
 }
 
-Variant TLFontIterator::_iter_get(const Array p_iter) {
+Ref<TLFontFace> TLFontIterator::value() const {
 	if (_iter.is_valid()) {
 		return _iter.value();
 	} else {
-		return Variant();
+		return Ref<TLFontFace>();
 	}
 }
 
 #ifdef GODOT_MODULE
 void TLFontIterator::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_iter_init", "iter"), &TLFontIterator::_iter_init);
-	ClassDB::bind_method(D_METHOD("_iter_get", "iter"), &TLFontIterator::_iter_get);
-	ClassDB::bind_method(D_METHOD("_iter_next", "iter"), &TLFontIterator::_iter_next);
+	ClassDB::bind_method(D_METHOD("is_valid"), &TLFontIterator::is_valid);
+	ClassDB::bind_method(D_METHOD("is_linked"), &TLFontIterator::is_linked);
+	ClassDB::bind_method(D_METHOD("value"), &TLFontIterator::value);
+	ClassDB::bind_method(D_METHOD("next"), &TLFontIterator::next);
 }
 #else
 void TLFontIterator::_register_methods() {
-	register_method("_iter_init", &TLFontIterator::_iter_init);
-	register_method("_iter_get", &TLFontIterator::_iter_get);
-	register_method("_iter_next", &TLFontIterator::_iter_next);
+	register_method("is_valid", &TLFontIterator::is_valid);
+	register_method("is_linked", &TLFontIterator::is_linked);
+	register_method("value", &TLFontIterator::value);
+	register_method("next", &TLFontIterator::next);
 }
 #endif
 

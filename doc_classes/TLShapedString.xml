@@ -7,7 +7,7 @@
 		Note 1: Code points, Characters, Clusters and Glyphs
 
 		- A code point is a single encoding UTF-16 unit (Unicode character or half of the surrogate pair).
-		- A character is a full Unicode charecter.
+		- A character is a full Unicode character.
 		- A grapheme cluster is the abstract unit of a writing system (a letter, a digit, or punctuation).
 		- A glyph is a shape used to render a character or a sequence of characters.
 
@@ -26,6 +26,7 @@
 			<argument index="0" name="text" type="TLShapedString">
 			</argument>
 			<description>
+				Appends shaped string.
 			</description>
 		</method>
 		<method name="add_text">
@@ -76,7 +77,7 @@
 			</argument>
 			<description>
 				Breaks text into lines that fit within a specified width.
-				Retunrs [Array] of line boundaries.
+				Returns [Array] of line boundaries.
 			</description>
 		</method>
 		<method name="break_words" qualifiers="const">
@@ -84,7 +85,7 @@
 			</return>
 			<description>
 				Breaks text into words.
-				Retunrs [Array] of word boundaries.
+				Returns [Array] of word boundaries.
 			</description>
 		</method>
 		<method name="char_count" qualifiers="const">
@@ -136,6 +137,7 @@
 			<argument index="4" name="draw_jst_ops" type="bool">
 			</argument>
 			<description>
+				[code]DEBUG:[/code] Draws a string using "hexbox" fallback font.
 			</description>
 		</method>
 		<method name="draw_cluster">
@@ -167,6 +169,7 @@
 			<argument index="4" name="draw_jst_ops" type="bool">
 			</argument>
 			<description>
+				[code]DEBUG:[/code] Draws a string with additional debug information.
 			</description>
 		</method>
 		<method name="draw_logical_as_hex">
@@ -183,6 +186,7 @@
 			<argument index="4" name="draw_jst_ops" type="bool">
 			</argument>
 			<description>
+				[code]DEBUG:[/code] Draws logical character codes of the string with additional debug information.
 			</description>
 		</method>
 		<method name="empty" qualifiers="const">
@@ -260,6 +264,7 @@
 			<argument index="0" name="position" type="int">
 			</argument>
 			<description>
+				Returns font face of the cluster.
 			</description>
 		</method>
 		<method name="get_cluster_face_size" qualifiers="const">
@@ -268,6 +273,7 @@
 			<argument index="0" name="position" type="int">
 			</argument>
 			<description>
+				Returns font size of the cluster. For non-attributed string it's always equal to base size.
 			</description>
 		</method>
 		<method name="get_cluster_glyph" qualifiers="const">
@@ -415,6 +421,7 @@
 			<return type="int">
 			</return>
 			<description>
+				Returns shaped string paragraph direction.
 			</description>
 		</method>
 		<method name="get_utf16" qualifiers="const">
@@ -460,13 +467,14 @@
 			<argument index="0" name="position" type="float">
 			</argument>
 			<description>
+				Returns a cluster index corresponding to the specified pixel offset.
 			</description>
 		</method>
 		<method name="is_valid" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
-				Returns [code]true[/code] if the string is shaped successfuly.
+				Returns [code]true[/code] if the string is shaped successfully.
 			</description>
 		</method>
 		<method name="length" qualifiers="const">
@@ -522,6 +530,7 @@
 			<argument index="2" name="text" type="TLShapedString">
 			</argument>
 			<description>
+				Replaces substring with contents of another shaped string.
 			</description>
 		</method>
 		<method name="replace_text">
@@ -534,7 +543,7 @@
 			<argument index="2" name="text" type="String">
 			</argument>
 			<description>
-				Replaces substring.
+				Replaces substring with text.
 			</description>
 		</method>
 		<method name="replace_utf16">
@@ -547,6 +556,7 @@
 			<argument index="2" name="text" type="PoolByteArray">
 			</argument>
 			<description>
+				Replaces substring with contents of the raw UTF-16 encoded string.
 			</description>
 		</method>
 		<method name="replace_utf32">
@@ -559,6 +569,7 @@
 			<argument index="2" name="text" type="PoolByteArray">
 			</argument>
 			<description>
+				Replaces substring with contents of the raw UTF-32 encoded string.
 			</description>
 		</method>
 		<method name="replace_utf8">
@@ -571,6 +582,7 @@
 			<argument index="2" name="text" type="PoolByteArray">
 			</argument>
 			<description>
+				Replaces substring with contents of the raw UTF-8 encoded string.
 			</description>
 		</method>
 		<method name="set_utf16">
@@ -579,7 +591,7 @@
 			<argument index="0" name="data" type="PoolByteArray">
 			</argument>
 			<description>
-				Sets taw text string in UTF-16 encoding
+				Sets text to the contents of the raw UTF-16 encoded string.
 			</description>
 		</method>
 		<method name="set_utf32">
@@ -588,7 +600,7 @@
 			<argument index="0" name="data" type="PoolByteArray">
 			</argument>
 			<description>
-				Sets taw text string in UTF-32 encoding
+				Sets text to the contents of the raw UTF-32 encoded string.
 			</description>
 		</method>
 		<method name="set_utf8">
@@ -597,14 +609,14 @@
 			<argument index="0" name="data" type="PoolByteArray">
 			</argument>
 			<description>
-				Sets taw text string in UTF-8 encoding
+				Sets text to the contents of the raw UTF-8 encoded string.
 			</description>
 		</method>
 		<method name="shape">
 			<return type="bool">
 			</return>
 			<description>
-				Shapes string and returns [code]true[/code] if the string is shaped successfuly.
+				Shapes string and returns [code]true[/code] if the string is shaped successfully.
 			</description>
 		</method>
 		<method name="substr" qualifiers="const">
@@ -617,100 +629,108 @@
 			<argument index="2" name="trim" type="int">
 			</argument>
 			<description>
+				Returns part of the shaped string from the position [code]start[/code] to [code]end[/code], trims it according to [code]trim[/code] parameter.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="base_direction" type="int" setter="set_base_direction" getter="get_base_direction" default="3">
-			Base text writing direction. Default: [code]TEXT_DIRECTION_AUTO[/code]
+			Base text writing direction.
 		</member>
 		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
-			Base font family reference. Default: [code]null[/code]
+			Base font family reference.
 		</member>
 		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size" default="12">
-			Font size. Default: [code]12[/code]
+			Font size.
 		</member>
 		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style" default="&quot;Regular&quot;">
-			Style name (Regular, Bold, Italic, Oblique etc.). Default: [code]"Regular"[/code]
+			Style name (Regular, Bold, Italic, Oblique etc.).
 		</member>
 		<member name="features" type="String" setter="set_features" getter="get_features" default="&quot;&quot;">
-			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Default: [code]""[/code]
+			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags.
 		</member>
 		<member name="language" type="String" setter="set_language" getter="get_language" default="&quot;en&quot;">
-			Language code. Default: [code]""[/code]
+			Language code for line-breaking and text shaping algorithms.
 		</member>
 		<member name="preserve_control" type="bool" setter="set_preserve_control" getter="get_preserve_control" default="false">
-			If [code]true[/code] displays control character. Default: [code]false[/code]
+			If [code]true[/code], displays control character.
 		</member>
 		<member name="text" type="String" setter="set_text" getter="get_text" default="&quot;&quot;">
-			Text string. Default: [code]""[/code]
+			Text string.
 		</member>
 	</members>
 	<signals>
 		<signal name="string_changed">
 			<description>
+				Emitted when the text or/and other property of the string changes.
 			</description>
 		</signal>
 		<signal name="string_shaped">
 			<description>
+				Emitted when the text shaping process is completed.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="TEXT_DIRECTION_LTR" value="0" enum="TextDirection">
-			Left-to-right text writing direction
+			Left-to-right text writing direction.
 		</constant>
 		<constant name="TEXT_DIRECTION_RTL" value="1" enum="TextDirection">
-			Right-to-left text writing direction
+			Right-to-left text writing direction.
 		</constant>
 		<constant name="TEXT_DIRECTION_LOCALE" value="2" enum="TextDirection">
-			Text writing direction is derived from the locale's script according to the CLDR metadata
+			Text writing direction is derived from the locale's script according to the CLDR metadata.
 		</constant>
 		<constant name="TEXT_DIRECTION_AUTO" value="3" enum="TextDirection">
-			Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale's script if text is not strongly directional
+			Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale's script if text is not strongly directional.
 		</constant>
 		<constant name="TEXT_DIRECTION_INVALID" value="4" enum="TextDirection">
+			Invalid text direction (Used as return value only).
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_NONE" value="0" enum="TextJustification">
-			No text justification
+			No text justification.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE" value="1" enum="TextJustification">
-			Use kashida and whitespace elongation to justify text
+			Use kashida and white space elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_KASHIDA_ONLY" value="2" enum="TextJustification">
-			Use kashida elongation to justify text
+			Use kashida elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_WHITESPACE_ONLY" value="3" enum="TextJustification">
-			Use whitespace elongation to justify text
+			Use white space elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR" value="4" enum="TextJustification">
+			Use kashida, white space and inter character elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR" value="5" enum="TextJustification">
+			Use kashida and inter character elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR" value="6" enum="TextJustification">
+			Use white space and inter character elongation to justify text.
 		</constant>
 		<constant name="TEXT_JUSTIFICATION_INTERCHAR_ONLY" value="7" enum="TextJustification">
+			Use inter character elongation to justify text.
 		</constant>
 		<constant name="TEXT_BREAK_NONE" value="0" enum="TextBreak">
-			No line breaking
+			No line breaking.
 		</constant>
 		<constant name="TEXT_BREAK_MANDATORY" value="1" enum="TextBreak">
-			Break lines only at mandatory break points
+			Break lines only at mandatory break points.
 		</constant>
 		<constant name="TEXT_BREAK_MANDATORY_AND_WORD_BOUND" value="2" enum="TextBreak">
-			Break lines at mandatory break points and word boundaries
+			Break lines at mandatory break points and word boundaries.
 		</constant>
 		<constant name="TEXT_BREAK_MANDATORY_AND_ANYWHERE" value="3" enum="TextBreak">
-			Break lines at mandatory break points and grapheme cluster boundaries
+			Break lines at mandatory break points and grapheme cluster boundaries.
 		</constant>
 		<constant name="TEXT_TRIM_NONE" value="0" enum="TextTrimMode">
-			No substring trimming
+			No substring trimming.
 		</constant>
 		<constant name="TEXT_TRIM_BREAK" value="1" enum="TextTrimMode">
-			Trim line break characters for substring ends
+			Trim line break characters for substring ends.
 		</constant>
 		<constant name="TEXT_TRIM_BREAK_AND_WHITESPACE" value="2" enum="TextTrimMode">
-			Trim line break and whitespace characters for substring ends
+			Trim line break and white space characters for substring ends.
 		</constant>
 	</constants>
 </class>

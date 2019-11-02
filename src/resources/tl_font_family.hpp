@@ -42,11 +42,11 @@ protected:
 	int64_t index;
 
 public:
-	Ref<TLFontFace> value();
+	Ref<TLFontFace> value() const;
 
-	bool is_valid();
-	bool is_linked();
-	TLFontFallbackIterator next();
+	bool is_valid() const;
+	bool is_linked() const;
+	TLFontFallbackIterator next() const;
 
 	TLFontFallbackIterator() {
 		data = NULL;
@@ -78,9 +78,10 @@ public:
 
 	void _init();
 
-	Variant _iter_init(const Array p_iter);
-	Variant _iter_next(const Array p_iter);
-	Variant _iter_get(const Array p_iter);
+	bool is_valid() const;
+	bool is_linked() const;
+	bool next();
+	Ref<TLFontFace> value() const;
 
 #ifdef GODOT_MODULE
 	static void _bind_methods();

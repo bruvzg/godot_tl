@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  tl_proto_control.hpp                                                 */
+/*  tl_rich_text_edit.hpp                                                 */
 /*************************************************************************/
 
 #ifndef TL_PROTO_CONTROL_HPP
@@ -19,12 +19,12 @@
 
 using namespace godot;
 
-class TLProtoControl;
+class TLRichTextEdit;
 
-class TLProtoControlSelection : public Reference {
-	GODOT_CLASS(TLProtoControlSelection, Reference);
+class TLRichTextEditSelection : public Reference {
+	GODOT_CLASS(TLRichTextEditSelection, Reference);
 
-	friend class TLProtoControl;
+	friend class TLRichTextEdit;
 
 protected:
 	struct Cursor {
@@ -63,8 +63,8 @@ protected:
 	Cursor caret;
 
 public:
-	TLProtoControlSelection();
-	~TLProtoControlSelection();
+	TLRichTextEditSelection();
+	~TLRichTextEditSelection();
 
 	void _init();
 
@@ -95,8 +95,8 @@ public:
 
 /*************************************************************************/
 
-class TLProtoControl : public Control {
-	GODOT_CLASS(TLProtoControl, Control);
+class TLRichTextEdit : public Control {
+	GODOT_CLASS(TLRichTextEdit, Control);
 
 protected:
 	Color cursor_color;
@@ -144,7 +144,7 @@ protected:
 	void _change_selection(bool p_shift, AdvDir p_dir, TextDirection p_last_imp_dir);
 	void _hit_test(Point2 p_position, bool p_shift);
 
-	Ref<TLProtoControlSelection> selection;
+	Ref<TLRichTextEditSelection> selection;
 	Point2 caret_pos;
 	int64_t ime_cursor;
 	int64_t ime_selection_len;
@@ -154,8 +154,8 @@ protected:
 	float para_spacing;
 
 public:
-	TLProtoControl();
-	~TLProtoControl();
+	TLRichTextEdit();
+	~TLRichTextEdit();
 
 	void _init();
 
@@ -170,25 +170,25 @@ public:
 
 	Point2 get_caret_position();
 
-	void replace_text(Ref<TLProtoControlSelection> p_selection, const String p_text);
-	void replace_utf8(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text);
-	void replace_utf16(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text);
-	void replace_utf32(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text);
-	void replace_sstring(Ref<TLProtoControlSelection> p_selection, Ref<TLShapedString> p_text);
+	void replace_text(Ref<TLRichTextEditSelection> p_selection, const String p_text);
+	void replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
+	void replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
+	void replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
+	void replace_sstring(Ref<TLRichTextEditSelection> p_selection, Ref<TLShapedString> p_text);
 
-	void add_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute, Variant p_value);
-	void remove_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute);
-	void remove_attributes(Ref<TLProtoControlSelection> p_selection);
-	void set_paragraph_width(Ref<TLProtoControlSelection> p_selection, float p_width);
-	void set_paragraph_indent(Ref<TLProtoControlSelection> p_selection, float p_indent);
-	void set_paragraph_back_color(Ref<TLProtoControlSelection> p_selection, Color p_bcolor);
-	void set_paragraph_line_spacing(Ref<TLProtoControlSelection> p_selection, float p_line_spacing);
-	void set_paragraph_brk_flags(Ref<TLProtoControlSelection> p_selection, int p_flags);
-	void set_paragraph_jst_flags(Ref<TLProtoControlSelection> p_selection, int p_flags);
-	void set_paragraph_halign(Ref<TLProtoControlSelection> p_selection, int p_halign);
+	void add_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute, Variant p_value);
+	void remove_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute);
+	void remove_attributes(Ref<TLRichTextEditSelection> p_selection);
+	void set_paragraph_width(Ref<TLRichTextEditSelection> p_selection, float p_width);
+	void set_paragraph_indent(Ref<TLRichTextEditSelection> p_selection, float p_indent);
+	void set_paragraph_back_color(Ref<TLRichTextEditSelection> p_selection, Color p_bcolor);
+	void set_paragraph_line_spacing(Ref<TLRichTextEditSelection> p_selection, float p_line_spacing);
+	void set_paragraph_brk_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags);
+	void set_paragraph_jst_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags);
+	void set_paragraph_halign(Ref<TLRichTextEditSelection> p_selection, int p_halign);
 
-	Ref<TLProtoControlSelection> get_selection() const;
-	void set_selection(Ref<TLProtoControlSelection> p_selection);
+	Ref<TLRichTextEditSelection> get_selection() const;
+	void set_selection(Ref<TLRichTextEditSelection> p_selection);
 
 	String get_cluster_debug_info_hit_test(Point2 p_position);
 	Rect2 get_cluster_rect_hit_test(Point2 p_position);

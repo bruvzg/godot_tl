@@ -26,7 +26,7 @@ If `use_font_wrapper` is enabled, apply `patch_font.diff` from the root of this 
 ### Building `libgdtl` module
 
 Clone this repository (without `--recursive` flag) into Godot's `modules` subfolder as `godot_tl`.
-Rebuild Godot engine as ususal.
+Rebuild Godot engine as usual.
 
 ## Compiling (as gdnative module)
 

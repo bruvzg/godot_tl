@@ -34,6 +34,8 @@ Properties
 Description
 -----------
 
+Subclass Font to use with default Godot controls, provides limited shaping support.
+
 Note: This class is only available if module is built with ``use_font_wrapper=true`` flag.
 
 Property Descriptions
@@ -53,6 +55,8 @@ Property Descriptions
    | *Getter* | get_base_font()      |
    +----------+----------------------+
 
+Base font to wrap.
+
 ----
 
 .. _class_TLGDFontWrapper_property_base_font_size:
@@ -70,6 +74,8 @@ Property Descriptions
    +-----------+---------------------------+
    | *Getter*  | get_base_font_size()      |
    +-----------+---------------------------+
+
+Base font size.
 
 ----
 
@@ -89,6 +95,8 @@ Property Descriptions
    | *Getter*  | get_base_font_style()      |
    +-----------+----------------------------+
 
+Base font style.
+
 ----
 
 .. _class_TLGDFontWrapper_property_cache_depth:
@@ -106,4 +114,6 @@ Property Descriptions
    +-----------+------------------------+
    | *Getter*  | get_cache_depth()      |
    +-----------+------------------------+
+
+Number of shaped strings to keep in cache.
 

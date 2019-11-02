@@ -1633,6 +1633,9 @@ bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_v
 		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
 		_change_notify();
 		return true;
+	} else if (name == "attribute_dict") {
+		load_attributes_dict(p_value);
+		return true;
 	}
 	return false;
 }
@@ -1670,6 +1673,9 @@ bool TLShapedAttributedString::_get(const StringName &p_name, Variant &r_ret) co
 		return true;
 	} else if (name == "attribute/end") {
 		r_ret = _edited_attrib_end;
+		return true;
+	} else if (name == "attribute_dict") {
+		r_ret = save_attributes_dict();
 		return true;
 	}
 	return false;
@@ -1717,6 +1723,8 @@ void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) co
 	p_list->push_back(PropertyInfo(Variant::INT, "attribute/start", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 	p_list->push_back(PropertyInfo(Variant::INT, "attribute/end", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 	p_list->push_back(PropertyInfo(Variant::NIL, "attribute/_commit", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+
+	p_list->push_back(PropertyInfo(Variant::ARRAY, "attribute_dict", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_STORAGE));
 }
 
 void TLShapedAttributedString::_bind_methods() {
@@ -1818,6 +1826,9 @@ bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
 		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
 		property_list_changed_notify();
 		return true;
+	} else if (name == "attribute_dict") {
+		load_attributes_dict(p_value);
+		return true;
 	}
 	return false;
 }
@@ -1852,6 +1863,8 @@ Variant TLShapedAttributedString::_get(String p_name) const {
 		return _edited_attrib_start;
 	} else if (name == "attribute/end") {
 		return _edited_attrib_end;
+	} else if (name == "attribute_dict") {
+		return save_attributes_dict();
 	}
 	return Variant();
 }
@@ -1951,6 +1964,16 @@ Array TLShapedAttributedString::_get_property_list() const {
 		prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
 		prop["hint_string"] = "";
 		prop["usage"] = GlobalConstants::PROPERTY_USAGE_EDITOR;
+		ret.push_back(prop);
+	}
+
+	{
+		Dictionary prop;
+		prop["name"] = "attribute_dict";
+		prop["type"] = GlobalConstants::TYPE_ARRAY;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+		prop["hint_string"] = "";
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_STORAGE;
 		ret.push_back(prop);
 	}
 	return ret;

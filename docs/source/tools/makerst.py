@@ -801,9 +801,9 @@ def rstize_text(text, state):  # type: (str, State) -> str
                         # Search in the current class
                         search_class_defs = [class_def]
 
-                        if param.find('.') == -1:
-                            # Also search in @GlobalScope as a last resort if no class was specified
-                            search_class_defs.append(state.classes["@GlobalScope"])
+                        #if param.find('.') == -1:
+                        #    # Also search in @GlobalScope as a last resort if no class was specified
+                        #    search_class_defs.append(state.classes["@GlobalScope"])
 
                         for search_class_def in search_class_defs:
                             if method_param in search_class_def.constants:

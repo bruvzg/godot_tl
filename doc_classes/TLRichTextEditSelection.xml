@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLProtoControlSelection" inherits="Reference" category="Core" version="3.2">
+<class name="TLRichTextEditSelection" inherits="Reference" category="Core" version="3.2">
 	<brief_description>
+		Selection and caret info of the [TLRichTextEdit]
 	</brief_description>
 	<description>
 	</description>
@@ -10,21 +11,28 @@
 	</methods>
 	<members>
 		<member name="caret_offset" type="int" setter="set_caret_offset" getter="get_caret_offset" default="0">
+			Caret position in the paragraph [member caret_para].
 		</member>
 		<member name="caret_para" type="int" setter="set_caret_para" getter="get_caret_para" default="0">
+			Paragraph where caret currently is in.
 		</member>
 		<member name="end_offset" type="int" setter="set_end_offset" getter="get_end_offset" default="0">
+			Offset of the end of selection in the paragraph [member end_para].
 		</member>
 		<member name="end_para" type="int" setter="set_end_para" getter="get_end_para" default="0">
+			Last paragraph in the selection.
 		</member>
 		<member name="start_offset" type="int" setter="set_start_offset" getter="get_start_offset" default="0">
+			Offset of the start of selection in the paragraph [member start_para].
 		</member>
 		<member name="start_para" type="int" setter="set_start_para" getter="get_start_para" default="0">
+			First paragraph in the selection.
 		</member>
 	</members>
 	<signals>
 		<signal name="selection_changed">
 			<description>
+				Emitted when selection range is changed or caret moved.
 			</description>
 		</signal>
 	</signals>

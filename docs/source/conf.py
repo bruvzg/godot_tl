@@ -9,7 +9,7 @@ needs_sphinx = '1.3'
 
 # Sphinx extension module names and templates location
 sys.path.append(os.path.abspath('extensions'))
-extensions = ['gdscript', 'sphinx_tabs.tabs', 'sphinx.ext.imgmath']
+extensions = ['gdscript', 'sphinx.ext.imgmath']
 templates_path = ['_templates']
 
 # You can specify multiple suffix as a list of string: ['.rst', '.md']
@@ -81,7 +81,7 @@ latex_elements = {
 
 latex_show_urls = 'inline'
 latex_documents = [
-  (master_doc, 'libgdtl.tex', 'libgdtl Documentation', '', 'manual'),
+  (master_doc, 'libgdtl.tex', 'libgdtl documentation', '', 'manual'),
 ]
 
 # -- Options for linkcheck builder ----------------------------------------

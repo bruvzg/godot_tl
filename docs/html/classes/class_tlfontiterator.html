@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="TLGDFontWrapper" href="class_tlgdfontwrapper.html" />
     <link rel="prev" title="TLFontFamily" href="class_tlfontfamily.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -87,7 +89,7 @@
             
               <p class="caption"><span class="caption-text">General</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
@@ -142,12 +144,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">TLFontIterator</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlgdfontwrapper.html">TLGDFontWrapper</a><ul>
@@ -170,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#description">Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
 </ul>
@@ -180,30 +187,33 @@
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#description">Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlrichtextedit.html">TLRichTextEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrolselection.html">TLProtoControlSelection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#brief-description">Brief Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#properties">Properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#signals">Signals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrolselection.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlrichtexteditselection.html">TLRichTextEditSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#property-descriptions">Property Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
@@ -299,6 +309,51 @@
 <div class="section" id="brief-description">
 <h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>bool</p></td>
+<td><p><a class="reference internal" href="#class-tlfontiterator-method-is-linked"><span class="std std-ref">is_linked</span></a> <strong>(</strong> <strong>)</strong> const</p></td>
+</tr>
+<tr class="row-even"><td><p>bool</p></td>
+<td><p><a class="reference internal" href="#class-tlfontiterator-method-is-valid"><span class="std std-ref">is_valid</span></a> <strong>(</strong> <strong>)</strong> const</p></td>
+</tr>
+<tr class="row-odd"><td><p>bool</p></td>
+<td><p><a class="reference internal" href="#class-tlfontiterator-method-next"><span class="std std-ref">next</span></a> <strong>(</strong> <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a></p></td>
+<td><p><a class="reference internal" href="#class-tlfontiterator-method-value"><span class="std std-ref">value</span></a> <strong>(</strong> <strong>)</strong> const</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlfontiterator-method-is-linked">
+<li><p>bool <strong>is_linked</strong> <strong>(</strong> <strong>)</strong> const</p></li>
+</ul>
+<p>Return <code class="docutils literal notranslate"><span class="pre">true</span></code> if current iterator value is part of language/script specific fallback list.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontiterator-method-is-valid">
+<li><p>bool <strong>is_valid</strong> <strong>(</strong> <strong>)</strong> const</p></li>
+</ul>
+<p>Return <code class="docutils literal notranslate"><span class="pre">true</span></code> if current iterator value is valid.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontiterator-method-next">
+<li><p>bool <strong>next</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Advances iterator. Return <code class="docutils literal notranslate"><span class="pre">true</span></code> if current iterator value is valid.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlfontiterator-method-value">
+<li><p><a class="reference internal" href="class_tlfontface.html#class-tlfontface"><span class="std std-ref">TLFontFace</span></a> <strong>value</strong> <strong>(</strong> <strong>)</strong> const</p></li>
+</ul>
+<p>Return current font face.</p>
+</div>
 </div>
 
 
@@ -312,7 +367,7 @@
         <a href="class_tlgdfontwrapper.html" class="btn btn-neutral float-right" title="TLGDFontWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="class_tlfontfamily.html" class="btn btn-neutral" title="TLFontFamily" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="class_tlfontfamily.html" class="btn btn-neutral float-left" title="TLFontFamily" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -337,25 +392,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

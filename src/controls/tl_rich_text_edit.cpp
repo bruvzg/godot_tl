@@ -1,8 +1,8 @@
 /*************************************************************************/
-/*  tl_proto_control.cpp                                                 */
+/*  tl_rich_text_edit.cpp                                                 */
 /*************************************************************************/
 
-#include "controls/tl_proto_control.hpp"
+#include "controls/tl_rich_text_edit.hpp"
 
 #ifdef GODOT_MODULE
 #include "core/class_db.h"
@@ -27,30 +27,30 @@
 #endif
 
 /*************************************************************************/
-/*  TLProtoControlSelection                                              */
+/*  TLRichTextEditSelection                                              */
 /*************************************************************************/
 
-TLProtoControlSelection::TLProtoControlSelection() {
+TLRichTextEditSelection::TLRichTextEditSelection() {
 
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
-TLProtoControlSelection::~TLProtoControlSelection() {
+TLRichTextEditSelection::~TLRichTextEditSelection() {
 	//NOP
 }
 
-void TLProtoControlSelection::_init() {
+void TLRichTextEditSelection::_init() {
 	//NOP
 }
 
-int TLProtoControlSelection::get_caret_para() {
+int TLRichTextEditSelection::get_caret_para() {
 
 	return caret.p;
 }
 
-void TLProtoControlSelection::set_caret_para(int p_value) {
+void TLRichTextEditSelection::set_caret_para(int p_value) {
 
 	if (caret.p != p_value) {
 		caret.p = p_value;
@@ -58,12 +58,12 @@ void TLProtoControlSelection::set_caret_para(int p_value) {
 	}
 }
 
-int TLProtoControlSelection::get_caret_offset() {
+int TLRichTextEditSelection::get_caret_offset() {
 
 	return caret.o;
 }
 
-void TLProtoControlSelection::set_caret_offset(int p_value) {
+void TLRichTextEditSelection::set_caret_offset(int p_value) {
 
 	if (caret.o != p_value) {
 		caret.o = p_value;
@@ -71,12 +71,12 @@ void TLProtoControlSelection::set_caret_offset(int p_value) {
 	}
 }
 
-int TLProtoControlSelection::get_start_para() {
+int TLRichTextEditSelection::get_start_para() {
 
 	return start.p;
 }
 
-void TLProtoControlSelection::set_start_para(int p_value) {
+void TLRichTextEditSelection::set_start_para(int p_value) {
 
 	if (start.p != p_value) {
 		start.p = p_value;
@@ -84,12 +84,12 @@ void TLProtoControlSelection::set_start_para(int p_value) {
 	}
 }
 
-int TLProtoControlSelection::get_start_offset() {
+int TLRichTextEditSelection::get_start_offset() {
 
 	return start.o;
 }
 
-void TLProtoControlSelection::set_start_offset(int p_value) {
+void TLRichTextEditSelection::set_start_offset(int p_value) {
 
 	if (start.o != p_value) {
 		start.o = p_value;
@@ -97,12 +97,12 @@ void TLProtoControlSelection::set_start_offset(int p_value) {
 	}
 }
 
-int TLProtoControlSelection::get_end_para() {
+int TLRichTextEditSelection::get_end_para() {
 
 	return end.p;
 }
 
-void TLProtoControlSelection::set_end_para(int p_value) {
+void TLRichTextEditSelection::set_end_para(int p_value) {
 
 	if (end.p != p_value) {
 		end.p = p_value;
@@ -110,12 +110,12 @@ void TLProtoControlSelection::set_end_para(int p_value) {
 	}
 }
 
-int TLProtoControlSelection::get_end_offset() {
+int TLRichTextEditSelection::get_end_offset() {
 
 	return end.o;
 }
 
-void TLProtoControlSelection::set_end_offset(int p_value) {
+void TLRichTextEditSelection::set_end_offset(int p_value) {
 
 	if (end.o != p_value) {
 		end.o = p_value;
@@ -125,30 +125,30 @@ void TLProtoControlSelection::set_end_offset(int p_value) {
 
 #ifdef GODOT_MODULE
 
-void TLProtoControlSelection::_bind_methods() {
+void TLRichTextEditSelection::_bind_methods() {
 
-	ClassDB::bind_method(D_METHOD("get_caret_para"), &TLProtoControlSelection::get_caret_para);
-	ClassDB::bind_method(D_METHOD("set_caret_para", "value"), &TLProtoControlSelection::set_caret_para);
+	ClassDB::bind_method(D_METHOD("get_caret_para"), &TLRichTextEditSelection::get_caret_para);
+	ClassDB::bind_method(D_METHOD("set_caret_para", "value"), &TLRichTextEditSelection::set_caret_para);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "caret_para"), "set_caret_para", "get_caret_para");
 
-	ClassDB::bind_method(D_METHOD("get_caret_offset"), &TLProtoControlSelection::get_caret_offset);
-	ClassDB::bind_method(D_METHOD("set_caret_offset", "value"), &TLProtoControlSelection::set_caret_offset);
+	ClassDB::bind_method(D_METHOD("get_caret_offset"), &TLRichTextEditSelection::get_caret_offset);
+	ClassDB::bind_method(D_METHOD("set_caret_offset", "value"), &TLRichTextEditSelection::set_caret_offset);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "caret_offset"), "set_caret_offset", "get_caret_offset");
 
-	ClassDB::bind_method(D_METHOD("get_start_para"), &TLProtoControlSelection::get_start_para);
-	ClassDB::bind_method(D_METHOD("set_start_para", "value"), &TLProtoControlSelection::set_start_para);
+	ClassDB::bind_method(D_METHOD("get_start_para"), &TLRichTextEditSelection::get_start_para);
+	ClassDB::bind_method(D_METHOD("set_start_para", "value"), &TLRichTextEditSelection::set_start_para);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_para"), "set_start_para", "get_start_para");
 
-	ClassDB::bind_method(D_METHOD("get_start_offset"), &TLProtoControlSelection::get_start_offset);
-	ClassDB::bind_method(D_METHOD("set_start_offset", "value"), &TLProtoControlSelection::set_start_offset);
+	ClassDB::bind_method(D_METHOD("get_start_offset"), &TLRichTextEditSelection::get_start_offset);
+	ClassDB::bind_method(D_METHOD("set_start_offset", "value"), &TLRichTextEditSelection::set_start_offset);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_offset"), "set_start_offset", "get_start_offset");
 
-	ClassDB::bind_method(D_METHOD("get_end_para"), &TLProtoControlSelection::get_end_para);
-	ClassDB::bind_method(D_METHOD("set_end_para", "value"), &TLProtoControlSelection::set_end_para);
+	ClassDB::bind_method(D_METHOD("get_end_para"), &TLRichTextEditSelection::get_end_para);
+	ClassDB::bind_method(D_METHOD("set_end_para", "value"), &TLRichTextEditSelection::set_end_para);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "end_para"), "set_end_para", "get_end_para");
 
-	ClassDB::bind_method(D_METHOD("get_end_offset"), &TLProtoControlSelection::get_end_offset);
-	ClassDB::bind_method(D_METHOD("set_end_offset", "value"), &TLProtoControlSelection::set_end_offset);
+	ClassDB::bind_method(D_METHOD("get_end_offset"), &TLRichTextEditSelection::get_end_offset);
+	ClassDB::bind_method(D_METHOD("set_end_offset", "value"), &TLRichTextEditSelection::set_end_offset);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "end_offset"), "set_end_offset", "get_end_offset");
 
 	ADD_SIGNAL(MethodInfo("selection_changed"));
@@ -156,56 +156,56 @@ void TLProtoControlSelection::_bind_methods() {
 
 #else
 
-void TLProtoControlSelection::_register_methods() {
+void TLRichTextEditSelection::_register_methods() {
 
-	register_method("get_caret_para", &TLProtoControlSelection::get_caret_para);
-	register_method("set_caret_para", &TLProtoControlSelection::set_caret_para);
-	register_property<TLProtoControlSelection, int>("caret_para", &TLProtoControlSelection::set_caret_para, &TLProtoControlSelection::get_caret_para, 0);
+	register_method("get_caret_para", &TLRichTextEditSelection::get_caret_para);
+	register_method("set_caret_para", &TLRichTextEditSelection::set_caret_para);
+	register_property<TLRichTextEditSelection, int>("caret_para", &TLRichTextEditSelection::set_caret_para, &TLRichTextEditSelection::get_caret_para, 0);
 
-	register_method("get_caret_offset", &TLProtoControlSelection::get_caret_offset);
-	register_method("set_caret_offset", &TLProtoControlSelection::set_caret_offset);
-	register_property<TLProtoControlSelection, int>("caret_offset", &TLProtoControlSelection::set_caret_offset, &TLProtoControlSelection::get_caret_offset, 0);
+	register_method("get_caret_offset", &TLRichTextEditSelection::get_caret_offset);
+	register_method("set_caret_offset", &TLRichTextEditSelection::set_caret_offset);
+	register_property<TLRichTextEditSelection, int>("caret_offset", &TLRichTextEditSelection::set_caret_offset, &TLRichTextEditSelection::get_caret_offset, 0);
 
-	register_method("get_start_para", &TLProtoControlSelection::get_start_para);
-	register_method("set_start_para", &TLProtoControlSelection::set_start_para);
-	register_property<TLProtoControlSelection, int>("start_para", &TLProtoControlSelection::set_start_para, &TLProtoControlSelection::get_start_para, 0);
+	register_method("get_start_para", &TLRichTextEditSelection::get_start_para);
+	register_method("set_start_para", &TLRichTextEditSelection::set_start_para);
+	register_property<TLRichTextEditSelection, int>("start_para", &TLRichTextEditSelection::set_start_para, &TLRichTextEditSelection::get_start_para, 0);
 
-	register_method("get_start_offset", &TLProtoControlSelection::get_start_offset);
-	register_method("set_start_offset", &TLProtoControlSelection::set_start_offset);
-	register_property<TLProtoControlSelection, int>("start_offset", &TLProtoControlSelection::set_start_offset, &TLProtoControlSelection::get_start_offset, 0);
+	register_method("get_start_offset", &TLRichTextEditSelection::get_start_offset);
+	register_method("set_start_offset", &TLRichTextEditSelection::set_start_offset);
+	register_property<TLRichTextEditSelection, int>("start_offset", &TLRichTextEditSelection::set_start_offset, &TLRichTextEditSelection::get_start_offset, 0);
 
-	register_method("get_end_para", &TLProtoControlSelection::get_end_para);
-	register_method("set_end_para", &TLProtoControlSelection::set_end_para);
-	register_property<TLProtoControlSelection, int>("end_para", &TLProtoControlSelection::set_end_para, &TLProtoControlSelection::get_end_para, 0);
+	register_method("get_end_para", &TLRichTextEditSelection::get_end_para);
+	register_method("set_end_para", &TLRichTextEditSelection::set_end_para);
+	register_property<TLRichTextEditSelection, int>("end_para", &TLRichTextEditSelection::set_end_para, &TLRichTextEditSelection::get_end_para, 0);
 
-	register_method("get_end_offset", &TLProtoControlSelection::get_end_offset);
-	register_method("set_end_offset", &TLProtoControlSelection::set_end_offset);
-	register_property<TLProtoControlSelection, int>("end_offset", &TLProtoControlSelection::set_end_offset, &TLProtoControlSelection::get_end_offset, 0);
+	register_method("get_end_offset", &TLRichTextEditSelection::get_end_offset);
+	register_method("set_end_offset", &TLRichTextEditSelection::set_end_offset);
+	register_property<TLRichTextEditSelection, int>("end_offset", &TLRichTextEditSelection::set_end_offset, &TLRichTextEditSelection::get_end_offset, 0);
 
-	register_signal<TLProtoControlSelection>("selection_changed");
+	register_signal<TLRichTextEditSelection>("selection_changed");
 }
 
 #endif
 
 /*************************************************************************/
-/*  TLProtoControl                                                       */
+/*  TLRichTextEdit                                                       */
 /*************************************************************************/
 
-TLProtoControl::TLProtoControl() {
+TLRichTextEdit::TLRichTextEdit() {
 
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
-TLProtoControl::~TLProtoControl() {
+TLRichTextEdit::~TLRichTextEdit() {
 
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
 	}
 }
 
-void TLProtoControl::_init() {
+void TLRichTextEdit::_init() {
 
 	set_focus_mode(FOCUS_ALL);
 
@@ -245,12 +245,12 @@ void TLProtoControl::_init() {
 #ifdef GODOT_MODULE
 	selection.instance();
 #else
-	selection = Ref<TLProtoControlSelection>::__internal_constructor(TLProtoControlSelection::_new());
+	selection = Ref<TLRichTextEditSelection>::__internal_constructor(TLRichTextEditSelection::_new());
 #endif
 	selection->connect("selection_changed", this, "_update_ctx_rect");
 };
 
-void TLProtoControl::clear() {
+void TLRichTextEdit::clear() {
 
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
@@ -275,7 +275,7 @@ void TLProtoControl::clear() {
 	paragraphs.push_back(new_para);
 }
 
-void TLProtoControl::_update_ctx_rect() {
+void TLRichTextEdit::_update_ctx_rect() {
 
 	content_size = Size2(0, 0);
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
@@ -292,6 +292,25 @@ void TLProtoControl::_update_ctx_rect() {
 		Size2 _size = paragraphs[i]->get_size();
 		content_size.height += _size.y + para_spacing;
 		content_size.width = MAX(content_size.width, _size.x);
+
+		if (get_child_count() != 0) {
+			for (int64_t j = 0; j < paragraphs[i]->get_lines(); j++) {
+				Array emb = paragraphs[i]->get_line(j)->get_embedded_rects();
+				for (int64_t k = 0; k < emb.size(); k++) {
+					Dictionary ifo = emb[k];
+					String xname = ifo[String("id")];
+					Rect2 xrect = ifo[String("rect")];
+					for (int64_t l = 0; l < get_child_count(); l++) {
+						//move child control if there are IDs for it
+						Control *ctrl = Object::cast_to<Control>(get_child(l));
+						if (ctrl && String(ctrl->get_name()) == xname) {
+							ctrl->set_position(xrect.position);
+							ctrl->set_size(xrect.size);
+						}
+					}
+				}
+			}
+		}
 	}
 	content_size.height += margin[MARGIN_TOP] + margin[MARGIN_BOTTOM];
 	content_size.width += margin[MARGIN_LEFT] + margin[MARGIN_RIGHT];
@@ -300,17 +319,17 @@ void TLProtoControl::_update_ctx_rect() {
 	update();
 }
 
-Size2 TLProtoControl::get_minimum_size() const {
+Size2 TLRichTextEdit::get_minimum_size() const {
 
 	return content_size;
 }
 
-int TLProtoControl::get_paragraphs() {
+int TLRichTextEdit::get_paragraphs() {
 
 	return paragraphs.size();
 }
 
-Ref<TLShapedParagraph> TLProtoControl::get_paragraph(int p_index) const {
+Ref<TLShapedParagraph> TLRichTextEdit::get_paragraph(int p_index) const {
 
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return Ref<TLShapedParagraph>();
@@ -318,7 +337,7 @@ Ref<TLShapedParagraph> TLProtoControl::get_paragraph(int p_index) const {
 	return paragraphs[p_index];
 }
 
-void TLProtoControl::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
+void TLRichTextEdit::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
@@ -330,7 +349,7 @@ void TLProtoControl::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 	_update_ctx_rect();
 }
 
-int TLProtoControl::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
+int TLRichTextEdit::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 
 	if ((p_index < 0) || (p_index > (int64_t)paragraphs.size()))
 		return -1;
@@ -361,7 +380,7 @@ int TLProtoControl::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 	return std::distance(paragraphs.begin(), paragraphs.insert(paragraphs.begin() + p_index, new_para));
 }
 
-void TLProtoControl::remove_paragraph(int p_index) {
+void TLRichTextEdit::remove_paragraph(int p_index) {
 
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
@@ -379,7 +398,7 @@ void TLProtoControl::remove_paragraph(int p_index) {
 	emit_signal("cursor_changed");
 }
 
-void TLProtoControl::_fix_selection() {
+void TLRichTextEdit::_fix_selection() {
 
 	if (selection->start.p < 0) selection->start.p = 0;
 	if (selection->start.p >= (int64_t)paragraphs.size()) selection->start.p = (int64_t)paragraphs.size() - 1;
@@ -400,12 +419,12 @@ void TLProtoControl::_fix_selection() {
 	if (selection->caret.o >= paragraphs[selection->caret.p]->get_string()->length()) selection->caret.o = paragraphs[selection->caret.p]->get_string()->length();
 }
 
-Ref<TLProtoControlSelection> TLProtoControl::get_selection() const {
+Ref<TLRichTextEditSelection> TLRichTextEdit::get_selection() const {
 
 	return selection;
 }
 
-void TLProtoControl::set_selection(Ref<TLProtoControlSelection> p_selection) {
+void TLRichTextEdit::set_selection(Ref<TLRichTextEditSelection> p_selection) {
 
 	selection->disconnect("selection_changed", this, "_update_ctx_rect");
 	selection = p_selection;
@@ -415,7 +434,7 @@ void TLProtoControl::set_selection(Ref<TLProtoControlSelection> p_selection) {
 	emit_signal("cursor_changed");
 }
 
-void TLProtoControl::add_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute, Variant p_value) {
+void TLRichTextEdit::add_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute, Variant p_value) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
@@ -424,7 +443,7 @@ void TLProtoControl::add_attribute(Ref<TLProtoControlSelection> p_selection, int
 	}
 }
 
-void TLProtoControl::remove_attribute(Ref<TLProtoControlSelection> p_selection, int p_attribute) {
+void TLRichTextEdit::remove_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
@@ -433,7 +452,7 @@ void TLProtoControl::remove_attribute(Ref<TLProtoControlSelection> p_selection, 
 	}
 }
 
-void TLProtoControl::remove_attributes(Ref<TLProtoControlSelection> p_selection) {
+void TLRichTextEdit::remove_attributes(Ref<TLRichTextEditSelection> p_selection) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
@@ -442,61 +461,61 @@ void TLProtoControl::remove_attributes(Ref<TLProtoControlSelection> p_selection)
 	}
 }
 
-void TLProtoControl::set_paragraph_width(Ref<TLProtoControlSelection> p_selection, float p_width) {
+void TLRichTextEdit::set_paragraph_width(Ref<TLRichTextEditSelection> p_selection, float p_width) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_width(p_width);
 	}
 }
 
-void TLProtoControl::set_paragraph_indent(Ref<TLProtoControlSelection> p_selection, float p_indent) {
+void TLRichTextEdit::set_paragraph_indent(Ref<TLRichTextEditSelection> p_selection, float p_indent) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_indent(p_indent);
 	}
 }
 
-void TLProtoControl::set_paragraph_back_color(Ref<TLProtoControlSelection> p_selection, Color p_bcolor) {
+void TLRichTextEdit::set_paragraph_back_color(Ref<TLRichTextEditSelection> p_selection, Color p_bcolor) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_back_color(p_bcolor);
 	}
 }
 
-void TLProtoControl::set_paragraph_line_spacing(Ref<TLProtoControlSelection> p_selection, float p_line_spacing) {
+void TLRichTextEdit::set_paragraph_line_spacing(Ref<TLRichTextEditSelection> p_selection, float p_line_spacing) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_line_spacing(p_line_spacing);
 	}
 }
 
-void TLProtoControl::set_paragraph_brk_flags(Ref<TLProtoControlSelection> p_selection, int p_flags) {
+void TLRichTextEdit::set_paragraph_brk_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_brk_flags(p_flags);
 	}
 }
 
-void TLProtoControl::set_paragraph_jst_flags(Ref<TLProtoControlSelection> p_selection, int p_flags) {
+void TLRichTextEdit::set_paragraph_jst_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_jst_flags(p_flags);
 	}
 }
 
-void TLProtoControl::set_paragraph_halign(Ref<TLProtoControlSelection> p_selection, int p_halign) {
+void TLRichTextEdit::set_paragraph_halign(Ref<TLRichTextEditSelection> p_selection, int p_halign) {
 
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_halign(p_halign);
 	}
 }
 
-Point2 TLProtoControl::get_caret_position() {
+Point2 TLRichTextEdit::get_caret_position() {
 
 	return caret_pos;
 }
 
-void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
+void TLRichTextEdit::_hit_test(Point2 p_position, bool p_shift) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
@@ -505,8 +524,8 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (paragraphs[i]->get_lines() == 0) {
 			if ((p_position.y >= y_ofs) && (p_position.y < y_ofs + paragraphs[i]->get_string()->get_height() * paragraphs[i]->get_line_spacing())) {
-				TLProtoControlSelection::Cursor mod = selection->caret;
-				TLProtoControlSelection::Cursor ret = TLProtoControlSelection::Cursor(i, 0);
+				TLRichTextEditSelection::Cursor mod = selection->caret;
+				TLRichTextEditSelection::Cursor ret = TLRichTextEditSelection::Cursor(i, 0);
 				selection->caret = ret;
 				if (!p_shift) {
 					selection->start = ret;
@@ -517,7 +536,7 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 					selection->end = ret;
 				}
 				if (selection->start > selection->end) {
-					TLProtoControlSelection::Cursor _sw = selection->start;
+					TLRichTextEditSelection::Cursor _sw = selection->start;
 					selection->start = selection->end;
 					selection->end = _sw;
 				}
@@ -537,8 +556,8 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 				}
 				if (paragraphs[i]->get_line(j).is_valid()) {
 					if (p_position.y >= y_ofs && p_position.y < y_ofs + paragraphs[i]->get_line(j)->get_height() * paragraphs[i]->get_line_spacing()) {
-						TLProtoControlSelection::Cursor mod = selection->caret;
-						TLProtoControlSelection::Cursor ret = TLProtoControlSelection::Cursor(i, paragraphs[i]->get_string()->next_safe_bound(((j > 0) ? bounds[j - 1] : 0) + paragraphs[i]->get_line(j)->hit_test(p_position.x - paragraphs[i]->get_indent() - x_ofs)));
+						TLRichTextEditSelection::Cursor mod = selection->caret;
+						TLRichTextEditSelection::Cursor ret = TLRichTextEditSelection::Cursor(i, paragraphs[i]->get_string()->next_safe_bound(((j > 0) ? bounds[j - 1] : 0) + paragraphs[i]->get_line(j)->hit_test(p_position.x - paragraphs[i]->get_indent() - x_ofs)));
 
 						selection->caret = ret;
 						if (!p_shift) {
@@ -550,7 +569,7 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 							selection->end = ret;
 						}
 						if (selection->start > selection->end) {
-							TLProtoControlSelection::Cursor _sw = selection->start;
+							TLRichTextEditSelection::Cursor _sw = selection->start;
 							selection->start = selection->end;
 							selection->end = _sw;
 						}
@@ -564,7 +583,7 @@ void TLProtoControl::_hit_test(Point2 p_position, bool p_shift) {
 	}
 }
 
-Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
+Rect2 TLRichTextEdit::get_cluster_rect_hit_test(Point2 p_position) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
@@ -602,7 +621,7 @@ Rect2 TLProtoControl::get_cluster_rect_hit_test(Point2 p_position) {
 	return Rect2();
 }
 
-Array TLProtoControl::get_cluster_glyphs_hit_test(Point2 p_position) {
+Array TLRichTextEdit::get_cluster_glyphs_hit_test(Point2 p_position) {
 
 	Array glyphs;
 	float y_ofs = margin[MARGIN_TOP];
@@ -649,7 +668,7 @@ Array TLProtoControl::get_cluster_glyphs_hit_test(Point2 p_position) {
 	return glyphs;
 }
 
-String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
+String TLRichTextEdit::get_cluster_debug_info_hit_test(Point2 p_position) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
@@ -699,7 +718,7 @@ String TLProtoControl::get_cluster_debug_info_hit_test(Point2 p_position) {
 	return String();
 }
 
-void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_dir, TextDirection p_last_imp_dir) {
+void TLRichTextEdit::_change_selection(bool p_shift, TLRichTextEdit::AdvDir p_dir, TextDirection p_last_imp_dir) {
 
 	if ((!p_shift) && (selection->start != selection->end)) {
 		if (p_dir % 2 != 0) {
@@ -712,8 +731,8 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		return;
 	}
 
-	TLProtoControlSelection::Cursor mod = selection->caret;
-	TLProtoControlSelection::Cursor ret = mod;
+	TLRichTextEditSelection::Cursor mod = selection->caret;
+	TLRichTextEditSelection::Cursor ret = mod;
 
 	switch (p_dir) {
 		case FWD_CHAR: {
@@ -976,13 +995,13 @@ void TLProtoControl::_change_selection(bool p_shift, TLProtoControl::AdvDir p_di
 		selection->end = ret;
 	}
 	if (selection->start > selection->end) {
-		TLProtoControlSelection::Cursor _sw = selection->start;
+		TLRichTextEditSelection::Cursor _sw = selection->start;
 		selection->start = selection->end;
 		selection->end = _sw;
 	}
 }
 
-void TLProtoControl::replace_text(Ref<TLProtoControlSelection> p_selection, const String p_text) {
+void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, const String p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1015,7 +1034,7 @@ void TLProtoControl::replace_text(Ref<TLProtoControlSelection> p_selection, cons
 	update();
 }
 
-void TLProtoControl::replace_utf8(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1048,7 +1067,7 @@ void TLProtoControl::replace_utf8(Ref<TLProtoControlSelection> p_selection, cons
 	update();
 }
 
-void TLProtoControl::replace_utf16(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1081,7 +1100,7 @@ void TLProtoControl::replace_utf16(Ref<TLProtoControlSelection> p_selection, con
 	update();
 }
 
-void TLProtoControl::replace_utf32(Ref<TLProtoControlSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1114,7 +1133,7 @@ void TLProtoControl::replace_utf32(Ref<TLProtoControlSelection> p_selection, con
 	update();
 }
 
-void TLProtoControl::replace_sstring(Ref<TLProtoControlSelection> p_selection, Ref<TLShapedString> p_text) {
+void TLRichTextEdit::replace_sstring(Ref<TLRichTextEditSelection> p_selection, Ref<TLShapedString> p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1148,9 +1167,9 @@ void TLProtoControl::replace_sstring(Ref<TLProtoControlSelection> p_selection, R
 }
 
 #ifdef GODOT_MODULE
-void TLProtoControl::_gui_input(const Ref<InputEvent> &p_event) {
+void TLRichTextEdit::_gui_input(const Ref<InputEvent> &p_event) {
 #else
-void TLProtoControl::_gui_input(InputEvent *p_event) {
+void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 #endif
 
 	if (!selectable)
@@ -1388,7 +1407,7 @@ void TLProtoControl::_gui_input(InputEvent *p_event) {
 	}
 }
 
-void TLProtoControl::debug_draw(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+void TLRichTextEdit::debug_draw(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
@@ -1411,7 +1430,7 @@ void TLProtoControl::debug_draw(RID p_canvas_item, const Point2 p_position, cons
 	}
 }
 
-void TLProtoControl::debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+void TLRichTextEdit::debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
@@ -1434,7 +1453,7 @@ void TLProtoControl::debug_draw_as_hex(RID p_canvas_item, const Point2 p_positio
 	}
 }
 
-void TLProtoControl::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
+void TLRichTextEdit::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
 
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
@@ -1457,7 +1476,7 @@ void TLProtoControl::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p
 	}
 }
 
-float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset) {
+float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset) {
 
 	Size2 size = get_size();
 	RID ci = get_canvas_item();
@@ -1637,7 +1656,7 @@ float TLProtoControl::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 	return p_offset;
 }
 
-void TLProtoControl::_notification(int p_what) {
+void TLRichTextEdit::_notification(int p_what) {
 
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
@@ -1771,53 +1790,53 @@ void TLProtoControl::_notification(int p_what) {
 	}
 }
 
-void TLProtoControl::set_back_color(Color p_color) {
+void TLRichTextEdit::set_back_color(Color p_color) {
 
 	bg_color = p_color;
 	update();
 }
 
-Color TLProtoControl::get_back_color() const {
+Color TLRichTextEdit::get_back_color() const {
 
 	return bg_color;
 }
 
-void TLProtoControl::set_paragraph_spacing(float p_value) {
+void TLRichTextEdit::set_paragraph_spacing(float p_value) {
 
 	para_spacing = p_value;
 	update();
 }
 
-float TLProtoControl::get_paragraph_spacing() const {
+float TLRichTextEdit::get_paragraph_spacing() const {
 
 	return para_spacing;
 }
 
-void TLProtoControl::set_readonly(bool p_value) {
+void TLRichTextEdit::set_readonly(bool p_value) {
 
 	readonly = p_value;
 	update();
 }
 
-bool TLProtoControl::get_readonly() const {
+bool TLRichTextEdit::get_readonly() const {
 
 	return readonly;
 }
 
-void TLProtoControl::set_selectable(bool p_value) {
+void TLRichTextEdit::set_selectable(bool p_value) {
 
 	selectable = p_value;
 	update();
 }
 
-bool TLProtoControl::get_selectable() const {
+bool TLRichTextEdit::get_selectable() const {
 
 	return selectable;
 }
 
 #ifdef GODOT_MODULE
 
-bool TLProtoControl::_set(const StringName &p_name, const Variant &p_value) {
+bool TLRichTextEdit::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
 	Vector<String> tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
@@ -1843,7 +1862,7 @@ bool TLProtoControl::_set(const StringName &p_name, const Variant &p_value) {
 	return false;
 }
 
-bool TLProtoControl::_get(const StringName &p_name, Variant &r_ret) const {
+bool TLRichTextEdit::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name;
 	Vector<String> tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
@@ -1856,72 +1875,72 @@ bool TLProtoControl::_get(const StringName &p_name, Variant &r_ret) const {
 	return false;
 }
 
-void TLProtoControl::_get_property_list(List<PropertyInfo> *p_list) const {
+void TLRichTextEdit::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "paragraphs/" + String::num_int64(i), PROPERTY_HINT_RESOURCE_TYPE, "TLShapedParagraph"));
 	}
 	p_list->push_back(PropertyInfo(Variant::OBJECT, "paragraphs/" + String::num_int64((int64_t)paragraphs.size()), PROPERTY_HINT_RESOURCE_TYPE, "TLShapedParagraph"));
 }
 
-void TLProtoControl::_bind_methods() {
+void TLRichTextEdit::_bind_methods() {
 
-	ClassDB::bind_method(D_METHOD("clear"), &TLProtoControl::clear);
-	ClassDB::bind_method(D_METHOD("_update_ctx_rect"), &TLProtoControl::_update_ctx_rect);
+	ClassDB::bind_method(D_METHOD("clear"), &TLRichTextEdit::clear);
+	ClassDB::bind_method(D_METHOD("_update_ctx_rect"), &TLRichTextEdit::_update_ctx_rect);
 
-	ClassDB::bind_method(D_METHOD("set_back_color", "color"), &TLProtoControl::set_back_color);
-	ClassDB::bind_method(D_METHOD("get_back_color"), &TLProtoControl::get_back_color);
+	ClassDB::bind_method(D_METHOD("set_back_color", "color"), &TLRichTextEdit::set_back_color);
+	ClassDB::bind_method(D_METHOD("get_back_color"), &TLRichTextEdit::get_back_color);
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "back_color"), "set_back_color", "get_back_color");
 
-	ClassDB::bind_method(D_METHOD("set_paragraph_spacing", "value"), &TLProtoControl::set_paragraph_spacing);
-	ClassDB::bind_method(D_METHOD("get_paragraph_spacing"), &TLProtoControl::get_paragraph_spacing);
+	ClassDB::bind_method(D_METHOD("set_paragraph_spacing", "value"), &TLRichTextEdit::set_paragraph_spacing);
+	ClassDB::bind_method(D_METHOD("get_paragraph_spacing"), &TLRichTextEdit::get_paragraph_spacing);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "paragraph_spacing"), "set_paragraph_spacing", "get_paragraph_spacing");
 
-	ClassDB::bind_method(D_METHOD("get_paragraphs"), &TLProtoControl::get_paragraphs);
-	ClassDB::bind_method(D_METHOD("get_paragraph", "index"), &TLProtoControl::get_paragraph);
-	ClassDB::bind_method(D_METHOD("set_paragraph", "para", "index"), &TLProtoControl::set_paragraph);
+	ClassDB::bind_method(D_METHOD("get_paragraphs"), &TLRichTextEdit::get_paragraphs);
+	ClassDB::bind_method(D_METHOD("get_paragraph", "index"), &TLRichTextEdit::get_paragraph);
+	ClassDB::bind_method(D_METHOD("set_paragraph", "para", "index"), &TLRichTextEdit::set_paragraph);
 
-	ClassDB::bind_method(D_METHOD("insert_paragraph", "para", "index"), &TLProtoControl::insert_paragraph);
-	ClassDB::bind_method(D_METHOD("remove_paragraph", "index"), &TLProtoControl::remove_paragraph);
+	ClassDB::bind_method(D_METHOD("insert_paragraph", "para", "index"), &TLRichTextEdit::insert_paragraph);
+	ClassDB::bind_method(D_METHOD("remove_paragraph", "index"), &TLRichTextEdit::remove_paragraph);
 
-	ClassDB::bind_method(D_METHOD("get_caret_position"), &TLProtoControl::get_caret_position);
+	ClassDB::bind_method(D_METHOD("get_caret_position"), &TLRichTextEdit::get_caret_position);
 
-	ClassDB::bind_method(D_METHOD("replace_text", "selection", "text"), &TLProtoControl::replace_text);
-	ClassDB::bind_method(D_METHOD("replace_utf8", "selection", "text"), &TLProtoControl::replace_utf8);
-	ClassDB::bind_method(D_METHOD("replace_utf16", "selection", "text"), &TLProtoControl::replace_utf16);
-	ClassDB::bind_method(D_METHOD("replace_utf32", "selection", "text"), &TLProtoControl::replace_utf32);
-	ClassDB::bind_method(D_METHOD("replace_sstring", "selection", "text"), &TLProtoControl::replace_sstring);
+	ClassDB::bind_method(D_METHOD("replace_text", "selection", "text"), &TLRichTextEdit::replace_text);
+	ClassDB::bind_method(D_METHOD("replace_utf8", "selection", "text"), &TLRichTextEdit::replace_utf8);
+	ClassDB::bind_method(D_METHOD("replace_utf16", "selection", "text"), &TLRichTextEdit::replace_utf16);
+	ClassDB::bind_method(D_METHOD("replace_utf32", "selection", "text"), &TLRichTextEdit::replace_utf32);
+	ClassDB::bind_method(D_METHOD("replace_sstring", "selection", "text"), &TLRichTextEdit::replace_sstring);
 
-	ClassDB::bind_method(D_METHOD("add_attribute", "selection", "attribute", "value"), &TLProtoControl::add_attribute);
-	ClassDB::bind_method(D_METHOD("remove_attribute", "selection", "attribute"), &TLProtoControl::remove_attribute);
-	ClassDB::bind_method(D_METHOD("remove_attributes", "selection"), &TLProtoControl::remove_attributes);
-	ClassDB::bind_method(D_METHOD("set_paragraph_width", "selection", "width"), &TLProtoControl::set_paragraph_width);
-	ClassDB::bind_method(D_METHOD("set_paragraph_indent", "selection", "indent"), &TLProtoControl::set_paragraph_indent);
-	ClassDB::bind_method(D_METHOD("set_paragraph_back_color", "selection", "bcolor"), &TLProtoControl::set_paragraph_back_color);
-	ClassDB::bind_method(D_METHOD("set_paragraph_line_spacing", "selection", "line_spacing"), &TLProtoControl::set_paragraph_line_spacing);
-	ClassDB::bind_method(D_METHOD("set_paragraph_brk_flags", "selection", "flags"), &TLProtoControl::set_paragraph_brk_flags);
-	ClassDB::bind_method(D_METHOD("set_paragraph_jst_flags", "selection", "flags"), &TLProtoControl::set_paragraph_jst_flags);
-	ClassDB::bind_method(D_METHOD("set_paragraph_halign", "selection", "halign"), &TLProtoControl::set_paragraph_halign);
+	ClassDB::bind_method(D_METHOD("add_attribute", "selection", "attribute", "value"), &TLRichTextEdit::add_attribute);
+	ClassDB::bind_method(D_METHOD("remove_attribute", "selection", "attribute"), &TLRichTextEdit::remove_attribute);
+	ClassDB::bind_method(D_METHOD("remove_attributes", "selection"), &TLRichTextEdit::remove_attributes);
+	ClassDB::bind_method(D_METHOD("set_paragraph_width", "selection", "width"), &TLRichTextEdit::set_paragraph_width);
+	ClassDB::bind_method(D_METHOD("set_paragraph_indent", "selection", "indent"), &TLRichTextEdit::set_paragraph_indent);
+	ClassDB::bind_method(D_METHOD("set_paragraph_back_color", "selection", "bcolor"), &TLRichTextEdit::set_paragraph_back_color);
+	ClassDB::bind_method(D_METHOD("set_paragraph_line_spacing", "selection", "line_spacing"), &TLRichTextEdit::set_paragraph_line_spacing);
+	ClassDB::bind_method(D_METHOD("set_paragraph_brk_flags", "selection", "flags"), &TLRichTextEdit::set_paragraph_brk_flags);
+	ClassDB::bind_method(D_METHOD("set_paragraph_jst_flags", "selection", "flags"), &TLRichTextEdit::set_paragraph_jst_flags);
+	ClassDB::bind_method(D_METHOD("set_paragraph_halign", "selection", "halign"), &TLRichTextEdit::set_paragraph_halign);
 
-	ClassDB::bind_method(D_METHOD("get_selection"), &TLProtoControl::get_selection);
-	ClassDB::bind_method(D_METHOD("set_selection", "selection"), &TLProtoControl::set_selection);
+	ClassDB::bind_method(D_METHOD("get_selection"), &TLRichTextEdit::get_selection);
+	ClassDB::bind_method(D_METHOD("set_selection", "selection"), &TLRichTextEdit::set_selection);
 
-	ClassDB::bind_method(D_METHOD("get_cluster_debug_info_hit_test", "position"), &TLProtoControl::get_cluster_debug_info_hit_test);
-	ClassDB::bind_method(D_METHOD("get_cluster_glyphs_hit_test", "position"), &TLProtoControl::get_cluster_glyphs_hit_test);
-	ClassDB::bind_method(D_METHOD("get_cluster_rect_hit_test", "position"), &TLProtoControl::get_cluster_rect_hit_test);
+	ClassDB::bind_method(D_METHOD("get_cluster_debug_info_hit_test", "position"), &TLRichTextEdit::get_cluster_debug_info_hit_test);
+	ClassDB::bind_method(D_METHOD("get_cluster_glyphs_hit_test", "position"), &TLRichTextEdit::get_cluster_glyphs_hit_test);
+	ClassDB::bind_method(D_METHOD("get_cluster_rect_hit_test", "position"), &TLRichTextEdit::get_cluster_rect_hit_test);
 
-	ClassDB::bind_method(D_METHOD("get_readonly"), &TLProtoControl::get_readonly);
-	ClassDB::bind_method(D_METHOD("set_readonly", "readonly"), &TLProtoControl::set_readonly);
+	ClassDB::bind_method(D_METHOD("get_readonly"), &TLRichTextEdit::get_readonly);
+	ClassDB::bind_method(D_METHOD("set_readonly", "readonly"), &TLRichTextEdit::set_readonly);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "readonly"), "set_readonly", "get_readonly");
 
-	ClassDB::bind_method(D_METHOD("get_selectable"), &TLProtoControl::get_selectable);
-	ClassDB::bind_method(D_METHOD("set_selectable", "selectable"), &TLProtoControl::set_selectable);
+	ClassDB::bind_method(D_METHOD("get_selectable"), &TLRichTextEdit::get_selectable);
+	ClassDB::bind_method(D_METHOD("set_selectable", "selectable"), &TLRichTextEdit::set_selectable);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "selectable"), "set_selectable", "get_selectable");
 
-	ClassDB::bind_method(D_METHOD("debug_draw", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw);
-	ClassDB::bind_method(D_METHOD("debug_draw_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw_as_hex);
-	ClassDB::bind_method(D_METHOD("debug_draw_logical_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLProtoControl::debug_draw_logical_as_hex);
+	ClassDB::bind_method(D_METHOD("debug_draw", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLRichTextEdit::debug_draw);
+	ClassDB::bind_method(D_METHOD("debug_draw_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLRichTextEdit::debug_draw_as_hex);
+	ClassDB::bind_method(D_METHOD("debug_draw_logical_as_hex", "rid", "position", "hit_position", "draw_brk_ops", "draw_jst_ops"), &TLRichTextEdit::debug_draw_logical_as_hex);
 
-	ClassDB::bind_method(D_METHOD("_gui_input"), &TLProtoControl::_gui_input);
+	ClassDB::bind_method(D_METHOD("_gui_input"), &TLRichTextEdit::_gui_input);
 
 	ADD_SIGNAL(MethodInfo("cursor_changed"));
 	ADD_SIGNAL(MethodInfo("paragraph_changed"));
@@ -1929,7 +1948,7 @@ void TLProtoControl::_bind_methods() {
 
 #else
 
-bool TLProtoControl::_set(String p_name, Variant p_value) {
+bool TLRichTextEdit::_set(String p_name, Variant p_value) {
 	String name = p_name;
 	PoolStringArray tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
@@ -1955,7 +1974,7 @@ bool TLProtoControl::_set(String p_name, Variant p_value) {
 	return false;
 }
 
-Variant TLProtoControl::_get(String p_name) const {
+Variant TLRichTextEdit::_get(String p_name) const {
 
 	String name = p_name;
 	PoolStringArray tokens = name.split("/");
@@ -1966,7 +1985,7 @@ Variant TLProtoControl::_get(String p_name) const {
 	return Variant();
 }
 
-Array TLProtoControl::_get_property_list() const {
+Array TLRichTextEdit::_get_property_list() const {
 	Array ret;
 
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
@@ -1991,75 +2010,75 @@ Array TLProtoControl::_get_property_list() const {
 	return ret;
 }
 
-void TLProtoControl::_register_methods() {
+void TLRichTextEdit::_register_methods() {
 
-	register_method("clear", &TLProtoControl::clear);
-	register_method("_update_ctx_rect", &TLProtoControl::_update_ctx_rect);
+	register_method("clear", &TLRichTextEdit::clear);
+	register_method("_update_ctx_rect", &TLRichTextEdit::_update_ctx_rect);
 
-	register_method("set_back_color", &TLProtoControl::set_back_color);
-	register_method("get_back_color", &TLProtoControl::get_back_color);
-	register_property<TLProtoControl, Color>("back_color", &TLProtoControl::set_back_color, &TLProtoControl::get_back_color, Color(1, 1, 1, 0));
+	register_method("set_back_color", &TLRichTextEdit::set_back_color);
+	register_method("get_back_color", &TLRichTextEdit::get_back_color);
+	register_property<TLRichTextEdit, Color>("back_color", &TLRichTextEdit::set_back_color, &TLRichTextEdit::get_back_color, Color(1, 1, 1, 0));
 
-	register_method("set_paragraph_spacing", &TLProtoControl::set_paragraph_spacing);
-	register_method("get_paragraph_spacing", &TLProtoControl::get_paragraph_spacing);
-	register_property<TLProtoControl, float>("paragraph_spacing", &TLProtoControl::set_paragraph_spacing, &TLProtoControl::get_paragraph_spacing, 3.0f);
+	register_method("set_paragraph_spacing", &TLRichTextEdit::set_paragraph_spacing);
+	register_method("get_paragraph_spacing", &TLRichTextEdit::get_paragraph_spacing);
+	register_property<TLRichTextEdit, float>("paragraph_spacing", &TLRichTextEdit::set_paragraph_spacing, &TLRichTextEdit::get_paragraph_spacing, 3.0f);
 
-	register_method("get_paragraphs", &TLProtoControl::get_paragraphs);
-	register_method("get_paragraph", &TLProtoControl::get_paragraph);
-	register_method("set_paragraph", &TLProtoControl::set_paragraph);
+	register_method("get_paragraphs", &TLRichTextEdit::get_paragraphs);
+	register_method("get_paragraph", &TLRichTextEdit::get_paragraph);
+	register_method("set_paragraph", &TLRichTextEdit::set_paragraph);
 
-	register_method("insert_paragraph", &TLProtoControl::insert_paragraph);
-	register_method("remove_paragraph", &TLProtoControl::remove_paragraph);
+	register_method("insert_paragraph", &TLRichTextEdit::insert_paragraph);
+	register_method("remove_paragraph", &TLRichTextEdit::remove_paragraph);
 
-	register_method("get_caret_position", &TLProtoControl::get_caret_position);
+	register_method("get_caret_position", &TLRichTextEdit::get_caret_position);
 
-	register_method("replace_text", &TLProtoControl::replace_text);
-	register_method("replace_utf8", &TLProtoControl::replace_utf8);
-	register_method("replace_utf16", &TLProtoControl::replace_utf16);
-	register_method("replace_utf32", &TLProtoControl::replace_utf32);
-	register_method("replace_sstring", &TLProtoControl::replace_sstring);
+	register_method("replace_text", &TLRichTextEdit::replace_text);
+	register_method("replace_utf8", &TLRichTextEdit::replace_utf8);
+	register_method("replace_utf16", &TLRichTextEdit::replace_utf16);
+	register_method("replace_utf32", &TLRichTextEdit::replace_utf32);
+	register_method("replace_sstring", &TLRichTextEdit::replace_sstring);
 
-	register_method("add_attribute", &TLProtoControl::add_attribute);
-	register_method("remove_attribute", &TLProtoControl::remove_attribute);
-	register_method("remove_attributes", &TLProtoControl::remove_attributes);
-	register_method("set_paragraph_width", &TLProtoControl::set_paragraph_width);
-	register_method("set_paragraph_indent", &TLProtoControl::set_paragraph_indent);
-	register_method("set_paragraph_back_color", &TLProtoControl::set_paragraph_back_color);
-	register_method("set_paragraph_line_spacing", &TLProtoControl::set_paragraph_line_spacing);
-	register_method("set_paragraph_brk_flags", &TLProtoControl::set_paragraph_brk_flags);
-	register_method("set_paragraph_jst_flags", &TLProtoControl::set_paragraph_jst_flags);
-	register_method("set_paragraph_halign", &TLProtoControl::set_paragraph_halign);
+	register_method("add_attribute", &TLRichTextEdit::add_attribute);
+	register_method("remove_attribute", &TLRichTextEdit::remove_attribute);
+	register_method("remove_attributes", &TLRichTextEdit::remove_attributes);
+	register_method("set_paragraph_width", &TLRichTextEdit::set_paragraph_width);
+	register_method("set_paragraph_indent", &TLRichTextEdit::set_paragraph_indent);
+	register_method("set_paragraph_back_color", &TLRichTextEdit::set_paragraph_back_color);
+	register_method("set_paragraph_line_spacing", &TLRichTextEdit::set_paragraph_line_spacing);
+	register_method("set_paragraph_brk_flags", &TLRichTextEdit::set_paragraph_brk_flags);
+	register_method("set_paragraph_jst_flags", &TLRichTextEdit::set_paragraph_jst_flags);
+	register_method("set_paragraph_halign", &TLRichTextEdit::set_paragraph_halign);
 
-	register_method("get_selection", &TLProtoControl::get_selection);
-	register_method("set_selection", &TLProtoControl::set_selection);
+	register_method("get_selection", &TLRichTextEdit::get_selection);
+	register_method("set_selection", &TLRichTextEdit::set_selection);
 
-	register_method("get_readonly", &TLProtoControl::get_readonly);
-	register_method("set_readonly", &TLProtoControl::set_readonly);
-	register_property<TLProtoControl, bool>("readonly", &TLProtoControl::set_readonly, &TLProtoControl::get_readonly, false);
+	register_method("get_readonly", &TLRichTextEdit::get_readonly);
+	register_method("set_readonly", &TLRichTextEdit::set_readonly);
+	register_property<TLRichTextEdit, bool>("readonly", &TLRichTextEdit::set_readonly, &TLRichTextEdit::get_readonly, false);
 
-	register_method("get_selectable", &TLProtoControl::get_selectable);
-	register_method("set_selectable", &TLProtoControl::set_selectable);
-	register_property<TLProtoControl, bool>("selectable", &TLProtoControl::set_selectable, &TLProtoControl::get_selectable, false);
+	register_method("get_selectable", &TLRichTextEdit::get_selectable);
+	register_method("set_selectable", &TLRichTextEdit::set_selectable);
+	register_property<TLRichTextEdit, bool>("selectable", &TLRichTextEdit::set_selectable, &TLRichTextEdit::get_selectable, false);
 
-	register_method("get_cluster_debug_info_hit_test", &TLProtoControl::get_cluster_debug_info_hit_test);
-	register_method("get_cluster_glyphs_hit_test", &TLProtoControl::get_cluster_glyphs_hit_test);
-	register_method("get_cluster_rect_hit_test", &TLProtoControl::get_cluster_rect_hit_test);
+	register_method("get_cluster_debug_info_hit_test", &TLRichTextEdit::get_cluster_debug_info_hit_test);
+	register_method("get_cluster_glyphs_hit_test", &TLRichTextEdit::get_cluster_glyphs_hit_test);
+	register_method("get_cluster_rect_hit_test", &TLRichTextEdit::get_cluster_rect_hit_test);
 
-	register_method("_gui_input", &TLProtoControl::_gui_input);
-	register_method("get_minimum_size", &TLProtoControl::get_minimum_size);
+	register_method("_gui_input", &TLRichTextEdit::_gui_input);
+	register_method("get_minimum_size", &TLRichTextEdit::get_minimum_size);
 
-	register_method("debug_draw", &TLProtoControl::debug_draw);
-	register_method("debug_draw_as_hex", &TLProtoControl::debug_draw_as_hex);
-	register_method("debug_draw_logical_as_hex", &TLProtoControl::debug_draw_logical_as_hex);
+	register_method("debug_draw", &TLRichTextEdit::debug_draw);
+	register_method("debug_draw_as_hex", &TLRichTextEdit::debug_draw_as_hex);
+	register_method("debug_draw_logical_as_hex", &TLRichTextEdit::debug_draw_logical_as_hex);
 
-	register_method("_notification", &TLProtoControl::_notification);
+	register_method("_notification", &TLRichTextEdit::_notification);
 
-	register_method("_get_property_list", &TLProtoControl::_get_property_list);
-	register_method("_get", &TLProtoControl::_get);
-	register_method("_set", &TLProtoControl::_set);
+	register_method("_get_property_list", &TLRichTextEdit::_get_property_list);
+	register_method("_get", &TLRichTextEdit::_get);
+	register_method("_set", &TLRichTextEdit::_set);
 
-	register_signal<TLProtoControl>("cursor_changed");
-	register_signal<TLProtoControl>("paragraph_changed");
+	register_signal<TLRichTextEdit>("cursor_changed");
+	register_signal<TLRichTextEdit>("paragraph_changed");
 }
 
 #endif

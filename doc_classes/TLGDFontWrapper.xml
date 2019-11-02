@@ -3,6 +3,7 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		Subclass [Font] to use with default Godot controls, provides limited shaping support.
 		Note: This class is only available if module is built with [code]use_font_wrapper=true[/code] flag.
 	</description>
 	<tutorials>
@@ -11,12 +12,16 @@
 	</methods>
 	<members>
 		<member name="base_font" type="TLFontFamily" setter="set_base_font" getter="get_base_font">
+			Base font to wrap.
 		</member>
 		<member name="base_font_size" type="int" setter="set_base_font_size" getter="get_base_font_size" default="12">
+			Base font size.
 		</member>
 		<member name="base_font_style" type="String" setter="set_base_font_style" getter="get_base_font_style" default="&quot;Regular&quot;">
+			Base font style.
 		</member>
 		<member name="cache_depth" type="int" setter="set_cache_depth" getter="get_cache_depth" default="100">
+			Number of shaped strings to keep in cache.
 		</member>
 	</members>
 	<constants>

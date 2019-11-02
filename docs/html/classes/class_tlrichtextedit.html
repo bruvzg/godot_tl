@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TLRichTextEdit &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TLRichTextEditSelection" href="class_tlrichtexteditselection.html" />
+    <link rel="prev" title="TLLineEdit" href="class_tllineedit.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#gdnative">GDNative</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/font_substitution.html">Font substitution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">libgdtl API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlfontiterator.html">TLFontIterator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlgdfontwrapper.html">TLGDFontWrapper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlgdfontwrapper.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlgdfontwrapper.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlgdfontwrapper.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlgdfontwrapper.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLRichTextEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlrichtexteditselection.html">TLRichTextEditSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtexteditselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">libgdtl API</a> &raquo;</li>
+        
+      <li>TLRichTextEdit</li>
+    
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tlrichtextedit">
+<span id="class-tlrichtextedit"></span><h1>TLRichTextEdit<a class="headerlink" href="#tlrichtextedit" title="Permalink to this headline">¶</a></h1>
+<p><strong>Inherits:</strong></p>
+<p><strong>Category:</strong> Core</p>
+<div class="section" id="brief-description">
+<h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+<p>Rich text display and input control.</p>
+<p>Rich text can contain custom text, fonts, images and formatting.</p>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 52%" />
+<col style="width: 14%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Color</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-property-back-color"><span class="std std-ref">back_color</span></a></p></td>
+<td><p>Color( 1, 1, 1, 0 )</p></td>
+</tr>
+<tr class="row-even"><td><p>Control.FocusMode</p></td>
+<td><p>focus_mode</p></td>
+<td><p><strong>O:</strong> 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>float</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-property-paragraph-spacing"><span class="std std-ref">paragraph_spacing</span></a></p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>bool</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-property-readonly"><span class="std std-ref">readonly</span></a></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>bool</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-property-selectable"><span class="std std-ref">selectable</span></a></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a></p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-property-paragraphs-index"><span class="std std-ref">paragraphs/{index}</span></a></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-add-attribute"><span class="std std-ref">add_attribute</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int attribute, Variant value <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-clear"><span class="std std-ref">clear</span></a> <strong>(</strong> <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-debug-draw"><span class="std std-ref">debug_draw</span></a> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-debug-draw-as-hex"><span class="std std-ref">debug_draw_as_hex</span></a> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-debug-draw-logical-as-hex"><span class="std std-ref">debug_draw_logical_as_hex</span></a> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Vector2</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-caret-position"><span class="std std-ref">get_caret_position</span></a> <strong>(</strong> <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>String</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-cluster-debug-info-hit-test"><span class="std std-ref">get_cluster_debug_info_hit_test</span></a> <strong>(</strong> Vector2 position <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Array</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-cluster-glyphs-hit-test"><span class="std std-ref">get_cluster_glyphs_hit_test</span></a> <strong>(</strong> Vector2 position <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Rect2</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-cluster-rect-hit-test"><span class="std std-ref">get_cluster_rect_hit_test</span></a> <strong>(</strong> Vector2 position <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a></p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-paragraph"><span class="std std-ref">get_paragraph</span></a> <strong>(</strong> int index <strong>)</strong> const</p></td>
+</tr>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-paragraphs"><span class="std std-ref">get_paragraphs</span></a> <strong>(</strong> <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a></p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-get-selection"><span class="std std-ref">get_selection</span></a> <strong>(</strong> <strong>)</strong> const</p></td>
+</tr>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-insert-paragraph"><span class="std std-ref">insert_paragraph</span></a> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-remove-attribute"><span class="std std-ref">remove_attribute</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int attribute <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-remove-attributes"><span class="std std-ref">remove_attributes</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-remove-paragraph"><span class="std std-ref">remove_paragraph</span></a> <strong>(</strong> int index <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-replace-sstring"><span class="std std-ref">replace_sstring</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, <a class="reference internal" href="class_tlshapedstring.html#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-replace-text"><span class="std std-ref">replace_text</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, String text <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-replace-utf16"><span class="std std-ref">replace_utf16</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-replace-utf32"><span class="std std-ref">replace_utf32</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-replace-utf8"><span class="std std-ref">replace_utf8</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph"><span class="std std-ref">set_paragraph</span></a> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-back-color"><span class="std std-ref">set_paragraph_back_color</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, Color bcolor <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-brk-flags"><span class="std std-ref">set_paragraph_brk_flags</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int flags <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-halign"><span class="std std-ref">set_paragraph_halign</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int halign <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-indent"><span class="std std-ref">set_paragraph_indent</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float indent <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-jst-flags"><span class="std std-ref">set_paragraph_jst_flags</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int flags <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-line-spacing"><span class="std std-ref">set_paragraph_line_spacing</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float line_spacing <strong>)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-paragraph-width"><span class="std std-ref">set_paragraph_width</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float width <strong>)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtextedit-method-set-selection"><span class="std std-ref">set_selection</span></a> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection <strong>)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlrichtextedit-signal-cursor-changed">
+<li><p><strong>cursor_changed</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Emitted when caret moves or selection changes.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-signal-paragraph-changed">
+<li><p><strong>paragraph_changed</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Emitted when paragraph text or attributes changes.</p>
+</div>
+<div class="section" id="property-descriptions">
+<h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlrichtextedit-property-back-color">
+<li><p>Color <strong>back_color</strong></p></li>
+</ul>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>Color( 1, 1, 1, 0 )</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_back_color(value)</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_back_color()</p></td>
+</tr>
+</tbody>
+</table>
+<p>Background color of the control.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-property-paragraph-spacing">
+<li><p>float <strong>paragraph_spacing</strong></p></li>
+</ul>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_paragraph_spacing(value)</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_paragraph_spacing()</p></td>
+</tr>
+</tbody>
+</table>
+<p>Spacing between the paragraphs in pixels.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-property-readonly">
+<li><p>bool <strong>readonly</strong></p></li>
+</ul>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_readonly(value)</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_readonly()</p></td>
+</tr>
+</tbody>
+</table>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, existing text cannot be modified and new text cannot be added.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-property-selectable">
+<li><p>bool <strong>selectable</strong></p></li>
+</ul>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_selectable(value)</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_selectable()</p></td>
+</tr>
+</tbody>
+</table>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the control allows text selection.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-property-paragraphs-index">
+<li><p><a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> <strong>paragraphs/{index}</strong></p></li>
+</ul>
+<p>Paragraphs of the text.</p>
+</div>
+<div class="section" id="method-descriptions">
+<h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple" id="class-tlrichtextedit-method-add-attribute">
+<li><p>void <strong>add_attribute</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int attribute, Variant value <strong>)</strong></p></li>
+</ul>
+<p>Sets <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">value</span></code> for the selection.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-clear">
+<li><p>void <strong>clear</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Clears the attributes and sets text to an empty string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-debug-draw">
+<li><p>void <strong>debug_draw</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">DEBUG:</span></code> Draws text with additional debug information.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-debug-draw-as-hex">
+<li><p>void <strong>debug_draw_as_hex</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">DEBUG:</span></code> Draws text using “hexbox” fallback font.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-debug-draw-logical-as-hex">
+<li><p>void <strong>debug_draw_logical_as_hex</strong> <strong>(</strong> RID rid, Vector2 position, Vector2 hit_position, bool draw_brk_ops, bool draw_jst_ops <strong>)</strong></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">DEBUG:</span></code> Draws logical character codes of the text with additional debug information.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-caret-position">
+<li><p>Vector2 <strong>get_caret_position</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Returns position of the caret, in (paragraph, offset) format.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-cluster-debug-info-hit-test">
+<li><p>String <strong>get_cluster_debug_info_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">DEBUG:</span></code> Returns cluster hit test info.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-cluster-glyphs-hit-test">
+<li><p>Array <strong>get_cluster_glyphs_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></p></li>
+</ul>
+<p>Returns glyph hit test info.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-cluster-rect-hit-test">
+<li><p>Rect2 <strong>get_cluster_rect_hit_test</strong> <strong>(</strong> Vector2 position <strong>)</strong></p></li>
+</ul>
+<p>Returns replacement object hit test info.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-paragraph">
+<li><p><a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> <strong>get_paragraph</strong> <strong>(</strong> int index <strong>)</strong> const</p></li>
+</ul>
+<p>Returns paragraph of text.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-paragraphs">
+<li><p>int <strong>get_paragraphs</strong> <strong>(</strong> <strong>)</strong></p></li>
+</ul>
+<p>Returns number of paragraph in the text.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-get-selection">
+<li><p><a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> <strong>get_selection</strong> <strong>(</strong> <strong>)</strong> const</p></li>
+</ul>
+<p>Returns current selection and caret position.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-insert-paragraph">
+<li><p>int <strong>insert_paragraph</strong> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></p></li>
+</ul>
+<p>Inserts paragraph of text at the index position.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-remove-attribute">
+<li><p>void <strong>remove_attribute</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int attribute <strong>)</strong></p></li>
+</ul>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">attribute</span></code> attribute value in the selection.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-remove-attributes">
+<li><p>void <strong>remove_attributes</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection <strong>)</strong></p></li>
+</ul>
+<p>Removes all attributes in the selection.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-remove-paragraph">
+<li><p>void <strong>remove_paragraph</strong> <strong>(</strong> int index <strong>)</strong></p></li>
+</ul>
+<p>Removes paragraph of the text.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-replace-sstring">
+<li><p>void <strong>replace_sstring</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, <a class="reference internal" href="class_tlshapedstring.html#class-tlshapedstring"><span class="std std-ref">TLShapedString</span></a> text <strong>)</strong></p></li>
+</ul>
+<p>Replaces selection with the shaped string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-replace-text">
+<li><p>void <strong>replace_text</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, String text <strong>)</strong></p></li>
+</ul>
+<p>Replaces selection with the plain string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-replace-utf16">
+<li><p>void <strong>replace_utf16</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></li>
+</ul>
+<p>Replaces selection with the contents of the raw UTF-16 encoded string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-replace-utf32">
+<li><p>void <strong>replace_utf32</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></li>
+</ul>
+<p>Replaces selection with the contents of the raw UTF-32 encoded string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-replace-utf8">
+<li><p>void <strong>replace_utf8</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, PoolByteArray text <strong>)</strong></p></li>
+</ul>
+<p>Replaces selection with the contents of the raw UTF-8 encoded string.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph">
+<li><p>void <strong>set_paragraph</strong> <strong>(</strong> <a class="reference internal" href="class_tlshapedparagraph.html#class-tlshapedparagraph"><span class="std std-ref">TLShapedParagraph</span></a> para, int index <strong>)</strong></p></li>
+</ul>
+<p>Sets content of the specific paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-back-color">
+<li><p>void <strong>set_paragraph_back_color</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, Color bcolor <strong>)</strong></p></li>
+</ul>
+<p>Sets background color of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-brk-flags">
+<li><p>void <strong>set_paragraph_brk_flags</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int flags <strong>)</strong></p></li>
+</ul>
+<p>Sets line breaking flags of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-halign">
+<li><p>void <strong>set_paragraph_halign</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int halign <strong>)</strong></p></li>
+</ul>
+<p>Sets horizontal alignment of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-indent">
+<li><p>void <strong>set_paragraph_indent</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float indent <strong>)</strong></p></li>
+</ul>
+<p>Sets indentation of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-jst-flags">
+<li><p>void <strong>set_paragraph_jst_flags</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, int flags <strong>)</strong></p></li>
+</ul>
+<p>Sets justification flags of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-line-spacing">
+<li><p>void <strong>set_paragraph_line_spacing</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float line_spacing <strong>)</strong></p></li>
+</ul>
+<p>Sets line spacing of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-paragraph-width">
+<li><p>void <strong>set_paragraph_width</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection, float width <strong>)</strong></p></li>
+</ul>
+<p>Sets max width of the paragraph.</p>
+<hr class="docutils" />
+<ul class="simple" id="class-tlrichtextedit-method-set-selection">
+<li><p>void <strong>set_selection</strong> <strong>(</strong> <a class="reference internal" href="class_tlrichtexteditselection.html#class-tlrichtexteditselection"><span class="std std-ref">TLRichTextEditSelection</span></a> selection <strong>)</strong></p></li>
+</ul>
+<p>Sets current selection.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_tlrichtexteditselection.html" class="btn btn-neutral float-right" title="TLRichTextEditSelection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_tllineedit.html" class="btn btn-neutral float-left" title="TLLineEdit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

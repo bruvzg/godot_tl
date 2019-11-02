@@ -16,7 +16,9 @@ TLLineEdit
 Brief Description
 -----------------
 
+Control that provides single-line string editing. For formatted or/and multiline text, use :ref:`TLRichTextEdit<class_TLRichTextEdit>`.
 
+Copy of Godot LineEdit with the shaping support. TLLineEdit uses the same theme items as the LineEdit.
 
 Properties
 ----------
@@ -44,7 +46,7 @@ Properties
 +-----------------------------------------+-------------------------------------------------------------------------------+-----------+
 | bool                                    | :ref:`expand_to_text_length<class_TLLineEdit_property_expand_to_text_length>` | false     |
 +-----------------------------------------+-------------------------------------------------------------------------------+-----------+
-| Control.FocusMode                       | focus_mode                                                                    | **O:** 2  |
+| int                                     | focus_mode                                                                    | **O:** 2  |
 +-----------------------------------------+-------------------------------------------------------------------------------+-----------+
 | String                                  | :ref:`language<class_TLLineEdit_property_language>`                           | ""        |
 +-----------------------------------------+-------------------------------------------------------------------------------+-----------+
@@ -97,11 +99,15 @@ Signals
 
 - **text_changed** **(** String new_text **)**
 
+Emitted when the text changes.
+
 ----
 
 .. _class_TLLineEdit_signal_text_entered:
 
 - **text_entered** **(** String new_text **)**
+
+Emitted when the user presses ``KEY_ENTER`` on the ``TLLineEdit``.
 
 Enumerations
 ------------
@@ -118,13 +124,13 @@ Enumerations
 
 enum **Align**:
 
-- **ALIGN_LEFT** = **0**
+- **ALIGN_LEFT** = **0** --- Aligns the text on the left-hand side of the ``TLLineEdit``.
 
-- **ALIGN_CENTER** = **1**
+- **ALIGN_CENTER** = **1** --- Centers the text in the middle of the ``TLLineEdit``.
 
-- **ALIGN_RIGHT** = **2**
+- **ALIGN_RIGHT** = **2** --- Aligns the text on the right-hand side of the ``TLLineEdit``.
 
-- **ALIGN_FILL** = **3**
+- **ALIGN_FILL** = **3** --- Stretches white spaces to fit the ``TLLineEdit``'s width.
 
 ----
 
@@ -148,21 +154,48 @@ enum **Align**:
 
 enum **MenuItems**:
 
-- **MENU_CUT** = **0**
+- **MENU_CUT** = **0** --- Cuts (copies and clears) the selected text.
 
-- **MENU_COPY** = **1**
+- **MENU_COPY** = **1** --- Copies the selected text.
 
-- **MENU_PASTE** = **2**
+- **MENU_PASTE** = **2** --- Pastes the clipboard text over the selected text (or at the cursor's position).
 
-- **MENU_CLEAR** = **3**
+Non-printable escape characters are automatically stripped from the OS clipboard via ``String.strip_escapes``.
 
-- **MENU_SELECT_ALL** = **4**
+- **MENU_CLEAR** = **3** --- Erases the whole ``TLLineEdit`` text.
 
-- **MENU_UNDO** = **5**
+- **MENU_SELECT_ALL** = **4** --- Selects the whole ``TLLineEdit`` text.
 
-- **MENU_REDO** = **6**
+- **MENU_UNDO** = **5** --- Undoes the previous action.
 
-- **MENU_MAX** = **7**
+- **MENU_REDO** = **6** --- Reverse the last undo action.
+
+- **MENU_MAX** = **7** --- Represents the size of the :ref:`MenuItems<enum_TLLineEdit_MenuItems>` enum.
+
+Description
+-----------
+
+TLLineEdit provides a single-line string editor, used for text fields. It features many built-in shortcuts which will always be available:
+
+- Ctrl + C: Copy
+
+- Ctrl + X: Cut
+
+- Ctrl + V or Ctrl + Y: Paste/"yank"
+
+- Ctrl + Z: Undo
+
+- Ctrl + Shift + Z: Redo
+
+- Ctrl + U: Delete text from the cursor position to the beginning of the line
+
+- Ctrl + K: Delete text from the cursor position to the end of the line
+
+- Ctrl + A: Select all text
+
+- Ctrl + D: Swap current input direction (primary cursor)
+
+- Up/Down arrow: Move the cursor to the beginning/end of the line
 
 Property Descriptions
 ---------------------
@@ -183,6 +216,8 @@ Property Descriptions
    | *Getter*  | get_align()      |
    +-----------+------------------+
 
+Text alignment as defined in the ``ALIGN_*`` enum.
+
 ----
 
 .. _class_TLLineEdit_property_base_font:
@@ -198,6 +233,8 @@ Property Descriptions
    +----------+----------------------+
    | *Getter* | get_base_font()      |
    +----------+----------------------+
+
+Base font.
 
 ----
 
@@ -217,6 +254,8 @@ Property Descriptions
    | *Getter*  | get_base_font_size()      |
    +-----------+---------------------------+
 
+Base font size.
+
 ----
 
 .. _class_TLLineEdit_property_base_font_style:
@@ -234,6 +273,8 @@ Property Descriptions
    +-----------+----------------------------+
    | *Getter*  | get_base_font_style()      |
    +-----------+----------------------------+
+
+Base font style.
 
 ----
 
@@ -253,6 +294,8 @@ Property Descriptions
    | *Getter*  | cursor_get_blink_enabled()      |
    +-----------+---------------------------------+
 
+If ``true``, the caret (visual cursor) blinks.
+
 ----
 
 .. _class_TLLineEdit_property_caret_blink_speed:
@@ -270,6 +313,8 @@ Property Descriptions
    +-----------+-------------------------------+
    | *Getter*  | cursor_get_blink_speed()      |
    +-----------+-------------------------------+
+
+Duration (in seconds) of a caret's blinking cycle.
 
 ----
 
@@ -289,6 +334,8 @@ Property Descriptions
    | *Getter*  | get_cursor_position()      |
    +-----------+----------------------------+
 
+The cursor's position inside the ``TLLineEdit``. When set, the text may scroll to accommodate it.
+
 ----
 
 .. _class_TLLineEdit_property_clear_button_enabled:
@@ -306,6 +353,8 @@ Property Descriptions
    +-----------+---------------------------------+
    | *Getter*  | is_clear_button_enabled()       |
    +-----------+---------------------------------+
+
+If ``true``, the ``TLLineEdit`` will show a clear button if ``text`` is not empty.
 
 ----
 
@@ -325,6 +374,8 @@ Property Descriptions
    | *Getter*  | is_context_menu_enabled()       |
    +-----------+---------------------------------+
 
+If ``true``, the context menu will appear when right-clicked.
+
 ----
 
 .. _class_TLLineEdit_property_editable:
@@ -342,6 +393,8 @@ Property Descriptions
    +-----------+---------------------+
    | *Getter*  | is_editable()       |
    +-----------+---------------------+
+
+If ``false``, existing text cannot be modified and new text cannot be added.
 
 ----
 
@@ -361,6 +414,8 @@ Property Descriptions
    | *Getter*  | get_expand_to_text_length()      |
    +-----------+----------------------------------+
 
+If ``true``, the ``TLLineEdit`` width will increase to stay longer than the :ref:`text<class_TLLineEdit_property_text>`. It will **not** compress if the :ref:`text<class_TLLineEdit_property_text>` is shortened.
+
 ----
 
 .. _class_TLLineEdit_property_language:
@@ -378,6 +433,8 @@ Property Descriptions
    +-----------+---------------------+
    | *Getter*  | get_language()      |
    +-----------+---------------------+
+
+Language code for line-breaking and text shaping algorithms.
 
 ----
 
@@ -397,6 +454,8 @@ Property Descriptions
    | *Getter*  | get_max_length()      |
    +-----------+-----------------------+
 
+Maximum amount of characters that can be entered inside the LineEdit. If ``0``, there is no limit.
+
 ----
 
 .. _class_TLLineEdit_property_ot_features:
@@ -414,6 +473,8 @@ Property Descriptions
    +-----------+------------------------+
    | *Getter*  | get_ot_features()      |
    +-----------+------------------------+
+
+Comma separated list of OpenType feature tags.
 
 ----
 
@@ -433,6 +494,8 @@ Property Descriptions
    | *Getter*  | get_placeholder_alpha()      |
    +-----------+------------------------------+
 
+Opacity of the :ref:`placeholder_text<class_TLLineEdit_property_placeholder_text>`. From ``0`` to ``1``.
+
 ----
 
 .. _class_TLLineEdit_property_placeholder_text:
@@ -450,6 +513,8 @@ Property Descriptions
    +-----------+------------------------+
    | *Getter*  | get_placeholder()      |
    +-----------+------------------------+
+
+Text shown when the ``TLLineEdit`` is empty. It is **not** the ``TLLineEdit``'s default value (see :ref:`text<class_TLLineEdit_property_text>`).
 
 ----
 
@@ -469,6 +534,8 @@ Property Descriptions
    | *Getter*  | is_secret()       |
    +-----------+-------------------+
 
+If ``true``, every character is replaced with the secret character (see :ref:`secret_character<class_TLLineEdit_property_secret_character>`).
+
 ----
 
 .. _class_TLLineEdit_property_secret_character:
@@ -486,6 +553,8 @@ Property Descriptions
    +-----------+-----------------------------+
    | *Getter*  | get_secret_character()      |
    +-----------+-----------------------------+
+
+The character to use to mask secret input (defaults to "\*"). Only a single character can be used as the secret character.
 
 ----
 
@@ -505,6 +574,8 @@ Property Descriptions
    | *Getter*  | get_text()      |
    +-----------+-----------------+
 
+String value of the ``TLLineEdit``.
+
 ----
 
 .. _class_TLLineEdit_property_text_direction:
@@ -523,6 +594,8 @@ Property Descriptions
    | *Getter*  | get_text_direction()      |
    +-----------+---------------------------+
 
+Base direction of the text.
+
 Method Descriptions
 -------------------
 
@@ -530,11 +603,15 @@ Method Descriptions
 
 - void **append_at_cursor** **(** String text **)**
 
+Adds ``text`` after the cursor. If the resulting value is longer than :ref:`max_length<class_TLLineEdit_property_max_length>`, nothing happens.
+
 ----
 
 .. _class_TLLineEdit_method_clear:
 
 - void **clear** **(** **)**
+
+Erases the ``TLLineEdit`` text.
 
 ----
 
@@ -542,11 +619,15 @@ Method Descriptions
 
 - void **deselect** **(** **)**
 
+Clears the current selection.
+
 ----
 
 .. _class_TLLineEdit_method_get_menu:
 
 - PopupMenu **get_menu** **(** **)** const
+
+Returns the PopupMenu of this ``TLLineEdit``. By default, this menu is displayed when right-clicking on the ``TLLineEdit``.
 
 ----
 
@@ -554,15 +635,28 @@ Method Descriptions
 
 - void **menu_option** **(** int option **)**
 
+Executes a given action as defined in the``MENU_*`` enum.
+
 ----
 
 .. _class_TLLineEdit_method_select:
 
 - void **select** **(** int from=0, int to=-1 **)**
 
+Selects characters inside ``TLLineEdit`` between ``from`` and ``to``. By default, ``from`` is at the beginning and ``to`` at the end.
+
+::
+
+    text = "Welcome"
+    select()     # Will select "Welcome"
+    select(4)    # Will select "ome"
+    select(2, 5) # Will select "lco"
+
 ----
 
 .. _class_TLLineEdit_method_select_all:
 
 - void **select_all** **(** **)**
+
+Selects the whole String.
 
