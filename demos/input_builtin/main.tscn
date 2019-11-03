@@ -69,100 +69,106 @@ func _onresize():
 	$ScrollContainer.rect_size.x = get_viewport_rect().size.x - 35
 
 func _on_HScrollBar_value_changed(value):
-	$TLProtoControl.rect_position.x = 5 - value
+	$TLRichTextEdit.rect_position.x = 5 - value
 
 func _on_VScrollBar_value_changed(value):
-	$TLProtoControl.rect_position.y = 115 - value
+	$TLRichTextEdit.rect_position.y = 115 - value
+
+var update = false
 
 func _cursorchange():
-	var p = $TLProtoControl.get_selection().get_caret_para()
-	var o = $TLProtoControl.get_selection().get_caret_offset()
+	var p = $TLRichTextEdit.get_selection().get_start_para()
+	var o = $TLRichTextEdit.get_selection().get_start_offset()
 
-	$TLProtoControl.rect_size = $TLProtoControl.get_minimum_size() + Vector2(5, 5)
+	update = true
 
-	var cps = $TLProtoControl.get_caret_position() + $TLProtoControl.rect_position
+	$TLRichTextEdit.rect_size = $TLRichTextEdit.get_minimum_size() + Vector2(5, 5)
+
+	var cps = $TLRichTextEdit.get_caret_position() + $TLRichTextEdit.rect_position
 	var miny = 115
-	var maxy = get_viewport_rect().size.y - 10 - $HScrollBar.rect_size.y - $StatBar.rect_size.y - $TLProtoControl.get_paragraph(p).get_string().get_height()
+	var maxy = get_viewport_rect().size.y - 10 - $HScrollBar.rect_size.y - $StatBar.rect_size.y - $TLRichTextEdit.get_paragraph(p).get_string().get_height()
 
 	var minx = 5
 	var maxx = get_viewport_rect().size.x - 10 - $VScrollBar.rect_size.x
 
 	if cps.x > maxx:
-		$TLProtoControl.rect_position.x = (maxx - $TLProtoControl.get_caret_position().x)
+		$TLRichTextEdit.rect_position.x = (maxx - $TLRichTextEdit.get_caret_position().x)
 	elif cps.x < minx:
-		$TLProtoControl.rect_position.x = (minx - $TLProtoControl.get_caret_position().x)
+		$TLRichTextEdit.rect_position.x = (minx - $TLRichTextEdit.get_caret_position().x)
 
 	if cps.y > maxy:
-		$TLProtoControl.rect_position.y = (maxy - $TLProtoControl.get_caret_position().y)
+		$TLRichTextEdit.rect_position.y = (maxy - $TLRichTextEdit.get_caret_position().y)
 	elif cps.y < miny:
-		$TLProtoControl.rect_position.y = (miny - $TLProtoControl.get_caret_position().y)
+		$TLRichTextEdit.rect_position.y = (miny - $TLRichTextEdit.get_caret_position().y)
 
-	$HScrollBar.max_value = $TLProtoControl.rect_size.x - maxx + 5;
-	$HScrollBar.value = 5 - $TLProtoControl.rect_position.x;
+	$HScrollBar.max_value = $TLRichTextEdit.rect_size.x - maxx + 5;
+	$HScrollBar.value = 5 - $TLRichTextEdit.rect_position.x;
 
-	$VScrollBar.max_value = $TLProtoControl.rect_size.y - maxy + 115;
-	$VScrollBar.value = 115 - $TLProtoControl.rect_position.y;
+	$VScrollBar.max_value = $TLRichTextEdit.rect_size.y - maxy + 115;
+	$VScrollBar.value = 115 - $TLRichTextEdit.rect_position.y;
 
-	$StatBar/P.text = \"Paragraph: %d of %d\" % [p + 1, $TLProtoControl.get_paragraphs()]
-	$StatBar/W.text = \"%d words, %d lines, %d characters\" % [$TLProtoControl.get_paragraph(p).get_word_bounds().size() + 1, $TLProtoControl.get_paragraph(p).get_line_bounds().size(), $TLProtoControl.get_paragraph(p).get_string().length()]
+	$StatBar/P.text = \"Paragraph: %d of %d\" % [p + 1, $TLRichTextEdit.get_paragraphs()]
+	$StatBar/W.text = \"%d words, %d lines, %d characters\" % [$TLRichTextEdit.get_paragraph(p).get_word_bounds().size() + 1, $TLRichTextEdit.get_paragraph(p).get_line_bounds().size(), $TLRichTextEdit.get_paragraph(p).get_string().length()]
 
-	var f = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) else $TLProtoControl.get_paragraph(p).get_string().get_base_font()
+	var f = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, o) else $TLRichTextEdit.get_paragraph(p).get_string().get_base_font()
 	for i in range(font_fml.size()):
 		if f == font_fml[i]:
 			$FormatToolbar/FontFamily.select(i)
 
-	var s = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) else $TLProtoControl.get_paragraph(p).get_string().get_base_font_size()
+	var s = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, o) else $TLRichTextEdit.get_paragraph(p).get_string().get_base_font_size()
 	for i in range($FormatToolbar/FontSize.get_item_count()):
 		if $FormatToolbar/FontSize.get_item_text(i).to_int() == s:
 			$FormatToolbar/FontSize.select(i)
 
-	var st = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) else $TLProtoControl.get_paragraph(p).get_string().get_base_font_style()
+	var st = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, o) else $TLRichTextEdit.get_paragraph(p).get_string().get_base_font_style()
 	$FormatToolbar/StyleItalic.pressed = (st == \"Italic\") or (st == \"BoldItalic\")
 	$FormatToolbar/StyleBold.pressed = (st == \"Bold\") or (st == \"BoldItalic\")
 
-	$FormatToolbar/FontFtr.text = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) else \"\"
-	$FormatToolbar/Lang.text = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) else \"\"
+	$FormatToolbar/FontFtr.text = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, o) else \"\"
+	$FormatToolbar/Lang.text = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, o) else \"\"
 
-	$FormatToolbar/StyleUnderline.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 0) > 0
-	$FormatToolbar/StyleUnderline/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) else Color(0, 0, 1)
-	$FormatToolbar/StyleUnderline/SpinBox.value = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 1
+	$FormatToolbar/StyleUnderline.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 0) > 0
+	$FormatToolbar/StyleUnderline/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, o) else Color(0, 0, 1)
+	$FormatToolbar/StyleUnderline/SpinBox.value = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, o) else 1
 
-	$FormatToolbar/StyleOver.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 0) > 0
-	$FormatToolbar/StyleOver/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) else Color(0, 0, 1)
-	$FormatToolbar/StyleOver/SpinBox.value = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 1
+	$FormatToolbar/StyleOver.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 0) > 0
+	$FormatToolbar/StyleOver/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, o) else Color(0, 0, 1)
+	$FormatToolbar/StyleOver/SpinBox.value = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, o) else 1
 
-	$FormatToolbar/StyleStrike.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 0) > 0
-	$FormatToolbar/StyleStrike/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) else Color(0, 0, 1)
-	$FormatToolbar/StyleStrike/SpinBox.value = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 1
+	$FormatToolbar/StyleStrike.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 0) > 0
+	$FormatToolbar/StyleStrike/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, o) else Color(0, 0, 1)
+	$FormatToolbar/StyleStrike/SpinBox.value = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, o) else 1
 
-	$FormatToolbar/TextCol/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) else Color(0, 0, 0)
-	$FormatToolbar/HlColor/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) else Color(1, 1, 0)
-	$FormatToolbar/OutColor/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) else Color(1, 1, 1, 0)
+	$FormatToolbar/TextCol/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, o) else Color(0, 0, 0)
+	$FormatToolbar/HlColor/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, o) else Color(1, 1, 0)
+	$FormatToolbar/OutColor/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, o) else Color(1, 1, 1, 0)
 
-	$FormatToolbar/BackColor/ColorPickerButton.color = $TLProtoControl.get_paragraph(p).get_back_color()
+	$FormatToolbar/BackColor/ColorPickerButton.color = $TLRichTextEdit.get_paragraph(p).get_back_color()
 
-	$FormatToolbar/Width.value = $TLProtoControl.get_paragraph(p).get_width()
-	$FormatToolbar/Dir.select($TLProtoControl.get_paragraph(p).get_string().get_base_direction())
-	$FormatToolbar/JstMode.select($TLProtoControl.get_paragraph(p).get_jst_flags() - 1)
-	$FormatToolbar/BrkMode.select($TLProtoControl.get_paragraph(p).get_brk_flags() - 1)
+	$FormatToolbar/Width.value = $TLRichTextEdit.get_paragraph(p).get_width()
+	$FormatToolbar/Dir.select($TLRichTextEdit.get_paragraph(p).get_string().get_base_direction())
+	$FormatToolbar/JstMode.select($TLRichTextEdit.get_paragraph(p).get_jst_flags() - 1)
+	$FormatToolbar/BrkMode.select($TLRichTextEdit.get_paragraph(p).get_brk_flags() - 1)
 
-	$FormatToolbar/LineSpace.value = $TLProtoControl.get_paragraph(p).get_line_spacing()
+	$FormatToolbar/LineSpace.value = $TLRichTextEdit.get_paragraph(p).get_line_spacing()
 
-	$FormatToolbar/HalL.pressed = ($TLProtoControl.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_LEFT
-	$FormatToolbar/HalC.pressed = ($TLProtoControl.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_CENTER
-	$FormatToolbar/HalR.pressed = ($TLProtoControl.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_RIGHT
-	$FormatToolbar/HalJ.pressed = ($TLProtoControl.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_FILL
+	$FormatToolbar/HalL.pressed = ($TLRichTextEdit.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_LEFT
+	$FormatToolbar/HalC.pressed = ($TLRichTextEdit.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_CENTER
+	$FormatToolbar/HalR.pressed = ($TLRichTextEdit.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_RIGHT
+	$FormatToolbar/HalJ.pressed = ($TLRichTextEdit.get_paragraph(p).get_halign()) == TLShapedParagraph.PARA_HALIGN_FILL
 	
-	$FormatToolbar/ValT.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_TOP
-	$FormatToolbar/ValC.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_CENTER
-	$FormatToolbar/ValB.pressed = ($TLProtoControl.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLProtoControl.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_BOTTOM
+	$FormatToolbar/ValT.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_TOP
+	$FormatToolbar/ValC.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_CENTER
+	$FormatToolbar/ValB.pressed = ($TLRichTextEdit.get_paragraph(p).get_string().get_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) if $TLRichTextEdit.get_paragraph(p).get_string().has_attribute(TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, o) else TLShapedAttributedString.TEXT_VALIGN_CENTER) == TLShapedAttributedString.TEXT_VALIGN_BOTTOM
+
+	update = false
 
 func _ready():
 	var data_loader = TLICUDataLoader.new()
 	data_loader.load(\"res://icudt63l.dat\")
 
 	get_tree().get_root().connect(\"size_changed\", self, \"_onresize\")
-	$TLProtoControl.connect(\"cursor_changed\", self, \"_cursorchange\")
+	$TLRichTextEdit.connect(\"cursor_changed\", self, \"_cursorchange\")
 	_onresize()
 
 	var ms_rg = TLDynamicFontFace.new()
@@ -788,8 +794,8 @@ func _ready():
 
 	##END
 
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font(nt_fam)
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font(nt_fam)
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
 
 	$FormatToolbar/FontFamily.select(2)
 
@@ -836,161 +842,227 @@ func _ready():
 	$FormatToolbar/JstMode.add_item(\"Spaces\")
 
 func _on_FontFamily_item_selected(ID):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[ID])
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[ID])
 
 func _on_FontSize_item_selected(ID):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, $FormatToolbar/FontSize.get_item_text(ID).to_int())
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_SIZE, $FormatToolbar/FontSize.get_item_text(ID).to_int())
 
 func _on_FontFtr_text_entered(new_text):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, new_text)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_FEATURES, new_text)
 
 func _on_Style_toggled(button_pressed):
+	if (update):
+		return
 	if $FormatToolbar/StyleBold.pressed and $FormatToolbar/StyleItalic.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"BoldItalic\")
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"BoldItalic\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 	elif $FormatToolbar/StyleBold.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Bold\")
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Bold\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 	elif $FormatToolbar/StyleItalic.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Regular\")
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Regular\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 	else:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Italic\")
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Italic\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 
 func _on_SpinBoxUnder_value_changed(value):
+	if (update):
+		return
 	if $FormatToolbar/StyleUnderline.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, value)
 
 func _on_SpinBoxOver_value_changed(value):
+	if (update):
+		return
 	if $FormatToolbar/StyleOver.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, value)
 
 func _on_SpinBoxStrike_value_changed(value):
+	if (update):
+		return
 	if $FormatToolbar/StyleStrike.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, value)
 
 func _on_StyleUnderline_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, $FormatToolbar/StyleUnderline/ColorPickerButton.color)
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, $FormatToolbar/StyleUnderline/SpinBox.value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, $FormatToolbar/StyleUnderline/ColorPickerButton.color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH, $FormatToolbar/StyleUnderline/SpinBox.value)
 	else:
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR)
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_WIDTH)
 
 func _on_StyleUnderlineColorPickerButton_color_changed(color):
+	if (update):
+		return
 	if $FormatToolbar/StyleUnderline.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_UNDERLINE_COLOR, color)
 
 func _on_StyleOver_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, $FormatToolbar/StyleOver/ColorPickerButton.color)
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, $FormatToolbar/StyleOver/SpinBox.value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, $FormatToolbar/StyleOver/ColorPickerButton.color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH, $FormatToolbar/StyleOver/SpinBox.value)
 	else:
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR)
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_WIDTH)
 
 func _on_StyleOverColorPickerButton_color_changed(color):
+	if (update):
+		return
 	if $FormatToolbar/StyleOver.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OVERLINE_COLOR, color)
 
 func _on_StyleStrike_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, $FormatToolbar/StyleStrike/ColorPickerButton.color)
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, $FormatToolbar/StyleStrike/SpinBox.value)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, $FormatToolbar/StyleStrike/ColorPickerButton.color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH, $FormatToolbar/StyleStrike/SpinBox.value)
 	else:
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)
-		$TLProtoControl.remove_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)
+		$TLRichTextEdit.remove_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)
 
 func _on_StyleStrikeColorPickerButton_color_changed(color):
+	if (update):
+		return
 	if $FormatToolbar/StyleStrike.pressed:
-		$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, color)
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR, color)
 
 func _on_HalL_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_LEFT)
+		$TLRichTextEdit.set_paragraph_halign($TLRichTextEdit.get_selection(), TLShapedParagraph.PARA_HALIGN_LEFT)
 
 func _on_HalC_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_CENTER)
+		$TLRichTextEdit.set_paragraph_halign($TLRichTextEdit.get_selection(), TLShapedParagraph.PARA_HALIGN_CENTER)
 
 func _on_HalR_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(), TLShapedParagraph.PARA_HALIGN_RIGHT)
+		$TLRichTextEdit.set_paragraph_halign($TLRichTextEdit.get_selection(), TLShapedParagraph.PARA_HALIGN_RIGHT)
 
 func _on_HalJ_toggled(button_pressed):
+	if (update):
+		return
 	if button_pressed:
-		$TLProtoControl.set_paragraph_halign($TLProtoControl.get_selection(),TLShapedParagraph.PARA_HALIGN_FILL)
+		$TLRichTextEdit.set_paragraph_halign($TLRichTextEdit.get_selection(),TLShapedParagraph.PARA_HALIGN_FILL)
 
 func _on_TextColorPickerButton_color_changed(color):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, color)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_COLOR, color)
 
 func _on_HlColorPickerButton_color_changed(color):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, color)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_HIGHLIGHT_COLOR, color)
 
 func _on_BackColorPickerButton_color_changed(color):
-	$TLProtoControl.set_paragraph_back_color($TLProtoControl.get_selection(),color)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_back_color($TLRichTextEdit.get_selection(),color)
 
 func _on_ClearFMT_pressed():
-	$TLProtoControl.remove_attributes($TLProtoControl.get_selection())
+	if (update):
+		return
+	$TLRichTextEdit.remove_attributes($TLRichTextEdit.get_selection())
 
 func _on_Dir_item_selected(ID):
-	var f = $TLProtoControl.get_selection().get_start_para()
-	var l = $TLProtoControl.get_selection().get_end_para()
+	if (update):
+		return
+	var f = $TLRichTextEdit.get_selection().get_start_para()
+	var l = $TLRichTextEdit.get_selection().get_end_para()
 	for i in range(f, l + 1):
-		$TLProtoControl.get_paragraph(i).get_string().set_base_direction(ID)
+		$TLRichTextEdit.get_paragraph(i).get_string().set_base_direction(ID)
 
 func _on_BrkMode_item_selected(ID):
-	$TLProtoControl.set_paragraph_brk_flags($TLProtoControl.get_selection(), ID + 1)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_brk_flags($TLRichTextEdit.get_selection(), ID + 1)
 
 func _on_JstMode_item_selected(ID):
-	$TLProtoControl.set_paragraph_jst_flags($TLProtoControl.get_selection(), ID + 1)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_jst_flags($TLRichTextEdit.get_selection(), ID + 1)
 
 func _on_ValT_toggled(button_pressed):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_TOP)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_TOP)
 
 func _on_ValC_toggled(button_pressed):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_CENTER)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_CENTER)
 
 func _on_ValB_toggled(button_pressed):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_BOTTOM)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_VALIGN, TLShapedAttributedString.TEXT_VALIGN_BOTTOM)
 
 func _on_DecW_pressed():
-	var f = $TLProtoControl.get_selection().get_start_para()
-	var l = $TLProtoControl.get_selection().get_end_para()
+	if (update):
+		return
+	var f = $TLRichTextEdit.get_selection().get_start_para()
+	var l = $TLRichTextEdit.get_selection().get_end_para()
 	for i in range(f, l + 1):
-		$TLProtoControl.get_paragraph(i).set_indent($TLProtoControl.get_paragraph(i).get_indent() + 10)
+		$TLRichTextEdit.get_paragraph(i).set_indent($TLRichTextEdit.get_paragraph(i).get_indent() + 10)
 
 func _on_IncW_pressed():
-	var f = $TLProtoControl.get_selection().get_start_para()
-	var l = $TLProtoControl.get_selection().get_end_para()
+	if (update):
+		return
+	var f = $TLRichTextEdit.get_selection().get_start_para()
+	var l = $TLRichTextEdit.get_selection().get_end_para()
 	for i in range(f, l + 1):
-		$TLProtoControl.get_paragraph(i).set_indent($TLProtoControl.get_paragraph(i).get_indent() - 10)
+		$TLRichTextEdit.get_paragraph(i).set_indent($TLRichTextEdit.get_paragraph(i).get_indent() - 10)
 
 func _on_Lang_text_entered(new_text):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, new_text)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_LANGUAGE, new_text)
 
 func _on_InsertImage_item_selected(ID):
-	$TLProtoControl.replace_text($TLProtoControl.get_selection(), \"?\")
-	$TLProtoControl.get_selection().set_start_offset($TLProtoControl.get_selection().get_start_offset() - 1)
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, $FormatToolbar/InsertImage.get_item_metadata(ID))
-	$TLProtoControl.get_selection().set_start_offset($TLProtoControl.get_selection().get_end_offset())
+	if (update):
+		return
+	$TLRichTextEdit.replace_text($TLRichTextEdit.get_selection(), \"?\")
+	$TLRichTextEdit.get_selection().set_start_offset($TLRichTextEdit.get_selection().get_start_offset() - 1)
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_REPLACEMENT_IMAGE, $FormatToolbar/InsertImage.get_item_metadata(ID))
+	$TLRichTextEdit.get_selection().set_start_offset($TLRichTextEdit.get_selection().get_end_offset())
 
 func _on_New_pressed():
-	$TLProtoControl.clear()
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font(font_fml[1])
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+	if (update):
+		return
+	$TLRichTextEdit.clear()
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font(font_fml[1])
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
 
 func _print_err():
 	print(\"Invalid file..\")
 
 func _on_Load_pressed():
+	if (update):
+		return
 	$FileDialogLoad.popup()
 	
 func _on_FileDialogLoad_file_selected(path):
-	$TLProtoControl.clear()
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font(font_fml[1])
-	$TLProtoControl.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
+	$TLRichTextEdit.clear()
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font(font_fml[1])
+	$TLRichTextEdit.get_paragraph(0).get_string().set_base_font_style(\"Regular\")
 
 	var loadfile = File.new()
 	loadfile.open(path, File.READ)
@@ -1020,25 +1092,25 @@ func _on_FileDialogLoad_file_selected(path):
 		var utf16_size = loadfile.get_64()
 		var utf16 = loadfile.get_buffer(utf16_size)
 		if i > 0:
-			$TLProtoControl.insert_paragraph(null, i)
-		$TLProtoControl.get_paragraph(i).get_string().set_utf16(utf16)
+			$TLRichTextEdit.insert_paragraph(null, i)
+		$TLRichTextEdit.get_paragraph(i).get_string().set_utf16(utf16)
 		var para = parse_json(loadfile.get_pascal_string())
 		#IDs to refs
 		if !para[\"base_font\"].begins_with(\"CTL_DEMO_FONT_\"):
 			_print_err()
 			return
 		para[\"base_font\"] = font_fml[para[\"base_font\"].trim_prefix(\"CTL_DEMO_FONT_\").to_int()]
-		$TLProtoControl.get_paragraph(i).set_width(para[\"width\"])
-		$TLProtoControl.get_paragraph(i).set_indent(para[\"indent\"])
-		$TLProtoControl.get_paragraph(i).set_back_color(para[\"back_color\"])
-		$TLProtoControl.get_paragraph(i).set_line_spacing(para[\"line_spacing\"])
-		$TLProtoControl.get_paragraph(i).get_string().set_base_direction(para[\"base_direction\"])
-		$TLProtoControl.get_paragraph(i).get_string().set_base_font(para[\"base_font\"])
-		$TLProtoControl.get_paragraph(i).get_string().set_base_font_style(para[\"base_font_style\"])
-		$TLProtoControl.get_paragraph(i).get_string().set_base_font_size(para[\"font_font_size\"])
-		$TLProtoControl.get_paragraph(i).set_brk_flags(para[\"brk_flags\"])
-		$TLProtoControl.get_paragraph(i).set_jst_flags(para[\"jst_flags\"])
-		$TLProtoControl.get_paragraph(i).set_halign(para[\"halign\"])
+		$TLRichTextEdit.get_paragraph(i).set_width(para[\"width\"])
+		$TLRichTextEdit.get_paragraph(i).set_indent(para[\"indent\"])
+		$TLRichTextEdit.get_paragraph(i).set_back_color(para[\"back_color\"])
+		$TLRichTextEdit.get_paragraph(i).set_line_spacing(para[\"line_spacing\"])
+		$TLRichTextEdit.get_paragraph(i).get_string().set_base_direction(para[\"base_direction\"])
+		$TLRichTextEdit.get_paragraph(i).get_string().set_base_font(para[\"base_font\"])
+		$TLRichTextEdit.get_paragraph(i).get_string().set_base_font_style(para[\"base_font_style\"])
+		$TLRichTextEdit.get_paragraph(i).get_string().set_base_font_size(para[\"font_font_size\"])
+		$TLRichTextEdit.get_paragraph(i).set_brk_flags(para[\"brk_flags\"])
+		$TLRichTextEdit.get_paragraph(i).set_jst_flags(para[\"jst_flags\"])
+		$TLRichTextEdit.get_paragraph(i).set_halign(para[\"halign\"])
 		for a in range(para[\"attributes\"].size()):
 			if para[\"attributes\"][a].has(\"format\"):
 				if para[\"attributes\"][a][\"format\"].has(\"font\"):
@@ -1051,12 +1123,14 @@ func _on_FileDialogLoad_file_selected(path):
 						_print_err()
 						return
 					para[\"attributes\"][a][\"format\"][\"repl_image\"] = $FormatToolbar/InsertImage.get_item_metadata(para[\"attributes\"][a][\"format\"][\"repl_image\"].trim_prefix(\"CTL_DEMO_RIMG_\").to_int())
-		$TLProtoControl.get_paragraph(i).get_string().load_attributes_dict(para[\"attributes\"])
+		$TLRichTextEdit.get_paragraph(i).get_string().load_attributes_dict(para[\"attributes\"])
 		loadfile.get_8()
 		loadfile.get_8()
 	#todo set caret and selection
 
 func _on_Save_pressed():
+	if (update):
+		return
 	$FileDialogSave.popup()
 
 func _on_FileDialogSave_file_selected(path):
@@ -1072,27 +1146,27 @@ func _on_FileDialogSave_file_selected(path):
 	savefile.store_8(0x00)
 	savefile.store_8(0x01)
 	#paragraph count
-	savefile.store_64($TLProtoControl.get_paragraphs())
-	for i in range($TLProtoControl.get_paragraphs()):
+	savefile.store_64($TLRichTextEdit.get_paragraphs())
+	for i in range($TLRichTextEdit.get_paragraphs()):
 		var para = {}
-		var utf16 = $TLProtoControl.get_paragraph(i).get_string().get_utf16()
+		var utf16 = $TLRichTextEdit.get_paragraph(i).get_string().get_utf16()
 		savefile.store_64(utf16.size())
 		savefile.store_buffer(utf16)
-		para[\"width\"] = $TLProtoControl.get_paragraph(i).get_width()
-		para[\"indent\"] = $TLProtoControl.get_paragraph(i).get_indent()
-		para[\"back_color\"] = $TLProtoControl.get_paragraph(i).get_back_color().to_html()
-		para[\"line_spacing\"] = $TLProtoControl.get_paragraph(i).get_line_spacing()
-		para[\"base_direction\"] = $TLProtoControl.get_paragraph(i).get_string().get_base_direction()
+		para[\"width\"] = $TLRichTextEdit.get_paragraph(i).get_width()
+		para[\"indent\"] = $TLRichTextEdit.get_paragraph(i).get_indent()
+		para[\"back_color\"] = $TLRichTextEdit.get_paragraph(i).get_back_color().to_html()
+		para[\"line_spacing\"] = $TLRichTextEdit.get_paragraph(i).get_line_spacing()
+		para[\"base_direction\"] = $TLRichTextEdit.get_paragraph(i).get_string().get_base_direction()
 		for j in range(font_fml.size()):
-			if $TLProtoControl.get_paragraph(i).get_string().get_base_font() == font_fml[j]:
+			if $TLRichTextEdit.get_paragraph(i).get_string().get_base_font() == font_fml[j]:
 				para[\"base_font\"] = \"CTL_DEMO_FONT_%d\" % [j]
 				break
-		para[\"base_font_style\"] = $TLProtoControl.get_paragraph(i).get_string().get_base_font_style()
-		para[\"font_font_size\"] = $TLProtoControl.get_paragraph(i).get_string().get_base_font_size()
-		para[\"brk_flags\"] = $TLProtoControl.get_paragraph(i).get_brk_flags()
-		para[\"jst_flags\"] = $TLProtoControl.get_paragraph(i).get_jst_flags()
-		para[\"halign\"] = $TLProtoControl.get_paragraph(i).get_halign()
-		para[\"attributes\"] = $TLProtoControl.get_paragraph(i).get_string().save_attributes_dict()
+		para[\"base_font_style\"] = $TLRichTextEdit.get_paragraph(i).get_string().get_base_font_style()
+		para[\"font_font_size\"] = $TLRichTextEdit.get_paragraph(i).get_string().get_base_font_size()
+		para[\"brk_flags\"] = $TLRichTextEdit.get_paragraph(i).get_brk_flags()
+		para[\"jst_flags\"] = $TLRichTextEdit.get_paragraph(i).get_jst_flags()
+		para[\"halign\"] = $TLRichTextEdit.get_paragraph(i).get_halign()
+		para[\"attributes\"] = $TLRichTextEdit.get_paragraph(i).get_string().save_attributes_dict()
 		#replace refs with IDs
 		for a in range(para[\"attributes\"].size()):
 			if para[\"attributes\"][a].has(\"format\"):
@@ -1112,36 +1186,50 @@ func _on_FileDialogSave_file_selected(path):
 	#todo save caret and selection
 
 func _on_Width_value_changed(value):
-	$TLProtoControl.set_paragraph_width($TLProtoControl.get_selection(), value)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_width($TLRichTextEdit.get_selection(), value)
 
 func _on_ClearFMT2_pressed():
-	$TLProtoControl.set_paragraph_width($TLProtoControl.get_selection(), -1.0)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_width($TLRichTextEdit.get_selection(), -1.0)
 
 func _on_LineSpace_value_changed(value):
-	$TLProtoControl.set_paragraph_line_spacing($TLProtoControl.get_selection(), value)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_line_spacing($TLRichTextEdit.get_selection(), value)
 
 func _on_Color2PickerButton_color_changed(color):
-	$TLProtoControl.set_back_color(color)
+	if (update):
+		return
+	$TLRichTextEdit.set_back_color(color)
 
 func _on_ParaSpace_value_changed(value):
-	$TLProtoControl.set_paragraph_spacing(value)
+	if (update):
+		return
+	$TLRichTextEdit.set_paragraph_spacing(value)
 
 func _on_ColorPickerButton_color_changed(color):
-	$TLProtoControl.add_attribute($TLProtoControl.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, color)
+	if (update):
+		return
+	$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_OUTLINE_COLOR, color)
 
-func _on_TLProtoControl_gui_input(event):
+func _on_TLRichTextEdit_gui_input(event):
+	if (update):
+		return
 	if event is InputEventMouseMotion:
-		$StatBar/X.text = $TLProtoControl.get_cluster_debug_info_hit_test(event.position)
-		var r = $TLProtoControl.get_cluster_rect_hit_test(event.position)
-		$TLProtoControl/Panel.rect_position = r.position
-		$TLProtoControl/Panel.rect_size = r.size
-		$FormatToolbar/W/Panel.gldata = $TLProtoControl.get_cluster_glyphs_hit_test(event.position)
+		$StatBar/X.text = $TLRichTextEdit.get_cluster_debug_info_hit_test(event.position)
+		var r = $TLRichTextEdit.get_cluster_rect_hit_test(event.position)
+		$TLRichTextEdit/Panel.rect_position = r.position
+		$TLRichTextEdit/Panel.rect_size = r.size
+		$FormatToolbar/W/Panel.gldata = $TLRichTextEdit.get_cluster_glyphs_hit_test(event.position)
 		$FormatToolbar/W/Panel.update()
 		$ScrollContainer/PanelDbgD.point = event.position
 		$ScrollContainer/PanelDbgD.update()
 
 func _on_DEbug_toggled(button_pressed):
-	$TLProtoControl/Panel.visible = button_pressed
+	$TLRichTextEdit/Panel.visible = button_pressed
 
 func _on_DebugLBrk_toggled(button_pressed):
 	$ScrollContainer/PanelDbgD.brk = button_pressed
@@ -1268,7 +1356,7 @@ anchor_bottom = 1.0
 rect_min_size = Vector2( 1200, 400 )
 script = SubResource( 1 )
 
-[node name="TLProtoControl" type="TLProtoControl" parent="."]
+[node name="TLRichTextEdit" type="TLRichTextEdit" parent="."]
 margin_left = 5.0
 margin_top = 115.0
 margin_right = 1195.0
@@ -1278,7 +1366,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="TLProtoControl"]
+[node name="Panel" type="Panel" parent="TLRichTextEdit"]
 visible = false
 modulate = Color( 1, 1, 1, 0.498039 )
 margin_right = 40.0
@@ -2057,7 +2145,7 @@ text = "Source:"
 margin_top = 119.0
 margin_right = 10000.0
 margin_bottom = 121.0
-[connection signal="gui_input" from="TLProtoControl" to="." method="_on_TLProtoControl_gui_input"]
+[connection signal="gui_input" from="TLRichTextEdit" to="." method="_on_TLRichTextEdit_gui_input"]
 [connection signal="item_selected" from="FormatToolbar/FontFamily" to="." method="_on_FontFamily_item_selected"]
 [connection signal="item_selected" from="FormatToolbar/FontSize" to="." method="_on_FontSize_item_selected"]
 [connection signal="toggled" from="FormatToolbar/StyleBold" to="." method="_on_Style_toggled"]

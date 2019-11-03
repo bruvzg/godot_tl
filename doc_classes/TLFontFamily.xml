@@ -16,6 +16,7 @@
 			<argument index="1" name="ref" type="TLFontFace">
 			</argument>
 			<description>
+				Adds font face to be used for specific style. Supported scripts are detected automatically.
 			</description>
 		</method>
 		<method name="add_face_for_language">
@@ -28,6 +29,7 @@
 			<argument index="2" name="lang" type="String">
 			</argument>
 			<description>
+				Adds font face to be used for specific language and style.
 			</description>
 		</method>
 		<method name="add_face_for_script">
@@ -40,6 +42,7 @@
 			<argument index="2" name="script" type="String">
 			</argument>
 			<description>
+				Adds font face to be used for specific script and style.
 			</description>
 		</method>
 		<method name="add_face_unlinked">
@@ -50,6 +53,7 @@
 			<argument index="1" name="ref" type="TLFontFace">
 			</argument>
 			<description>
+				Adds font face to be used for specific style, without associating it with the script or language.
 			</description>
 		</method>
 		<method name="add_language">
@@ -60,6 +64,8 @@
 			<argument index="1" name="language" type="String">
 			</argument>
 			<description>
+				Creates new font fallback list for the language, list is created automatically when [add_face] or [add_face_for_language] function is called.
+				Use ISO 639-1 (https://en.wikipedia.org/wiki/ISO_639-1) codes for the language names.
 			</description>
 		</method>
 		<method name="add_script">
@@ -70,6 +76,8 @@
 			<argument index="1" name="script" type="String">
 			</argument>
 			<description>
+				Creates new font fallback list for the script, list is created automatically when [add_face] or [add_face_for_script] function is called.
+				Use ISO 15924 (https://en.wikipedia.org/wiki/ISO_15924) for the script names.
 			</description>
 		</method>
 		<method name="add_style">
@@ -78,6 +86,7 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
+				Adds new style to the family, style is created automatically when any of the [add_face] functions is called.
 			</description>
 		</method>
 		<method name="get_face" qualifiers="const">
@@ -86,6 +95,7 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
+				Returns font iterator for the specific style.
 			</description>
 		</method>
 		<method name="get_face_for_language" qualifiers="const">
@@ -96,6 +106,7 @@
 			<argument index="1" name="lang" type="String">
 			</argument>
 			<description>
+				Returns font iterator for the specific style and supported language.
 			</description>
 		</method>
 		<method name="get_face_for_script" qualifiers="const">
@@ -106,6 +117,7 @@
 			<argument index="1" name="script" type="String">
 			</argument>
 			<description>
+				Returns font iterator for the specific style and supported script.
 			</description>
 		</method>
 		<method name="has_style" qualifiers="const">
@@ -114,6 +126,7 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
+				Returns [code]true[/code] if font family has style.
 			</description>
 		</method>
 		<method name="remove_language">
@@ -124,6 +137,7 @@
 			<argument index="1" name="language" type="String">
 			</argument>
 			<description>
+				Removes font fallback list for the language.
 			</description>
 		</method>
 		<method name="remove_script">
@@ -134,6 +148,7 @@
 			<argument index="1" name="script" type="String">
 			</argument>
 			<description>
+				Removes font fallback list for the script.
 			</description>
 		</method>
 		<method name="remove_style">
@@ -142,9 +157,21 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
+				Removes style from the font family.
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="{style_name}/{index}" type="TLFontFace">
+			Font faces not linked to the language or script.
+		</member>
+		<member name="{style_name}/script/{tag}/{index}" type="TLFontFace">
+			Font faces linked to the script.
+		</member>
+		<member name="{style_name}/script/{lang}/{index}" type="TLFontFace">
+			Font faces linked to the language.
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

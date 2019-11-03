@@ -43,7 +43,7 @@ sources = [
 	'src/resources/tl_shaped_attributed_string.cpp',
 	'src/resources/tl_shaped_paragraph.cpp',
 	'src/resources/tl_icu_data_loader.cpp',
-	'src/controls/tl_proto_control.cpp',
+	'src/controls/tl_rich_text_edit.cpp',
 	'src/controls/tl_label.cpp',
 	'src/controls/tl_line_edit.cpp',
 ]

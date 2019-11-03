@@ -18,6 +18,17 @@ Brief Description
 
 A set of fonts that make up a font family.
 
+Properties
+----------
+
++-------------------------------------+-----------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontFace<class_TLFontFace>` | :ref:`{style_name}/{index}<class_TLFontFamily_property_{style_name}/{index}>`                             |
++-------------------------------------+-----------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontFace<class_TLFontFace>` | :ref:`{style_name}/script/{tag}/{index}<class_TLFontFamily_property_{style_name}/script/{tag}/{index}>`   |
++-------------------------------------+-----------------------------------------------------------------------------------------------------------+
+| :ref:`TLFontFace<class_TLFontFace>` | :ref:`{style_name}/script/{lang}/{index}<class_TLFontFamily_property_{style_name}/script/{lang}/{index}>` |
++-------------------------------------+-----------------------------------------------------------------------------------------------------------+
+
 Methods
 -------
 
@@ -55,6 +66,31 @@ Methods
    | void                                        | :ref:`remove_style<class_TLFontFamily_method_remove_style>` **(** String style **)**                                                                         |
    +---------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+Property Descriptions
+---------------------
+
+.. _class_TLFontFamily_property_{style_name}/{index}:
+
+- :ref:`TLFontFace<class_TLFontFace>` **{style_name}/{index}**
+
+Font faces not linked to the language or script.
+
+----
+
+.. _class_TLFontFamily_property_{style_name}/script/{tag}/{index}:
+
+- :ref:`TLFontFace<class_TLFontFace>` **{style_name}/script/{tag}/{index}**
+
+Font faces linked to the script.
+
+----
+
+.. _class_TLFontFamily_property_{style_name}/script/{lang}/{index}:
+
+- :ref:`TLFontFace<class_TLFontFace>` **{style_name}/script/{lang}/{index}**
+
+Font faces linked to the language.
+
 Method Descriptions
 -------------------
 
@@ -62,11 +98,15 @@ Method Descriptions
 
 - void **add_face** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**
 
+Adds font face to be used for specific style. Supported scripts are detected automatically.
+
 ----
 
 .. _class_TLFontFamily_method_add_face_for_language:
 
 - void **add_face_for_language** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String lang **)**
+
+Adds font face to be used for specific language and style.
 
 ----
 
@@ -74,11 +114,15 @@ Method Descriptions
 
 - void **add_face_for_script** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref, String script **)**
 
+Adds font face to be used for specific script and style.
+
 ----
 
 .. _class_TLFontFamily_method_add_face_unlinked:
 
 - void **add_face_unlinked** **(** String style, :ref:`TLFontFace<class_TLFontFace>` ref **)**
+
+Adds font face to be used for specific style, without associating it with the script or language.
 
 ----
 
@@ -86,11 +130,19 @@ Method Descriptions
 
 - void **add_language** **(** String style, String language **)**
 
+Creates new font fallback list for the language, list is created automatically when add_face or add_face_for_language function is called.
+
+Use ISO 639-1 (https://en.wikipedia.org/wiki/ISO_639-1) codes for the language names.
+
 ----
 
 .. _class_TLFontFamily_method_add_script:
 
 - void **add_script** **(** String style, String script **)**
+
+Creates new font fallback list for the script, list is created automatically when add_face or add_face_for_script function is called.
+
+Use ISO 15924 (https://en.wikipedia.org/wiki/ISO_15924) for the script names.
 
 ----
 
@@ -98,11 +150,15 @@ Method Descriptions
 
 - void **add_style** **(** String style **)**
 
+Adds new style to the family, style is created automatically when any of the add_face functions is called.
+
 ----
 
 .. _class_TLFontFamily_method_get_face:
 
 - :ref:`TLFontIterator<class_TLFontIterator>` **get_face** **(** String style **)** const
+
+Returns font iterator for the specific style.
 
 ----
 
@@ -110,11 +166,15 @@ Method Descriptions
 
 - :ref:`TLFontIterator<class_TLFontIterator>` **get_face_for_language** **(** String style, String lang **)** const
 
+Returns font iterator for the specific style and supported language.
+
 ----
 
 .. _class_TLFontFamily_method_get_face_for_script:
 
 - :ref:`TLFontIterator<class_TLFontIterator>` **get_face_for_script** **(** String style, String script **)** const
+
+Returns font iterator for the specific style and supported script.
 
 ----
 
@@ -122,11 +182,15 @@ Method Descriptions
 
 - bool **has_style** **(** String style **)** const
 
+Returns ``true`` if font family has style.
+
 ----
 
 .. _class_TLFontFamily_method_remove_language:
 
 - void **remove_language** **(** String style, String language **)**
+
+Removes font fallback list for the language.
 
 ----
 
@@ -134,9 +198,13 @@ Method Descriptions
 
 - void **remove_script** **(** String style, String script **)**
 
+Removes font fallback list for the script.
+
 ----
 
 .. _class_TLFontFamily_method_remove_style:
 
 - void **remove_style** **(** String style **)**
+
+Removes style from the font family.
 

@@ -185,11 +185,15 @@ Signals
 
 - **string_changed** **(** **)**
 
+Emitted when the text or/and other property of the string changes.
+
 ----
 
 .. _class_TLShapedString_signal_string_shaped:
 
 - **string_shaped** **(** **)**
+
+Emitted when the text shaping process is completed.
 
 Enumerations
 ------------
@@ -208,15 +212,15 @@ Enumerations
 
 enum **TextDirection**:
 
-- **TEXT_DIRECTION_LTR** = **0** --- Left-to-right text writing direction
+- **TEXT_DIRECTION_LTR** = **0** --- Left-to-right text writing direction.
 
-- **TEXT_DIRECTION_RTL** = **1** --- Right-to-left text writing direction
+- **TEXT_DIRECTION_RTL** = **1** --- Right-to-left text writing direction.
 
-- **TEXT_DIRECTION_LOCALE** = **2** --- Text writing direction is derived from the locale's script according to the CLDR metadata
+- **TEXT_DIRECTION_LOCALE** = **2** --- Text writing direction is derived from the locale's script according to the CLDR metadata.
 
-- **TEXT_DIRECTION_AUTO** = **3** --- Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale's script if text is not strongly directional
+- **TEXT_DIRECTION_AUTO** = **3** --- Text writing direction is derived from the first character in the string with BiDi class L, R, or AL or locale's script if text is not strongly directional.
 
-- **TEXT_DIRECTION_INVALID** = **4**
+- **TEXT_DIRECTION_INVALID** = **4** --- Invalid text direction (Used as return value only).
 
 ----
 
@@ -240,21 +244,21 @@ enum **TextDirection**:
 
 enum **TextJustification**:
 
-- **TEXT_JUSTIFICATION_NONE** = **0** --- No text justification
+- **TEXT_JUSTIFICATION_NONE** = **0** --- No text justification.
 
-- **TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE** = **1** --- Use kashida and whitespace elongation to justify text
+- **TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE** = **1** --- Use kashida and white space elongation to justify text.
 
-- **TEXT_JUSTIFICATION_KASHIDA_ONLY** = **2** --- Use kashida elongation to justify text
+- **TEXT_JUSTIFICATION_KASHIDA_ONLY** = **2** --- Use kashida elongation to justify text.
 
-- **TEXT_JUSTIFICATION_WHITESPACE_ONLY** = **3** --- Use whitespace elongation to justify text
+- **TEXT_JUSTIFICATION_WHITESPACE_ONLY** = **3** --- Use white space elongation to justify text.
 
-- **TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR** = **4**
+- **TEXT_JUSTIFICATION_KASHIDA_AND_WHITESPACE_AND_INTERCHAR** = **4** --- Use kashida, white space and inter character elongation to justify text.
 
-- **TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR** = **5**
+- **TEXT_JUSTIFICATION_KASHIDA_AND_INTERCHAR** = **5** --- Use kashida and inter character elongation to justify text.
 
-- **TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR** = **6**
+- **TEXT_JUSTIFICATION_WHITESPACE_AND_INTERCHAR** = **6** --- Use white space and inter character elongation to justify text.
 
-- **TEXT_JUSTIFICATION_INTERCHAR_ONLY** = **7**
+- **TEXT_JUSTIFICATION_INTERCHAR_ONLY** = **7** --- Use inter character elongation to justify text.
 
 ----
 
@@ -270,13 +274,13 @@ enum **TextJustification**:
 
 enum **TextBreak**:
 
-- **TEXT_BREAK_NONE** = **0** --- No line breaking
+- **TEXT_BREAK_NONE** = **0** --- No line breaking.
 
-- **TEXT_BREAK_MANDATORY** = **1** --- Break lines only at mandatory break points
+- **TEXT_BREAK_MANDATORY** = **1** --- Break lines only at mandatory break points.
 
-- **TEXT_BREAK_MANDATORY_AND_WORD_BOUND** = **2** --- Break lines at mandatory break points and word boundaries
+- **TEXT_BREAK_MANDATORY_AND_WORD_BOUND** = **2** --- Break lines at mandatory break points and word boundaries.
 
-- **TEXT_BREAK_MANDATORY_AND_ANYWHERE** = **3** --- Break lines at mandatory break points and grapheme cluster boundaries
+- **TEXT_BREAK_MANDATORY_AND_ANYWHERE** = **3** --- Break lines at mandatory break points and grapheme cluster boundaries.
 
 ----
 
@@ -290,11 +294,11 @@ enum **TextBreak**:
 
 enum **TextTrimMode**:
 
-- **TEXT_TRIM_NONE** = **0** --- No substring trimming
+- **TEXT_TRIM_NONE** = **0** --- No substring trimming.
 
-- **TEXT_TRIM_BREAK** = **1** --- Trim line break characters for substring ends
+- **TEXT_TRIM_BREAK** = **1** --- Trim line break characters for substring ends.
 
-- **TEXT_TRIM_BREAK_AND_WHITESPACE** = **2** --- Trim line break and whitespace characters for substring ends
+- **TEXT_TRIM_BREAK_AND_WHITESPACE** = **2** --- Trim line break and white space characters for substring ends.
 
 Description
 -----------
@@ -305,7 +309,7 @@ Note 1: Code points, Characters, Clusters and Glyphs
 
 - A code point is a single encoding UTF-16 unit (Unicode character or half of the surrogate pair).
 
-- A character is a full Unicode charecter.
+- A character is a full Unicode character.
 
 - A grapheme cluster is the abstract unit of a writing system (a letter, a digit, or punctuation).
 
@@ -341,7 +345,7 @@ Property Descriptions
    | *Getter*  | get_base_direction()      |
    +-----------+---------------------------+
 
-Base text writing direction. Default: ``TEXT_DIRECTION_AUTO``
+Base text writing direction.
 
 ----
 
@@ -359,7 +363,7 @@ Base text writing direction. Default: ``TEXT_DIRECTION_AUTO``
    | *Getter* | get_base_font()      |
    +----------+----------------------+
 
-Base font family reference. Default: ``null``
+Base font family reference.
 
 ----
 
@@ -379,7 +383,7 @@ Base font family reference. Default: ``null``
    | *Getter*  | get_base_font_size()      |
    +-----------+---------------------------+
 
-Font size. Default: ``12``
+Font size.
 
 ----
 
@@ -399,7 +403,7 @@ Font size. Default: ``12``
    | *Getter*  | get_base_font_style()      |
    +-----------+----------------------------+
 
-Style name (Regular, Bold, Italic, Oblique etc.). Default: ``"Regular"``
+Style name (Regular, Bold, Italic, Oblique etc.).
 
 ----
 
@@ -419,7 +423,7 @@ Style name (Regular, Bold, Italic, Oblique etc.). Default: ``"Regular"``
    | *Getter*  | get_features()      |
    +-----------+---------------------+
 
-Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Default: ``""``
+Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags.
 
 ----
 
@@ -439,7 +443,7 @@ Comma separated list of OpenType feature tags. More info: https://docs.microsoft
    | *Getter*  | get_language()      |
    +-----------+---------------------+
 
-Language code. Default: ``""``
+Language code for line-breaking and text shaping algorithms.
 
 ----
 
@@ -459,7 +463,7 @@ Language code. Default: ``""``
    | *Getter*  | get_preserve_control()      |
    +-----------+-----------------------------+
 
-If ``true`` displays control character. Default: ``false``
+If ``true``, displays control character.
 
 ----
 
@@ -479,7 +483,7 @@ If ``true`` displays control character. Default: ``false``
    | *Getter*  | get_text()      |
    +-----------+-----------------+
 
-Text string. Default: ``""``
+Text string.
 
 Method Descriptions
 -------------------
@@ -487,6 +491,8 @@ Method Descriptions
 .. _class_TLShapedString_method_add_sstring:
 
 - void **add_sstring** **(** :ref:`TLShapedString<class_TLShapedString>` text **)**
+
+Appends shaped string.
 
 ----
 
@@ -528,7 +534,7 @@ Appends plain text string.
 
 Breaks text into lines that fit within a specified width.
 
-Retunrs Array of line boundaries.
+Returns Array of line boundaries.
 
 ----
 
@@ -538,7 +544,7 @@ Retunrs Array of line boundaries.
 
 Breaks text into words.
 
-Retunrs Array of word boundaries.
+Returns Array of word boundaries.
 
 ----
 
@@ -576,6 +582,8 @@ Draws a string.
 
 - void **draw_as_hex** **(** RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops **)**
 
+``DEBUG:`` Draws a string using "hexbox" fallback font.
+
 ----
 
 .. _class_TLShapedString_method_draw_cluster:
@@ -590,11 +598,15 @@ Draws single grapheme cluster. Returns advance.
 
 - void **draw_dbg** **(** RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops **)**
 
+``DEBUG:`` Draws a string with additional debug information.
+
 ----
 
 .. _class_TLShapedString_method_draw_logical_as_hex:
 
 - void **draw_logical_as_hex** **(** RID canvas_item, Vector2 position, Color modulate, bool draw_brk_ops, bool draw_jst_ops **)**
+
+``DEBUG:`` Draws logical character codes of the string with additional debug information.
 
 ----
 
@@ -664,11 +676,15 @@ Returns last character position corresponding cluster.
 
 - :ref:`TLFontFace<class_TLFontFace>` **get_cluster_face** **(** int position **)** const
 
+Returns font face of the cluster.
+
 ----
 
 .. _class_TLShapedString_method_get_cluster_face_size:
 
 - float **get_cluster_face_size** **(** int position **)** const
+
+Returns font size of the cluster. For non-attributed string it's always equal to base size.
 
 ----
 
@@ -796,6 +812,8 @@ Returns an Array of Rect2 enclosing the selection/highlight in the specified ran
 
 - int **get_para_direction** **(** **)** const
 
+Returns shaped string paragraph direction.
+
 ----
 
 .. _class_TLShapedString_method_get_utf16:
@@ -842,13 +860,15 @@ Returns a cursor position corresponding to the specified pixel offset.
 
 - int **hit_test_cluster** **(** float position **)** const
 
+Returns a cluster index corresponding to the specified pixel offset.
+
 ----
 
 .. _class_TLShapedString_method_is_valid:
 
 - bool **is_valid** **(** **)** const
 
-Returns ``true`` if the string is shaped successfuly.
+Returns ``true`` if the string is shaped successfully.
 
 ----
 
@@ -896,13 +916,15 @@ Returns previous whole character position in the string.
 
 - void **replace_sstring** **(** int start, int end, :ref:`TLShapedString<class_TLShapedString>` text **)**
 
+Replaces substring with contents of another shaped string.
+
 ----
 
 .. _class_TLShapedString_method_replace_text:
 
 - void **replace_text** **(** int start, int end, String text **)**
 
-Replaces substring.
+Replaces substring with text.
 
 ----
 
@@ -910,11 +932,15 @@ Replaces substring.
 
 - void **replace_utf16** **(** int start, int end, PoolByteArray text **)**
 
+Replaces substring with contents of the raw UTF-16 encoded string.
+
 ----
 
 .. _class_TLShapedString_method_replace_utf32:
 
 - void **replace_utf32** **(** int start, int end, PoolByteArray text **)**
+
+Replaces substring with contents of the raw UTF-32 encoded string.
 
 ----
 
@@ -922,13 +948,15 @@ Replaces substring.
 
 - void **replace_utf8** **(** int start, int end, PoolByteArray text **)**
 
+Replaces substring with contents of the raw UTF-8 encoded string.
+
 ----
 
 .. _class_TLShapedString_method_set_utf16:
 
 - void **set_utf16** **(** PoolByteArray data **)**
 
-Sets taw text string in UTF-16 encoding
+Sets text to the contents of the raw UTF-16 encoded string.
 
 ----
 
@@ -936,7 +964,7 @@ Sets taw text string in UTF-16 encoding
 
 - void **set_utf32** **(** PoolByteArray data **)**
 
-Sets taw text string in UTF-32 encoding
+Sets text to the contents of the raw UTF-32 encoded string.
 
 ----
 
@@ -944,7 +972,7 @@ Sets taw text string in UTF-32 encoding
 
 - void **set_utf8** **(** PoolByteArray data **)**
 
-Sets taw text string in UTF-8 encoding
+Sets text to the contents of the raw UTF-8 encoded string.
 
 ----
 
@@ -952,11 +980,13 @@ Sets taw text string in UTF-8 encoding
 
 - bool **shape** **(** **)**
 
-Shapes string and returns ``true`` if the string is shaped successfuly.
+Shapes string and returns ``true`` if the string is shaped successfully.
 
 ----
 
 .. _class_TLShapedString_method_substr:
 
 - :ref:`TLShapedString<class_TLShapedString>` **substr** **(** int start, int end, int trim **)** const
+
+Returns part of the shaped string from the position ``start`` to ``end``, trims it according to ``trim`` parameter.
 

@@ -79,6 +79,8 @@ Property Descriptions
    | *Getter*  | get_font_path()      |
    +-----------+----------------------+
 
+Path of the font file.
+
 ----
 
 .. _class_TLFontFace_property_texture_flags:
@@ -97,7 +99,7 @@ Property Descriptions
    | *Getter*  | get_texture_flags()      |
    +-----------+--------------------------+
 
-Font texture flags. Default: ``FLAG_VIDEO_SURFACE``
+Underlaying textures flags, see Texture class documentation https://docs.godotengine.org/en/latest/classes/class_texture.html#enumerations for more info.
 
 Method Descriptions
 -------------------
@@ -146,6 +148,8 @@ Returns descent (distance from the base line to the lowest point characters exte
 
 - Array **get_glyph_outline** **(** Vector2 pos, int codepoint, int size **)** const
 
+Returns array of glyph counture points, if it's supported by font implementation or empty array otherwise.
+
 ----
 
 .. _class_TLFontFace_method_get_height:
@@ -167,4 +171,6 @@ Loads font from speified file.
 .. _class_TLFontFace_method_unicode_scripts_supported:
 
 - Array **unicode_scripts_supported** **(** **)** const
+
+Returns array of supported ISO 15924 script codes.
 

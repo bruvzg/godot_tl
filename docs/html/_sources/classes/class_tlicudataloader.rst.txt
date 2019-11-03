@@ -55,6 +55,8 @@ Property Descriptions
    | *Getter*  | get_data_path()      |
    +-----------+----------------------+
 
+ICU data file path.
+
 Method Descriptions
 -------------------
 

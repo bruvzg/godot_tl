@@ -73,7 +73,7 @@
 			<return type="Array">
 			</return>
 			<description>
-				Returns bounding rects of embedded objects ([code]TEXT_ATTRIBUTE_REPLACEMENT_RECT[/code] attributes).
+				Returns bounding rectangles of embedded objects ([code]TEXT_ATTRIBUTE_REPLACEMENT_RECT[/code] attributes).
 			</description>
 		</method>
 		<method name="has_attribute" qualifiers="const">
@@ -84,7 +84,7 @@
 			<argument index="1" name="index" type="int">
 			</argument>
 			<description>
-				Returns [code]true[/code] if spceified position has [code]attribute[/code] attribute set.
+				Returns [code]true[/code] if specified position has [code]attribute[/code] attribute set.
 			</description>
 		</method>
 		<method name="load_attributes_dict">
@@ -128,6 +128,23 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="attributes_dict" type="Array" setter="load_attributes_dict" getter="save_attributes_dict">
+			[Array] of attribute [Dictionary].
+		</member>
+		<member name="attribute/type" type="int">
+			Temporary attribute type, temporary attributes can be committed to the string by calling [method commit_attribute].
+		</member>
+		<member name="attribute/value" type="Variant">
+			Temporary attribute value, temporary attributes can be committed to the string by calling [method commit_attribute].
+		</member>
+		<member name="attribute/start" type="int">
+			Temporary attribute start offset, temporary attributes can be committed to the string by calling [method commit_attribute].
+		</member>
+		<member name="attribute/end" type="int">
+			Temporary attribute end offset, temporary attributes can be committed to the string by calling [method commit_attribute].
+		</member>
+	</members>
 	<constants>
 		<constant name="TEXT_ATTRIBUTE_FONT" value="1" enum="TextAttribute">
 			Font family. Attribute type: [TLFontFamily]
@@ -142,7 +159,7 @@
 			Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Attribute type: [String]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_LANGUAGE" value="5" enum="TextAttribute">
-			Language code. Attribute type: [String]
+			Language code for line-breaking and text shaping algorithms. Attribute type: [String]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_REPLACEMENT_IMAGE" value="6" enum="TextAttribute">
 			Embedded image. Attribute type: [Texture]
@@ -169,10 +186,10 @@
 			Underline width. Attribute type: [code]int[/code]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR" value="51" enum="TextAttribute">
-			Strikethrough line color. Attribute type: [Color]
+			Strike through line color. Attribute type: [Color]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH" value="52" enum="TextAttribute">
-			Strikethrough line widht. Attribute type: [code]int[/code]
+			Strike through line width. Attribute type: [code]int[/code]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_OVERLINE_COLOR" value="61" enum="TextAttribute">
 			Overline color/ Attribute type: [Color]
@@ -184,16 +201,16 @@
 			Highlight color. Attribute type: [Color]
 		</constant>
 		<constant name="TEXT_ATTRIBUTE_META" value="100" enum="TextAttribute">
-			User defined data, use [code]TEXT_ATTRIBUTE_META + x[/code] to define moultiple user attributes. Attribute type: [Variant]
+			User defined data, use [code]TEXT_ATTRIBUTE_META + x[/code] to define multiple user attributes. Attribute type: [Variant]
 		</constant>
 		<constant name="TEXT_VALIGN_TOP" value="0" enum="TextVAlign">
-			Inline vertical top alignment
+			Inline vertical top alignment.
 		</constant>
 		<constant name="TEXT_VALIGN_CENTER" value="1" enum="TextVAlign">
-			Inline vertical center alignment
+			Inline vertical center alignment.
 		</constant>
 		<constant name="TEXT_VALIGN_BOTTOM" value="2" enum="TextVAlign">
-			Inline vertical bottom alignment
+			Inline vertical bottom alignment.
 		</constant>
 	</constants>
 </class>

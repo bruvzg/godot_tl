@@ -16,40 +16,50 @@ TLLabel
 Brief Description
 -----------------
 
+Displays plain text in a line or wrapped inside a rectangle. For formatted text, use :ref:`TLRichTextEdit<class_TLRichTextEdit>`.
 
+Copy of Godot Label with the shaping support. TLLabel uses the same theme items as the Label.
 
 Properties
 ----------
 
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| int                                     | :ref:`align<class_TLLabel_property_align>`                     | 0         |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| bool                                    | :ref:`autowrap<class_TLLabel_property_autowrap>`               | false     |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| :ref:`TLFontFamily<class_TLFontFamily>` | :ref:`base_font<class_TLLabel_property_base_font>`             |           |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| int                                     | :ref:`base_font_size<class_TLLabel_property_base_font_size>`   | 12        |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| String                                  | :ref:`base_font_style<class_TLLabel_property_base_font_style>` | "Regular" |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| bool                                    | :ref:`clip_text<class_TLLabel_property_clip_text>`             | false     |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| String                                  | :ref:`language<class_TLLabel_property_language>`               | ""        |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| Control.MouseFilter                     | mouse_filter                                                   | **O:** 2  |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| String                                  | :ref:`ot_features<class_TLLabel_property_ot_features>`         | ""        |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| int                                     | size_flags_vertical                                            | **O:** 4  |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| String                                  | :ref:`text<class_TLLabel_property_text>`                       | ""        |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| int                                     | :ref:`text_direction<class_TLLabel_property_text_direction>`   | 3         |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| bool                                    | :ref:`uppercase<class_TLLabel_property_uppercase>`             | false     |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
-| int                                     | :ref:`valign<class_TLLabel_property_valign>`                   | 0         |
-+-----------------------------------------+----------------------------------------------------------------+-----------+
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`align<class_TLLabel_property_align>`                           | 0         |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| bool                                    | :ref:`autowrap<class_TLLabel_property_autowrap>`                     | false     |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| :ref:`TLFontFamily<class_TLFontFamily>` | :ref:`base_font<class_TLLabel_property_base_font>`                   |           |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`base_font_size<class_TLLabel_property_base_font_size>`         | 12        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| String                                  | :ref:`base_font_style<class_TLLabel_property_base_font_style>`       | "Regular" |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| bool                                    | :ref:`clip_text<class_TLLabel_property_clip_text>`                   | false     |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| String                                  | :ref:`language<class_TLLabel_property_language>`                     | ""        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`lines_skipped<class_TLLabel_property_lines_skipped>`           | 0         |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`max_lines_visible<class_TLLabel_property_max_lines_visible>`   | -1        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | mouse_filter                                                         | **O:** 2  |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| String                                  | :ref:`ot_features<class_TLLabel_property_ot_features>`               | ""        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| float                                   | :ref:`percent_visible<class_TLLabel_property_percent_visible>`       | 1.0       |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | size_flags_vertical                                                  | **O:** 4  |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| String                                  | :ref:`text<class_TLLabel_property_text>`                             | ""        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`text_direction<class_TLLabel_property_text_direction>`         | 3         |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| bool                                    | :ref:`uppercase<class_TLLabel_property_uppercase>`                   | false     |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`valign<class_TLLabel_property_valign>`                         | 0         |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
+| int                                     | :ref:`visible_characters<class_TLLabel_property_visible_characters>` | -1        |
++-----------------------------------------+----------------------------------------------------------------------+-----------+
 
 Methods
 -------
@@ -58,31 +68,15 @@ Methods
    :class: longtable
    :widths: 7 20
 
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_line_count<class_TLLabel_method_get_line_count>` **(** **)** const                           |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_line_height<class_TLLabel_method_get_line_height>` **(** **)** const                         |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_lines_skipped<class_TLLabel_method_get_lines_skipped>` **(** **)** const                     |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_max_lines_visible<class_TLLabel_method_get_max_lines_visible>` **(** **)** const             |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | float | :ref:`get_percent_visible<class_TLLabel_method_get_percent_visible>` **(** **)** const                 |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_total_character_count<class_TLLabel_method_get_total_character_count>` **(** **)** const     |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_visible_characters<class_TLLabel_method_get_visible_characters>` **(** **)** const           |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | int   | :ref:`get_visible_line_count<class_TLLabel_method_get_visible_line_count>` **(** **)** const           |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | void  | :ref:`set_lines_skipped<class_TLLabel_method_set_lines_skipped>` **(** int lines_skipped **)**         |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | void  | :ref:`set_max_lines_visible<class_TLLabel_method_set_max_lines_visible>` **(** int lines_visible **)** |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | void  | :ref:`set_percent_visible<class_TLLabel_method_set_percent_visible>` **(** float percent_visible **)** |
-   +-------+--------------------------------------------------------------------------------------------------------+
-   | void  | :ref:`set_visible_characters<class_TLLabel_method_set_visible_characters>` **(** int amount **)**      |
-   +-------+--------------------------------------------------------------------------------------------------------+
+   +-----+----------------------------------------------------------------------------------------------------+
+   | int | :ref:`get_line_count<class_TLLabel_method_get_line_count>` **(** **)** const                       |
+   +-----+----------------------------------------------------------------------------------------------------+
+   | int | :ref:`get_line_height<class_TLLabel_method_get_line_height>` **(** **)** const                     |
+   +-----+----------------------------------------------------------------------------------------------------+
+   | int | :ref:`get_total_character_count<class_TLLabel_method_get_total_character_count>` **(** **)** const |
+   +-----+----------------------------------------------------------------------------------------------------+
+   | int | :ref:`get_visible_line_count<class_TLLabel_method_get_visible_line_count>` **(** **)** const       |
+   +-----+----------------------------------------------------------------------------------------------------+
 
 Enumerations
 ------------
@@ -99,13 +93,13 @@ Enumerations
 
 enum **Align**:
 
-- **ALIGN_LEFT** = **0**
+- **ALIGN_LEFT** = **0** --- Align rows to the left (default).
 
-- **ALIGN_CENTER** = **1**
+- **ALIGN_CENTER** = **1** --- Align rows centered.
 
-- **ALIGN_RIGHT** = **2**
+- **ALIGN_RIGHT** = **2** --- Align rows to the right.
 
-- **ALIGN_FILL** = **3**
+- **ALIGN_FILL** = **3** --- Expand row white spaces to fit the width.
 
 ----
 
@@ -121,13 +115,18 @@ enum **Align**:
 
 enum **VAlign**:
 
-- **VALIGN_TOP** = **0**
+- **VALIGN_TOP** = **0** --- Align the whole text to the top.
 
-- **VALIGN_CENTER** = **1**
+- **VALIGN_CENTER** = **1** --- Align the whole text to the center.
 
-- **VALIGN_BOTTOM** = **2**
+- **VALIGN_BOTTOM** = **2** --- Align the whole text to the bottom.
 
-- **VALIGN_FILL** = **3**
+- **VALIGN_FILL** = **3** --- Align the whole text by spreading the rows.
+
+Description
+-----------
+
+Label displays plain text on the screen. It gives you control over the horizontal and vertical alignment, and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics or other formatting. For that, use RichTextLabel instead.
 
 Property Descriptions
 ---------------------
@@ -148,6 +147,8 @@ Property Descriptions
    | *Getter*  | get_align()      |
    +-----------+------------------+
 
+Controls the text's horizontal align. Supports left, center, right, and fill, or justify. Set it to one of the ``ALIGN_*`` constants.
+
 ----
 
 .. _class_TLLabel_property_autowrap:
@@ -166,6 +167,8 @@ Property Descriptions
    | *Getter*  | has_autowrap()      |
    +-----------+---------------------+
 
+If ``true``, wraps the text inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
+
 ----
 
 .. _class_TLLabel_property_base_font:
@@ -181,6 +184,8 @@ Property Descriptions
    +----------+----------------------+
    | *Getter* | get_base_font()      |
    +----------+----------------------+
+
+Base font.
 
 ----
 
@@ -200,6 +205,8 @@ Property Descriptions
    | *Getter*  | get_base_font_size()      |
    +-----------+---------------------------+
 
+Base font size.
+
 ----
 
 .. _class_TLLabel_property_base_font_style:
@@ -217,6 +224,8 @@ Property Descriptions
    +-----------+----------------------------+
    | *Getter*  | get_base_font_style()      |
    +-----------+----------------------------+
+
+Base font style.
 
 ----
 
@@ -236,6 +245,8 @@ Property Descriptions
    | *Getter*  | is_clipping_text()   |
    +-----------+----------------------+
 
+If ``true``, the Label only shows the text that fits inside its bounding rectangle. It also lets you scale the node down freely.
+
 ----
 
 .. _class_TLLabel_property_language:
@@ -253,6 +264,48 @@ Property Descriptions
    +-----------+---------------------+
    | *Getter*  | get_language()      |
    +-----------+---------------------+
+
+Language code for line-breaking and text shaping algorithms.
+
+----
+
+.. _class_TLLabel_property_lines_skipped:
+
+- int **lines_skipped**
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+--------------------------+
+   | *Default* | 0                        |
+   +-----------+--------------------------+
+   | *Setter*  | set_lines_skipped(value) |
+   +-----------+--------------------------+
+   | *Getter*  | get_lines_skipped()      |
+   +-----------+--------------------------+
+
+The node ignores the first ``lines_skipped`` lines before it starts to display text.
+
+----
+
+.. _class_TLLabel_property_max_lines_visible:
+
+- int **max_lines_visible**
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+------------------------------+
+   | *Default* | -1                           |
+   +-----------+------------------------------+
+   | *Setter*  | set_max_lines_visible(value) |
+   +-----------+------------------------------+
+   | *Getter*  | get_max_lines_visible()      |
+   +-----------+------------------------------+
+
+Limits the lines of text the node shows on screen.
 
 ----
 
@@ -272,6 +325,28 @@ Property Descriptions
    | *Getter*  | get_ot_features()      |
    +-----------+------------------------+
 
+Comma separated list of OpenType feature tags.
+
+----
+
+.. _class_TLLabel_property_percent_visible:
+
+- float **percent_visible**
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+----------------------------+
+   | *Default* | 1.0                        |
+   +-----------+----------------------------+
+   | *Setter*  | set_percent_visible(value) |
+   +-----------+----------------------------+
+   | *Getter*  | get_percent_visible()      |
+   +-----------+----------------------------+
+
+Limits the count of visible characters. If you set ``percent_visible`` to 50, only up to half of the text's characters will display on screen. Useful to animate the text in a dialog box.
+
 ----
 
 .. _class_TLLabel_property_text:
@@ -289,6 +364,8 @@ Property Descriptions
    +-----------+-----------------+
    | *Getter*  | get_text()      |
    +-----------+-----------------+
+
+The text to display on screen.
 
 ----
 
@@ -308,6 +385,8 @@ Property Descriptions
    | *Getter*  | get_text_direction()      |
    +-----------+---------------------------+
 
+Base direction of the text.
+
 ----
 
 .. _class_TLLabel_property_uppercase:
@@ -325,6 +404,8 @@ Property Descriptions
    +-----------+----------------------+
    | *Getter*  | is_uppercase()       |
    +-----------+----------------------+
+
+If ``true``, all the text displays as UPPERCASE.
 
 ----
 
@@ -344,6 +425,28 @@ Property Descriptions
    | *Getter*  | get_valign()      |
    +-----------+-------------------+
 
+Controls the text's vertical align. Supports top, center, bottom, and fill. Set it to one of the ``VALIGN_*`` constants.
+
+----
+
+.. _class_TLLabel_property_visible_characters:
+
+- int **visible_characters**
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-----------+-------------------------------+
+   | *Default* | -1                            |
+   +-----------+-------------------------------+
+   | *Setter*  | set_visible_characters(value) |
+   +-----------+-------------------------------+
+   | *Getter*  | get_visible_characters()      |
+   +-----------+-------------------------------+
+
+Restricts the number of characters to display. Set to -1 to disable.
+
 Method Descriptions
 -------------------
 
@@ -351,29 +454,15 @@ Method Descriptions
 
 - int **get_line_count** **(** **)** const
 
+Returns the amount of lines of text the Label has.
+
 ----
 
 .. _class_TLLabel_method_get_line_height:
 
 - int **get_line_height** **(** **)** const
 
-----
-
-.. _class_TLLabel_method_get_lines_skipped:
-
-- int **get_lines_skipped** **(** **)** const
-
-----
-
-.. _class_TLLabel_method_get_max_lines_visible:
-
-- int **get_max_lines_visible** **(** **)** const
-
-----
-
-.. _class_TLLabel_method_get_percent_visible:
-
-- float **get_percent_visible** **(** **)** const
+Returns the of the line in pixels.
 
 ----
 
@@ -381,11 +470,7 @@ Method Descriptions
 
 - int **get_total_character_count** **(** **)** const
 
-----
-
-.. _class_TLLabel_method_get_visible_characters:
-
-- int **get_visible_characters** **(** **)** const
+Returns the total number of printable characters in the text.
 
 ----
 
@@ -393,27 +478,5 @@ Method Descriptions
 
 - int **get_visible_line_count** **(** **)** const
 
-----
-
-.. _class_TLLabel_method_set_lines_skipped:
-
-- void **set_lines_skipped** **(** int lines_skipped **)**
-
-----
-
-.. _class_TLLabel_method_set_max_lines_visible:
-
-- void **set_max_lines_visible** **(** int lines_visible **)**
-
-----
-
-.. _class_TLLabel_method_set_percent_visible:
-
-- void **set_percent_visible** **(** float percent_visible **)**
-
-----
-
-.. _class_TLLabel_method_set_visible_characters:
-
-- void **set_visible_characters** **(** int amount **)**
+Returns the number of lines shown. Useful if the Label's height cannot currently display all lines.
 

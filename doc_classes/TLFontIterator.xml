@@ -7,6 +7,34 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="is_linked" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+				Return [code]true[/code] if current iterator value is part of language/script specific fallback list.
+			</description>
+		</method>
+		<method name="is_valid" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+				Return [code]true[/code] if current iterator value is valid.
+			</description>
+		</method>
+		<method name="next">
+			<return type="bool">
+			</return>
+			<description>
+				Advances iterator. Return [code]true[/code] if current iterator value is valid.
+			</description>
+		</method>
+		<method name="value" qualifiers="const">
+			<return type="TLFontFace">
+			</return>
+			<description>
+				Return current font face.
+			</description>
+		</method>
 	</methods>
 	<constants>
 	</constants>

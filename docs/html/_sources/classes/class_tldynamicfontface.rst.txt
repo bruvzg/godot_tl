@@ -80,7 +80,7 @@ Property Descriptions
    | *Getter*  | get_force_autohinter()      |
    +-----------+-----------------------------+
 
-If ``true``, prefers FreeType auto-hinter over the font's native hinter. Default: ``false``
+If ``true``, prefers FreeType auto-hinter over the font's native hinter.
 
 ----
 
@@ -100,7 +100,7 @@ If ``true``, prefers FreeType auto-hinter over the font's native hinter. Default
    | *Getter*  | get_hinting()      |
    +-----------+--------------------+
 
-The font hinting mode used by FreeType auto-hinter. Default: ``DF_HINTING_NONE``
+The font hinting mode used by FreeType auto-hinter.
 
 ----
 
@@ -120,7 +120,7 @@ The font hinting mode used by FreeType auto-hinter. Default: ``DF_HINTING_NONE``
    | *Getter*  | get_oversampling()      |
    +-----------+-------------------------+
 
-Font oversampling factor. Default: ``1.0``
+Font oversampling factor.
 
 Method Descriptions
 -------------------

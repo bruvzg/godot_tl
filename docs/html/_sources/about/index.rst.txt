@@ -1,6 +1,6 @@
 .. _doc_about_intro:
 
-libgdtl Introduction
+libgdtl introduction
 ====================
 
 BiDi, shaping and basic text layout for Godot Engine.
@@ -35,7 +35,7 @@ Building `libdgtl` module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Clone this repository (without `--recursive` flag) into Godot's `modules` subfolder as `godot_tl`.
-Rebuild Godot engine as ususal.
+Rebuild Godot engine as usual.
 
 Compiling (as gdnative module)
 ------------------------------

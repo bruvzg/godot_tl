@@ -649,6 +649,11 @@ void TLLabel::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "autowrap"), "set_autowrap", "has_autowrap");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clip_text"), "set_clip_text", "is_clipping_text");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "uppercase"), "set_uppercase", "is_uppercase");
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "visible_characters", PROPERTY_HINT_RANGE, "-1,128000,1", PROPERTY_USAGE_EDITOR), "set_visible_characters", "get_visible_characters");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent_visible", PROPERTY_HINT_RANGE, "0,1,0.001"), "set_percent_visible", "get_percent_visible");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "lines_skipped", PROPERTY_HINT_RANGE, "0,999,1"), "set_lines_skipped", "get_lines_skipped");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_lines_visible", PROPERTY_HINT_RANGE, "-1,999,1"), "set_max_lines_visible", "get_max_lines_visible");
 }
 
 #else
@@ -743,6 +748,11 @@ void TLLabel::_register_methods() {
 	register_property<TLLabel, bool>("autowrap", &TLLabel::set_autowrap, &TLLabel::has_autowrap, false);
 	register_property<TLLabel, bool>("clip_text", &TLLabel::set_clip_text, &TLLabel::is_clipping_text, false);
 	register_property<TLLabel, bool>("uppercase", &TLLabel::set_uppercase, &TLLabel::is_uppercase, false);
+
+	register_property<TLLabel, int>("visible_characters", &TLLabel::set_visible_characters, &TLLabel::get_visible_characters, -1);
+	register_property<TLLabel, float>("percent_visible", &TLLabel::set_percent_visible, &TLLabel::get_percent_visible, 1);
+	register_property<TLLabel, int>("lines_skipped", &TLLabel::set_lines_skipped, &TLLabel::get_lines_skipped, 0);
+	register_property<TLLabel, int>("max_lines_visible", &TLLabel::set_max_lines_visible, &TLLabel::get_max_lines_visible, -1);
 
 	register_method("_notification", &TLLabel::_notification);
 

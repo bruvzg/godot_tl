@@ -23,18 +23,8 @@ To install plugin:
 
 3. After installing plugin, your file system should look like this:
 
-* [addons]
-
-  * [libgdtl]
-
-    * [bin]
-    * [classes]
-    * [icons]
-    * constants.gd
-    * gdtl.gd
-    * libgdtl.gdnlib
-    * plugin.cfg
-    * tl_font_family_edit.gd
-    * tl_font_family_preview.gd
+.. image:: img/plugin_files.png
 
 4. Go to `Project Settings`, click on the `Plugins` tab and activate `gdtl` plugin.
+
+.. image:: img/plugin_activate.png

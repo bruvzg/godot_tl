@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TLProtoControlSelection &mdash; libgdtl latest documentation</title>
+  <title>TLRichTextEditSelection &mdash; libgdtl latest documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="TLShapedAttributedString" href="class_tlshapedattributedstring.html" />
-    <link rel="prev" title="TLProtoControl" href="class_tlprotocontrol.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    <link rel="prev" title="TLRichTextEdit" href="class_tlrichtextedit.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -87,7 +89,7 @@
             
               <p class="caption"><span class="caption-text">General</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl Introduction</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
@@ -142,12 +144,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlfontfamily.html">TLFontFamily</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlfontiterator.html">TLFontIterator</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlfontiterator.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlgdfontwrapper.html">TLGDFontWrapper</a><ul>
@@ -170,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#description">Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllabel.html#method-descriptions">Method Descriptions</a></li>
 </ul>
@@ -180,20 +187,21 @@
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#signals">Signals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#description">Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="class_tlprotocontrol.html">TLProtoControl</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#brief-description">Brief Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#properties">Properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#methods">Methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#signals">Signals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#property-descriptions">Property Descriptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="class_tlprotocontrol.html#method-descriptions">Method Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class_tlrichtextedit.html">TLRichTextEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlrichtextedit.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">TLProtoControlSelection</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TLRichTextEditSelection</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#brief-description">Brief Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
@@ -202,8 +210,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#property-descriptions">Property Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
 </ul>
 </li>
@@ -279,7 +289,7 @@
         
           <li><a href="index.html">libgdtl API</a> &raquo;</li>
         
-      <li>TLProtoControlSelection</li>
+      <li>TLRichTextEditSelection</li>
     
     
 
@@ -292,182 +302,190 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tlprotocontrolselection">
-<span id="class-tlprotocontrolselection"></span><h1>TLProtoControlSelection<a class="headerlink" href="#tlprotocontrolselection" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tlrichtexteditselection">
+<span id="class-tlrichtexteditselection"></span><h1>TLRichTextEditSelection<a class="headerlink" href="#tlrichtexteditselection" title="Permalink to this headline">¶</a></h1>
 <p><strong>Inherits:</strong></p>
 <p><strong>Category:</strong> Core</p>
 <div class="section" id="brief-description">
 <h2>Brief Description<a class="headerlink" href="#brief-description" title="Permalink to this headline">¶</a></h2>
+<p>Selection and caret info of the <a class="reference internal" href="class_tlrichtextedit.html#class-tlrichtextedit"><span class="std std-ref">TLRichTextEdit</span></a></p>
 </div>
 <div class="section" id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="6%" />
-<col width="90%" />
-<col width="4%" />
+<col style="width: 6%" />
+<col style="width: 90%" />
+<col style="width: 4%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-caret-offset"><span class="std std-ref">caret_offset</span></a></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-caret-offset"><span class="std std-ref">caret_offset</span></a></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-caret-para"><span class="std std-ref">caret_para</span></a></td>
-<td>0</td>
+<tr class="row-even"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-caret-para"><span class="std std-ref">caret_para</span></a></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-odd"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-end-offset"><span class="std std-ref">end_offset</span></a></td>
-<td>0</td>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-end-offset"><span class="std std-ref">end_offset</span></a></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-end-para"><span class="std std-ref">end_para</span></a></td>
-<td>0</td>
+<tr class="row-even"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-end-para"><span class="std std-ref">end_para</span></a></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-odd"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-start-offset"><span class="std std-ref">start_offset</span></a></td>
-<td>0</td>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-start-offset"><span class="std std-ref">start_offset</span></a></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td>int</td>
-<td><a class="reference internal" href="#class-tlprotocontrolselection-property-start-para"><span class="std std-ref">start_para</span></a></td>
-<td>0</td>
+<tr class="row-even"><td><p>int</p></td>
+<td><p><a class="reference internal" href="#class-tlrichtexteditselection-property-start-para"><span class="std std-ref">start_para</span></a></p></td>
+<td><p>0</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="signals">
 <h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
-<ul class="simple" id="class-tlprotocontrolselection-signal-selection-changed">
-<li><strong>selection_changed</strong> <strong>(</strong> <strong>)</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-signal-selection-changed">
+<li><p><strong>selection_changed</strong> <strong>(</strong> <strong>)</strong></p></li>
 </ul>
+<p>Emitted when selection range is changed or caret moved.</p>
 </div>
 <div class="section" id="property-descriptions">
 <h2>Property Descriptions<a class="headerlink" href="#property-descriptions" title="Permalink to this headline">¶</a></h2>
-<ul class="simple" id="class-tlprotocontrolselection-property-caret-offset">
-<li>int <strong>caret_offset</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-caret-offset">
+<li><p>int <strong>caret_offset</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_caret_offset(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_caret_offset(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_caret_offset()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_caret_offset()</p></td>
 </tr>
 </tbody>
 </table>
+<p>Caret position in the paragraph <a class="reference internal" href="#class-tlrichtexteditselection-property-caret-para"><span class="std std-ref">caret_para</span></a>.</p>
 <hr class="docutils" />
-<ul class="simple" id="class-tlprotocontrolselection-property-caret-para">
-<li>int <strong>caret_para</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-caret-para">
+<li><p>int <strong>caret_para</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_caret_para(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_caret_para(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_caret_para()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_caret_para()</p></td>
 </tr>
 </tbody>
 </table>
+<p>Paragraph where caret currently is in.</p>
 <hr class="docutils" />
-<ul class="simple" id="class-tlprotocontrolselection-property-end-offset">
-<li>int <strong>end_offset</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-end-offset">
+<li><p>int <strong>end_offset</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_end_offset(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_end_offset(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_end_offset()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_end_offset()</p></td>
 </tr>
 </tbody>
 </table>
+<p>Offset of the end of selection in the paragraph <a class="reference internal" href="#class-tlrichtexteditselection-property-end-para"><span class="std std-ref">end_para</span></a>.</p>
 <hr class="docutils" />
-<ul class="simple" id="class-tlprotocontrolselection-property-end-para">
-<li>int <strong>end_para</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-end-para">
+<li><p>int <strong>end_para</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_end_para(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_end_para(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_end_para()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_end_para()</p></td>
 </tr>
 </tbody>
 </table>
+<p>Last paragraph in the selection.</p>
 <hr class="docutils" />
-<ul class="simple" id="class-tlprotocontrolselection-property-start-offset">
-<li>int <strong>start_offset</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-start-offset">
+<li><p>int <strong>start_offset</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_start_offset(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_start_offset(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_start_offset()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_start_offset()</p></td>
 </tr>
 </tbody>
 </table>
+<p>Offset of the start of selection in the paragraph <a class="reference internal" href="#class-tlrichtexteditselection-property-start-para"><span class="std std-ref">start_para</span></a>.</p>
 <hr class="docutils" />
-<ul class="simple" id="class-tlprotocontrolselection-property-start-para">
-<li>int <strong>start_para</strong></li>
+<ul class="simple" id="class-tlrichtexteditselection-property-start-para">
+<li><p>int <strong>start_para</strong></p></li>
 </ul>
-<table border="1" class="longtable colwidths-given docutils">
+<table class="longtable colwidths-given docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><em>Default</em></td>
-<td>0</td>
+<tbody>
+<tr class="row-odd"><td><p><em>Default</em></p></td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><em>Setter</em></td>
-<td>set_start_para(value)</td>
+<tr class="row-even"><td><p><em>Setter</em></p></td>
+<td><p>set_start_para(value)</p></td>
 </tr>
-<tr class="row-odd"><td><em>Getter</em></td>
-<td>get_start_para()</td>
+<tr class="row-odd"><td><p><em>Getter</em></p></td>
+<td><p>get_start_para()</p></td>
 </tr>
 </tbody>
 </table>
+<p>First paragraph in the selection.</p>
 </div>
 </div>
 
@@ -482,7 +500,7 @@
         <a href="class_tlshapedattributedstring.html" class="btn btn-neutral float-right" title="TLShapedAttributedString" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="class_tlprotocontrol.html" class="btn btn-neutral" title="TLProtoControl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="class_tlrichtextedit.html" class="btn btn-neutral float-left" title="TLRichTextEdit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -507,25 +525,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

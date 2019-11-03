@@ -18,7 +18,7 @@
 
 #include "controls/tl_label.hpp"
 #include "controls/tl_line_edit.hpp"
-#include "controls/tl_proto_control.hpp"
+#include "controls/tl_rich_text_edit.hpp"
 
 #include <unicode/uclean.h>
 #include <unicode/udata.h>
@@ -33,8 +33,8 @@ using namespace godot;
 
 #ifdef TOOLS_ENABLED
 
+#include "editor/editor_node.h"
 #include "tools/tl_editor_node.h"
-#include <editor/editor_node.h>
 
 void tl_init_callback() {
 
@@ -56,8 +56,8 @@ void register_godot_tl_types() {
 	ClassDB::register_class<TLShapedString>();
 	ClassDB::register_class<TLShapedAttributedString>();
 	ClassDB::register_class<TLShapedParagraph>();
-	ClassDB::register_class<TLProtoControl>();
-	ClassDB::register_class<TLProtoControlSelection>();
+	ClassDB::register_class<TLRichTextEdit>();
+	ClassDB::register_class<TLRichTextEditSelection>();
 	ClassDB::register_class<TLLabel>();
 	ClassDB::register_class<TLLineEdit>();
 	ClassDB::register_class<TLFontIterator>();
@@ -114,8 +114,8 @@ extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
 	register_tool_class<TLShapedString>();
 	register_tool_class<TLShapedAttributedString>();
 	register_tool_class<TLShapedParagraph>();
-	register_tool_class<TLProtoControl>();
-	register_tool_class<TLProtoControlSelection>();
+	register_tool_class<TLRichTextEdit>();
+	register_tool_class<TLRichTextEditSelection>();
 	register_tool_class<TLLabel>();
 	register_tool_class<TLLineEdit>();
 	register_tool_class<TLFontIterator>();

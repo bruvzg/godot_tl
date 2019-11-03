@@ -18,3 +18,53 @@ Brief Description
 
 
 
+Methods
+-------
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +-------------------------------------+---------------------------------------------------------------------------+
+   | bool                                | :ref:`is_linked<class_TLFontIterator_method_is_linked>` **(** **)** const |
+   +-------------------------------------+---------------------------------------------------------------------------+
+   | bool                                | :ref:`is_valid<class_TLFontIterator_method_is_valid>` **(** **)** const   |
+   +-------------------------------------+---------------------------------------------------------------------------+
+   | bool                                | :ref:`next<class_TLFontIterator_method_next>` **(** **)**                 |
+   +-------------------------------------+---------------------------------------------------------------------------+
+   | :ref:`TLFontFace<class_TLFontFace>` | :ref:`value<class_TLFontIterator_method_value>` **(** **)** const         |
+   +-------------------------------------+---------------------------------------------------------------------------+
+
+Method Descriptions
+-------------------
+
+.. _class_TLFontIterator_method_is_linked:
+
+- bool **is_linked** **(** **)** const
+
+Return ``true`` if current iterator value is part of language/script specific fallback list.
+
+----
+
+.. _class_TLFontIterator_method_is_valid:
+
+- bool **is_valid** **(** **)** const
+
+Return ``true`` if current iterator value is valid.
+
+----
+
+.. _class_TLFontIterator_method_next:
+
+- bool **next** **(** **)**
+
+Advances iterator. Return ``true`` if current iterator value is valid.
+
+----
+
+.. _class_TLFontIterator_method_value:
+
+- :ref:`TLFontFace<class_TLFontFace>` **value** **(** **)** const
+
+Return current font face.
+

@@ -18,6 +18,21 @@ Brief Description
 
 Golds shaped line of text with associated attributes.
 
+Properties
+----------
+
++---------+---------------------------------------------------------------------------------+
+| Array   | :ref:`attributes_dict<class_TLShapedAttributedString_property_attributes_dict>` |
++---------+---------------------------------------------------------------------------------+
+| int     | :ref:`attribute/type<class_TLShapedAttributedString_property_attribute/type>`   |
++---------+---------------------------------------------------------------------------------+
+| Variant | :ref:`attribute/value<class_TLShapedAttributedString_property_attribute/value>` |
++---------+---------------------------------------------------------------------------------+
+| int     | :ref:`attribute/start<class_TLShapedAttributedString_property_attribute/start>` |
++---------+---------------------------------------------------------------------------------+
+| int     | :ref:`attribute/end<class_TLShapedAttributedString_property_attribute/end>`     |
++---------+---------------------------------------------------------------------------------+
+
 Methods
 -------
 
@@ -104,7 +119,7 @@ enum **TextAttribute**:
 
 - **TEXT_ATTRIBUTE_FONT_FEATURES** = **4** --- Comma separated list of OpenType feature tags. More info: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags. Attribute type: String
 
-- **TEXT_ATTRIBUTE_LANGUAGE** = **5** --- Language code. Attribute type: String
+- **TEXT_ATTRIBUTE_LANGUAGE** = **5** --- Language code for line-breaking and text shaping algorithms. Attribute type: String
 
 - **TEXT_ATTRIBUTE_REPLACEMENT_IMAGE** = **6** --- Embedded image. Attribute type: Texture
 
@@ -122,9 +137,9 @@ enum **TextAttribute**:
 
 - **TEXT_ATTRIBUTE_UNDERLINE_WIDTH** = **42** --- Underline width. Attribute type: ``int``
 
-- **TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR** = **51** --- Strikethrough line color. Attribute type: Color
+- **TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR** = **51** --- Strike through line color. Attribute type: Color
 
-- **TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH** = **52** --- Strikethrough line widht. Attribute type: ``int``
+- **TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH** = **52** --- Strike through line width. Attribute type: ``int``
 
 - **TEXT_ATTRIBUTE_OVERLINE_COLOR** = **61** --- Overline color/ Attribute type: Color
 
@@ -132,7 +147,7 @@ enum **TextAttribute**:
 
 - **TEXT_ATTRIBUTE_HIGHLIGHT_COLOR** = **71** --- Highlight color. Attribute type: Color
 
-- **TEXT_ATTRIBUTE_META** = **100** --- User defined data, use ``TEXT_ATTRIBUTE_META + x`` to define moultiple user attributes. Attribute type: Variant
+- **TEXT_ATTRIBUTE_META** = **100** --- User defined data, use ``TEXT_ATTRIBUTE_META + x`` to define multiple user attributes. Attribute type: Variant
 
 ----
 
@@ -146,11 +161,62 @@ enum **TextAttribute**:
 
 enum **TextVAlign**:
 
-- **TEXT_VALIGN_TOP** = **0** --- Inline vertical top alignment
+- **TEXT_VALIGN_TOP** = **0** --- Inline vertical top alignment.
 
-- **TEXT_VALIGN_CENTER** = **1** --- Inline vertical center alignment
+- **TEXT_VALIGN_CENTER** = **1** --- Inline vertical center alignment.
 
-- **TEXT_VALIGN_BOTTOM** = **2** --- Inline vertical bottom alignment
+- **TEXT_VALIGN_BOTTOM** = **2** --- Inline vertical bottom alignment.
+
+Property Descriptions
+---------------------
+
+.. _class_TLShapedAttributedString_property_attributes_dict:
+
+- Array **attributes_dict**
+
+.. table::
+   :class: longtable
+   :widths: 7 20
+
+   +----------+-----------------------------+
+   | *Setter* | load_attributes_dict(value) |
+   +----------+-----------------------------+
+   | *Getter* | save_attributes_dict()      |
+   +----------+-----------------------------+
+
+Array of attribute Dictionary.
+
+----
+
+.. _class_TLShapedAttributedString_property_attribute/type:
+
+- int **attribute/type**
+
+Temporary attribute type, temporary attributes can be committed to the string by calling :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>`.
+
+----
+
+.. _class_TLShapedAttributedString_property_attribute/value:
+
+- Variant **attribute/value**
+
+Temporary attribute value, temporary attributes can be committed to the string by calling :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>`.
+
+----
+
+.. _class_TLShapedAttributedString_property_attribute/start:
+
+- int **attribute/start**
+
+Temporary attribute start offset, temporary attributes can be committed to the string by calling :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>`.
+
+----
+
+.. _class_TLShapedAttributedString_property_attribute/end:
+
+- int **attribute/end**
+
+Temporary attribute end offset, temporary attributes can be committed to the string by calling :ref:`commit_attribute<class_TLShapedAttributedString_method_commit_attribute>`.
 
 Method Descriptions
 -------------------
@@ -205,7 +271,7 @@ Returns first position of ``attribute`` attribute run enclosing specified positi
 
 - Array **get_embedded_rects** **(** **)**
 
-Returns bounding rects of embedded objects (``TEXT_ATTRIBUTE_REPLACEMENT_RECT`` attributes).
+Returns bounding rectangles of embedded objects (``TEXT_ATTRIBUTE_REPLACEMENT_RECT`` attributes).
 
 ----
 
@@ -213,7 +279,7 @@ Returns bounding rects of embedded objects (``TEXT_ATTRIBUTE_REPLACEMENT_RECT`` 
 
 - bool **has_attribute** **(** int attribute, int index **)** const
 
-Returns ``true`` if spceified position has ``attribute`` attribute set.
+Returns ``true`` if specified position has ``attribute`` attribute set.
 
 ----
 

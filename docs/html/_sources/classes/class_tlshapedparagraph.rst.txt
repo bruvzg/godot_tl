@@ -16,7 +16,7 @@ TLShapedParagraph
 Brief Description
 -----------------
 
-
+Class for formatting entire paragraphs of text at once.
 
 Properties
 ----------
@@ -67,6 +67,8 @@ Signals
 
 - **paragraph_changed** **(** **)**
 
+Emitted when text or attributes of the paragraph are changed.
+
 Enumerations
 ------------
 
@@ -82,13 +84,13 @@ Enumerations
 
 enum **ParaHAlign**:
 
-- **PARA_HALIGN_LEFT** = **0**
+- **PARA_HALIGN_LEFT** = **0** --- Align rows to the left (default).
 
-- **PARA_HALIGN_CENTER** = **1**
+- **PARA_HALIGN_CENTER** = **1** --- Align rows centered.
 
-- **PARA_HALIGN_RIGHT** = **2**
+- **PARA_HALIGN_RIGHT** = **2** --- Align rows to the right.
 
-- **PARA_HALIGN_FILL** = **3**
+- **PARA_HALIGN_FILL** = **3** --- Expand row white spaces to fit the width.
 
 Property Descriptions
 ---------------------
@@ -109,6 +111,8 @@ Property Descriptions
    | *Getter*  | get_back_color()      |
    +-----------+-----------------------+
 
+Background color of the paragraph.
+
 ----
 
 .. _class_TLShapedParagraph_property_brk_flags:
@@ -126,6 +130,8 @@ Property Descriptions
    +-----------+----------------------+
    | *Getter*  | get_brk_flags()      |
    +-----------+----------------------+
+
+Line breaking flags.
 
 ----
 
@@ -145,6 +151,8 @@ Property Descriptions
    | *Getter*  | get_halign()      |
    +-----------+-------------------+
 
+Horizontal alignment.
+
 ----
 
 .. _class_TLShapedParagraph_property_indent:
@@ -162,6 +170,8 @@ Property Descriptions
    +-----------+-------------------+
    | *Getter*  | get_indent()      |
    +-----------+-------------------+
+
+Indentation.
 
 ----
 
@@ -181,6 +191,8 @@ Property Descriptions
    | *Getter*  | get_jst_flags()      |
    +-----------+----------------------+
 
+Justification flags.
+
 ----
 
 .. _class_TLShapedParagraph_property_line_spacing:
@@ -199,6 +211,8 @@ Property Descriptions
    | *Getter*  | get_line_spacing()      |
    +-----------+-------------------------+
 
+Lien spacing in pixels.
+
 ----
 
 .. _class_TLShapedParagraph_property_string:
@@ -214,6 +228,8 @@ Property Descriptions
    +----------+-------------------+
    | *Getter* | get_string()      |
    +----------+-------------------+
+
+Text and text attributes of the paragraph.
 
 ----
 
@@ -233,6 +249,8 @@ Property Descriptions
    | *Getter*  | get_width()      |
    +-----------+------------------+
 
+Max width of the paragraph.
+
 Method Descriptions
 -------------------
 
@@ -240,11 +258,15 @@ Method Descriptions
 
 - void **copy_properties** **(** :ref:`TLShapedParagraph<class_TLShapedParagraph>` source **)**
 
+Copies properties of the another paragraph.
+
 ----
 
 .. _class_TLShapedParagraph_method_get_line:
 
 - :ref:`TLShapedAttributedString<class_TLShapedAttributedString>` **get_line** **(** int index **)** const
+
+Returns line of the pargraphs.
 
 ----
 
@@ -252,11 +274,15 @@ Method Descriptions
 
 - Array **get_line_bounds** **(** **)** const
 
+Returns array of the line boundaries as ``Vector2(start, end)``.
+
 ----
 
 .. _class_TLShapedParagraph_method_get_lines:
 
 - int **get_lines** **(** **)** const
+
+Returns number of lines in the paragraph.
 
 ----
 
@@ -264,9 +290,13 @@ Method Descriptions
 
 - Vector2 **get_size** **(** **)** const
 
+Returns size of the paragraph in pixels.
+
 ----
 
 .. _class_TLShapedParagraph_method_get_word_bounds:
 
 - Array **get_word_bounds** **(** **)** const
+
+Returns array of the word boundaries as ``Vector2(start, end)``.
 

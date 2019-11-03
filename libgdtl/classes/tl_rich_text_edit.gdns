@@ -4,6 +4,6 @@
 
 [resource]
 
-resource_name = "TLProtoControl"
-class_name = "TLProtoControl"
+resource_name = "TLRichTextEdit"
+class_name = "TLRichTextEdit"
 library = ExtResource( 1 )

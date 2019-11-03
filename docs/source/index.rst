@@ -1,4 +1,4 @@
-libgdtl Documentation
+libgdtl documentation
 =====================
 
 .. toctree::

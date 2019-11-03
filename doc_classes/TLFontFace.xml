@@ -79,6 +79,7 @@
 			<argument index="2" name="size" type="int">
 			</argument>
 			<description>
+				Returns array of glyph counture points, if it's supported by font implementation or empty array otherwise.
 			</description>
 		</method>
 		<method name="get_height" qualifiers="const">
@@ -103,14 +104,16 @@
 			<return type="Array">
 			</return>
 			<description>
+				Returns array of supported ISO 15924 script codes.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path" default="&quot;&quot;">
+			Path of the font file.
 		</member>
 		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="0">
-			Font texture flags. Default: [code]FLAG_VIDEO_SURFACE[/code]
+			Underlaying textures flags, see Texture class documentation https://docs.godotengine.org/en/latest/classes/class_texture.html#enumerations for more info.
 		</member>
 	</members>
 	<constants>
