@@ -15,6 +15,7 @@ libgdtl documentation
 
    getting_started/installation
    getting_started/font_substitution
+   getting_started/rich_text_typesetting
 
 .. toctree::
    :maxdepth: 1

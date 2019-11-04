@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Font substitution &mdash; libgdtl latest documentation</title>
+  <title>Rich text typesetting &mdash; libgdtl latest documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Rich text typesetting" href="rich_text_typesetting.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="next" title="libgdtl API" href="../classes/index.html" />
+    <link rel="prev" title="Font substitution" href="font_substitution.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -114,11 +114,11 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#gdnative">GDNative</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Font substitution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rich_text_typesetting.html">Rich text typesetting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rich_text_typesetting.html#setting-formatting-for-the-range-of-text">Setting formatting for the range of text</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rich_text_typesetting.html#removing-formatting">Removing formatting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rich_text_typesetting.html#embedding-child-control-into-the-text-flow">Embedding child control into the text flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="font_substitution.html">Font substitution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rich text typesetting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-formatting-for-the-range-of-text">Setting formatting for the range of text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#removing-formatting">Removing formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#embedding-child-control-into-the-text-flow">Embedding child control into the text flow</a></li>
 </ul>
 </li>
 </ul>
@@ -291,7 +291,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Font substitution</li>
+      <li>Rich text typesetting</li>
     
     
 
@@ -312,13 +312,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="font-substitution">
-<span id="doc-font-substitution"></span><h1>Font substitution<a class="headerlink" href="#font-substitution" title="Permalink to this headline">¶</a></h1>
-<p>Font substitution is used to find a replacement for an unavailable character.</p>
-<p>In addition to main list of the substitution fonts, you can specify preferred fonts for the script (writing system) and language.</p>
-<p>Use <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> codes for the language names, and <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_15924">ISO 15924</a> for the script names.</p>
-<p>Substitution lists have following priority: <cite>Language</cite>, <cite>Script</cite>, <cite>Main List</cite>. Providing script and language information is not required, module will try to detect script (but not the language) automatically, but detection is not always successful and correct. Manual config can improve shaping speed if large number of fonts used.</p>
-<img alt="../_images/font_inspector.png" src="../_images/font_inspector.png" />
+  <div class="section" id="rich-text-typesetting">
+<span id="doc-rich-text-typesetting"></span><h1>Rich text typesetting<a class="headerlink" href="#rich-text-typesetting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-formatting-for-the-range-of-text">
+<h2>Setting formatting for the range of text<a class="headerlink" href="#setting-formatting-for-the-range-of-text" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Select desired attribute and its value in the attribute editor.</p></li>
+<li><p>Enter start and end offsets of the range.</p></li>
+<li><p>Click “Add” button to apply formatting.</p></li>
+</ol>
+<p>Node: This is equivalent of the <cite>add_attribute</cite> function call.</p>
+</div>
+<div class="section" id="removing-formatting">
+<h2>Removing formatting<a class="headerlink" href="#removing-formatting" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Enter start and end offsets of the range in the attribute editor.</p></li>
+<li><p>Click “Remove” button to clean all attributes from the range or click “Clean” to remove attributes from entire text.</p></li>
+</ol>
+<p>Node: This is equivalent of the <cite>remove_attributes</cite>/<cite>clear_attributes</cite> function call.</p>
+</div>
+<div class="section" id="embedding-child-control-into-the-text-flow">
+<h2>Embedding child control into the text flow<a class="headerlink" href="#embedding-child-control-into-the-text-flow" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Add control as child of the TLRichTextEdit.</p></li>
+<li><p>Apply “Replacement Rect” attribute with desired size of the control to the single character of the text.</p></li>
+<li><p>Apply “Replacement ID” attribute with the control name to the same character.</p></li>
+<li><p>Use “Replacement VAlign” attribute to set inline alignment of the control.</p></li>
+</ol>
+<img alt="../_images/attribute_inspector.png" src="../_images/attribute_inspector.png" />
+</div>
 </div>
 
 
@@ -329,10 +351,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="rich_text_typesetting.html" class="btn btn-neutral float-right" title="Rich text typesetting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../classes/index.html" class="btn btn-neutral float-right" title="libgdtl API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="font_substitution.html" class="btn btn-neutral float-left" title="Font substitution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
