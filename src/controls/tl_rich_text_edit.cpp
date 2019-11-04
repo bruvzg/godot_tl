@@ -297,10 +297,6 @@ void TLRichTextEdit::_update_ctx_rect() {
 				continue;
 			}
 		}
-		Size2 _size = paragraphs[i]->get_size();
-		content_size.height += _size.y + para_spacing;
-		content_size.width = MAX(content_size.width, _size.x);
-
 		if (get_child_count() != 0) {
 			for (int64_t j = 0; j < paragraphs[i]->get_lines(); j++) {
 				Array emb = paragraphs[i]->get_line(j)->get_embedded_rects();
@@ -312,13 +308,16 @@ void TLRichTextEdit::_update_ctx_rect() {
 						//move child control if there are IDs for it
 						Control *ctrl = Object::cast_to<Control>(get_child(l));
 						if (ctrl && String(ctrl->get_name()) == xname) {
-							ctrl->set_position(xrect.position);
+							ctrl->set_position(xrect.position + Vector2(margin[MARGIN_LEFT], margin[MARGIN_TOP] + content_size.height));
 							ctrl->set_size(xrect.size);
 						}
 					}
 				}
 			}
 		}
+		Size2 _size = paragraphs[i]->get_size();
+		content_size.height += _size.y + para_spacing;
+		content_size.width = MAX(content_size.width, _size.x);
 	}
 	content_size.height += margin[MARGIN_TOP] + margin[MARGIN_BOTTOM];
 	content_size.width += margin[MARGIN_LEFT] + margin[MARGIN_RIGHT];
