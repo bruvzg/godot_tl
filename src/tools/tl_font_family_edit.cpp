@@ -55,6 +55,12 @@ void EditorInspectorPluginTLFontFamily::_commit(Object *p_object) {
 		object->commit_attribute();
 }
 
+void EditorInspectorPluginTLFontFamily::_reject(Object *p_object) {
+	Ref<TLShapedAttributedString> object = Ref<TLShapedAttributedString>(Object::cast_to<TLShapedAttributedString>(p_object));
+	if (object.is_valid())
+		object->reject_attribute();
+}
+
 void EditorInspectorPluginTLFontFamily::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_new_style", "object", "ctl"), &EditorInspectorPluginTLFontFamily::_new_style);
 	ClassDB::bind_method(D_METHOD("_remove_style", "object", "style"), &EditorInspectorPluginTLFontFamily::_remove_style);
@@ -64,6 +70,7 @@ void EditorInspectorPluginTLFontFamily::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_remove_script", "object", "style", "script"), &EditorInspectorPluginTLFontFamily::_remove_script);
 	ClassDB::bind_method(D_METHOD("_clear"), &EditorInspectorPluginTLFontFamily::_clear);
 	ClassDB::bind_method(D_METHOD("_commit"), &EditorInspectorPluginTLFontFamily::_commit);
+	ClassDB::bind_method(D_METHOD("_reject"), &EditorInspectorPluginTLFontFamily::_reject);
 }
 
 bool EditorInspectorPluginTLFontFamily::can_handle(Object *p_object) {
@@ -80,12 +87,17 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		Button *rem_btn = memnew(Button);
 		rem_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 		rem_btn->connect("pressed", this, "_clear", varray(p_object));
-		rem_btn->set_text("Clear attributes");
+		rem_btn->set_text("Clear");
 		hbox->add_child(rem_btn);
+		Button *cln_btn = memnew(Button);
+		cln_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+		cln_btn->connect("pressed", this, "_reject", varray(p_object));
+		cln_btn->set_text("Remove");
+		hbox->add_child(cln_btn);
 		Button *new_btn = memnew(Button);
 		new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 		new_btn->connect("pressed", this, "_commit", varray(p_object));
-		new_btn->set_text("Add attribute");
+		new_btn->set_text("Add");
 		hbox->add_child(new_btn);
 		add_custom_control(hbox);
 		return true;

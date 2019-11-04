@@ -50,18 +50,27 @@ func _commit(p_object):
 	if (p_object):
 		p_object.commit_attribute()
 
+func _reject(p_object):
+	if (p_object):
+		p_object.reject_attribute()
+
 func parse_property(p_object, p_type, p_path, p_hint, p_hint_text, p_usage):
 	if (p_path == "attribute/_commit"):
 		var hbox = HBoxContainer.new()
 		var rem_btn = Button.new()
 		rem_btn.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 		rem_btn.connect("pressed", self, "_clear", [p_object])
-		rem_btn.set_text("Clear attributes")
+		rem_btn.set_text("Clear")
 		hbox.add_child(rem_btn)
+		var cln_btn = Button.new()
+		cln_btn.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+		cln_btn.connect("pressed", self, "_reject", [p_object])
+		cln_btn.set_text("Remove")
+		hbox.add_child(cln_btn)
 		var new_btn = Button.new()
 		new_btn.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 		new_btn.connect("pressed", self, "_commit", [p_object])
-		new_btn.set_text("Add attribute")
+		new_btn.set_text("Add")
 		hbox.add_child(new_btn)
 		add_custom_control(hbox)
 		return true

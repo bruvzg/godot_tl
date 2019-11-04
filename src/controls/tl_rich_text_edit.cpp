@@ -275,6 +275,14 @@ void TLRichTextEdit::clear() {
 	paragraphs.push_back(new_para);
 }
 
+void TLRichTextEdit::add_child_notify(Node *p_child) {
+	_update_ctx_rect();
+}
+
+void TLRichTextEdit::remove_child_notify(Node *p_child) {
+	_update_ctx_rect();
+}
+
 void TLRichTextEdit::_update_ctx_rect() {
 
 	content_size = Size2(0, 0);
@@ -1659,6 +1667,9 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 void TLRichTextEdit::_notification(int p_what) {
 
 	switch (p_what) {
+		case NOTIFICATION_READY: {
+			_update_ctx_rect();
+		}
 		case NOTIFICATION_DRAW: {
 			RID ci = get_canvas_item();
 			Size2 size = get_size();
@@ -2076,6 +2087,8 @@ void TLRichTextEdit::_register_methods() {
 	register_method("_get_property_list", &TLRichTextEdit::_get_property_list);
 	register_method("_get", &TLRichTextEdit::_get);
 	register_method("_set", &TLRichTextEdit::_set);
+	register_method("add_child_notify", &TLRichTextEdit::add_child_notify);
+	register_method("remove_child_notify", &TLRichTextEdit::remove_child_notify);
 
 	register_signal<TLRichTextEdit>("cursor_changed");
 	register_signal<TLRichTextEdit>("paragraph_changed");

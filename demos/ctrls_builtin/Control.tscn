@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/NotoSans-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://fonts/NotoNastaliqUrdu-Regular.ttf" type="DynamicFontData" id=2]
@@ -22,6 +22,53 @@ regular/0 = SubResource( 4 )
 [sub_resource type="DynamicFont" id=6]
 size = 12
 font_data = ExtResource( 2 )
+
+[sub_resource type="TLDynamicFontFace" id=7]
+font_path = "res://fonts/ComicNeue-Oblique.otf"
+
+[sub_resource type="TLFontFamily" id=8]
+regular/0 = SubResource( 7 )
+
+[sub_resource type="TLShapedAttributedString" id=9]
+text = "TestBtest"
+base_font = SubResource( 8 )
+base_font_size = 24
+attribute_dict = [ {
+"format": {
+
+},
+"index": "0"
+}, {
+"format": {
+"relp_valign": 2,
+"repl_id": "Button",
+"repl_rect": Vector2( 20, 20 )
+},
+"index": "4"
+}, {
+"format": {
+
+},
+"index": "5"
+}, {
+"index": "0",
+"style": {
+
+}
+}, {
+"index": "1",
+"style": {
+"color": "ffe10eb1"
+}
+}, {
+"index": "2",
+"style": {
+
+}
+} ]
+
+[sub_resource type="TLShapedParagraph" id=10]
+string = SubResource( 9 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -50,8 +97,8 @@ margin_left = 100.0
 margin_top = 159.0
 margin_right = 322.0
 margin_bottom = 200.0
-base_font = SubResource( 5 )
 text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
+base_font = SubResource( 5 )
 
 [node name="LineEdit" type="LineEdit" parent="."]
 margin_left = 390.0
@@ -60,3 +107,19 @@ margin_right = 612.0
 margin_bottom = 200.0
 custom_fonts/font = SubResource( 6 )
 text = "اور بازار سے لے آئے اگر ٹوٹ گیا"
+
+[node name="TLRichTextEdit" type="TLRichTextEdit" parent="."]
+margin_left = 100.0
+margin_top = 300.0
+margin_right = 200.0
+margin_bottom = 400.0
+paragraphs/0 = SubResource( 10 )
+paragraphs/1 = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="TLRichTextEdit"]
+margin_left = 43.375
+margin_right = 63.375
+margin_bottom = 20.0

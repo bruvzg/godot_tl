@@ -9,6 +9,6 @@ In addition to main list of the substitution fonts, you can specify preferred fo
 
 Use `ISO 639-1 <https://en.wikipedia.org/wiki/ISO_639-1>`_ codes for the language names, and `ISO 15924 <https://en.wikipedia.org/wiki/ISO_15924>`_ for the script names.
 
-Substitution lists have following priority: `Language`, `Script`, `Main List`. Providing script and language information is not required, but can improve shaping speed if large number of fonts used.
+Substitution lists have following priority: `Language`, `Script`, `Main List`. Providing script and language information is not required, module will try to detect script (but not the language) automatically, but detection is not always successful and correct. Manual config can improve shaping speed if large number of fonts used.
 
 .. image:: img/font_inspector.png

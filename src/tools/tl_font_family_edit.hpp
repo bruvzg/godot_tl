@@ -47,6 +47,7 @@ class EditorInspectorPluginTLFontFamily : public EditorInspectorPlugin {
 	void _remove_script(Object *p_object, String p_style, String p_script);
 	void _clear(Object *p_object);
 	void _commit(Object *p_object);
+	void _reject(Object *p_object);
 
 protected:
 	static void _bind_methods();

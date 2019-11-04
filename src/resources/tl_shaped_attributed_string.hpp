@@ -107,6 +107,7 @@ public:
 	virtual int64_t get_attribute_end(int64_t p_attribute, int64_t p_index) const;
 
 	virtual void commit_attribute();
+	virtual void reject_attribute();
 
 	virtual void load_attributes_dict(Array p_array);
 	virtual Array save_attributes_dict() const;

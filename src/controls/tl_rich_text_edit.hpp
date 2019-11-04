@@ -210,6 +210,9 @@ public:
 	void debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
 	void debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
 
+	void add_child_notify(Node *p_child);
+	void remove_child_notify(Node *p_child);
+
 #ifdef GODOT_MODULE
 	void _gui_input(const Ref<InputEvent> &p_event);
 #else

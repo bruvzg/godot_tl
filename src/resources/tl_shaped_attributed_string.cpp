@@ -1565,6 +1565,19 @@ void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 	emit_signal("string_changed");
 }
 
+void TLShapedAttributedString::reject_attribute() {
+	remove_attributes(_edited_attrib_start, _edited_attrib_end);
+	_edited_attrib = TEXT_ATTRIBUTE_COLOR;
+	_edited_attrib_value = Variant();
+	_edited_attrib_start = 0;
+	_edited_attrib_end = 0;
+#ifdef GODOT_MODULE
+	_change_notify();
+#else
+	property_list_changed_notify();
+#endif
+}
+
 void TLShapedAttributedString::commit_attribute() {
 	add_attribute(_edited_attrib, _edited_attrib_value, _edited_attrib_start, _edited_attrib_end);
 	_edited_attrib = TEXT_ATTRIBUTE_COLOR;
@@ -1688,12 +1701,12 @@ void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) co
 			p_list->push_back(PropertyInfo(Variant::OBJECT, "attribute/value", PROPERTY_HINT_RESOURCE_TYPE, "TLFontFace", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_LANGUAGE:
+		case TEXT_ATTRIBUTE_REPLACEMENT_ID:
 		case TEXT_ATTRIBUTE_FONT_FEATURES:
 		case TEXT_ATTRIBUTE_FONT_STYLE: {
 			p_list->push_back(PropertyInfo(Variant::STRING, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_FONT_SIZE:
-		case TEXT_ATTRIBUTE_REPLACEMENT_ID:
 		case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
 		case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
 		case TEXT_ATTRIBUTE_OVERLINE_WIDTH: {
@@ -1706,7 +1719,7 @@ void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) co
 			p_list->push_back(PropertyInfo(Variant::VECTOR2, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: {
-			p_list->push_back(PropertyInfo(Variant::INT, "attribute/value", PROPERTY_HINT_ENUM, "Top,Center,Botto", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+			p_list->push_back(PropertyInfo(Variant::INT, "attribute/value", PROPERTY_HINT_ENUM, "Top,Center,Bottom", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_OUTLINE_COLOR:
 		case TEXT_ATTRIBUTE_UNDERLINE_COLOR:
@@ -1731,6 +1744,7 @@ void TLShapedAttributedString::_bind_methods() {
 
 	//Attribute control
 	ClassDB::bind_method(D_METHOD("commit_attribute"), &TLShapedAttributedString::commit_attribute);
+	ClassDB::bind_method(D_METHOD("reject_attribute"), &TLShapedAttributedString::reject_attribute);
 
 	ClassDB::bind_method(D_METHOD("add_attribute", "attribute", "value", "start", "end"), &TLShapedAttributedString::add_attribute);
 	ClassDB::bind_method(D_METHOD("remove_attribute", "attribute", "start", "end"), &TLShapedAttributedString::remove_attribute);
@@ -1890,6 +1904,7 @@ Array TLShapedAttributedString::_get_property_list() const {
 				prop["hint_string"] = "TLFontFamily";
 			} break;
 			case TEXT_ATTRIBUTE_LANGUAGE:
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID:
 			case TEXT_ATTRIBUTE_FONT_FEATURES:
 			case TEXT_ATTRIBUTE_FONT_STYLE: {
 				prop["type"] = GlobalConstants::TYPE_STRING;
@@ -1897,7 +1912,6 @@ Array TLShapedAttributedString::_get_property_list() const {
 				prop["hint_string"] = "";
 			} break;
 			case TEXT_ATTRIBUTE_FONT_SIZE:
-			case TEXT_ATTRIBUTE_REPLACEMENT_ID:
 			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
 			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
 			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: {
@@ -1983,6 +1997,7 @@ void TLShapedAttributedString::_register_methods() {
 
 	//Attribute control
 	register_method("commit_attribute", &TLShapedAttributedString::commit_attribute);
+	register_method("reject_attribute", &TLShapedAttributedString::reject_attribute);
 
 	register_method("add_attribute", &TLShapedAttributedString::add_attribute);
 	register_method("remove_attribute", &TLShapedAttributedString::remove_attribute);
