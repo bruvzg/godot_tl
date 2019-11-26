@@ -58,6 +58,9 @@ After exporting Xcode project form the Godot editor, add module static library a
 
 Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, and Embedded Content` and drag-and-drop following files to the list:
 
+<details>
+  <summary>Libs</summary>
+
 * `libgdtl.a`
 * `libgodot-cpp.a`
 * `libfreetype2.a`
@@ -68,6 +71,8 @@ Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, 
 * `libzlib.a`
 
 ![Xcode iOS libs](ios_libs.png)
+
+</details>
 
 ## Documentation
 
@@ -84,7 +89,7 @@ Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, 
 
 ![libgdtl debug view screenshot](debug_view.png)
 
-![iOS simulator screenshot](ios_scr.png)
+![iOS simulator screenshot](ios_src.png)
 
 ![Android screenshot](andr_scr.jpg)
 
