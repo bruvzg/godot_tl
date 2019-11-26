@@ -95,6 +95,15 @@ if host_machine.system() == 'linux'
 		'-Wl,--no-undefined',
 		'-Wl,-R,\'\$ORIGIN\'',
 	]
+elif host_machine.system() == 'android'
+	cpp_args += [
+		'-std=c++14',
+		'-Wno-unused-parameter',
+		'-Wno-sign-compare'
+	]
+	link_args += [
+		'-ldl'
+	]
 elif host_machine.system() == 'windows'
 	if meson.get_compiler('cpp').get_id() == 'msvc'
 		prefix = 'lib'
@@ -123,7 +132,7 @@ elif host_machine.system() == 'windows'
 			'-Wl,--no-undefined'
 		]
 	endif
-elif host_machine.system() == 'darwin'
+elif host_machine.system() == 'darwin' or host_machine.system() == 'ios'
 	cpp_args += [
 		'-std=c++14',
 		'-Wno-unused-parameter',
@@ -135,11 +144,22 @@ elif host_machine.system() == 'darwin'
 	]
 endif
 
-shared_library(
-	prefix + 'gdtl',
-	sources,
-	dependencies : dependencies,
-	link_args : link_args,
-	cpp_args : cpp_args,
-	include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
-)
+if get_option('static-lib')
+	static_library(
+		prefix + 'gdtl',
+		sources,
+		dependencies : dependencies,
+		link_args : link_args,
+		cpp_args : cpp_args,
+		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
+	)
+else
+	shared_library(
+		prefix + 'gdtl',
+		sources,
+		dependencies : dependencies,
+		link_args : link_args,
+		cpp_args : cpp_args,
+		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
+	)
+endif

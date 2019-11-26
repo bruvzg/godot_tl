@@ -23,7 +23,7 @@
 			<argument index="0" name="index" type="int">
 			</argument>
 			<description>
-				Returns line of the pargraphs.
+				Returns line of the pargraphs. NOTE: read only, changes to the line will be discarded on paragraph update!
 			</description>
 		</method>
 		<method name="get_line_bounds" qualifiers="const">

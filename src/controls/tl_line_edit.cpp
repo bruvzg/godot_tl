@@ -88,6 +88,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 		if (b->is_pressed() && b->get_button_index() == GLOBAL_CONST(BUTTON_RIGHT) && context_menu_enabled) {
 			menu->set_position(get_global_transform().xform(get_local_mouse_position()));
 			menu->set_size(Vector2(1, 1));
+			menu->set_scale(get_global_transform().get_scale());
 			menu->popup();
 			grab_focus();
 			return;
@@ -99,6 +100,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 		_reset_caret_blink_timer();
 		if (b->is_pressed()) {
 
+			accept_event(); //don't pass event further when clicked on text field
 			if (!text.empty() && is_editable() && _is_over_clear_button(b->get_position())) {
 				clear_button_status.press_attempt = true;
 				clear_button_status.pressing_inside = true;
@@ -202,6 +204,38 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 
 		if (!k->is_pressed())
 			return;
+
+#ifdef APPLE_STYLE_KEYS
+		if (k->get_control() && !k->get_shift() && !k->get_alt() && !k->get_command()) {
+			uint32_t remap_key = KEY_UNKNOWN;
+			switch (k->get_scancode()) {
+				case KEY_F: {
+					remap_key = KEY_RIGHT;
+				} break;
+				case KEY_B: {
+					remap_key = KEY_LEFT;
+				} break;
+				case KEY_P: {
+					remap_key = KEY_UP;
+				} break;
+				case KEY_N: {
+					remap_key = KEY_DOWN;
+				} break;
+				case KEY_D: {
+					remap_key = KEY_DELETE;
+				} break;
+				case KEY_H: {
+					remap_key = KEY_BACKSPACE;
+				} break;
+			}
+
+			if (remap_key != KEY_UNKNOWN) {
+				k->set_scancode(remap_key);
+				k->set_control(false);
+			}
+		}
+#endif
+
 		unsigned int code = k->get_scancode();
 
 		if (k->get_command()) {

@@ -12,17 +12,16 @@ Windows.64="res://addons/libgdtl/bin/windows.x86_64/libgdtl.dll"
 
 OSX="res://addons/libgdtl/bin/darwin.x86_64/libgdtl.dylib"
 
-X11.x86="res://addons/libgdtl/bin/linux.x86/libgdtl.so"
 X11.x86_64="res://addons/libgdtl/bin/linux.x86_64/libgdtl.so"
+X11.x86="res://addons/libgdtl/bin/linux.x86/libgdtl.so"
 X11.armv7="res://addons/libgdtl/bin/linux.armv7/libgdtl.so"
 X11.arm64="res://addons/libgdtl/bin/linux.arm64/libgdtl.so"
 
-Android.x86="res://addons/libgdtl/bin/android.x86/libgdtl.so"
 Android.x86_64="res://addons/libgdtl/bin/android.x86_64/libgdtl.so"
+Android.x86="res://addons/libgdtl/bin/android.x86/libgdtl.so"
 Android.armv7="res://addons/libgdtl/bin/android.armv7/libgdtl.so"
 Android.arm64="res://addons/libgdtl/bin/android.arm64/libgdtl.so"
 
-iOS.x86_64="res://addons/libgdtl/bin/ios.x86_64/libgdtl.a"
-iOS.arm64="res://addons/libgdtl/bin/ios.arm64/libgdtl.a"
+iOS="[static]"
 
 [dependencies]
