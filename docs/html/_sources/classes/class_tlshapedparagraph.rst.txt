@@ -266,7 +266,7 @@ Copies properties of the another paragraph.
 
 - :ref:`TLShapedAttributedString<class_TLShapedAttributedString>` **get_line** **(** int index **)** const
 
-Returns line of the pargraphs.
+Returns line of the pargraphs. NOTE: read only, changes to the line will be discarded on paragraph update!
 
 ----
 

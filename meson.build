@@ -144,7 +144,7 @@ elif host_machine.system() == 'darwin' or host_machine.system() == 'ios'
 	]
 endif
 
-if get_option('static-lib')
+if get_option('static-lib') or host_machine.system() == 'ios'
 	static_library(
 		prefix + 'gdtl',
 		sources,

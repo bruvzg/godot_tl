@@ -19,9 +19,30 @@ X11.arm64="res://addons/libgdtl/bin/linux.arm64/libgdtl.so"
 
 Android.x86_64="res://addons/libgdtl/bin/android.x86_64/libgdtl.so"
 Android.x86="res://addons/libgdtl/bin/android.x86/libgdtl.so"
+Android.armeabi-v7a="res://addons/libgdtl/bin/android.armv7/libgdtl.so"
+Android.arm64-v8a="res://addons/libgdtl/bin/android.arm64/libgdtl.so"
 Android.armv7="res://addons/libgdtl/bin/android.armv7/libgdtl.so"
 Android.arm64="res://addons/libgdtl/bin/android.arm64/libgdtl.so"
 
 iOS="[static]"
 
 [dependencies]
+
+Windows.32=[  ]
+Windows.64=[  ]
+
+OSX=[  ]
+
+X11.x86_64=[  ]
+X11.x86=[  ]
+X11.armv7=[  ]
+X11.arm64=[  ]
+
+Android.x86_64=[  ]
+Android.x86=[  ]
+Android.armeabi-v7a=[  ]
+Android.arm64-v8a=[  ]
+Android.armv7=[  ]
+Android.arm64=[  ]
+
+iOS=[  ]

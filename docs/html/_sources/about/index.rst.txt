@@ -48,6 +48,8 @@ Build options
 +====================+==================================================================+===============+
 | godot-cpp-lib-name | godot-cpp static library name (without `.a` or `.lib` extension) | libgodot-cpp  |
 +--------------------+------------------------------------------------------------------+---------------+
+| static-lib         | Build static library                                             | false         |
++--------------------+------------------------------------------------------------------+---------------+
 | static-runtime     | Link libraries statically for better portability                 | false         |
 +--------------------+------------------------------------------------------------------+---------------+
 | builtin-runtime    | Use the built-in libraries                                       | false         |
@@ -68,6 +70,22 @@ You can compile this module by executing:
 
 	meson {Targer-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
 	ninja -C {Targer-Folder}
+
+Exporting projects with `libgdtl` module (iOS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.
+
+Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, and Embedded Content` and drag-and-drop following files to the list:
+
+- `libgdtl.a`
+- `libgodot-cpp.a`
+- `libfreetype2.a`
+- `libgraphite2.a` (optional)
+- `libharfbuzz.a`
+- `libicu4c.a`
+- `libpng.a`
+- `libzlib.a`
 
 License
 -------

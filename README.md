@@ -35,6 +35,7 @@ Rebuild Godot engine as usual.
 Name | Description | Default value
 --- | --- | ---
 `godot-cpp-lib-name` | godot-cpp static library name (without `.a` or `.lib` extension) | `libgodot-cpp`
+`static-lib` | Build static library | `false`
 `static-runtime` | Link libraries statically for better portability | `false`
 `builtin-runtime` | Use the built-in libraries | `false`
 `use-graphite2` | Enable SIL Graphite 2 complementary shaper | `true`
@@ -51,6 +52,23 @@ meson {Target-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
 ninja -C {Target-Folder}
 ```
 
+### Exporting projects with `libgdtl` module (iOS)
+
+After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.
+
+Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, and Embedded Content` and drag-and-drop following files to the list:
+
+* `libgdtl.a`
+* `libgodot-cpp.a`
+* `libfreetype2.a`
+* `libgraphite2.a` (optional)
+* `libharfbuzz.a`
+* `libicu4c.a`
+* `libpng.a`
+* `libzlib.a`
+
+![Xcode iOS libs](ios_libs.png)
+
 ## Documentation
 
 [Documentation](https://bruvzg.github.io/godot_tl/docs/html/index.html)
@@ -59,9 +77,18 @@ ninja -C {Target-Folder}
 
 ## Screenshots
 
+<details>
+  <summary>Screenshots</summary>
+
 ![libgdtl all scripts screenshot](scripts_scr.png)
 
-![libgdtl debug view](debug_view.png)
+![libgdtl debug view screenshot](debug_view.png)
+
+![iOS simulator screenshot](ios_scr.png)
+
+![Android screenshot](andr_scr.jpg)
+
+</details>
 
 ## License
 - The source code of the **libgdtl** module is released under unlicense.

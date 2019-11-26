@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id1">Build options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">Building <cite>libdgtl</cite> module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-projects-with-libgdtl-module-ios">Exporting projects with <cite>libgdtl</cite> module (iOS)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
@@ -384,15 +385,19 @@ Rebuild Godot engine as usual.</p>
 <td><p>godot-cpp static library name (without <cite>.a</cite> or <cite>.lib</cite> extension)</p></td>
 <td><p>libgodot-cpp</p></td>
 </tr>
-<tr class="row-odd"><td><p>static-runtime</p></td>
+<tr class="row-odd"><td><p>static-lib</p></td>
+<td><p>Build static library</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>static-runtime</p></td>
 <td><p>Link libraries statically for better portability</p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p>builtin-runtime</p></td>
+<tr class="row-odd"><td><p>builtin-runtime</p></td>
 <td><p>Use the built-in libraries</p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-odd"><td><p>use-graphite2</p></td>
+<tr class="row-even"><td><p>use-graphite2</p></td>
 <td><p>Enable SIL Graphite 2 complementary shaper</p></td>
 <td><p>true</p></td>
 </tr>
@@ -410,6 +415,21 @@ Rebuild Godot engine as usual.</p>
 <span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="exporting-projects-with-libgdtl-module-ios">
+<h3>Exporting projects with <cite>libgdtl</cite> module (iOS)<a class="headerlink" href="#exporting-projects-with-libgdtl-module-ios" title="Permalink to this headline">¶</a></h3>
+<p>After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.</p>
+<p>Navigate to <cite>Targets</cite> &gt; Exported App Name &gt; <cite>General</cite> &gt; <cite>Frameworks, Libraries, and Embedded Content</cite> and drag-and-drop following files to the list:</p>
+<ul class="simple">
+<li><p><cite>libgdtl.a</cite></p></li>
+<li><p><cite>libgodot-cpp.a</cite></p></li>
+<li><p><cite>libfreetype2.a</cite></p></li>
+<li><p><cite>libgraphite2.a</cite> (optional)</p></li>
+<li><p><cite>libharfbuzz.a</cite></p></li>
+<li><p><cite>libicu4c.a</cite></p></li>
+<li><p><cite>libpng.a</cite></p></li>
+<li><p><cite>libzlib.a</cite></p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="license">
