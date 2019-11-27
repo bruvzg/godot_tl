@@ -42,37 +42,11 @@ Name | Description | Default value
 
 ### Building `godot-cpp` static library
 
-See https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library
+See [Compiling the cpp bindings library](https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library)
 
 ### Building `libgdtl` module
 
-You can compile this module by executing:
-```
-meson {Target-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
-ninja -C {Target-Folder}
-```
-
-### Exporting projects with `libgdtl` module (iOS)
-
-After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.
-
-Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, and Embedded Content` and drag-and-drop following files to the list:
-
-<details>
-  <summary>Libs</summary>
-
-* `libgdtl.a`
-* `libgodot-cpp.a`
-* `libfreetype2.a`
-* `libgraphite2.a` (optional)
-* `libharfbuzz.a`
-* `libicu4c.a`
-* `libpng.a`
-* `libzlib.a`
-
-![Xcode iOS libs](ios_libs.png)
-
-</details>
+See [Compiling GDNative module for Windows, macOS and Linux](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_desktop.html#doc-compile-desktop), [Compiling GDNative module for Android](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_android.html#doc-compile-android) and [Compiling GDNative module for iOS](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_ios.html#doc-compile-ios) for build instructions.
 
 ## Documentation
 
@@ -80,12 +54,10 @@ Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, 
 
 [Class reference](https://bruvzg.github.io/godot_tl/docs/html/classes/index.html)
 
-## Screenshots
-
 <details>
-  <summary>Screenshots</summary>
+<summary>Screenshots</summary>
 
-![libgdtl all scripts screenshot](scripts_scr.png)
+![libgdtl scripts screenshot](scripts_scr.png)
 
 ![libgdtl debug view screenshot](debug_view.png)
 

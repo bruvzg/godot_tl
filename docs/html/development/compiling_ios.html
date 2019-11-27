@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Compiling GDNative module for iOS &mdash; libgdtl latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="libgdtl API" href="../classes/index.html" />
+    <link rel="prev" title="Compiling GDNative module for Android" href="compiling_android.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/docs_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">libgdtl introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-builtin-module">Compiling (as builtin module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#build-options">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-libdgtl-module">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#compiling-as-gdnative-module">Compiling (as gdnative module)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id1">Build options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../about/index.html#id2">Building <cite>libdgtl</cite> module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#demo-data">Demo data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html#gdnative">GDNative</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/font_substitution.html">Font substitution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/rich_text_typesetting.html">Rich text typesetting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#setting-formatting-for-the-range-of-text">Setting formatting for the range of text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#removing-formatting">Removing formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#embedding-child-control-into-the-text-flow">Embedding child control into the text flow</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="compiling_desktop.html">Compiling GDNative module for Windows, macOS and Linux</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiling_desktop.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling_desktop.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling_desktop.html#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiling_android.html">Compiling GDNative module for Android</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiling_android.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling_android.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling_android.html#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiling GDNative module for iOS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-libgdtl-static-library-to-the-exported-xcode-project">Adding <cite>libgdtl</cite> static library to the exported Xcode project</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Class reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">libgdtl API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlbitmapfontface.html">TLBitmapFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlbitmapfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlbitmapfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlbitmapfontface.html#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tldynamicfontface.html">TLDynamicFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tldynamicfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlfontface.html">TLFontFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontface.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlfontfamily.html">TLFontFamily</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontfamily.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlfontiterator.html">TLFontIterator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontiterator.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontiterator.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlfontiterator.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html">TLGDFontWrapper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlgdfontwrapper.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlicudataloader.html">TLICUDataLoader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlicudataloader.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tllabel.html">TLLabel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllabel.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tllineedit.html">TLLineEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tllineedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlrichtextedit.html">TLRichTextEdit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtextedit.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlrichtexteditselection.html">TLRichTextEditSelection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtexteditselection.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtexteditselection.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtexteditselection.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlrichtexteditselection.html#property-descriptions">Property Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html">TLShapedAttributedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedattributedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedparagraph.html">TLShapedParagraph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedparagraph.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../classes/class_tlshapedstring.html">TLShapedString</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#brief-description">Brief Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#property-descriptions">Property Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/class_tlshapedstring.html#method-descriptions">Method Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libgdtl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Compiling GDNative module for iOS</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compiling-gdnative-module-for-ios">
+<span id="doc-compile-ios"></span><h1>Compiling GDNative module for iOS<a class="headerlink" href="#compiling-gdnative-module-for-ios" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Meson build system</p></li>
+<li><p>SCons build system</p></li>
+<li><p>Xcode 10.0 (or later) with the iOS (10.0) SDK and the command line tools.</p></li>
+</ul>
+</div>
+<div class="section" id="building-godot-cpp-static-library">
+<h2>Building <cite>godot-cpp</cite> static library<a class="headerlink" href="#building-godot-cpp-static-library" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Open a Terminal and navigate to the <cite>godot-cpp</cite> subdirectory.</p></li>
+<li><p>Apply provided patch for iOS build:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">git</span> <span class="n">apply</span> <span class="o">../</span><span class="n">patch_gdcpp_ios</span><span class="o">.</span><span class="n">diff</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Compile <cite>godot-cpp</cite> static libraries for required platforms (<cite>arm64</cite> and <cite>armv7</cite> for real devices and <cite>x86_64</cite> for simulator), by typing:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">scons</span> <span class="n">platform</span><span class="o">=</span><span class="n">ios</span> <span class="n">target</span><span class="o">=</span><span class="n">release</span> <span class="n">ios_arch</span><span class="o">=</span><span class="n">arm64</span> <span class="n">generate_bindings</span><span class="o">=</span><span class="n">yes</span>
+<span class="o">$</span> <span class="n">scons</span> <span class="n">platform</span><span class="o">=</span><span class="n">ios</span> <span class="n">target</span><span class="o">=</span><span class="n">release</span> <span class="n">ios_arch</span><span class="o">=</span><span class="n">armv7</span> <span class="n">generate_bindings</span><span class="o">=</span><span class="n">yes</span>
+<span class="o">$</span> <span class="n">scons</span> <span class="n">platform</span><span class="o">=</span><span class="n">ios</span> <span class="n">target</span><span class="o">=</span><span class="n">release</span> <span class="n">ios_arch</span><span class="o">=</span><span class="n">x86_64</span> <span class="n">generate_bindings</span><span class="o">=</span><span class="n">yes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-libgdtl-static-library-and-built-in-dependencies">
+<h2>Building <cite>libgdtl</cite> static library and built-in dependencies<a class="headerlink" href="#building-libgdtl-static-library-and-built-in-dependencies" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Navigate to the root directory of the source.</p></li>
+<li><p>Edit iOS SDK and toolchain paths in the Meson cross compile files (<cite>toolchains/ios.{arch}.toolchain</cite>).</p></li>
+<li><p>Configure <cite>libgdtl</cite> static libraries, by typing:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">meson</span> <span class="o">./</span><span class="n">_ios_arm8</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">arm64</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span> <span class="o">--</span><span class="n">cross</span><span class="o">-</span><span class="n">file</span> <span class="o">./</span><span class="n">toolchains</span><span class="o">/</span><span class="n">ios</span><span class="o">.</span><span class="n">arm64</span><span class="o">.</span><span class="n">toolchain</span>
+<span class="o">$</span> <span class="n">meson</span> <span class="o">./</span><span class="n">_ios_arm7</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">armv7</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span> <span class="o">--</span><span class="n">cross</span><span class="o">-</span><span class="n">file</span> <span class="o">./</span><span class="n">toolchains</span><span class="o">/</span><span class="n">ios</span><span class="o">.</span><span class="n">armv7</span><span class="o">.</span><span class="n">toolchain</span>
+<span class="o">$</span> <span class="n">meson</span> <span class="o">./</span><span class="n">_ios_x86_64</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">x86_64</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span> <span class="o">--</span><span class="n">cross</span><span class="o">-</span><span class="n">file</span> <span class="o">./</span><span class="n">toolchains</span><span class="o">/</span><span class="n">ios</span><span class="o">.</span><span class="n">x86_64</span><span class="o">.</span><span class="n">toolchain</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Compile <cite>libgdtl</cite> static libraries, by typing:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="o">./</span><span class="n">_ios_arm8</span>
+<span class="o">$</span> <span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="o">./</span><span class="n">_ios_arm7</span>
+<span class="o">$</span> <span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="o">./</span><span class="n">_ios_x86_64</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>(Optional) Bundle <cite>libgdtl</cite> and it’s dependencies into one file:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">libtool</span> <span class="o">-</span><span class="k">static</span> <span class="o">-</span><span class="n">o</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">libgdtl</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">freetype2</span><span class="o">/</span><span class="n">libfreetype2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">graphite2</span><span class="o">/</span><span class="n">libgraphite2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">harfbuzz</span><span class="o">/</span><span class="n">libharfbuzz</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">icu4c</span><span class="o">/</span><span class="n">libicu4c</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">libpng</span><span class="o">/</span><span class="n">liblibpng</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">zlib</span><span class="o">/</span><span class="n">libzlib</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">godot</span><span class="o">-</span><span class="n">cpp</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">arm64</span><span class="o">.</span><span class="n">a</span>
+<span class="o">$</span> <span class="n">libtool</span> <span class="o">-</span><span class="k">static</span> <span class="o">-</span><span class="n">o</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">libgdtl</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">freetype2</span><span class="o">/</span><span class="n">libfreetype2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">graphite2</span><span class="o">/</span><span class="n">libgraphite2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">harfbuzz</span><span class="o">/</span><span class="n">libharfbuzz</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">icu4c</span><span class="o">/</span><span class="n">libicu4c</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">libpng</span><span class="o">/</span><span class="n">liblibpng</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">zlib</span><span class="o">/</span><span class="n">libzlib</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">godot</span><span class="o">-</span><span class="n">cpp</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">armv7</span><span class="o">.</span><span class="n">a</span>
+<span class="o">$</span> <span class="n">libtool</span> <span class="o">-</span><span class="k">static</span> <span class="o">-</span><span class="n">o</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">libgdtl</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">freetype2</span><span class="o">/</span><span class="n">libfreetype2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">graphite2</span><span class="o">/</span><span class="n">libgraphite2</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">harfbuzz</span><span class="o">/</span><span class="n">libharfbuzz</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">icu4c</span><span class="o">/</span><span class="n">libicu4c</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">libpng</span><span class="o">/</span><span class="n">liblibpng</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">subprojects</span><span class="o">/</span><span class="n">zlib</span><span class="o">/</span><span class="n">libzlib</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">godot</span><span class="o">-</span><span class="n">cpp</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">libgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">.</span><span class="n">ios</span><span class="o">.</span><span class="n">release</span><span class="o">.</span><span class="n">x86_64</span><span class="o">.</span><span class="n">a</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>(Optional) Bundle static libs for all platforms into one “fat” file:</p></li>
+</ol>
+<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">lipo</span> <span class="o">-</span><span class="n">create</span> <span class="o">./</span><span class="n">_ios_arm8</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_arm7</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">./</span><span class="n">_ios_x86_64</span><span class="o">/</span><span class="n">libgdtl_full</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span><span class="n">output</span> <span class="o">./</span><span class="n">libgdtl</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">libgdtl_ios_fat</span><span class="o">.</span><span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-libgdtl-static-library-to-the-exported-xcode-project">
+<h2>Adding <cite>libgdtl</cite> static library to the exported Xcode project<a class="headerlink" href="#adding-libgdtl-static-library-to-the-exported-xcode-project" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Copy <cite>libgdtl</cite> static library file(s) into exported project directory (alongside with <cite>{app_name}.xcode</cite> and <cite>{app_name}.a</cite> files).</p></li>
+<li><p>Open exported project in the Xcode.</p></li>
+<li><p>Select <cite>Targets</cite> &gt; Exported App Name &gt; <cite>General</cite> &gt; <cite>Frameworks, Libraries, and Embedded Content</cite></p></li>
+<li><p>Drag-and-drop (or use <cite>+</cite> button) <cite>libgdtl</cite> fat (or individual platform) file(s) to the list.</p></li>
+</ol>
+<img alt="../_images/ios_adding_static_lib.png" src="../_images/ios_adding_static_lib.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../classes/index.html" class="btn btn-neutral float-right" title="libgdtl API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="compiling_android.html" class="btn btn-neutral float-left" title="Compiling GDNative module for Android" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

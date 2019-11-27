@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#id1">Build options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">Building <cite>libdgtl</cite> module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exporting-projects-with-libgdtl-module-ios">Exporting projects with <cite>libgdtl</cite> module (iOS)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
@@ -120,6 +119,28 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#setting-formatting-for-the-range-of-text">Setting formatting for the range of text</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#removing-formatting">Removing formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/rich_text_typesetting.html#embedding-child-control-into-the-text-flow">Embedding child control into the text flow</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/compiling_desktop.html">Compiling GDNative module for Windows, macOS and Linux</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_desktop.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_desktop.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_desktop.html#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development/compiling_android.html">Compiling GDNative module for Android</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_android.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_android.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_android.html#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development/compiling_ios.html">Compiling GDNative module for iOS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_ios.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_ios.html#building-godot-cpp-static-library">Building <cite>godot-cpp</cite> static library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_ios.html#building-libgdtl-static-library-and-built-in-dependencies">Building <cite>libgdtl</cite> static library and built-in dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/compiling_ios.html#adding-libgdtl-static-library-to-the-exported-xcode-project">Adding <cite>libgdtl</cite> static library to the exported Xcode project</a></li>
 </ul>
 </li>
 </ul>
@@ -410,26 +431,7 @@ Rebuild Godot engine as usual.</p>
 </div>
 <div class="section" id="id2">
 <h3>Building <cite>libdgtl</cite> module<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>You can compile this module by executing:</p>
-<div class="highlight-gdscript notranslate"><div class="highlight"><pre><span></span><span class="n">meson</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span> <span class="o">-</span><span class="n">Dgodot</span><span class="o">-</span><span class="n">cpp</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="n">Godot</span><span class="o">-</span><span class="n">CPP</span><span class="o">-</span><span class="n">Name</span><span class="p">}</span> <span class="o">--</span><span class="n">buildtype</span><span class="o">=</span><span class="n">release</span>
-<span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="p">{</span><span class="n">Targer</span><span class="o">-</span><span class="n">Folder</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="exporting-projects-with-libgdtl-module-ios">
-<h3>Exporting projects with <cite>libgdtl</cite> module (iOS)<a class="headerlink" href="#exporting-projects-with-libgdtl-module-ios" title="Permalink to this headline">¶</a></h3>
-<p>After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.</p>
-<p>Navigate to <cite>Targets</cite> &gt; Exported App Name &gt; <cite>General</cite> &gt; <cite>Frameworks, Libraries, and Embedded Content</cite> and drag-and-drop following files to the list:</p>
-<ul class="simple">
-<li><p><cite>libgdtl.a</cite></p></li>
-<li><p><cite>libgodot-cpp.a</cite></p></li>
-<li><p><cite>libfreetype2.a</cite></p></li>
-<li><p><cite>libgraphite2.a</cite> (optional)</p></li>
-<li><p><cite>libharfbuzz.a</cite></p></li>
-<li><p><cite>libicu4c.a</cite></p></li>
-<li><p><cite>libpng.a</cite></p></li>
-<li><p><cite>libzlib.a</cite></p></li>
-</ul>
+<p>See <a class="reference internal" href="../development/compiling_desktop.html#doc-compile-desktop"><span class="std std-ref">Compiling GDNative module for Windows, macOS and Linux</span></a>, <a class="reference internal" href="../development/compiling_android.html#doc-compile-android"><span class="std std-ref">Compiling GDNative module for Android</span></a> and <a class="reference internal" href="../development/compiling_ios.html#doc-compile-ios"><span class="std std-ref">Compiling GDNative module for iOS</span></a> for build instructions.</p>
 </div>
 </div>
 <div class="section" id="license">

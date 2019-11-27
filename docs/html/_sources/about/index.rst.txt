@@ -65,27 +65,7 @@ See `<https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compil
 Building `libdgtl` module
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can compile this module by executing:
-::
-
-	meson {Targer-Folder} -Dgodot-cpp-lib-name={Godot-CPP-Name} --buildtype=release
-	ninja -C {Targer-Folder}
-
-Exporting projects with `libgdtl` module (iOS)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-After exporting Xcode project form the Godot editor, add module static library and its dependencies to the exported project.
-
-Navigate to `Targets` > Exported App Name > `General` > `Frameworks, Libraries, and Embedded Content` and drag-and-drop following files to the list:
-
-- `libgdtl.a`
-- `libgodot-cpp.a`
-- `libfreetype2.a`
-- `libgraphite2.a` (optional)
-- `libharfbuzz.a`
-- `libicu4c.a`
-- `libpng.a`
-- `libzlib.a`
+See :ref:`doc_compile_desktop`, :ref:`doc_compile_android` and :ref:`doc_compile_ios` for build instructions.
 
 License
 -------

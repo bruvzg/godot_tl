@@ -1,8 +1,12 @@
 .vscode/*
 .import/*
-.toolchains/*
 _buildcmd
 _build*
+_ios*
+_android*
+_osx*
+_windows*
+_linux*
 *.import
 *.so
 *.dylib

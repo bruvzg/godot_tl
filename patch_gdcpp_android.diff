@@ -1,0 +1,26 @@
+From 2980685422a57b77583597961a864be8209be9ea Mon Sep 17 00:00:00 2001
+From: bruvzg <7645683+bruvzg@users.noreply.github.com>
+Date: Tue, 26 Nov 2019 23:06:34 +0200
+Subject: [PATCH] [Android] Use ranlib and linker form the Android toolchain
+ instead of system default.
+
+---
+ SConstruct | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/SConstruct b/SConstruct
+index 65a26b8..b7fde6e 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -278,6 +278,8 @@ elif env['platform'] == 'android':
+     env['CC'] = toolchain + "/bin/clang"
+     env['CXX'] = toolchain + "/bin/clang++"
+     env['AR'] = toolchain + "/bin/" + arch_info['tool_path'] + "-ar"
++    env['RANLIB'] = toolchain + "/bin/" + arch_info['tool_path'] + "-ranlib"
++    env['LINK'] = toolchain + "/bin/clang++"
+ 
+     env.Append(CCFLAGS=['--target=' + arch_info['target'] + env['android_api_level'], '-march=' + arch_info['march'], '-fPIC'])#, '-fPIE', '-fno-addrsig', '-Oz'])
+     env.Append(CCFLAGS=arch_info['ccflags'])
+-- 
+2.20.1
+
