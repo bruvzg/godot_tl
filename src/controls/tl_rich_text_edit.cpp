@@ -1715,6 +1715,13 @@ void TLRichTextEdit::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_FOCUS_ENTER: {
 
+			if (OS::get_singleton()->has_virtual_keyboard())
+#ifdef GODOT_MODULE
+				OS::get_singleton()->show_virtual_keyboard(String(), get_global_rect());
+#else
+				OS::get_singleton()->show_virtual_keyboard(String());
+#endif
+
 			if (!readonly && selectable) {
 				OS::get_singleton()->set_ime_active(true);
 				float y_ofs = margin[MARGIN_TOP];
@@ -1728,6 +1735,9 @@ void TLRichTextEdit::_notification(int p_what) {
 			update();
 		} break;
 		case NOTIFICATION_FOCUS_EXIT: {
+
+			if (OS::get_singleton()->has_virtual_keyboard())
+				OS::get_singleton()->hide_virtual_keyboard();
 
 			OS::get_singleton()->set_ime_position(Point2());
 			OS::get_singleton()->set_ime_active(false);
