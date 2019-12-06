@@ -22,7 +22,7 @@ Android.x86="res://addons/libgdtl/bin/android.x86/libgdtl.so"
 Android.armeabi-v7a="res://addons/libgdtl/bin/android.armv7/libgdtl.so"
 Android.arm64-v8a="res://addons/libgdtl/bin/android.arm64/libgdtl.so"
 
-iOS="[static]"
+iOS="res://addons/libgdtl/bin/ios.fat/libgdtl.a"
 
 [dependencies]
 
