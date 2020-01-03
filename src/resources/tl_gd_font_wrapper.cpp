@@ -139,7 +139,8 @@ float TLGDFontWrapper::get_descent() const {
 }
 
 Size2 TLGDFontWrapper::get_char_size(CharType p_char, CharType p_next) const {
-	return Size2(1, 20);
+	CharType ucodestr[2] = { (CharType)p_char, 0 };
+	return get_string_size(ucodestr);
 }
 
 Size2 TLGDFontWrapper::get_string_size(const String &p_text) const {
@@ -193,8 +194,9 @@ void TLGDFontWrapper::draw(RID p_canvas_item, const Point2 &p_pos, const String 
 }
 
 float TLGDFontWrapper::draw_char(RID p_canvas_item, const Point2 &p_pos, CharType p_char, CharType p_next, const Color &p_modulate, bool p_outline) const {
-	TLFontFace::draw_hexbox(p_canvas_item, p_pos, uint32_t(p_char), Color(1, 0, 0));
-	return (p_char <= 0xFF) ? 11 : ((p_char <= 0xFFFF) ? 17 : 23);
+	CharType ucodestr[2] = { (CharType)p_char, 0 };
+	draw(p_canvas_item, p_pos, ucodestr, p_modulate);
+	return get_string_size(ucodestr).width;
 }
 
 bool TLGDFontWrapper::is_distance_field_hint() const {

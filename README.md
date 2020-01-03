@@ -21,7 +21,7 @@ Name | Description | Default value
 `use_graphite2` | Enable SIL Graphite 2 complementary shaper | `true`
 `use_font_wrapper` | Enable Godot font wrapper for default controls | `false`
 
-If `use_font_wrapper` is enabled, apply `patch_font.diff` from the root of this repository to the Godot engine source first.
+If `use_font_wrapper` is enabled, apply `patch_font.diff` from the root of this repository to the Godot engine source first. Additionally apply `patch_editor_fonts.diff` to use `libgdtl` to render editor fonts.
 
 ### Building `libgdtl` module
 

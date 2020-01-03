@@ -117,7 +117,7 @@ public:
 	//Array unicode_scripts_supported() const;
 	//bool unicode_range_supported(uint8_t p_bank, uint32_t p_range) const;
 
-	bool load(String p_resource_path, int p_size);
+	bool load(String p_resource_path, int p_size, const uint8_t *p_font_mem, int p_font_mem_size);
 
 	double get_ascent() const;
 	double get_descent() const;
@@ -137,6 +137,9 @@ protected:
 	DynamicFaceHinting hinting;
 	bool force_autohinter;
 	int txt_flags;
+
+	const uint8_t *font_mem;
+	int font_mem_size;
 
 	mutable std::map<int, TLDynamicFontFaceAtSize *> sizes;
 
@@ -159,6 +162,7 @@ public:
 	//GDNative methods
 	virtual bool load(String p_resource_path) override;
 
+	virtual void set_font_ptr(const uint8_t *p_font_mem, int p_font_mem_size);
 	virtual void set_font_path(String p_resource_path) override;
 
 	virtual double get_ascent(int p_size) const override;

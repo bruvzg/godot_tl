@@ -1,0 +1,395 @@
+diff --git a/editor/SCsub b/editor/SCsub
+index 2b560f68e8..0481837354 100644
+--- a/editor/SCsub
++++ b/editor/SCsub
+@@ -78,6 +78,8 @@ if env['tools']:
+     env.Depends('#editor/builtin_fonts.gen.h', flist)
+     env.CommandNoCache('#editor/builtin_fonts.gen.h', flist, run_in_subprocess(editor_builders.make_fonts_header))
+ 
++    env.Append(CXXFLAGS=['-DGODOT_MODULE'])
++    env.Append(CPPPATH=['#modules/godot_tl/src/resources', '#modules/godot_tl/src', '#modules/godot_tl/subprojects/graphite2/include', '#modules/godot_tl/subprojects/harfbuzz/src', '#modules/godot_tl/subprojects/icu4c/source/common'])
+     env.add_source_files(env.editor_sources, "*.cpp")
+ 
+     SConscript('collada/SCsub')
+diff --git a/editor/editor_fonts.cpp b/editor/editor_fonts.cpp
+index db2f9c53d9..0013299fec 100644
+--- a/editor/editor_fonts.cpp
++++ b/editor/editor_fonts.cpp
+@@ -35,58 +35,10 @@
+ #include "editor_scale.h"
+ #include "editor_settings.h"
+ #include "scene/resources/default_theme/default_theme.h"
+-#include "scene/resources/dynamic_font.h"
+-
+-#define MAKE_FALLBACKS(m_name)          \
+-	m_name->add_fallback(FontArabic);   \
+-	m_name->add_fallback(FontHebrew);   \
+-	m_name->add_fallback(FontThai);     \
+-	m_name->add_fallback(FontHindi);    \
+-	m_name->add_fallback(FontJapanese); \
+-	m_name->add_fallback(FontFallback);
+-
+-// the custom spacings might only work with Noto Sans
+-#define MAKE_DEFAULT_FONT(m_name, m_size)                       \
+-	Ref<DynamicFont> m_name;                                    \
+-	m_name.instance();                                          \
+-	m_name->set_size(m_size);                                   \
+-	if (CustomFont.is_valid()) {                                \
+-		m_name->set_font_data(CustomFont);                      \
+-		m_name->add_fallback(DefaultFont);                      \
+-	} else {                                                    \
+-		m_name->set_font_data(DefaultFont);                     \
+-	}                                                           \
+-	m_name->set_spacing(DynamicFont::SPACING_TOP, -EDSCALE);    \
+-	m_name->set_spacing(DynamicFont::SPACING_BOTTOM, -EDSCALE); \
+-	MAKE_FALLBACKS(m_name);
+-
+-#define MAKE_BOLD_FONT(m_name, m_size)                          \
+-	Ref<DynamicFont> m_name;                                    \
+-	m_name.instance();                                          \
+-	m_name->set_size(m_size);                                   \
+-	if (CustomFontBold.is_valid()) {                            \
+-		m_name->set_font_data(CustomFontBold);                  \
+-		m_name->add_fallback(DefaultFontBold);                  \
+-	} else {                                                    \
+-		m_name->set_font_data(DefaultFontBold);                 \
+-	}                                                           \
+-	m_name->set_spacing(DynamicFont::SPACING_TOP, -EDSCALE);    \
+-	m_name->set_spacing(DynamicFont::SPACING_BOTTOM, -EDSCALE); \
+-	MAKE_FALLBACKS(m_name);
+-
+-#define MAKE_SOURCE_FONT(m_name, m_size)                        \
+-	Ref<DynamicFont> m_name;                                    \
+-	m_name.instance();                                          \
+-	m_name->set_size(m_size);                                   \
+-	if (CustomFontSource.is_valid()) {                          \
+-		m_name->set_font_data(CustomFontSource);                \
+-		m_name->add_fallback(dfmono);                           \
+-	} else {                                                    \
+-		m_name->set_font_data(dfmono);                          \
+-	}                                                           \
+-	m_name->set_spacing(DynamicFont::SPACING_TOP, -EDSCALE);    \
+-	m_name->set_spacing(DynamicFont::SPACING_BOTTOM, -EDSCALE); \
+-	MAKE_FALLBACKS(m_name);
++#include "scene/resources/theme.h"
++#include "modules/godot_tl/src/resources/tl_font_family.hpp"
++#include "modules/godot_tl/src/resources/tl_dynamic_font.hpp"
++#include "modules/godot_tl/src/resources/tl_gd_font_wrapper.hpp"
+ 
+ void editor_register_fonts(Ref<Theme> p_theme) {
+ 	DirAccess *dir = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
+@@ -96,7 +48,7 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+ 	bool font_antialiased = (bool)EditorSettings::get_singleton()->get("interface/editor/font_antialiased");
+ 	int font_hinting_setting = (int)EditorSettings::get_singleton()->get("interface/editor/font_hinting");
+ 
+-	DynamicFontData::Hinting font_hinting;
++	DynamicFaceHinting font_hinting;
+ 	switch (font_hinting_setting) {
+ 		case 0:
+ 			// The "Auto" setting uses the setting that best matches the OS' font rendering:
+@@ -104,27 +56,26 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+ 			// - Windows uses ClearType, which is in between "Light" and "Normal" hinting.
+ 			// - Linux has configurable font hinting, but most distributions including Ubuntu default to "Light".
+ #ifdef OSX_ENABLED
+-			font_hinting = DynamicFontData::HINTING_NONE;
++			font_hinting = DF_HINTING_NONE;
+ #else
+-			font_hinting = DynamicFontData::HINTING_LIGHT;
++			font_hinting = DF_HINTING_LIGHT;
+ #endif
+ 			break;
+ 		case 1:
+-			font_hinting = DynamicFontData::HINTING_NONE;
++			font_hinting = DF_HINTING_NONE;
+ 			break;
+ 		case 2:
+-			font_hinting = DynamicFontData::HINTING_LIGHT;
++			font_hinting = DF_HINTING_LIGHT;
+ 			break;
+ 		default:
+-			font_hinting = DynamicFontData::HINTING_NORMAL;
++			font_hinting = DF_HINTING_NORMAL;
+ 			break;
+ 	}
+ 
+ 	String custom_font_path = EditorSettings::get_singleton()->get("interface/editor/main_font");
+-	Ref<DynamicFontData> CustomFont;
++	Ref<TLDynamicFontFace> CustomFont;
+ 	if (custom_font_path.length() > 0 && dir->file_exists(custom_font_path)) {
+ 		CustomFont.instance();
+-		CustomFont->set_antialiased(font_antialiased);
+ 		CustomFont->set_hinting(font_hinting);
+ 		CustomFont->set_font_path(custom_font_path);
+ 		CustomFont->set_force_autohinter(true); //just looks better..i think?
+@@ -135,10 +86,9 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+ 	/* Custom Bold font */
+ 
+ 	String custom_font_path_bold = EditorSettings::get_singleton()->get("interface/editor/main_font_bold");
+-	Ref<DynamicFontData> CustomFontBold;
++	Ref<TLDynamicFontFace> CustomFontBold;
+ 	if (custom_font_path_bold.length() > 0 && dir->file_exists(custom_font_path_bold)) {
+ 		CustomFontBold.instance();
+-		CustomFontBold->set_antialiased(font_antialiased);
+ 		CustomFontBold->set_hinting(font_hinting);
+ 		CustomFontBold->set_font_path(custom_font_path_bold);
+ 		CustomFontBold->set_force_autohinter(true); //just looks better..i think?
+@@ -149,10 +99,9 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+ 	/* Custom source code font */
+ 
+ 	String custom_font_path_source = EditorSettings::get_singleton()->get("interface/editor/code_font");
+-	Ref<DynamicFontData> CustomFontSource;
++	Ref<TLDynamicFontFace> CustomFontSource;
+ 	if (custom_font_path_source.length() > 0 && dir->file_exists(custom_font_path_source)) {
+ 		CustomFontSource.instance();
+-		CustomFontSource->set_antialiased(font_antialiased);
+ 		CustomFontSource->set_hinting(font_hinting);
+ 		CustomFontSource->set_font_path(custom_font_path_source);
+ 	} else {
+@@ -163,109 +112,189 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+ 
+ 	/* Droid Sans */
+ 
+-	Ref<DynamicFontData> DefaultFont;
++	Ref<TLDynamicFontFace> DefaultFont;
+ 	DefaultFont.instance();
+-	DefaultFont->set_antialiased(font_antialiased);
+ 	DefaultFont->set_hinting(font_hinting);
+ 	DefaultFont->set_font_ptr(_font_NotoSansUI_Regular, _font_NotoSansUI_Regular_size);
+ 	DefaultFont->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> DefaultFontBold;
++	Ref<TLDynamicFontFace> DefaultFontBold;
+ 	DefaultFontBold.instance();
+-	DefaultFontBold->set_antialiased(font_antialiased);
+ 	DefaultFontBold->set_hinting(font_hinting);
+ 	DefaultFontBold->set_font_ptr(_font_NotoSansUI_Bold, _font_NotoSansUI_Bold_size);
+ 	DefaultFontBold->set_force_autohinter(true); // just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontFallback;
++	Ref<TLDynamicFontFace> FontFallback;
+ 	FontFallback.instance();
+-	FontFallback->set_antialiased(font_antialiased);
+ 	FontFallback->set_hinting(font_hinting);
+ 	FontFallback->set_font_ptr(_font_DroidSansFallback, _font_DroidSansFallback_size);
+ 	FontFallback->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontJapanese;
++	Ref<TLDynamicFontFace> FontJapanese;
+ 	FontJapanese.instance();
+-	FontJapanese->set_antialiased(font_antialiased);
+ 	FontJapanese->set_hinting(font_hinting);
+ 	FontJapanese->set_font_ptr(_font_DroidSansJapanese, _font_DroidSansJapanese_size);
+ 	FontJapanese->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontArabic;
++	Ref<TLDynamicFontFace> FontArabic;
+ 	FontArabic.instance();
+-	FontArabic->set_antialiased(font_antialiased);
+ 	FontArabic->set_hinting(font_hinting);
+ 	FontArabic->set_font_ptr(_font_NotoNaskhArabicUI_Regular, _font_NotoNaskhArabicUI_Regular_size);
+ 	FontArabic->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontHebrew;
++	Ref<TLDynamicFontFace> FontHebrew;
+ 	FontHebrew.instance();
+-	FontHebrew->set_antialiased(font_antialiased);
+ 	FontHebrew->set_hinting(font_hinting);
+ 	FontHebrew->set_font_ptr(_font_NotoSansHebrew_Regular, _font_NotoSansHebrew_Regular_size);
+ 	FontHebrew->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontThai;
++	Ref<TLDynamicFontFace> FontThai;
+ 	FontThai.instance();
+-	FontThai->set_antialiased(font_antialiased);
+ 	FontThai->set_hinting(font_hinting);
+ 	FontThai->set_font_ptr(_font_NotoSansThaiUI_Regular, _font_NotoSansThaiUI_Regular_size);
+ 	FontThai->set_force_autohinter(true); //just looks better..i think?
+ 
+-	Ref<DynamicFontData> FontHindi;
++	Ref<TLDynamicFontFace> FontHindi;
+ 	FontHindi.instance();
+-	FontHindi->set_antialiased(font_antialiased);
+ 	FontHindi->set_hinting(font_hinting);
+ 	FontHindi->set_font_ptr(_font_NotoSansDevanagariUI_Regular, _font_NotoSansDevanagariUI_Regular_size);
+ 	FontHindi->set_force_autohinter(true); //just looks better..i think?
+ 
+ 	/* Hack */
+ 
+-	Ref<DynamicFontData> dfmono;
++	Ref<TLDynamicFontFace> dfmono;
+ 	dfmono.instance();
+-	dfmono->set_antialiased(font_antialiased);
+ 	dfmono->set_hinting(font_hinting);
+ 	dfmono->set_font_ptr(_font_Hack_Regular, _font_Hack_Regular_size);
+ 
+ 	int default_font_size = int(EDITOR_GET("interface/editor/main_font_size")) * EDSCALE;
+ 
++	Ref<TLFontFamily> dff;
++	dff.instance();
++	dff->add_style("Default");
++	dff->add_style("Bold");
++	dff->add_style("Source");
++	if (CustomFont.is_valid()) {
++		dff->add_face("Default", CustomFont);
++	}
++	dff->add_face("Default", DefaultFont);
++	dff->add_face("Default", FontArabic);
++	dff->add_face("Default", FontHebrew);
++	dff->add_face("Default", FontThai);
++	dff->add_face("Default", FontHindi);
++	dff->add_face("Default", FontJapanese);
++	dff->add_face("Default", FontFallback);
++
++	if (CustomFontBold.is_valid()) {
++		dff->add_face("Bold", CustomFontBold);
++	}
++	dff->add_face("Bold", DefaultFontBold);
++	dff->add_face("Bold", DefaultFont);
++	dff->add_face("Bold", FontArabic);
++	dff->add_face("Bold", FontHebrew);
++	dff->add_face("Bold", FontThai);
++	dff->add_face("Bold", FontHindi);
++	dff->add_face("Bold", FontJapanese);
++	dff->add_face("Bold", FontFallback);
++	
++	if (CustomFontSource.is_valid()) {
++		dff->add_face("Source", CustomFontSource);
++	}
++	dff->add_face("Source", dfmono);
++	dff->add_face("Source", DefaultFontBold);
++	dff->add_face("Source", DefaultFont);
++	dff->add_face("Source", FontArabic);
++	dff->add_face("Source", FontHebrew);
++	dff->add_face("Source", FontThai);
++	dff->add_face("Source", FontHindi);
++	dff->add_face("Source", FontJapanese);
++	dff->add_face("Source", FontFallback);
++
+ 	// Default font
+-	MAKE_DEFAULT_FONT(df, default_font_size);
++	Ref<TLGDFontWrapper> df;
++	df.instance();
++	df->set_base_font(dff);
++	df->set_base_font_style("Default");
++	df->set_base_font_size(default_font_size);
+ 	p_theme->set_default_theme_font(df);
+ 	p_theme->set_font("main", "EditorFonts", df);
+ 
+ 	// Bold font
+-	MAKE_BOLD_FONT(df_bold, default_font_size);
++	Ref<TLGDFontWrapper> df_bold;
++	df_bold.instance();
++	df_bold->set_base_font(dff);
++	df_bold->set_base_font_style("Bold");
++	df_bold->set_base_font_size(default_font_size);
+ 	p_theme->set_font("bold", "EditorFonts", df_bold);
+ 
+ 	// Title font
+-	MAKE_BOLD_FONT(df_title, default_font_size + 2 * EDSCALE);
++	Ref<TLGDFontWrapper> df_title;
++	df_title.instance();
++	df_title->set_base_font(dff);
++	df_title->set_base_font_style("Bold");
++	df_title->set_base_font_size(default_font_size + 2 * EDSCALE);
+ 	p_theme->set_font("title", "EditorFonts", df_title);
+ 
+ 	// Documentation fonts
+-	MAKE_DEFAULT_FONT(df_doc, int(EDITOR_GET("text_editor/help/help_font_size")) * EDSCALE);
+-	MAKE_BOLD_FONT(df_doc_bold, int(EDITOR_GET("text_editor/help/help_font_size")) * EDSCALE);
+-	MAKE_BOLD_FONT(df_doc_title, int(EDITOR_GET("text_editor/help/help_title_font_size")) * EDSCALE);
+-	MAKE_SOURCE_FONT(df_doc_code, int(EDITOR_GET("text_editor/help/help_source_font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_doc;
++	df_doc.instance();
++	df_doc->set_base_font(dff);
++	df_doc->set_base_font_style("Default");
++	df_doc->set_base_font_size(int(EDITOR_GET("text_editor/help/help_font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_doc_bold;
++	df_doc_bold.instance();
++	df_doc_bold->set_base_font(dff);
++	df_doc_bold->set_base_font_style("Bold");
++	df_doc_bold->set_base_font_size(int(EDITOR_GET("text_editor/help/help_font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_doc_title;
++	df_doc_title.instance();
++	df_doc_title->set_base_font(dff);
++	df_doc_title->set_base_font_style("Bold");
++	df_doc_title->set_base_font_size(int(EDITOR_GET("text_editor/help/help_title_font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_doc_code;
++	df_doc_code.instance();
++	df_doc_code->set_base_font(dff);
++	df_doc_code->set_base_font_style("Source");
++	df_doc_code->set_base_font_size(int(EDITOR_GET("text_editor/help/help_source_font_size")) * EDSCALE);
+ 	p_theme->set_font("doc", "EditorFonts", df_doc);
+ 	p_theme->set_font("doc_bold", "EditorFonts", df_doc_bold);
+ 	p_theme->set_font("doc_title", "EditorFonts", df_doc_title);
+ 	p_theme->set_font("doc_source", "EditorFonts", df_doc_code);
+ 
+ 	// Ruler font
+-	MAKE_DEFAULT_FONT(df_rulers, 8 * EDSCALE);
++	Ref<TLGDFontWrapper> df_rulers;
++	df_rulers.instance();
++	df_rulers->set_base_font(dff);
++	df_rulers->set_base_font_style("Default");
++	df_rulers->set_base_font_size(8 * EDSCALE);
+ 	p_theme->set_font("rulers", "EditorFonts", df_rulers);
+ 
+ 	// Code font
+-	MAKE_SOURCE_FONT(df_code, int(EDITOR_GET("interface/editor/code_font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_code;
++	df_code.instance();
++	df_code->set_base_font(dff);
++	df_code->set_base_font_style("Source");
++	df_code->set_base_font_size(int(EDITOR_GET("interface/editor/code_font_size")) * EDSCALE);
+ 	p_theme->set_font("source", "EditorFonts", df_code);
+ 
+-	MAKE_SOURCE_FONT(df_expression, (int(EDITOR_GET("interface/editor/code_font_size")) - 1) * EDSCALE);
++	Ref<TLGDFontWrapper> df_expression;
++	df_expression.instance();
++	df_expression->set_base_font(dff);
++	df_expression->set_base_font_style("Source");
++	df_expression->set_base_font_size((int(EDITOR_GET("interface/editor/code_font_size")) - 1) * EDSCALE);
+ 	p_theme->set_font("expression", "EditorFonts", df_expression);
+ 
+-	MAKE_SOURCE_FONT(df_output_code, int(EDITOR_GET("run/output/font_size")) * EDSCALE);
++	Ref<TLGDFontWrapper> df_output_code;
++	df_output_code.instance();
++	df_output_code->set_base_font(dff);
++	df_output_code->set_base_font_style("Source");
++	df_output_code->set_base_font_size(int(EDITOR_GET("run/output/font_size")) * EDSCALE);
+ 	p_theme->set_font("output_source", "EditorFonts", df_output_code);
+ 
+-	MAKE_SOURCE_FONT(df_text_editor_status_code, default_font_size);
++	Ref<TLGDFontWrapper> df_text_editor_status_code;
++	df_text_editor_status_code.instance();
++	df_text_editor_status_code->set_base_font(dff);
++	df_text_editor_status_code->set_base_font_style("Source");
++	df_text_editor_status_code->set_base_font_size(default_font_size);
+ 	p_theme->set_font("status_source", "EditorFonts", df_text_editor_status_code);
+ }
+diff --git a/editor/editor_settings.cpp b/editor/editor_settings.cpp
+index 92e3f61ca5..98fc6d5742 100644
+--- a/editor/editor_settings.cpp
++++ b/editor/editor_settings.cpp
+@@ -272,7 +272,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
+ 		// Some locales are not properly supported currently in Godot due to lack of font shaping
+ 		// (e.g. Arabic or Hindi), so even though we have work in progress translations for them,
+ 		// we skip them as they don't render properly. (GH-28577)
+-		const Vector<String> locales_to_skip = String("ar,bn,fa,he,hi,ml,si,ta,te,ur").split(",");
++		//const Vector<String> locales_to_skip = String("ar,bn,fa,he,hi,ml,si,ta,te,ur").split(",");
+ 
+ 		String best;
+ 
+@@ -285,10 +285,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
+ 			// Skip locales which we can't render properly (see above comment).
+ 			// Test against language code without regional variants (e.g. ur_PK).
+ 			String lang_code = locale.get_slice("_", 0);
+-			if (locales_to_skip.find(lang_code) != -1) {
+-				etl++;
+-				continue;
+-			}
++			//if (locales_to_skip.find(lang_code) != -1) {
++			//	etl++;
++			//	continue;
++			//}
+ 
+ 			lang_hint += ",";
+ 			lang_hint += locale;
