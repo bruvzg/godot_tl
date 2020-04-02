@@ -251,7 +251,7 @@ index db2f9c53d9..0013299fec 100644
 +	dff->add_face("Bold", FontHindi);
 +	dff->add_face("Bold", FontJapanese);
 +	dff->add_face("Bold", FontFallback);
-+	
++
 +	if (CustomFontSource.is_valid()) {
 +		dff->add_face("Source", CustomFontSource);
 +	}
@@ -331,6 +331,15 @@ index db2f9c53d9..0013299fec 100644
 +	df_rulers->set_base_font_style("Default");
 +	df_rulers->set_base_font_size(8 * EDSCALE);
  	p_theme->set_font("rulers", "EditorFonts", df_rulers);
+ 
+ 	// Rotation widget font
+-	MAKE_DEFAULT_FONT(df_rotation_control, 14 * EDSCALE);
++	Ref<TLGDFontWrapper> df_rotation_control;
++	df_rotation_control.instance();
++	df_rotation_control->set_base_font(dff);
++	df_rotation_control->set_base_font_style("Default");
++	df_rotation_control->set_base_font_size(14 * EDSCALE);
+ 	p_theme->set_font("rotation_control", "EditorFonts", df_rotation_control);
  
  	// Code font
 -	MAKE_SOURCE_FONT(df_code, int(EDITOR_GET("interface/editor/code_font_size")) * EDSCALE);
