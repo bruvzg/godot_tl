@@ -6,7 +6,7 @@ scons --version
 clang --version
 
 cd ..
-git clone --depth 1 https://github.com/godotengine/godot godot
+git clone --branch 3.2 --depth 1 https://github.com/godotengine/godot godot
 
 if [ ! -d $(pwd)/godot/modules/godot_tl ]; then
 	ln -s $(pwd)/godot_tl $(pwd)/godot/modules/godot_tl
