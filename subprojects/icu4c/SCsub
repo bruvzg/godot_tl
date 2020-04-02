@@ -161,6 +161,9 @@ env_icu4c.Append(CXXFLAGS=[
 if (not env_icu4c.msvc):
     env_icu4c.Append(CXXFLAGS=["-std=c++11"])
 
+if env["platform"] == 'android':
+    env_icu4c.Append(CXXFLAGS=["-frtti"])
+
 env_icu4c.disable_warnings()
 
 env_thirdparty = env_icu4c.Clone()
