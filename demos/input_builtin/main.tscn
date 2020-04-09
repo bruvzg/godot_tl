@@ -866,10 +866,10 @@ func _on_Style_toggled(button_pressed):
 		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Bold\")
 		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 	elif $FormatToolbar/StyleItalic.pressed:
-		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Regular\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Italic\")
 		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 	else:
-		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Italic\")
+		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT_STYLE, \"Regular\")
 		$TLRichTextEdit.add_attribute($TLRichTextEdit.get_selection(), TLShapedAttributedString.TEXT_ATTRIBUTE_FONT, font_fml[$FormatToolbar/FontFamily.selected])
 
 func _on_SpinBoxUnder_value_changed(value):
