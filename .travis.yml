@@ -9,7 +9,11 @@ matrix:
       os: linux
       compiler: clang
 
-    - env: LABEL="Linux module" GDNATIVE=no
+    - env: LABEL="Linux module (3.2.2-dev)" GDNATIVE=no GDVER=32
+      os: linux
+      compiler: clang
+
+    - env: LABEL="Linux module (3.2.1-stable)" GDNATIVE=no GDVER=31
       os: linux
       compiler: clang
 
@@ -33,6 +37,8 @@ script:
       bash ./.scripts/clang_format.sh;
     elif [ "$GDNATIVE" = "yes" ]; then
       bash ./.scripts/gdn_build.sh;
+    elif [ "$GDVER" = "32" ]; then
+      bash ./.scripts/module_build_3_2_2.sh;
     else
-      bash ./.scripts/module_build.sh;
+      bash ./.scripts/module_build_3_2_1.sh;
     fi

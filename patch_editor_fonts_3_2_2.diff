@@ -12,7 +12,7 @@ index 2b560f68e8..0481837354 100644
  
      SConscript('collada/SCsub')
 diff --git a/editor/editor_fonts.cpp b/editor/editor_fonts.cpp
-index db2f9c53d9..0013299fec 100644
+index 171b7a2176..9dd4b86fe6 100644
 --- a/editor/editor_fonts.cpp
 +++ b/editor/editor_fonts.cpp
 @@ -35,58 +35,10 @@
@@ -145,7 +145,7 @@ index db2f9c53d9..0013299fec 100644
  		CustomFontSource->set_hinting(font_hinting);
  		CustomFontSource->set_font_path(custom_font_path_source);
  	} else {
-@@ -163,109 +112,189 @@ void editor_register_fonts(Ref<Theme> p_theme) {
+@@ -163,113 +112,197 @@ void editor_register_fonts(Ref<Theme> p_theme) {
  
  	/* Droid Sans */
  
