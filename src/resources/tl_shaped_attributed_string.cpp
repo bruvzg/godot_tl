@@ -925,7 +925,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 				if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
 					_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 				}
-				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, visual[p_index].descent), p_position + ofs + Point2(visual[p_index].width, visual[p_index].descent), _ln_color, _width);
+				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[p_index].width, descent), _ln_color, _width);
 			}
 			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
 				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
@@ -1019,7 +1019,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 					if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
 						_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 					}
-					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, visual[i].descent), p_position + ofs + Point2(visual[i].width, visual[i].descent), _ln_color, _width);
+					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[i].width, descent), _ln_color, _width);
 				}
 				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
 					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
