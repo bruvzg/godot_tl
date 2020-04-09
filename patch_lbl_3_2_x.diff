@@ -1,0 +1,61 @@
+diff --git a/scene/gui/label.cpp b/scene/gui/label.cpp
+index 9b542cb179..1fed2d0d1e 100644
+--- a/scene/gui/label.cpp
++++ b/scene/gui/label.cpp
+@@ -28,6 +28,8 @@
+ /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+ /*************************************************************************/
+ 
++#if 0
++
+ #include "label.h"
+ #include "core/print_string.h"
+ #include "core/project_settings.h"
+@@ -723,3 +725,5 @@ Label::~Label() {
+ 		memdelete(current);
+ 	}
+ }
++
++#endif
+diff --git a/scene/gui/label.h b/scene/gui/label.h
+index ba6e627c58..eec4937166 100644
+--- a/scene/gui/label.h
++++ b/scene/gui/label.h
+@@ -31,6 +31,31 @@
+ #ifndef LABEL_H
+ #define LABEL_H
+ 
++#include "modules/godot_tl/src/controls/tl_label.hpp"
++#include "modules/godot_tl/src/resources/tl_gd_font_wrapper.hpp"
++
++class Label : public TLLabel {
++	GDCLASS(Label, TLLabel);
++public:
++	void _notification(int p_what) {
++		if ((p_what == NOTIFICATION_THEME_CHANGED) || (p_what == NOTIFICATION_POST_ENTER_TREE)) {
++			Ref<Font> font_w = get_font("font");
++			TLGDFontWrapper *fw_ref = cast_to<TLGDFontWrapper>(*font_w);
++			if (fw_ref) {
++				set_base_font(fw_ref->get_base_font());
++				set_base_font_style(fw_ref->get_base_font_style());
++				set_base_font_size(fw_ref->get_base_font_size());
++			}
++		}
++	};
++	Label(const String &p_text = String()) {
++		_init();
++		set_text(p_text);
++	}
++};
++
++#if 0
++
+ #include "scene/gui/control.h"
+ 
+ class Label : public Control {
+@@ -149,3 +174,5 @@ VARIANT_ENUM_CAST(Label::Align);
+ VARIANT_ENUM_CAST(Label::VAlign);
+ 
+ #endif
++
++#endif
