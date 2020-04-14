@@ -116,12 +116,15 @@ void TLLabel::_notification(int p_what) {
 		Size2 string_size;
 		Size2 size = get_size();
 #ifdef GODOT_MODULE
-		Ref<StyleBox> style = get_stylebox("normal", "Label");
-		Color font_color = get_color("font_color", "Label");
-		Color font_color_shadow = get_color("font_color_shadow", "Label");
-		bool use_outline = get_constant("shadow_as_outline", "Label");
-		Point2 shadow_ofs(get_constant("shadow_offset_x", "Label"), get_constant("shadow_offset_y", "Label"));
-		int line_spacing = get_constant("line_spacing", "Label");
+		StringName cname = get_class_name();
+		if (cname == "TLLabel") cname = "Label";
+
+		Ref<StyleBox> style = get_stylebox("normal", cname);
+		Color font_color = get_color("font_color", cname);
+		Color font_color_shadow = get_color("font_color_shadow", cname);
+		bool use_outline = get_constant("shadow_as_outline", cname);
+		Point2 shadow_ofs(get_constant("shadow_offset_x", cname), get_constant("shadow_offset_y", cname));
+		int line_spacing = get_constant("line_spacing", cname);
 #else
 		Ref<Theme> theme = get_theme();
 		if (theme.is_null()) {
@@ -229,7 +232,10 @@ void TLLabel::_notification(int p_what) {
 
 Size2 TLLabel::get_minimum_size() const {
 #ifdef GODOT_MODULE
-	Size2 min_style = get_stylebox("normal", "Label")->get_minimum_size();
+	StringName cname = get_class_name();
+	if (cname == "TLLabel") cname = "Label";
+
+	Size2 min_style = get_stylebox("normal", cname)->get_minimum_size();
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -264,8 +270,14 @@ int TLLabel::get_line_count() const {
 }
 
 int TLLabel::get_visible_line_count() const {
+#ifdef GODOT_MODULE
+	StringName cname = get_class_name();
+	if (cname == "TLLabel") cname = "Label";
 
+	int line_spacing = get_constant("line_spacing", cname);
+#else
 	int line_spacing = get_constant("line_spacing", "Label");
+#endif
 
 	if (_lines_dirty)
 		const_cast<TLLabel *>(this)->_reshape_lines();
@@ -275,7 +287,7 @@ int TLLabel::get_visible_line_count() const {
 	for (int64_t i = lines_skipped; i < (int64_t)s_lines.size(); i++) {
 		total_h += s_lines[i]->get_height() + line_spacing;
 #ifdef GODOT_MODULE
-		if (total_h > (get_size().height - get_stylebox("normal", "Label")->get_minimum_size().height + line_spacing)) {
+		if (total_h > (get_size().height - get_stylebox("normal", cname)->get_minimum_size().height + line_spacing)) {
 			break;
 		}
 #else
@@ -303,8 +315,11 @@ int TLLabel::get_visible_line_count() const {
 void TLLabel::_reshape_lines() {
 
 #ifdef GODOT_MODULE
-	Ref<StyleBox> style = get_stylebox("normal", "Label");
-	int line_spacing = get_constant("line_spacing", "Label");
+	StringName cname = get_class_name();
+	if (cname == "TLLabel") cname = "Label";
+
+	Ref<StyleBox> style = get_stylebox("normal", cname);
+	int line_spacing = get_constant("line_spacing", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {

@@ -9,11 +9,19 @@ matrix:
       os: linux
       compiler: clang
 
-    - env: LABEL="Linux module (3.2.2-dev)" GDNATIVE=no GDVER=32
+    - env: LABEL="Linux module (Tools, Debug, 3.2.2-dev)" GDNATIVE=no GDVER=32
       os: linux
       compiler: clang
 
-    - env: LABEL="Linux module (3.2.1-stable)" GDNATIVE=no GDVER=31
+    - env: LABEL="Linux module (Tools, Debug, 3.2.1-stable)" GDNATIVE=no GDVER=31
+      os: linux
+      compiler: clang
+
+    - env: LABEL="Linux module (Export Template, Release, 3.2.2-dev)" GDNATIVE=no GDVER=32e
+      os: linux
+      compiler: clang
+
+    - env: LABEL="Linux module (Export Template, Release, 3.2.1-stable)" GDNATIVE=no GDVER=31e
       os: linux
       compiler: clang
 
@@ -39,6 +47,10 @@ script:
       bash ./.scripts/gdn_build.sh;
     elif [ "$GDVER" = "32" ]; then
       bash ./.scripts/module_build_3_2_2.sh;
-    else
+    elif [ "$GDVER" = "31" ]; then
       bash ./.scripts/module_build_3_2_1.sh;
+    elif [ "$GDVER" = "32e" ]; then
+      bash ./.scripts/module_build_3_2_2_export.sh;
+    elif [ "$GDVER" = "31e" ]; then
+      bash ./.scripts/module_build_3_2_1_export.sh;
     fi
