@@ -15,7 +15,8 @@ fi
 cd godot
 
 git apply ./modules/godot_tl/patch_font_3_2_x.diff
-git apply ./modules/godot_tl/patch_editor_fonts_3_2_2.diff
+git apply ./modules/godot_tl/patch_editor_fonts_3_2_x.diff
+git apply ./modules/godot_tl/patch_dialog_3_2_x.diff
 git apply ./modules/godot_tl/patch_lbl_3_2_x.diff
 git apply ./modules/godot_tl/patch_le_3_2_x.diff
 

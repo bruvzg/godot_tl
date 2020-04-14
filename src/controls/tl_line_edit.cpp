@@ -707,7 +707,10 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 	}
 	Ref<Texture> icon = Control::get_icon("clear");
 #ifdef GODOT_MODULE
-	int x_ofs = get_stylebox("normal", "LineEdit")->get_offset().x;
+	StringName cname = get_class_name();
+	if (cname == "TLLineEdit") cname = "LineEdit";
+
+	int x_ofs = get_stylebox("normal", cname)->get_offset().x;
 #else
 	int x_ofs = 0;
 #endif
@@ -765,7 +768,10 @@ void TLLineEdit::_notification(int p_what) {
 			RID ci = get_canvas_item();
 
 #ifdef GODOT_MODULE
-			Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+			StringName cname = get_class_name();
+			if (cname == "TLLineEdit") cname = "LineEdit";
+
+			Ref<StyleBox> style = get_stylebox("normal", cname);
 #else
 			Ref<Theme> theme = get_theme();
 			if (theme.is_null()) {
@@ -777,7 +783,7 @@ void TLLineEdit::_notification(int p_what) {
 			float disabled_alpha = 1.0; // used to set the disabled input text color
 			if (!is_editable()) {
 #ifdef GODOT_MODULE
-				style = get_stylebox("read_only", "LineEdit");
+				style = get_stylebox("read_only", cname);
 #else
 				style = theme->get_stylebox("read_only", "LineEdit");
 #endif
@@ -817,10 +823,10 @@ void TLLineEdit::_notification(int p_what) {
 			int y_ofs = style->get_offset().y + (y_area - MAX(_get_base_font_height(), line->get_height())) / 2;
 
 #ifdef GODOT_MODULE
-			Color selection_color = get_color("selection_color", "LineEdit");
-			Color font_color = get_color("font_color", "LineEdit");
-			Color font_color_selected = get_color("font_color_selected", "LineEdit");
-			Color cursor_color = get_color("cursor_color", "LineEdit");
+			Color selection_color = get_color("selection_color", cname);
+			Color font_color = get_color("font_color", cname);
+			Color font_color_selected = get_color("font_color_selected", cname);
+			Color cursor_color = get_color("cursor_color", cname);
 #else
 			Color selection_color = theme->get_color("selection_color", "LineEdit");
 			Color font_color = theme->get_color("font_color", "LineEdit");
@@ -838,11 +844,19 @@ void TLLineEdit::_notification(int p_what) {
 				Ref<Texture> r_icon = display_clear_icon ? Control::get_icon("clear") : right_icon;
 				Color color_icon(1, 1, 1, disabled_alpha * .9);
 				if (display_clear_icon) {
+#ifdef GODOT_MODULE
+					if (clear_button_status.press_attempt && clear_button_status.pressing_inside) {
+						color_icon = get_color("clear_button_color_pressed", cname);
+					} else {
+						color_icon = get_color("clear_button_color", cname);
+					}
+#else
 					if (clear_button_status.press_attempt && clear_button_status.pressing_inside) {
 						color_icon = get_color("clear_button_color_pressed", "LineEdit");
 					} else {
 						color_icon = get_color("clear_button_color", "LineEdit");
 					}
+#endif
 				}
 				r_icon->draw(ci, Point2(width - r_icon->get_width() - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)), height / 2 - r_icon->get_height() / 2), color_icon);
 
@@ -1081,7 +1095,10 @@ void TLLineEdit::shift_selection_check_post(bool p_shift) {
 void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 
 #ifdef GODOT_MODULE
-	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+	StringName cname = get_class_name();
+	if (cname == "TLLineEdit") cname = "LineEdit";
+
+	Ref<StyleBox> style = get_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1288,7 +1305,10 @@ float TLLineEdit::get_placeholder_alpha() const {
 void TLLineEdit::set_cursor_position(int p_pos) {
 
 #ifdef GODOT_MODULE
-	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+	StringName cname = get_class_name();
+	if (cname == "TLLineEdit") cname = "LineEdit";
+
+	Ref<StyleBox> style = get_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1392,7 +1412,10 @@ void TLLineEdit::clear_internal() {
 Size2 TLLineEdit::get_minimum_size() const {
 
 #ifdef GODOT_MODULE
-	Ref<StyleBox> style = get_stylebox("normal", "LineEdit");
+	StringName cname = get_class_name();
+	if (cname == "TLLineEdit") cname = "LineEdit";
+
+	Ref<StyleBox> style = get_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1406,7 +1429,11 @@ Size2 TLLineEdit::get_minimum_size() const {
 
 	//minimum size of text
 	int space_size = 10;
+#ifdef GODOT_MODULE
+	int mstext = get_constant("minimum_spaces", cname) * space_size;
+#else
 	int mstext = get_constant("minimum_spaces", "LineEdit") * space_size;
+#endif
 
 	if (expand_to_text_length) {
 		mstext = line->get_width();

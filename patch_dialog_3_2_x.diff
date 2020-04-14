@@ -1,0 +1,13 @@
+diff --git a/scene/gui/dialogs.cpp b/scene/gui/dialogs.cpp
+index d5e8d04390..b350b94c3f 100644
+--- a/scene/gui/dialogs.cpp
++++ b/scene/gui/dialogs.cpp
+@@ -206,7 +206,7 @@ void WindowDialog::_notification(int p_what) {
+ 			Ref<Font> title_font = get_font("title_font", "WindowDialog");
+ 			Color title_color = get_color("title_color", "WindowDialog");
+ 			int title_height = get_constant("title_height", "WindowDialog");
+-			int font_height = title_font->get_height() - title_font->get_descent() * 2;
++			int font_height = title_font->get_height();
+ 			int x = (size.x - title_font->get_string_size(xl_title).x) / 2;
+ 			int y = (-title_height + font_height) / 2;
+ 			title_font->draw(canvas, Point2(x, y), xl_title, title_color, size.x - panel->get_minimum_size().x);

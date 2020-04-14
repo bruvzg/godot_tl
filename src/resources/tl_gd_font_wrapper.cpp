@@ -121,7 +121,7 @@ float TLGDFontWrapper::get_ascent() const {
 			return _font->get_ascent(fsize);
 		}
 	}
-	return 15.0f;
+	return 10.0f;
 }
 
 float TLGDFontWrapper::get_descent() const {
@@ -135,7 +135,7 @@ float TLGDFontWrapper::get_descent() const {
 			return _font->get_ascent(fsize);
 		}
 	}
-	return 15.0f;
+	return 5.0f;
 }
 
 Size2 TLGDFontWrapper::get_char_size(CharType p_char, CharType p_next) const {
@@ -165,7 +165,7 @@ Size2 TLGDFontWrapper::get_string_size(const String &p_text) const {
 			sids.pop_front();
 		}
 	}
-	return Size2(str->get_width(), str->get_height());
+	return Size2(str->get_width(), MAX(str->get_height(), get_height()));
 }
 
 void TLGDFontWrapper::draw(RID p_canvas_item, const Point2 &p_pos, const String &p_text, const Color &p_modulate, int p_clip_w, const Color &p_outline_modulate) const {
@@ -190,7 +190,12 @@ void TLGDFontWrapper::draw(RID p_canvas_item, const Point2 &p_pos, const String 
 			sids.pop_front();
 		}
 	}
-	str->draw(p_canvas_item, p_pos, p_modulate);
+	float w = 0.f;
+	for (int i = 0; i < str->clusters(); i++) {
+		if (p_clip_w <= 0.f || (w + str->get_cluster_width(i)) <= p_clip_w) {
+			w += str->draw_cluster(p_canvas_item, Point2(p_pos.x + w, p_pos.y), i, p_modulate).x;
+		}
+	}
 }
 
 float TLGDFontWrapper::draw_char(RID p_canvas_item, const Point2 &p_pos, CharType p_char, CharType p_next, const Color &p_modulate, bool p_outline) const {
