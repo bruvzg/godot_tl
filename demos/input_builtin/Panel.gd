@@ -26,9 +26,9 @@ func _draw():
 			draw_circle(x, 3, Color(0, 0, 1, 0.45))
 			draw_line(x + gldata[i*7 + 6] * scale, x, Color(0, 0, 1))
 			x = x + gldata[i*7 + 6] * scale
-			draw_string(get_font("font"), Vector2(10 + n * i, rect_size.y - 34), "%d" % [gldata[i*7 + 4]], Color(1, 1, 1))
-			draw_string(get_font("font"), Vector2(10 + n * i, rect_size.y - 22), "%2.1f; %2.1f" % [gldata[i*7 + 6].x, gldata[i*7 + 6].y], Color(0, 0, 1))
-			draw_string(get_font("font"), Vector2(10 + n * i, rect_size.y - 10), "%2.1f; %2.1f" % [gldata[i*7 + 5].x, gldata[i*7 + 5].y], Color(1, 0, 0))
+			draw_string(get_theme_font("font"), Vector2(10 + n * i, rect_size.y - 34), "%d" % [gldata[i*7 + 4]], Color(1, 1, 1))
+			draw_string(get_theme_font("font"), Vector2(10 + n * i, rect_size.y - 22), "%2.1f; %2.1f" % [gldata[i*7 + 6].x, gldata[i*7 + 6].y], Color(0, 0, 1))
+			draw_string(get_theme_font("font"), Vector2(10 + n * i, rect_size.y - 10), "%2.1f; %2.1f" % [gldata[i*7 + 5].x, gldata[i*7 + 5].y], Color(1, 0, 0))
 			if (face):
 				face.draw_glyph(get_canvas_item(), Vector2(10 + n * i, rect_size.y - 80 - dsc / scale), gldata[i*7 + 4], Color(1 - (s*i), 1 - (s*i), 1 - (s*i), 0.5), fsize)
 

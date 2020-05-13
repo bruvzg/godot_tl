@@ -167,8 +167,9 @@ func _ready():
 	var data_loader = TLICUDataLoader.new()
 	data_loader.load(\"res://icudt67l.dat\")
 
-	get_tree().get_root().connect(\"size_changed\", self, \"_onresize\")
-	$TLRichTextEdit.connect(\"cursor_changed\", self, \"_cursorchange\")
+	var self_var = self
+	get_tree().get_root().connect(\"size_changed\", Callable(self_var, \"_onresize\"))
+	$TLRichTextEdit.connect(\"cursor_changed\", Callable(self_var, \"_cursorchange\"))
 	_onresize()
 
 	var ms_rg = TLDynamicFontFace.new()
@@ -2056,7 +2057,7 @@ margin_top = 190.0
 margin_right = 1035.0
 margin_bottom = 700.0
 access = 2
-filters = PoolStringArray( "*.gdrtf;Rich Text" )
+filters = PackedStringArray( "*.gdrtf;Rich Text" )
 current_dir = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin"
 current_path = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin/"
 
@@ -2068,7 +2069,7 @@ margin_bottom = 700.0
 window_title = "Open a File"
 mode = 0
 access = 2
-filters = PoolStringArray( "*.gdrtf;Rich Text" )
+filters = PackedStringArray( "*.gdrtf;Rich Text" )
 current_dir = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin"
 current_path = "/Volumes/Seagate/SDK/godot_sdk/native_modules/godot_tl/demos/input_builtin/"
 

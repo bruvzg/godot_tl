@@ -4,11 +4,12 @@
 
 BiDi, shaping and basic text layout for Godot Engine.
 
+(Test version for the Godot 4.0 branch, module only.)
+
 ## Dependencies
 
-- Godot 3.1+
+- Godot 4.0
 - C++14 compiler
-- Meson build system (for gdnative module build only)
 - SCons build system
 
 ## Compiling (as builtin module)
@@ -28,51 +29,15 @@ If `use_font_wrapper` is enabled, apply `patch_font.diff` from the root of this 
 Clone this repository (without `--recursive` flag) into Godot's `modules` subfolder as `godot_tl`.
 Rebuild Godot engine as usual.
 
-## Compiling (as gdnative module)
-
-### Build options
-
-Name | Description | Default value
---- | --- | ---
-`godot-cpp-lib-name` | godot-cpp static library name (without `.a` or `.lib` extension) | `libgodot-cpp`
-`static-lib` | Build static library | `false`
-`static-runtime` | Link libraries statically for better portability | `false`
-`builtin-runtime` | Use the built-in libraries | `false`
-`use-graphite2` | Enable SIL Graphite 2 complementary shaper | `true`
-
-### Building `godot-cpp` static library
-
-See [Compiling the cpp bindings library](https://github.com/GodotNativeTools/godot-cpp/blob/master/README.md#compiling-the-cpp-bindings-library)
-
-### Building `libgdtl` module
-
-See [Compiling GDNative module for Windows, macOS and Linux](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_desktop.html#doc-compile-desktop), [Compiling GDNative module for Android](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_android.html#doc-compile-android) and [Compiling GDNative module for iOS](https://bruvzg.github.io/godot_tl/docs/html/development/compiling_ios.html#doc-compile-ios) for build instructions.
-
 ## Documentation
 
 [Documentation](https://bruvzg.github.io/godot_tl/docs/html/index.html)
 
 [Class reference](https://bruvzg.github.io/godot_tl/docs/html/classes/index.html)
 
-<details>
-<summary>Screenshots</summary>
-
-![libgdtl scripts screenshot](scripts_scr.png)
-
-![libgdtl debug view screenshot](debug_view.png)
-
-![iOS simulator screenshot](ios_src.png)
-
-![Android screenshot](andr_scr.jpg)
-
-</details>
-
 ## License
 - The source code of the **libgdtl** module is released under unlicense.
 For more information, see http://unlicense.org/ or the accompanying UNLICENSE file.
-
-- **Godot** and **GodotNativeTools** are licensed under MIT license.
-For more information, see https://github.com/godotengine/godot/blob/master/LICENSE.txt.
 
 - **HarfBuzz** is licensed under MIT-like License.
 For more information, see https://github.com/harfbuzz/harfbuzz/blob/master/COPYING

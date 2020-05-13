@@ -26,7 +26,7 @@ window/size/resizable=false
 
 [editor_plugins]
 
-enabled=PoolStringArray( "libgdtl" )
+enabled=PackedStringArray(  )
 
 [rendering]
 

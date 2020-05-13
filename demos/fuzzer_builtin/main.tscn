@@ -523,7 +523,7 @@ func _ready():
 			file_name = dir.get_next()
 
 
-var xxx = PoolByteArray([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0])
+var xxx = PackedByteArray([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0])
 func _randintarray():
 	for i in range(xxx.size() - 1):
 		xxx[i] = randi() % 255 + 1
@@ -533,7 +533,7 @@ func _randstr():
 	return _randintarray().get_string_from_utf8()
 
 func _process(delta):
-	OS.set_window_title(\"Run: \" + str(tooo))
+	DisplayServer.window_set_title(\"Run: \" + str(tooo))
 	tooo = tooo + 1
 	if (tooo <= 0):
 		#skip some frames
@@ -934,10 +934,6 @@ func _fuzz_tlfontface():
 
 		face1.get_font_path();
 
-		if randi() % 3 == 0:
-			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
-		face1.get_texture_flags()
-
 		face1.unicode_scripts_supported()
 	return face1
 
@@ -959,10 +955,6 @@ func _fuzz_tlbitmapfontface():
 		face1.get_base_size()
 
 		face1.get_font_path();
-
-		if randi() % 3 == 0:
-			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
-		face1.get_texture_flags()
 
 		face1.unicode_scripts_supported()
 	return face1
@@ -996,10 +988,6 @@ func _fuzz_tldynamicfontface():
 		face1.get_base_size()
 
 		face1.get_font_path();
-
-		if randi() % 3 == 0:
-			face1.set_texture_flags(randi() % RANGE - RANGE / 2)
-		face1.get_texture_flags()
 
 		face1.unicode_scripts_supported()
 	return face1
