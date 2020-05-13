@@ -1,5 +1,5 @@
 project('libpng', 'c')
-library_version = '1.6.36'
+library_version = '1.6.37'
 
 libpng = static_library(
 	'libpng',

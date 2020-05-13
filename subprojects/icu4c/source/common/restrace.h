@@ -27,66 +27,66 @@ class CharString;
  */
 class U_COMMON_API ResourceTracer {
 public:
-	ResourceTracer() :
-			fResB(nullptr),
-			fParent(nullptr),
-			fKey(nullptr),
-			fIndex(-1) {}
+    ResourceTracer() :
+        fResB(nullptr),
+        fParent(nullptr),
+        fKey(nullptr),
+        fIndex(-1) {}
 
-	ResourceTracer(const UResourceBundle *resB) :
-			fResB(resB),
-			fParent(nullptr),
-			fKey(nullptr),
-			fIndex(-1) {}
+    ResourceTracer(const UResourceBundle* resB) :
+        fResB(resB),
+        fParent(nullptr),
+        fKey(nullptr),
+        fIndex(-1) {}
 
-	ResourceTracer(const UResourceBundle *resB, const char *key) :
-			fResB(resB),
-			fParent(nullptr),
-			fKey(key),
-			fIndex(-1) {}
+    ResourceTracer(const UResourceBundle* resB, const char* key) :
+        fResB(resB),
+        fParent(nullptr),
+        fKey(key),
+        fIndex(-1) {}
 
-	ResourceTracer(const UResourceBundle *resB, int32_t index) :
-			fResB(resB),
-			fParent(nullptr),
-			fKey(nullptr),
-			fIndex(index) {}
+    ResourceTracer(const UResourceBundle* resB, int32_t index) :
+        fResB(resB),
+        fParent(nullptr),
+        fKey(nullptr),
+        fIndex(index) {}
 
-	ResourceTracer(const ResourceTracer &parent, const char *key) :
-			fResB(nullptr),
-			fParent(&parent),
-			fKey(key),
-			fIndex(-1) {}
+    ResourceTracer(const ResourceTracer& parent, const char* key) :
+        fResB(nullptr),
+        fParent(&parent),
+        fKey(key),
+        fIndex(-1) {}
 
-	ResourceTracer(const ResourceTracer &parent, int32_t index) :
-			fResB(nullptr),
-			fParent(&parent),
-			fKey(nullptr),
-			fIndex(index) {}
+    ResourceTracer(const ResourceTracer& parent, int32_t index) :
+        fResB(nullptr),
+        fParent(&parent),
+        fKey(nullptr),
+        fIndex(index) {}
 
-	~ResourceTracer();
+    ~ResourceTracer();
 
-	void trace(const char *type) const;
-	void traceOpen() const;
+    void trace(const char* type) const;
+    void traceOpen() const;
 
-	/**
+    /**
      * Calls trace() if the resB or parent provided to the constructor was
      * non-null; otherwise, does nothing.
      */
-	void maybeTrace(const char *type) const {
-		if (fResB || fParent) {
-			trace(type);
-		}
-	}
+    void maybeTrace(const char* type) const {
+        if (fResB || fParent) {
+            trace(type);
+        }
+    }
 
 private:
-	const UResourceBundle *fResB;
-	const ResourceTracer *fParent;
-	const char *fKey;
-	int32_t fIndex;
+    const UResourceBundle* fResB;
+    const ResourceTracer* fParent;
+    const char* fKey;
+    int32_t fIndex;
 
-	CharString &getFilePath(CharString &output, UErrorCode &status) const;
+    CharString& getFilePath(CharString& output, UErrorCode& status) const;
 
-	CharString &getResPath(CharString &output, UErrorCode &status) const;
+    CharString& getResPath(CharString& output, UErrorCode& status) const;
 };
 
 /**
@@ -95,11 +95,11 @@ private:
  */
 class FileTracer {
 public:
-	static void traceOpen(const char *path, const char *type, const char *name);
+    static void traceOpen(const char* path, const char* type, const char* name);
 
 private:
-	static void traceOpenDataFile(const char *path, const char *type, const char *name);
-	static void traceOpenResFile(const char *path, const char *name);
+    static void traceOpenDataFile(const char* path, const char* type, const char* name);
+    static void traceOpenResFile(const char* path, const char* name);
 };
 
 U_NAMESPACE_END
@@ -113,23 +113,23 @@ U_NAMESPACE_BEGIN
  */
 class U_COMMON_API ResourceTracer {
 public:
-	ResourceTracer() {}
+    ResourceTracer() {}
 
-	ResourceTracer(const void *) {}
+    ResourceTracer(const void*) {}
 
-	ResourceTracer(const void *, const char *) {}
+    ResourceTracer(const void*, const char*) {}
 
-	ResourceTracer(const void *, int32_t) {}
+    ResourceTracer(const void*, int32_t) {}
 
-	ResourceTracer(const ResourceTracer &, const char *) {}
+    ResourceTracer(const ResourceTracer&, const char*) {}
 
-	ResourceTracer(const ResourceTracer &, int32_t) {}
+    ResourceTracer(const ResourceTracer&, int32_t) {}
 
-	void trace(const char *) const {}
+    void trace(const char*) const {}
 
-	void traceOpen() const {}
+    void traceOpen() const {}
 
-	void maybeTrace(const char *) const {}
+    void maybeTrace(const char*) const {}
 };
 
 /**
@@ -137,7 +137,7 @@ public:
  */
 class FileTracer {
 public:
-	static void traceOpen(const char *, const char *, const char *) {}
+    static void traceOpen(const char*, const char*, const char*) {}
 };
 
 U_NAMESPACE_END

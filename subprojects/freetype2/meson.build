@@ -1,11 +1,10 @@
 project('freetype2', 'c')
-library_version = '2.9.1'
+library_version = '2.10.2'
 
 freetype2 = static_library(
 	'freetype2',
 	[
 		'src/autofit/autofit.c',
-		'src/base/ftapi.c',
 		'src/base/ftbase.c',
 		'src/base/ftbbox.c',
 		'src/base/ftbdf.c',
@@ -42,11 +41,11 @@ freetype2 = static_library(
 		'src/psnames/psnames.c',
 		'src/raster/raster.c',
 		'src/smooth/smooth.c',
-		'src/sfnt/sfnt.c',
 		'src/truetype/truetype.c',
 		'src/type1/type1.c',
 		'src/type42/type42.c',
 		'src/winfonts/winfnt.c',
+		'src/sfnt/sfnt.c'
 	],
 	c_args : [
 		'-DFT2_BUILD_LIBRARY',

@@ -32,7 +32,7 @@
 HB_BEGIN_DECLS
 
 HB_EXTERN hb_face_t *
-hb_gdi_face_create(HFONT hfont);
+hb_gdi_face_create (HFONT hfont);
 
 HB_END_DECLS
 

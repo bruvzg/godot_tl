@@ -4,7 +4,7 @@
  *
  *   TrueType and OpenType color palette support (specification).
  *
- * Copyright (C) 2018-2019 by
+ * Copyright (C) 2018-2020 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * Originally written by Shao Yu Zhang <shaozhang@fb.com>.
@@ -17,26 +17,32 @@
  *
  */
 
+
 #ifndef __TTCPAL_H__
 #define __TTCPAL_H__
 
-#include "ttload.h"
+
 #include <ft2build.h>
+#include "ttload.h"
+
 
 FT_BEGIN_HEADER
 
-FT_LOCAL(FT_Error)
-tt_face_load_cpal(TT_Face face,
-		FT_Stream stream);
 
-FT_LOCAL(void)
-tt_face_free_cpal(TT_Face face);
+  FT_LOCAL( FT_Error )
+  tt_face_load_cpal( TT_Face    face,
+                     FT_Stream  stream );
 
-FT_LOCAL(FT_Error)
-tt_face_palette_set(TT_Face face,
-		FT_UInt palette_index);
+  FT_LOCAL( void )
+  tt_face_free_cpal( TT_Face  face );
+
+  FT_LOCAL( FT_Error )
+  tt_face_palette_set( TT_Face  face,
+                       FT_UInt  palette_index );
+
 
 FT_END_HEADER
+
 
 #endif /* __TTCPAL_H__ */
 
