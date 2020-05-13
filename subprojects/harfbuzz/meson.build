@@ -1,26 +1,33 @@
 project('harfbuzz', 'cpp')
-library_version = '2.2.0'
+library_version = '2.6.6'
 
 src = [
 	'src/hb-aat-layout.cc',
+	'src/hb-aat-layout.cc',
 	'src/hb-aat-map.cc',
 	'src/hb-blob.cc',
-	'src/hb-buffer.cc',
 	'src/hb-buffer-serialize.cc',
+	'src/hb-buffer.cc',
 	'src/hb-common.cc',
+	'src/hb-coretext.cc',
+	'src/hb-draw.cc',
 	'src/hb-face.cc',
 	'src/hb-fallback-shape.cc',
 	'src/hb-font.cc',
 	'src/hb-ft.cc',
 	'src/hb-icu.cc',
 	'src/hb-map.cc',
+	'src/hb-number.cc',
+	'src/hb-ot-cff1-table.cc',
+	'src/hb-ot-cff2-table.cc',
 	'src/hb-ot-color.cc',
 	'src/hb-ot-face.cc',
 	'src/hb-ot-font.cc',
 	'src/hb-ot-layout.cc',
 	'src/hb-ot-map.cc',
 	'src/hb-ot-math.cc',
-	'src/hb-ot-name-language.cc',
+	'src/hb-ot-meta.cc',
+	'src/hb-ot-metrics.cc',
 	'src/hb-ot-name.cc',
 	'src/hb-ot-shape-complex-arabic.cc',
 	'src/hb-ot-shape-complex-default.cc',
@@ -44,12 +51,14 @@ src = [
 	'src/hb-shape.cc',
 	'src/hb-shaper.cc',
 	'src/hb-static.cc',
-	'src/hb-subset-glyf.cc',
+	'src/hb-subset-cff-common.cc',
+	'src/hb-subset-cff1.cc',
+	'src/hb-subset-cff2.cc',
 	'src/hb-subset-input.cc',
 	'src/hb-subset-plan.cc',
 	'src/hb-subset.cc',
-	'src/hb-unicode.cc',
-	'src/hb-warning.cc',
+	'src/hb-ucd.cc',
+	'src/hb-unicode.cc'
 ]
 
 cpp_args = [
@@ -57,6 +66,7 @@ cpp_args = [
 	'-DHAVE_ICU_BUILTIN',
 	'-DHAVE_ICU',
 	'-DHAVE_FREETYPE',
+	'-DHB_NO_MT',
 	'-DHAVE_FT_FACE_GETCHARVARIANTINDEX'
 ]
 
@@ -65,10 +75,6 @@ if meson.get_compiler('cpp').get_id() != 'msvc'
 		'-std=c++11',
 		'-Wno-unknown-pragmas',
 	]
-endif
-
-if target_machine.cpu_family() == 'x86' or target_machine.cpu_family() == 'x86_64'
-	cpp_args += ['-DHAVE_INTEL_ATOMIC_PRIMITIVES']
 endif
 
 if get_option('use-graphite2')

@@ -34,6 +34,11 @@
 
 namespace OT {
 
+struct MarkArray;
+static void Markclass_closure_and_remap_indexes (const Coverage  &mark_coverage,
+						 const MarkArray &mark_array,
+						 const hb_set_t  &glyphset,
+						 hb_map_t*        klass_mapping /* INOUT */);
 
 /* buffer **position** var allocations */
 #define attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
@@ -84,29 +89,27 @@ struct ValueFormat : HBUINT16
   HBINT16		yAdvance;		/* Vertical adjustment for advance--in
 					 * design units (only used for vertical
 					 * writing) */
-  Offset	xPlaDevice;		/* Offset to Device table for
+  OffsetTo<Device>	xPlaDevice;	/* Offset to Device table for
 					 * horizontal placement--measured from
 					 * beginning of PosTable (may be NULL) */
-  Offset	yPlaDevice;		/* Offset to Device table for vertical
+  OffsetTo<Device>	yPlaDevice;	/* Offset to Device table for vertical
 					 * placement--measured from beginning
 					 * of PosTable (may be NULL) */
-  Offset	xAdvDevice;		/* Offset to Device table for
+  OffsetTo<Device>	xAdvDevice;	/* Offset to Device table for
 					 * horizontal advance--measured from
 					 * beginning of PosTable (may be NULL) */
-  Offset	yAdvDevice;		/* Offset to Device table for vertical
+  OffsetTo<Device>	yAdvDevice;	/* Offset to Device table for vertical
 					 * advance--measured from beginning of
 					 * PosTable (may be NULL) */
 #endif
 
-  inline unsigned int get_len (void) const
-  { return hb_popcount ((unsigned int) *this); }
-  inline unsigned int get_size (void) const
-  { return get_len () * Value::static_size; }
+  unsigned int get_len () const  { return hb_popcount ((unsigned int) *this); }
+  unsigned int get_size () const { return get_len () * Value::static_size; }
 
-  bool apply_value (hb_ot_apply_context_t   *c,
-		    const void           *base,
-		    const Value          *values,
-		    hb_glyph_position_t  &glyph_pos) const
+  bool apply_value (hb_ot_apply_context_t *c,
+		    const void            *base,
+		    const Value           *values,
+		    hb_glyph_position_t   &glyph_pos) const
   {
     bool ret = false;
     unsigned int format = *this;
@@ -157,8 +160,24 @@ struct ValueFormat : HBUINT16
     return ret;
   }
 
+  void serialize_copy (hb_serialize_context_t *c, const void *base, const Value *values) const
+  {
+    unsigned int format = *this;
+    if (!format) return;
+
+    if (format & xPlacement) c->copy (*values++);
+    if (format & yPlacement) c->copy (*values++);
+    if (format & xAdvance)   c->copy (*values++);
+    if (format & yAdvance)   c->copy (*values++);
+
+    if (format & xPlaDevice) copy_device (c, base, values++);
+    if (format & yPlaDevice) copy_device (c, base, values++);
+    if (format & xAdvDevice) copy_device (c, base, values++);
+    if (format & yAdvDevice) copy_device (c, base, values++);
+  }
+
   private:
-  inline bool sanitize_value_devices (hb_sanitize_context_t *c, const void *base, const Value *values) const
+  bool sanitize_value_devices (hb_sanitize_context_t *c, const void *base, const Value *values) const
   {
     unsigned int format = *this;
 
@@ -175,34 +194,58 @@ struct ValueFormat : HBUINT16
     return true;
   }
 
+  bool copy_device (hb_serialize_context_t *c, const void *base, const Value *src_value) const
+  {
+    Value	*dst_value = c->copy (*src_value);
+
+    if (!dst_value) return false;
+    if (*dst_value == 0) return true;
+
+    *dst_value = 0;
+    c->push ();
+    if ((base + get_device (src_value)).copy (c))
+    {
+      c->add_link (*dst_value, c->pop_pack ());
+      return true;
+    }
+    else
+    {
+      c->pop_discard ();
+      return false;
+    }
+  }
+
   static inline OffsetTo<Device>& get_device (Value* value)
-  { return *CastP<OffsetTo<Device> > (value); }
+  {
+    return *static_cast<OffsetTo<Device> *> (value);
+  }
   static inline const OffsetTo<Device>& get_device (const Value* value, bool *worked=nullptr)
   {
-    if (worked) *worked |= *value;
-    return *CastP<OffsetTo<Device> > (value);
+    if (worked) *worked |= bool (*value);
+    return *static_cast<const OffsetTo<Device> *> (value);
   }
 
   static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
   {
-    if (worked) *worked |= *value;
-    return *CastP<HBINT16> (value);
+    if (worked) *worked |= bool (*value);
+    return *reinterpret_cast<const HBINT16 *> (value);
   }
 
   public:
 
-  inline bool has_device (void) const {
+  bool has_device () const
+  {
     unsigned int format = *this;
     return (format & devices) != 0;
   }
 
-  inline bool sanitize_value (hb_sanitize_context_t *c, const void *base, const Value *values) const
+  bool sanitize_value (hb_sanitize_context_t *c, const void *base, const Value *values) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_range (values, get_size ()) && (!has_device () || sanitize_value_devices (c, base, values)));
   }
 
-  inline bool sanitize_values (hb_sanitize_context_t *c, const void *base, const Value *values, unsigned int count) const
+  bool sanitize_values (hb_sanitize_context_t *c, const void *base, const Value *values, unsigned int count) const
   {
     TRACE_SANITIZE (this);
     unsigned int len = get_len ();
@@ -221,7 +264,7 @@ struct ValueFormat : HBUINT16
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  inline bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const void *base, const Value *values, unsigned int count, unsigned int stride) const
+  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const void *base, const Value *values, unsigned int count, unsigned int stride) const
   {
     TRACE_SANITIZE (this);
 
@@ -237,21 +280,33 @@ struct ValueFormat : HBUINT16
   }
 };
 
+template<typename Iterator>
+static void SinglePos_serialize (hb_serialize_context_t *c,
+				 const void *src,
+				 Iterator it,
+				 ValueFormat valFormat);
+
 
 struct AnchorFormat1
 {
-  inline void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-			  float *x, float *y) const
+  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
+		   float *x, float *y) const
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this));
+  }
+
+  AnchorFormat1* copy (hb_serialize_context_t *c) const
+  {
+    TRACE_SERIALIZE (this);
+    return_trace (c->embed<AnchorFormat1> (this));
   }
 
   protected:
@@ -264,10 +319,17 @@ struct AnchorFormat1
 
 struct AnchorFormat2
 {
-  inline void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-			  float *x, float *y) const
+  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+		   float *x, float *y) const
   {
     hb_font_t *font = c->font;
+
+#ifdef HB_NO_HINTING
+    *x = font->em_fscale_x (xCoordinate);
+    *y = font->em_fscale_y (yCoordinate);
+    return;
+#endif
+
     unsigned int x_ppem = font->x_ppem;
     unsigned int y_ppem = font->y_ppem;
     hb_position_t cx = 0, cy = 0;
@@ -279,10 +341,16 @@ struct AnchorFormat2
     *y = ret && y_ppem ? cy : font->em_fscale_y (yCoordinate);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this));
+  }
+
+  AnchorFormat2* copy (hb_serialize_context_t *c) const
+  {
+    TRACE_SERIALIZE (this);
+    return_trace (c->embed<AnchorFormat2> (this));
   }
 
   protected:
@@ -296,8 +364,8 @@ struct AnchorFormat2
 
 struct AnchorFormat3
 {
-  inline void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-			  float *x, float *y) const
+  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
+		   float *x, float *y) const
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
@@ -309,10 +377,21 @@ struct AnchorFormat3
       *y += (this+yDeviceTable).get_y_delta (font, c->var_store);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) && xDeviceTable.sanitize (c, this) && yDeviceTable.sanitize (c, this));
+  }
+
+  AnchorFormat3* copy (hb_serialize_context_t *c) const
+  {
+    TRACE_SERIALIZE (this);
+    auto *out = c->embed<AnchorFormat3> (this);
+    if (unlikely (!out)) return_trace (nullptr);
+
+    out->xDeviceTable.serialize_copy (c, xDeviceTable, this);
+    out->yDeviceTable.serialize_copy (c, yDeviceTable, this);
+    return_trace (out);
   }
 
   protected:
@@ -333,8 +412,8 @@ struct AnchorFormat3
 
 struct Anchor
 {
-  inline void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-			  float *x, float *y) const
+  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+		   float *x, float *y) const
   {
     *x = *y = 0;
     switch (u.format) {
@@ -345,7 +424,7 @@ struct Anchor
     }
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     if (!u.format.sanitize (c)) return_trace (false);
@@ -354,6 +433,17 @@ struct Anchor
     case 2: return_trace (u.format2.sanitize (c));
     case 3: return_trace (u.format3.sanitize (c));
     default:return_trace (true);
+    }
+  }
+
+  Anchor* copy (hb_serialize_context_t *c) const
+  {
+    TRACE_SERIALIZE (this);
+    switch (u.format) {
+    case 1: return_trace (reinterpret_cast<Anchor *> (u.format1.copy (c)));
+    case 2: return_trace (reinterpret_cast<Anchor *> (u.format2.copy (c)));
+    case 3: return_trace (reinterpret_cast<Anchor *> (u.format3.copy (c)));
+    default:return_trace (nullptr);
     }
   }
 
@@ -371,14 +461,38 @@ struct Anchor
 
 struct AnchorMatrix
 {
-  inline const Anchor& get_anchor (unsigned int row, unsigned int col, unsigned int cols, bool *found) const {
+  const Anchor& get_anchor (unsigned int row, unsigned int col,
+			    unsigned int cols, bool *found) const
+  {
     *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null(Anchor);
+    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
     *found = !matrixZ[row * cols + col].is_null ();
     return this+matrixZ[row * cols + col];
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  template <typename Iterator,
+	    hb_requires (hb_is_iterator (Iterator))>
+  bool serialize (hb_serialize_context_t *c,
+		  unsigned                num_rows,
+		  AnchorMatrix const     *offset_matrix,
+		  Iterator                index_iter)
+  {
+    TRACE_SERIALIZE (this);
+    if (!index_iter.len ()) return_trace (false);
+    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+
+    this->rows = num_rows;
+    for (const unsigned i : index_iter)
+    {
+      auto *offset = c->embed (offset_matrix->matrixZ[i]);
+      if (!offset) return_trace (false);
+      offset->serialize_copy (c, offset_matrix->matrixZ[i], offset_matrix, c->to_bias (this));
+    }
+
+    return_trace (true);
+  }
+
+  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
   {
     TRACE_SANITIZE (this);
     if (!c->check_struct (this)) return_trace (false);
@@ -391,8 +505,7 @@ struct AnchorMatrix
   }
 
   HBUINT16	rows;			/* Number of rows */
-  protected:
-  UnsizedArrayOf<OffsetTo<Anchor> >
+  UnsizedArrayOf<OffsetTo<Anchor>>
 		matrixZ;		/* Matrix of offsets to Anchor tables--
 					 * from beginning of AnchorMatrix table */
   public:
@@ -404,10 +517,23 @@ struct MarkRecord
 {
   friend struct MarkArray;
 
-  inline bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  unsigned get_class () const { return (unsigned) klass; }
+  bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+  }
+
+  MarkRecord *copy (hb_serialize_context_t *c, const void *base,
+		    unsigned dst_bias, const hb_map_t *klass_mapping) const
+  {
+    TRACE_SERIALIZE (this);
+    auto *out = c->embed (this);
+    if (unlikely (!out)) return_trace (nullptr);
+
+    out->klass = klass_mapping->get (klass);
+    out->markAnchor.serialize_copy (c, markAnchor, base, dst_bias);
+    return_trace (out);
   }
 
   protected:
@@ -421,10 +547,10 @@ struct MarkRecord
 
 struct MarkArray : ArrayOf<MarkRecord>	/* Array of MarkRecords--in Coverage order */
 {
-  inline bool apply (hb_ot_apply_context_t *c,
-		     unsigned int mark_index, unsigned int glyph_index,
-		     const AnchorMatrix &anchors, unsigned int class_count,
-		     unsigned int glyph_pos) const
+  bool apply (hb_ot_apply_context_t *c,
+	      unsigned int mark_index, unsigned int glyph_index,
+	      const AnchorMatrix &anchors, unsigned int class_count,
+	      unsigned int glyph_pos) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -445,8 +571,8 @@ struct MarkArray : ArrayOf<MarkRecord>	/* Array of MarkRecords--in Coverage orde
     glyph_anchor.get_anchor (c, buffer->info[glyph_pos].codepoint, &base_x, &base_y);
 
     hb_glyph_position_t &o = buffer->cur_pos();
-    o.x_offset = round (base_x - mark_x);
-    o.y_offset = round (base_y - mark_y);
+    o.x_offset = roundf (base_x - mark_x);
+    o.y_offset = roundf (base_y - mark_y);
     o.attach_type() = ATTACH_TYPE_MARK;
     o.attach_chain() = (int) glyph_pos - (int) buffer->idx;
     buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
@@ -455,7 +581,21 @@ struct MarkArray : ArrayOf<MarkRecord>	/* Array of MarkRecords--in Coverage orde
     return_trace (true);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  template<typename Iterator,
+	   hb_requires (hb_is_source_of (Iterator, MarkRecord))>
+  bool serialize (hb_serialize_context_t *c,
+		  const hb_map_t         *klass_mapping,
+		  const void             *base,
+		  Iterator                it)
+  {
+    TRACE_SERIALIZE (this);
+    if (unlikely (!c->extend_min (*this))) return_trace (false);
+    if (unlikely (!c->check_assign (len, it.len ()))) return_trace (false);
+    c->copy_all (it, base, c->to_bias (this), klass_mapping);
+    return_trace (true);
+  }
+
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (ArrayOf<MarkRecord>::sanitize (c, this));
@@ -467,19 +607,17 @@ struct MarkArray : ArrayOf<MarkRecord>	/* Array of MarkRecords--in Coverage orde
 
 struct SinglePosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+coverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+coverage).add_coverage (c->input))) return;
-  }
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
 
-  inline const Coverage &get_coverage (void) const
-  { return this+coverage; }
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  const Coverage &get_coverage () const { return this+coverage; }
+
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -492,14 +630,50 @@ struct SinglePosFormat1
     return_trace (true);
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  template<typename Iterator,
+	   hb_requires (hb_is_iterator (Iterator))>
+  void serialize (hb_serialize_context_t *c,
+		  const void *src,
+		  Iterator it,
+		  ValueFormat valFormat)
   {
-    TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    auto out = c->extend_min (*this);
+    if (unlikely (!out)) return;
+    if (unlikely (!c->check_assign (valueFormat, valFormat))) return;
+
+    + it
+    | hb_map (hb_second)
+    | hb_apply ([&] (hb_array_t<const Value> _)
+		{ valFormat.serialize_copy (c, src, &_); })
+    ;
+
+    auto glyphs =
+    + it
+    | hb_map_retains_sorting (hb_first)
+    ;
+
+    coverage.serialize (c, this).serialize (c, glyphs);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
+  {
+    TRACE_SUBSET (this);
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto it =
+    + hb_iter (this+coverage)
+    | hb_filter (glyphset)
+    | hb_map_retains_sorting (glyph_map)
+    | hb_zip (hb_repeat (values.as_array (valueFormat.get_len ())))
+    ;
+
+    bool ret = bool (it);
+    SinglePos_serialize (c->serializer, this, it, valueFormat);
+    return_trace (ret);
+  }
+
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -523,19 +697,17 @@ struct SinglePosFormat1
 
 struct SinglePosFormat2
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+coverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+coverage).add_coverage (c->input))) return;
-  }
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
 
-  inline const Coverage &get_coverage (void) const
-  { return this+coverage; }
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  const Coverage &get_coverage () const { return this+coverage; }
+
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -552,14 +724,58 @@ struct SinglePosFormat2
     return_trace (true);
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  template<typename Iterator,
+	   hb_requires (hb_is_iterator (Iterator))>
+  void serialize (hb_serialize_context_t *c,
+		  const void *src,
+		  Iterator it,
+		  ValueFormat valFormat)
   {
-    TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    auto out = c->extend_min (*this);
+    if (unlikely (!out)) return;
+    if (unlikely (!c->check_assign (valueFormat, valFormat))) return;
+    if (unlikely (!c->check_assign (valueCount, it.len ()))) return;
+
+    + it
+    | hb_map (hb_second)
+    | hb_apply ([&] (hb_array_t<const Value> _)
+		{ valFormat.serialize_copy (c, src, &_); })
+    ;
+
+    auto glyphs =
+    + it
+    | hb_map_retains_sorting (hb_first)
+    ;
+
+    coverage.serialize (c, this).serialize (c, glyphs);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
+  {
+    TRACE_SUBSET (this);
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    unsigned sub_length = valueFormat.get_len ();
+    auto values_array = values.as_array (valueCount * sub_length);
+
+    auto it =
+    + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
+    | hb_filter (glyphset, hb_first)
+    | hb_map_retains_sorting ([&] (const hb_pair_t<hb_codepoint_t, unsigned>& _)
+			      {
+				return hb_pair (glyph_map[_.first],
+						values_array.sub_array (_.second * sub_length,
+									sub_length));
+			      })
+    ;
+
+    bool ret = bool (it);
+    SinglePos_serialize (c->serializer, this, it, valueFormat);
+    return_trace (ret);
+  }
+
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -583,14 +799,51 @@ struct SinglePosFormat2
 
 struct SinglePos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template<typename Iterator,
+	   hb_requires (hb_is_iterator (Iterator))>
+  unsigned get_format (Iterator glyph_val_iter_pairs)
+  {
+    hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
+
+    for (const auto iter : glyph_val_iter_pairs)
+      for (const auto _ : hb_zip (iter.second, first_val_iter))
+	if (_.first != _.second)
+	  return 2;
+
+    return 1;
+  }
+
+
+  template<typename Iterator,
+	   hb_requires (hb_is_iterator (Iterator))>
+  void serialize (hb_serialize_context_t *c,
+		  const void *src,
+		  Iterator glyph_val_iter_pairs,
+		  ValueFormat valFormat)
+  {
+    if (unlikely (!c->extend_min (u.format))) return;
+    unsigned format = 2;
+
+    if (glyph_val_iter_pairs) format = get_format (glyph_val_iter_pairs);
+
+    u.format = format;
+    switch (u.format) {
+    case 1: u.format1.serialize (c, src, glyph_val_iter_pairs, valFormat);
+	    return;
+    case 2: u.format2.serialize (c, src, glyph_val_iter_pairs, valFormat);
+	    return;
+    default:return;
+    }
+  }
+
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
-    case 2: return_trace (c->dispatch (u.format2));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
+    case 2: return_trace (c->dispatch (u.format2, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -603,13 +856,47 @@ struct SinglePos
   } u;
 };
 
+template<typename Iterator>
+static void
+SinglePos_serialize (hb_serialize_context_t *c,
+		     const void *src,
+		     Iterator it,
+		     ValueFormat valFormat)
+{ c->start_embed<SinglePos> ()->serialize (c, src, it, valFormat); }
+
 
 struct PairValueRecord
 {
   friend struct PairSet;
 
+  int cmp (hb_codepoint_t k) const
+  { return secondGlyph.cmp (k); }
+
+  struct serialize_closure_t
+  {
+    const void 		*base;
+    const ValueFormat	*valueFormats;
+    unsigned		len1; /* valueFormats[0].get_len() */
+    const hb_map_t 	*glyph_map;
+  };
+
+  bool serialize (hb_serialize_context_t *c,
+		  serialize_closure_t *closure) const
+  {
+    TRACE_SERIALIZE (this);
+    auto *out = c->start_embed (*this);
+    if (unlikely (!c->extend_min (out))) return_trace (false);
+
+    out->secondGlyph = (*closure->glyph_map)[secondGlyph];
+
+    closure->valueFormats[0].serialize_copy (c, closure->base, &values[0]);
+    closure->valueFormats[1].serialize_copy (c, closure->base, &values[closure->len1]);
+
+    return_trace (true);
+  }
+
   protected:
-  GlyphID	secondGlyph;		/* GlyphID of second glyph in the
+  HBGlyphID	secondGlyph;		/* GlyphID of second glyph in the
 					 * pair--first glyph is listed in the
 					 * Coverage table */
   ValueRecord	values;			/* Positioning data for the first glyph
@@ -622,8 +909,8 @@ struct PairSet
 {
   friend struct PairPosFormat1;
 
-  inline bool intersects (const hb_set_t *glyphs,
-			  const ValueFormat *valueFormats) const
+  bool intersects (const hb_set_t *glyphs,
+		   const ValueFormat *valueFormats) const
   {
     unsigned int len1 = valueFormats[0].get_len ();
     unsigned int len2 = valueFormats[1].get_len ();
@@ -640,10 +927,9 @@ struct PairSet
     return false;
   }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c,
+  void collect_glyphs (hb_collect_glyphs_context_t *c,
 			      const ValueFormat *valueFormats) const
   {
-    TRACE_COLLECT_GLYPHS (this);
     unsigned int len1 = valueFormats[0].get_len ();
     unsigned int len2 = valueFormats[1].get_len ();
     unsigned int record_size = HBUINT16::static_size * (1 + len1 + len2);
@@ -652,9 +938,9 @@ struct PairSet
     c->input->add_array (&record->secondGlyph, len, record_size);
   }
 
-  inline bool apply (hb_ot_apply_context_t *c,
-		     const ValueFormat *valueFormats,
-		     unsigned int pos) const
+  bool apply (hb_ot_apply_context_t *c,
+	      const ValueFormat *valueFormats,
+	      unsigned int pos) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -662,47 +948,71 @@ struct PairSet
     unsigned int len2 = valueFormats[1].get_len ();
     unsigned int record_size = HBUINT16::static_size * (1 + len1 + len2);
 
-    unsigned int count = len;
-
-    /* Hand-coded bsearch. */
-    if (unlikely (!count))
-      return_trace (false);
-    hb_codepoint_t x = buffer->info[pos].codepoint;
-    int min = 0, max = (int) count - 1;
-    while (min <= max)
+    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
+						&firstPairValueRecord,
+						len,
+						record_size);
+    if (record)
     {
-      int mid = ((unsigned int) min + (unsigned int) max) / 2;
-      const PairValueRecord *record = &StructAtOffset<PairValueRecord> (&firstPairValueRecord, record_size * mid);
-      hb_codepoint_t mid_x = record->secondGlyph;
-      if (x < mid_x)
-	max = mid - 1;
-      else if (x > mid_x)
-	min = mid + 1;
-      else
-      {
-	/* Note the intentional use of "|" instead of short-circuit "||". */
-	if (valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos()) |
-	    valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]))
-	  buffer->unsafe_to_break (buffer->idx, pos + 1);
-	if (len2)
-	  pos++;
-	buffer->idx = pos;
-	return_trace (true);
-      }
+      /* Note the intentional use of "|" instead of short-circuit "||". */
+      if (valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos()) |
+	  valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]))
+	buffer->unsafe_to_break (buffer->idx, pos + 1);
+      if (len2)
+	pos++;
+      buffer->idx = pos;
+      return_trace (true);
+    }
+    return_trace (false);
+  }
+
+  bool subset (hb_subset_context_t *c,
+	       const ValueFormat valueFormats[2]) const
+  {
+    TRACE_SUBSET (this);
+    auto snap = c->serializer->snapshot ();
+
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    out->len = 0;
+
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    unsigned len1 = valueFormats[0].get_len ();
+    unsigned len2 = valueFormats[1].get_len ();
+    unsigned record_size = HBUINT16::static_size + Value::static_size * (len1 + len2);
+
+    PairValueRecord::serialize_closure_t closure =
+    {
+      this,
+      valueFormats,
+      len1,
+      &glyph_map
+    };
+
+    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned count = len, num = 0;
+    for (unsigned i = 0; i < count; i++)
+    {
+      if (glyphset.has (record->secondGlyph)
+	 && record->serialize (c->serializer, &closure)) num++;
+      record = &StructAtOffset<const PairValueRecord> (record, record_size);
     }
 
-    return_trace (false);
+    out->len = num;
+    if (!num) c->serializer->revert (snap);
+    return_trace (num);
   }
 
   struct sanitize_closure_t
   {
-    const void *base;
     const ValueFormat *valueFormats;
     unsigned int len1; /* valueFormats[0].get_len() */
     unsigned int stride; /* 1 + len1 + len2 */
   };
 
-  inline bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
+  bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
   {
     TRACE_SANITIZE (this);
     if (!(c->check_struct (this)
@@ -713,8 +1023,8 @@ struct PairSet
 
     unsigned int count = len;
     const PairValueRecord *record = &firstPairValueRecord;
-    return_trace (closure->valueFormats[0].sanitize_values_stride_unsafe (c, closure->base, &record->values[0], count, closure->stride) &&
-		  closure->valueFormats[1].sanitize_values_stride_unsafe (c, closure->base, &record->values[closure->len1], count, closure->stride));
+    return_trace (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
+		  closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride));
   }
 
   protected:
@@ -728,33 +1038,31 @@ struct PairSet
 
 struct PairPosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   {
-    unsigned int count = pairSet.len;
-    for (Coverage::Iter iter (this+coverage); iter.more (); iter.next ())
-    {
-      if (unlikely (iter.get_coverage () >= count))
-	break; /* Work around malicious fonts. https://github.com/harfbuzz/harfbuzz/issues/363 */
-      if (glyphs->has (iter.get_glyph ()) &&
-	  (this+pairSet[iter.get_coverage ()]).intersects (glyphs, valueFormat))
-	return true;
-    }
-    return false;
+    return
+    + hb_zip (this+coverage, pairSet)
+    | hb_filter (*glyphs, hb_first)
+    | hb_map (hb_second)
+    | hb_map ([glyphs, this] (const OffsetTo<PairSet> &_)
+	      { return (this+_).intersects (glyphs, valueFormat); })
+    | hb_any
+    ;
   }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+coverage).add_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
     unsigned int count = pairSet.len;
     for (unsigned int i = 0; i < count; i++)
       (this+pairSet[i]).collect_glyphs (c, valueFormat);
   }
 
-  inline const Coverage &get_coverage (void) const
-  { return this+coverage; }
+  const Coverage &get_coverage () const { return this+coverage; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -768,14 +1076,49 @@ struct PairPosFormat1
     return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    out->format = format;
+    out->valueFormat[0] = valueFormat[0];
+    out->valueFormat[1] = valueFormat[1];
+
+    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
+
+    + hb_zip (this+coverage, pairSet)
+    | hb_filter (glyphset, hb_first)
+    | hb_filter ([this, c, out] (const OffsetTo<PairSet>& _)
+		 {
+		   auto *o = out->pairSet.serialize_append (c->serializer);
+		   if (unlikely (!o)) return false;
+		   auto snap = c->serializer->snapshot ();
+		   bool ret = o->serialize_subset (c, _, this, valueFormat);
+		   if (!ret)
+		   {
+		     out->pairSet.pop ();
+		     c->serializer->revert (snap);
+		   }
+		   return ret;
+		 },
+		 hb_second)
+    | hb_map (hb_first)
+    | hb_map (glyph_map)
+    | hb_sink (new_coverage)
+    ;
+
+    out->coverage.serialize (c->serializer, out)
+		 .serialize (c->serializer, new_coverage.iter ());
+
+    return_trace (bool (new_coverage));
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
 
@@ -785,7 +1128,6 @@ struct PairPosFormat1
     unsigned int len2 = valueFormat[1].get_len ();
     PairSet::sanitize_closure_t closure =
     {
-      this,
       valueFormat,
       len1,
       1 + len1 + len2
@@ -814,23 +1156,23 @@ struct PairPosFormat1
 
 struct PairPosFormat2
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   {
     return (this+coverage).intersects (glyphs) &&
 	   (this+classDef2).intersects (glyphs);
   }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+coverage).add_coverage (c->input))) return;
-    if (unlikely (!(this+classDef2).add_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+classDef2).collect_coverage (c->input))) return;
   }
 
-  inline const Coverage &get_coverage (void) const
-  { return this+coverage; }
+  const Coverage &get_coverage () const { return this+coverage; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -862,14 +1204,56 @@ struct PairPosFormat2
     return_trace (true);
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    out->format = format;
+    out->valueFormat1 = valueFormat1;
+    out->valueFormat2 = valueFormat2;
+
+    hb_map_t klass1_map;
+    out->classDef1.serialize_subset (c, classDef1, this, &klass1_map);
+    out->class1Count = klass1_map.get_population ();
+
+    hb_map_t klass2_map;
+    out->classDef2.serialize_subset (c, classDef2, this, &klass2_map);
+    out->class2Count = klass2_map.get_population ();
+
+    unsigned len1 = valueFormat1.get_len ();
+    unsigned len2 = valueFormat2.get_len ();
+
+    + hb_range ((unsigned) class1Count)
+    | hb_filter (klass1_map)
+    | hb_apply ([&] (const unsigned class1_idx)
+		{
+		  + hb_range ((unsigned) class2Count)
+		  | hb_filter (klass2_map)
+		  | hb_apply ([&] (const unsigned class2_idx)
+			      {
+				unsigned idx = (class1_idx * (unsigned) class2Count + class2_idx) * (len1 + len2);
+				valueFormat1.serialize_copy (c->serializer, this, &values[idx]);
+				valueFormat2.serialize_copy (c->serializer, this, &values[idx + len1]);
+			      })
+		  ;
+		})
+    ;
+
+    const hb_set_t &glyphset = *c->plan->_glyphset_gsub;
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto it =
+    + hb_iter (this+coverage)
+    | hb_filter (glyphset)
+    | hb_map_retains_sorting (glyph_map)
+    ;
+
+    out->coverage.serialize (c->serializer, out).serialize (c->serializer, it);
+    return_trace (out->class1Count && out->class2Count && bool (it));
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     if (!(c->check_struct (this)
@@ -921,14 +1305,14 @@ struct PairPosFormat2
 
 struct PairPos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
-    case 2: return_trace (c->dispatch (u.format2));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
+    case 2: return_trace (c->dispatch (u.format2, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -946,10 +1330,21 @@ struct EntryExitRecord
 {
   friend struct CursivePosFormat1;
 
-  inline bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
     TRACE_SANITIZE (this);
     return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
+  }
+
+  EntryExitRecord* copy (hb_serialize_context_t *c, const void *base) const
+  {
+    TRACE_SERIALIZE (this);
+    auto *out = c->embed (this);
+    if (unlikely (!out)) return_trace (nullptr);
+
+    out->entryAnchor.serialize_copy (c, entryAnchor, base);
+    out->exitAnchor.serialize_copy (c, exitAnchor, base);
+    return_trace (out);
   }
 
   protected:
@@ -970,19 +1365,17 @@ reverse_cursive_minor_offset (hb_glyph_position_t *pos, unsigned int i, hb_direc
 
 struct CursivePosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+coverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+coverage).add_coverage (c->input))) return;
-  }
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
 
-  inline const Coverage &get_coverage (void) const
-  { return this+coverage; }
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  const Coverage &get_coverage () const { return this+coverage; }
+
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -1011,32 +1404,32 @@ struct CursivePosFormat1
     /* Main-direction adjustment */
     switch (c->direction) {
       case HB_DIRECTION_LTR:
-	pos[i].x_advance  = round (exit_x) + pos[i].x_offset;
+	pos[i].x_advance  = roundf (exit_x) + pos[i].x_offset;
 
-	d = round (entry_x) + pos[j].x_offset;
+	d = roundf (entry_x) + pos[j].x_offset;
 	pos[j].x_advance -= d;
 	pos[j].x_offset  -= d;
 	break;
       case HB_DIRECTION_RTL:
-	d = round (exit_x) + pos[i].x_offset;
+	d = roundf (exit_x) + pos[i].x_offset;
 	pos[i].x_advance -= d;
 	pos[i].x_offset  -= d;
 
-	pos[j].x_advance  = round (entry_x) + pos[j].x_offset;
+	pos[j].x_advance  = roundf (entry_x) + pos[j].x_offset;
 	break;
       case HB_DIRECTION_TTB:
-	pos[i].y_advance  = round (exit_y) + pos[i].y_offset;
+	pos[i].y_advance  = roundf (exit_y) + pos[i].y_offset;
 
-	d = round (entry_y) + pos[j].y_offset;
+	d = roundf (entry_y) + pos[j].y_offset;
 	pos[j].y_advance -= d;
 	pos[j].y_offset  -= d;
 	break;
       case HB_DIRECTION_BTT:
-	d = round (exit_y) + pos[i].y_offset;
+	d = roundf (exit_y) + pos[i].y_offset;
 	pos[i].y_advance -= d;
 	pos[i].y_offset  -= d;
 
-	pos[j].y_advance  = round (entry_y);
+	pos[j].y_advance  = roundf (entry_y);
 	break;
       case HB_DIRECTION_INVALID:
       default:
@@ -1083,14 +1476,48 @@ struct CursivePosFormat1
     return_trace (true);
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  template <typename Iterator,
+	    hb_requires (hb_is_iterator (Iterator))>
+  void serialize (hb_serialize_context_t *c, Iterator it, const void *base)
   {
-    TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    if (unlikely (!c->extend_min ((*this)))) return;
+    this->format = 1;
+    this->entryExitRecord.len = it.len ();
+
+    for (const EntryExitRecord& entry_record : + it
+					       | hb_map (hb_second))
+      c->copy (entry_record, base);
+
+    auto glyphs =
+    + it
+    | hb_map_retains_sorting (hb_first)
+    ;
+
+    coverage.serialize (c, this).serialize (c, glyphs);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
+  {
+    TRACE_SUBSET (this);
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!out)) return_trace (false);
+
+    auto it =
+    + hb_zip (this+coverage, entryExitRecord)
+    | hb_filter (glyphset, hb_first)
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord&> p) -> hb_pair_t<hb_codepoint_t, const EntryExitRecord&>
+			      { return hb_pair (glyph_map[p.first], p.second);})
+    ;
+
+    bool ret = bool (it);
+    out->serialize (c->serializer, it, this);
+    return_trace (ret);
+  }
+
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (coverage.sanitize (c, this) && entryExitRecord.sanitize (c, this));
@@ -1110,13 +1537,13 @@ struct CursivePosFormat1
 
 struct CursivePos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -1134,23 +1561,46 @@ typedef AnchorMatrix BaseArray;		/* base-major--
 					 * mark-minor--
 					 * ordered by class--zero-based. */
 
+static void Markclass_closure_and_remap_indexes (const Coverage  &mark_coverage,
+						 const MarkArray &mark_array,
+						 const hb_set_t  &glyphset,
+						 hb_map_t*        klass_mapping /* INOUT */)
+{
+  hb_set_t orig_classes;
+
+  + hb_zip (mark_coverage, mark_array)
+  | hb_filter (glyphset, hb_first)
+  | hb_map (hb_second)
+  | hb_map (&MarkRecord::get_class)
+  | hb_sink (orig_classes)
+  ;
+
+  unsigned idx = 0;
+  for (auto klass : orig_classes.iter ())
+  {
+    if (klass_mapping->has (klass)) continue;
+    klass_mapping->set (klass, idx);
+    idx++;
+  }
+}
+
 struct MarkBasePosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+markCoverage).intersects (glyphs) &&
 	   (this+baseCoverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+markCoverage).add_coverage (c->input))) return;
-    if (unlikely (!(this+baseCoverage).add_coverage (c->input))) return;
+    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+baseCoverage).collect_coverage (c->input))) return;
   }
 
-  inline const Coverage &get_coverage (void) const
-  { return this+markCoverage; }
+  const Coverage &get_coverage () const { return this+markCoverage; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -1190,14 +1640,76 @@ struct MarkBasePosFormat1
     return_trace ((this+markArray).apply (c, mark_index, base_index, this+baseArray, classCount, skippy_iter.idx));
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    out->format = format;
+
+    hb_map_t klass_mapping;
+    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+
+    if (!klass_mapping.get_population ()) return_trace (false);
+    out->classCount = klass_mapping.get_population ();
+
+    auto mark_iter =
+    + hb_zip (this+markCoverage, this+markArray)
+    | hb_filter (glyphset, hb_first)
+    ;
+
+    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
+    + mark_iter
+    | hb_map (hb_first)
+    | hb_map (glyph_map)
+    | hb_sink (new_coverage)
+    ;
+
+    if (!out->markCoverage.serialize (c->serializer, out)
+			  .serialize (c->serializer, new_coverage.iter ()))
+      return_trace (false);
+
+    out->markArray.serialize (c->serializer, out)
+		  .serialize (c->serializer, &klass_mapping, &(this+markArray), + mark_iter
+										| hb_map (hb_second));
+
+    unsigned basecount = (this+baseArray).rows;
+    auto base_iter =
+    + hb_zip (this+baseCoverage, hb_range (basecount))
+    | hb_filter (glyphset, hb_first)
+    ;
+
+    new_coverage.reset ();
+    + base_iter
+    | hb_map (hb_first)
+    | hb_map (glyph_map)
+    | hb_sink (new_coverage)
+    ;
+
+    if (!out->baseCoverage.serialize (c->serializer, out)
+			  .serialize (c->serializer, new_coverage.iter ()))
+      return_trace (false);
+
+    hb_sorted_vector_t<unsigned> base_indexes;
+    for (const unsigned row : + base_iter
+			      | hb_map (hb_second))
+    {
+      + hb_range ((unsigned) classCount)
+      | hb_filter (klass_mapping)
+      | hb_map ([&] (const unsigned col) { return row * (unsigned) classCount + col; })
+      | hb_sink (base_indexes)
+      ;
+    }
+    out->baseArray.serialize (c->serializer, out)
+		  .serialize (c->serializer, base_iter.len (), &(this+baseArray), base_indexes.iter ());
+
+    return_trace (true);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -1228,13 +1740,13 @@ struct MarkBasePosFormat1
 
 struct MarkBasePos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -1259,21 +1771,21 @@ typedef OffsetListOf<LigatureAttach> LigatureArray;
 
 struct MarkLigPosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+markCoverage).intersects (glyphs) &&
 	   (this+ligatureCoverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+markCoverage).add_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).add_coverage (c->input))) return;
+    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
   }
 
-  inline const Coverage &get_coverage (void) const
-  { return this+markCoverage; }
+  const Coverage &get_coverage () const { return this+markCoverage; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -1309,21 +1821,21 @@ struct MarkLigPosFormat1
     unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
     unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
     if (lig_id && lig_id == mark_id && mark_comp > 0)
-      comp_index = MIN (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
+      comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
     else
       comp_index = comp_count - 1;
 
     return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, j));
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     // TODO(subset)
     return_trace (false);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -1355,13 +1867,13 @@ struct MarkLigPosFormat1
 
 struct MarkLigPos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -1381,21 +1893,21 @@ typedef AnchorMatrix Mark2Array;	/* mark2-major--
 
 struct MarkMarkPosFormat1
 {
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   { return (this+mark1Coverage).intersects (glyphs) &&
 	   (this+mark2Coverage).intersects (glyphs); }
 
-  inline void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+
+  void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    if (unlikely (!(this+mark1Coverage).add_coverage (c->input))) return;
-    if (unlikely (!(this+mark2Coverage).add_coverage (c->input))) return;
+    if (unlikely (!(this+mark1Coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+mark2Coverage).collect_coverage (c->input))) return;
   }
 
-  inline const Coverage &get_coverage (void) const
-  { return this+mark1Coverage; }
+  const Coverage &get_coverage () const { return this+mark1Coverage; }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
@@ -1439,14 +1951,76 @@ struct MarkMarkPosFormat1
     return_trace ((this+mark1Array).apply (c, mark1_index, mark2_index, this+mark2Array, classCount, j));
   }
 
-  inline bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    // TODO(subset)
-    return_trace (false);
+    const hb_set_t &glyphset = *c->plan->glyphset ();
+    const hb_map_t &glyph_map = *c->plan->glyph_map;
+
+    auto *out = c->serializer->start_embed (*this);
+    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    out->format = format;
+
+    hb_map_t klass_mapping;
+    Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, glyphset, &klass_mapping);
+
+    if (!klass_mapping.get_population ()) return_trace (false);
+    out->classCount = klass_mapping.get_population ();
+
+    auto mark1_iter =
+    + hb_zip (this+mark1Coverage, this+mark1Array)
+    | hb_filter (glyphset, hb_first)
+    ;
+
+    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
+    + mark1_iter
+    | hb_map (hb_first)
+    | hb_map (glyph_map)
+    | hb_sink (new_coverage)
+    ;
+
+    if (!out->mark1Coverage.serialize (c->serializer, out)
+			   .serialize (c->serializer, new_coverage.iter ()))
+      return_trace (false);
+
+    out->mark1Array.serialize (c->serializer, out)
+		   .serialize (c->serializer, &klass_mapping, &(this+mark1Array), + mark1_iter
+										  | hb_map (hb_second));
+//////
+    unsigned mark2count = (this+mark2Array).rows;
+    auto mark2_iter =
+    + hb_zip (this+mark2Coverage, hb_range (mark2count))
+    | hb_filter (glyphset, hb_first)
+    ;
+
+    new_coverage.reset ();
+    + mark2_iter
+    | hb_map (hb_first)
+    | hb_map (glyph_map)
+    | hb_sink (new_coverage)
+    ;
+
+    if (!out->mark2Coverage.serialize (c->serializer, out)
+			   .serialize (c->serializer, new_coverage.iter ()))
+      return_trace (false);
+
+    hb_sorted_vector_t<unsigned> mark2_indexes;
+    for (const unsigned row : + mark2_iter
+			      | hb_map (hb_second))
+    {
+      + hb_range ((unsigned) classCount)
+      | hb_filter (klass_mapping)
+      | hb_map ([&] (const unsigned col) { return row * (unsigned) classCount + col; })
+      | hb_sink (mark2_indexes)
+      ;
+    }
+    out->mark2Array.serialize (c->serializer, out)
+		   .serialize (c->serializer, mark2_iter.len (), &(this+mark2Array), mark2_indexes.iter ());
+
+    return_trace (true);
   }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -1479,13 +2053,13 @@ struct MarkMarkPosFormat1
 
 struct MarkMarkPos
 {
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, u.format);
     if (unlikely (!c->may_dispatch (this, &u.format))) return_trace (c->no_dispatch_return_value ());
     switch (u.format) {
-    case 1: return_trace (c->dispatch (u.format1));
+    case 1: return_trace (c->dispatch (u.format1, hb_forward<Ts> (ds)...));
     default:return_trace (c->default_return_value ());
     }
   }
@@ -1531,28 +2105,32 @@ struct PosLookupSubTable
     Extension		= 9
   };
 
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, lookup_type);
-    if (unlikely (!c->may_dispatch (this, &u.sub_format))) return_trace (c->no_dispatch_return_value ());
     switch (lookup_type) {
-    case Single:		return_trace (u.single.dispatch (c));
-    case Pair:			return_trace (u.pair.dispatch (c));
-    case Cursive:		return_trace (u.cursive.dispatch (c));
-    case MarkBase:		return_trace (u.markBase.dispatch (c));
-    case MarkLig:		return_trace (u.markLig.dispatch (c));
-    case MarkMark:		return_trace (u.markMark.dispatch (c));
-    case Context:		return_trace (u.context.dispatch (c));
-    case ChainContext:		return_trace (u.chainContext.dispatch (c));
-    case Extension:		return_trace (u.extension.dispatch (c));
+    case Single:		return_trace (u.single.dispatch (c, hb_forward<Ts> (ds)...));
+    case Pair:			return_trace (u.pair.dispatch (c, hb_forward<Ts> (ds)...));
+    case Cursive:		return_trace (u.cursive.dispatch (c, hb_forward<Ts> (ds)...));
+    case MarkBase:		return_trace (u.markBase.dispatch (c, hb_forward<Ts> (ds)...));
+    case MarkLig:		return_trace (u.markLig.dispatch (c, hb_forward<Ts> (ds)...));
+    case MarkMark:		return_trace (u.markMark.dispatch (c, hb_forward<Ts> (ds)...));
+    case Context:		return_trace (u.context.dispatch (c, hb_forward<Ts> (ds)...));
+    case ChainContext:		return_trace (u.chainContext.dispatch (c, hb_forward<Ts> (ds)...));
+    case Extension:		return_trace (u.extension.dispatch (c, hb_forward<Ts> (ds)...));
     default:			return_trace (c->default_return_value ());
     }
   }
 
+  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  {
+    hb_intersects_context_t c (glyphs);
+    return dispatch (&c, lookup_type);
+  }
+
   protected:
   union {
-  HBUINT16		sub_format;
   SinglePos		single;
   PairPos		pair;
   CursivePos		cursive;
@@ -1564,7 +2142,7 @@ struct PosLookupSubTable
   ExtensionPos		extension;
   } u;
   public:
-  DEFINE_SIZE_UNION (2, sub_format);
+  DEFINE_SIZE_MIN (0);
 };
 
 
@@ -1572,52 +2150,68 @@ struct PosLookup : Lookup
 {
   typedef struct PosLookupSubTable SubTable;
 
-  inline const SubTable& get_subtable (unsigned int i) const
+  const SubTable& get_subtable (unsigned int i) const
   { return Lookup::get_subtable<SubTable> (i); }
 
-  inline bool is_reverse (void) const
+  bool is_reverse () const
   {
     return false;
   }
 
-  inline bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     return_trace (dispatch (c));
   }
 
-  inline bool intersects (const hb_set_t *glyphs) const
+  bool intersects (const hb_set_t *glyphs) const
   {
     hb_intersects_context_t c (glyphs);
     return dispatch (&c);
   }
 
-  inline hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
+  { return dispatch (c); }
+
+  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
   {
-    TRACE_COLLECT_GLYPHS (this);
-    return_trace (dispatch (c));
+    if (c->is_lookup_visited (this_index))
+      return hb_closure_lookups_context_t::default_return_value ();
+
+    c->set_lookup_visited (this_index);
+    if (!intersects (c->glyphs))
+    {
+      c->set_lookup_inactive (this_index);
+      return hb_closure_lookups_context_t::default_return_value ();
+    }
+    c->set_recurse_func (dispatch_closure_lookups_recurse_func);
+
+    hb_closure_lookups_context_t::return_t ret = dispatch (c);
+    return ret;
   }
 
   template <typename set_t>
-  inline void add_coverage (set_t *glyphs) const
+  void collect_coverage (set_t *glyphs) const
   {
-    hb_add_coverage_context_t<set_t> c (glyphs);
+    hb_collect_coverage_context_t<set_t> c (glyphs);
     dispatch (&c);
   }
 
-  static bool apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index);
+  static inline bool apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index);
 
   template <typename context_t>
-  static inline typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
 
-  template <typename context_t>
-  inline typename context_t::return_t dispatch (context_t *c) const
-  { return Lookup::dispatch<SubTable> (c); }
+  HB_INTERNAL static hb_closure_lookups_context_t::return_t dispatch_closure_lookups_recurse_func (hb_closure_lookups_context_t *c, unsigned this_index);
 
-  inline bool subset (hb_subset_context_t *c) const
+  template <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  { return Lookup::dispatch<SubTable> (c, hb_forward<Ts> (ds)...); }
+
+  bool subset (hb_subset_context_t *c) const
   { return Lookup::subset<SubTable> (c); }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   { return Lookup::sanitize<SubTable> (c); }
 };
 
@@ -1628,19 +2222,22 @@ struct PosLookup : Lookup
 
 struct GPOS : GSUBGPOS
 {
-  static const hb_tag_t tableTag	= HB_OT_TAG_GPOS;
+  static constexpr hb_tag_t tableTag = HB_OT_TAG_GPOS;
 
-  inline const PosLookup& get_lookup (unsigned int i) const
-  { return CastR<PosLookup> (GSUBGPOS::get_lookup (i)); }
+  const PosLookup& get_lookup (unsigned int i) const
+  { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
 
   static inline void position_start (hb_font_t *font, hb_buffer_t *buffer);
   static inline void position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
   static inline void position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer);
 
-  inline bool subset (hb_subset_context_t *c) const
-  { return GSUBGPOS::subset<PosLookup> (c); }
+  bool subset (hb_subset_context_t *c) const
+  {
+    hb_subset_layout_context_t l (c, tableTag, c->plan->gpos_lookups, c->plan->gpos_features);
+    return GSUBGPOS::subset<PosLookup> (&l);
+  }
 
-  inline bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) const
   { return GSUBGPOS::sanitize<PosLookup> (c); }
 
   HB_INTERNAL bool is_blacklisted (hb_blob_t *blob,
@@ -1759,14 +2356,21 @@ struct GPOS_accelerator_t : GPOS::accelerator_t {};
 
 /* Out-of-class implementation for methods recursing */
 
+#ifndef HB_NO_OT_LAYOUT
 template <typename context_t>
-/*static*/ inline typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+/*static*/ typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
 {
   const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
   return l.dispatch (c);
 }
 
-/*static*/ inline bool PosLookup::apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index)
+/*static*/ inline hb_closure_lookups_context_t::return_t PosLookup::dispatch_closure_lookups_recurse_func (hb_closure_lookups_context_t *c, unsigned this_index)
+{
+  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_index);
+  return l.closure_lookups (c, this_index);
+}
+
+/*static*/ bool PosLookup::apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index)
 {
   const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
   unsigned int saved_lookup_props = c->lookup_props;
@@ -1778,6 +2382,7 @@ template <typename context_t>
   c->set_lookup_props (saved_lookup_props);
   return ret;
 }
+#endif
 
 
 } /* namespace OT */

@@ -35,6 +35,7 @@
 #include "config.h"
 #endif
 
+
 #ifdef HB_TINY
 #define HB_LEAN
 #define HB_MINI
@@ -57,6 +58,7 @@
 #define HB_NO_BITMAP
 #define HB_NO_CFF
 #define HB_NO_COLOR
+#define HB_NO_DRAW
 #define HB_NO_ERRNO
 #define HB_NO_FACE_COLLECT_UNICODES
 #define HB_NO_GETENV
@@ -83,6 +85,7 @@
 #define HB_NO_AAT
 #define HB_NO_LEGACY
 #endif
+
 
 /* Closure of options. */
 
@@ -155,5 +158,6 @@
 #ifdef HAVE_CONFIG_OVERRIDE_H
 #include "config-override.h"
 #endif
+
 
 #endif /* HB_CONFIG_HH */

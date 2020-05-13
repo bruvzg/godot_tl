@@ -14,7 +14,7 @@ var tooo = -2
 func _ready():
 	randomize()
 	var data_loader = TLICUDataLoader.new()
-	data_loader.load(\"res://icudt63l.dat\")
+	data_loader.load(\"res://icudt67l.dat\")
 
 	nt_fam_full = TLFontFamily.new()
 

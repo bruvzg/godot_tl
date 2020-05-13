@@ -29,30 +29,31 @@
 #include "hb-gdi.h"
 
 static hb_blob_t *
-_hb_gdi_reference_table(hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data) {
-	char *buffer = nullptr;
-	DWORD length = 0;
+_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+{
+  char *buffer = nullptr;
+  DWORD length = 0;
 
-	HDC hdc = GetDC(nullptr);
-	if (unlikely(!SelectObject(hdc, (HFONT)user_data))) goto fail;
+  HDC hdc = GetDC (nullptr);
+  if (unlikely (!SelectObject (hdc, (HFONT) user_data))) goto fail;
 
-	length = GetFontData(hdc, hb_uint32_swap(tag), 0, buffer, length);
-	if (unlikely(length == GDI_ERROR)) goto fail_with_releasedc;
+  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
+  if (unlikely (length == GDI_ERROR)) goto fail_with_releasedc;
 
-	buffer = (char *)malloc(length);
-	if (unlikely(!buffer)) goto fail_with_releasedc;
-	length = GetFontData(hdc, hb_uint32_swap(tag), 0, buffer, length);
-	if (unlikely(length == GDI_ERROR)) goto fail_with_releasedc_and_free;
-	ReleaseDC(nullptr, hdc);
+  buffer = (char *) malloc (length);
+  if (unlikely (!buffer)) goto fail_with_releasedc;
+  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
+  if (unlikely (length == GDI_ERROR)) goto fail_with_releasedc_and_free;
+  ReleaseDC (nullptr, hdc);
 
-	return hb_blob_create((const char *)buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, free);
+  return hb_blob_create ((const char *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, free);
 
 fail_with_releasedc_and_free:
-	free(buffer);
+  free (buffer);
 fail_with_releasedc:
-	ReleaseDC(nullptr, hdc);
+  ReleaseDC (nullptr, hdc);
 fail:
-	return hb_blob_get_empty();
+  return hb_blob_get_empty ();
 }
 
 /**
@@ -64,8 +65,9 @@ fail:
  * Since: 2.6.0
  **/
 hb_face_t *
-hb_gdi_face_create(HFONT hfont) {
-	return hb_face_create_for_tables(_hb_gdi_reference_table, (void *)hfont, nullptr);
+hb_gdi_face_create (HFONT hfont)
+{
+  return hb_face_create_for_tables (_hb_gdi_reference_table, (void *) hfont, nullptr);
 }
 
 #endif

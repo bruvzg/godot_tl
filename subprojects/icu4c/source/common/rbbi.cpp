@@ -30,17 +30,13 @@
 #include "ucln_cmn.h"
 #include "cmemory.h"
 #include "cstring.h"
+#include "localsvc.h"
 #include "rbbidata.h"
 #include "rbbi_cache.h"
 #include "rbbirb.h"
 #include "uassert.h"
 #include "umutex.h"
 #include "uvectr32.h"
-
-// if U_LOCAL_SERVICE_HOOK is defined, then localsvc.cpp is expected to be included.
-#if U_LOCAL_SERVICE_HOOK
-#include "localsvc.h"
-#endif
 
 #ifdef RBBI_DEBUG
 static UBool gTrace = FALSE;
@@ -327,8 +323,8 @@ void RuleBasedBreakIterator::init(UErrorCode &status) {
 //            Virtual function: does the right thing with subclasses.
 //
 //-----------------------------------------------------------------------------
-BreakIterator*
-RuleBasedBreakIterator::clone(void) const {
+RuleBasedBreakIterator*
+RuleBasedBreakIterator::clone() const {
     return new RuleBasedBreakIterator(*this);
 }
 
@@ -356,7 +352,7 @@ RuleBasedBreakIterator::operator==(const BreakIterator& that) const {
         //   or have a different iteration position.
         //   Note that fText's position is always the same as the break iterator's position.
         return FALSE;
-    };
+    }
 
     if (!(fPosition == that2.fPosition &&
             fRuleStatusIndex == that2.fRuleStatusIndex &&
@@ -720,7 +716,7 @@ struct LookAheadResults {
     int32_t    fPositions[8];
     int16_t    fKeys[8];
 
-    LookAheadResults() : fUsedSlotLimit(0), fPositions(), fKeys() {};
+    LookAheadResults() : fUsedSlotLimit(0), fPositions(), fKeys() {}
 
     int32_t getPosition(int16_t key) {
         for (int32_t i=0; i<fUsedSlotLimit; ++i) {
@@ -728,8 +724,7 @@ struct LookAheadResults {
                 return fPositions[i];
             }
         }
-        U_ASSERT(FALSE);
-        return -1;
+        UPRV_UNREACHABLE;
     }
 
     void setPosition(int16_t key, int32_t position) {
@@ -741,8 +736,7 @@ struct LookAheadResults {
             }
         }
         if (i >= kMaxLookaheads) {
-            U_ASSERT(FALSE);
-            i = kMaxLookaheads - 1;
+            UPRV_UNREACHABLE;
         }
         fKeys[i] = key;
         fPositions[i] = position;
@@ -889,9 +883,15 @@ int32_t RuleBasedBreakIterator::handleNext() {
                 return lookaheadResult;
             }
         }
+
+        // If we are at the position of the '/' in a look-ahead (hard break) rule;
+        // record the current position, to be returned later, if the full rule matches.
+        // TODO: Move this check before the previous check of fAccepting.
+        //       This would enable hard-break rules with no following context.
+        //       But there are line break test failures when trying this. Investigate.
+        //       Issue ICU-20837
         int16_t rule = row->fLookAhead;
         if (rule != 0) {
-            // At the position of a '/' in a look-ahead match. Record it.
             int32_t  pos = (int32_t)UTEXT_GETNATIVEINDEX(&fText);
             lookAheadMatches.setPosition(rule, pos);
         }
@@ -1085,10 +1085,8 @@ const uint8_t  *RuleBasedBreakIterator::getBinaryRules(uint32_t &length) {
 }
 
 
-BreakIterator *  RuleBasedBreakIterator::createBufferClone(void * /*stackBuffer*/,
-                                   int32_t &bufferSize,
-                                   UErrorCode &status)
-{
+RuleBasedBreakIterator *RuleBasedBreakIterator::createBufferClone(
+        void * /*stackBuffer*/, int32_t &bufferSize, UErrorCode &status) {
     if (U_FAILURE(status)){
         return NULL;
     }
@@ -1119,7 +1117,7 @@ static icu::UInitOnce gRBBIInitOnce = U_INITONCE_INITIALIZER;
  * Release all static memory held by breakiterator.
  */
 U_CDECL_BEGIN
-static UBool U_CALLCONV rbbi_cleanup(void) {
+UBool U_CALLCONV rbbi_cleanup(void) {
     delete gLanguageBreakFactories;
     gLanguageBreakFactories = nullptr;
     delete gEmptyString;

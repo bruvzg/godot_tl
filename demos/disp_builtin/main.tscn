@@ -14,7 +14,7 @@ func _on_item_selected(ID):
 
 func _ready():
 	var data_loader = TLICUDataLoader.new()
-	data_loader.load(\"res://icudt63l.dat\")
+	data_loader.load(\"res://icudt67l.dat\")
 
 	for c in $demos.get_children():
 		$demos_opt.add_item(\"Demo: \" + c.get_full_name())

@@ -16,7 +16,7 @@ func _ready():
 	OS.set_window_size(Vector2(7500, 1000))
 
 	var data_loader = TLICUDataLoader.new()
-	data_loader.load(\"res://icudt63l.dat\")
+	data_loader.load(\"res://icudt67l.dat\")
 
 	nt_fam_full = TLFontFamily.new()
 

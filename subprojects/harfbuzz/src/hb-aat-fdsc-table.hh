@@ -32,88 +32,95 @@
  * fdsc -- Font descriptors
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6fdsc.html
  */
-#define HB_AAT_TAG_fdsc HB_TAG('f', 'd', 's', 'c')
+#define HB_AAT_TAG_fdsc HB_TAG('f','d','s','c')
+
 
 namespace AAT {
 
-struct FontDescriptor {
-	bool has_data() const { return tag; }
 
-	int cmp(hb_tag_t a) const { return tag.cmp(a); }
+struct FontDescriptor
+{
+  bool has_data () const { return tag; }
 
-	float get_value() const { return u.value.to_float(); }
+  int cmp (hb_tag_t a) const { return tag.cmp (a); }
 
-	enum non_alphabetic_value_t {
-		Alphabetic = 0,
-		Dingbats = 1,
-		PiCharacters = 2,
-		Fleurons = 3,
-		DecorativeBorders = 4,
-		InternationalSymbols = 5,
-		MathSymbols = 6
-	};
+  float get_value () const { return u.value.to_float (); }
 
-	bool sanitize(hb_sanitize_context_t *c) const {
-		TRACE_SANITIZE(this);
-		return_trace(c->check_struct(this));
-	}
+  enum non_alphabetic_value_t {
+    Alphabetic		= 0,
+    Dingbats		= 1,
+    PiCharacters	= 2,
+    Fleurons		= 3,
+    DecorativeBorders	= 4,
+    InternationalSymbols= 5,
+    MathSymbols		= 6
+  };
 
-protected:
-	Tag tag; /* The 4-byte table tag name. */
-	union {
-		HBFixed value; /* The value for the descriptor tag. */
-		HBUINT32 nalfType; /* If the tag is `nalf`, see non_alphabetic_value_t */
-	} u;
+  bool sanitize (hb_sanitize_context_t *c) const
+  {
+    TRACE_SANITIZE (this);
+    return_trace (c->check_struct (this));
+  }
 
-public:
-	DEFINE_SIZE_STATIC(8);
+  protected:
+  Tag		tag;		/* The 4-byte table tag name. */
+  union {
+  HBFixed	value;		/* The value for the descriptor tag. */
+  HBUINT32	nalfType;	/* If the tag is `nalf`, see non_alphabetic_value_t */
+  } u;
+  public:
+  DEFINE_SIZE_STATIC (8);
 };
 
-struct fdsc {
-	static constexpr hb_tag_t tableTag = HB_AAT_TAG_fdsc;
+struct fdsc
+{
+  static constexpr hb_tag_t tableTag = HB_AAT_TAG_fdsc;
 
-	enum {
-		Weight = HB_TAG('w', 'g', 'h', 't'),
-		/* Percent weight relative to regular weight.
+  enum {
+    Weight	 = HB_TAG ('w','g','h','t'),
+				/* Percent weight relative to regular weight.
 				 * (defaul value: 1.0) */
-		Width = HB_TAG('w', 'd', 't', 'h'),
-		/* Percent width relative to regular width.
+    Width	 = HB_TAG ('w','d','t','h'),
+				/* Percent width relative to regular width.
 				 * (default value: 1.0) */
-		Slant = HB_TAG('s', 'l', 'n', 't'),
-		/* Angle of slant in degrees, where positive
+    Slant	 = HB_TAG ('s','l','n','t'),
+				/* Angle of slant in degrees, where positive
 				 * is clockwise from straight up.
 				 * (default value: 0.0) */
-		OpticalSize = HB_TAG('o', 'p', 's', 'z'),
-		/* Point size the font was designed for.
+    OpticalSize  = HB_TAG ('o','p','s','z'),
+				/* Point size the font was designed for.
 				 * (default value: 12.0) */
-		NonAlphabetic = HB_TAG('n', 'a', 'l', 'f')
-		/* These values are treated as integers,
+    NonAlphabetic= HB_TAG ('n','a','l','f')
+				/* These values are treated as integers,
 				 * not fixed32s. 0 means alphabetic, and greater
 				 * integers mean the font is non-alphabetic (e.g. symbols).
 				 * (default value: 0) */
-	};
+  };
 
-	const FontDescriptor &get_descriptor(hb_tag_t style) const { return descriptors.lsearch(style); }
+  const FontDescriptor &get_descriptor (hb_tag_t style) const
+  { return descriptors.lsearch (style); }
 
-	bool sanitize(hb_sanitize_context_t *c) const {
-		TRACE_SANITIZE(this);
-		return_trace(c->check_struct(this) &&
-					 descriptors.sanitize(c));
-	}
+  bool sanitize (hb_sanitize_context_t *c) const
+  {
+    TRACE_SANITIZE (this);
+    return_trace (c->check_struct (this) &&
+		  descriptors.sanitize (c));
+  }
 
-protected:
-	HBFixed version; /* Version number of the font descriptors
+  protected:
+  HBFixed	version;	/* Version number of the font descriptors
 				 * table (0x00010000 for the current version). */
-	LArrayOf<FontDescriptor>
-			descriptors; /* List of tagged-coordinate pairs style descriptors
+  LArrayOf<FontDescriptor>
+		descriptors;	/* List of tagged-coordinate pairs style descriptors
 				 * that will be included to characterize this font.
 				 * Each descriptor consists of a <tag, value> pair.
 				 * These pairs are located in the gxFontDescriptor
 				 * array that follows. */
-public:
-	DEFINE_SIZE_ARRAY(8, descriptors);
+  public:
+  DEFINE_SIZE_ARRAY (8, descriptors);
 };
 
 } /* namespace AAT */
+
 
 #endif /* HB_AAT_FDSC_TABLE_HH */

@@ -37,9 +37,10 @@
 #include "hb-ot-maxp-table.hh"
 
 #ifndef HB_NO_VISIBILITY
+#include "hb-ot-name-language-static.hh"
 
-hb_vector_size_impl_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (hb_vector_size_impl_t) - 1) / sizeof (hb_vector_size_impl_t)] = {};
-/*thread_local*/ hb_vector_size_impl_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (hb_vector_size_impl_t) - 1) / sizeof (hb_vector_size_impl_t)] = {};
+uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
@@ -50,8 +51,11 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
 const unsigned char _hb_Null_AAT_Lookup[2] = {0xFF, 0xFF};
 
 
+
+/* hb_face_t */
+
 unsigned int
-hb_face_t::load_num_glyphs (void) const
+hb_face_t::load_num_glyphs () const
 {
   hb_sanitize_context_t c = hb_sanitize_context_t ();
   c.set_num_glyphs (0); /* So we don't recurse ad infinitum. */
@@ -65,11 +69,44 @@ hb_face_t::load_num_glyphs (void) const
 }
 
 unsigned int
-hb_face_t::load_upem (void) const
+hb_face_t::load_upem () const
 {
   unsigned int ret = table.head->get_upem ();
   upem.set_relaxed (ret);
   return ret;
 }
+
+
+/* hb_user_data_array_t */
+
+bool
+hb_user_data_array_t::set (hb_user_data_key_t *key,
+			   void *              data,
+			   hb_destroy_func_t   destroy,
+			   hb_bool_t           replace)
+{
+  if (!key)
+    return false;
+
+  if (replace) {
+    if (!data && !destroy) {
+      items.remove (key, lock);
+      return true;
+    }
+  }
+  hb_user_data_item_t item = {key, data, destroy};
+  bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+
+  return ret;
+}
+
+void *
+hb_user_data_array_t::get (hb_user_data_key_t *key)
+{
+  hb_user_data_item_t item = {nullptr, nullptr, nullptr};
+
+  return items.find (key, &item, lock) ? item.data : nullptr;
+}
+
 
 #endif

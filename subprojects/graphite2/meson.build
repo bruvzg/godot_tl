@@ -1,5 +1,5 @@
 project('graphite2', 'cpp')
-library_version = '1.3.12'
+library_version = '1.3.14'
 
 src = [
 	'src/gr_char_info.cpp',
