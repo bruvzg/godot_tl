@@ -39,7 +39,7 @@ bool TLICUDataLoader::load(String p_path) {
 		Ref<File> file;
 		file.instance();
 		if (file->open(p_path, File::READ) != Error::OK) {
-			ERR_PRINTS("Can't open ICU data file: \"" + p_path + "\"");
+			ERR_PRINT("Can't open ICU data file: \"" + p_path + "\"");
 			return false;
 		}
 
@@ -47,17 +47,17 @@ bool TLICUDataLoader::load(String p_path) {
 
 		//ICU data found
 		size_t len = file->get_len();
-		PoolByteArray icu_pool = file->get_buffer(len);
+		PackedByteArray icu_pool = file->get_buffer(len);
 		file->close();
 
 		icu_data = (uint8_t *)std::malloc(len);
 		if (!icu_data)
 			return false;
-		std::memcpy(icu_data, icu_pool.read().ptr(), len);
+		std::memcpy(icu_data, icu_pool.ptr(), len);
 
 		udata_setCommonData(icu_data, &err);
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			std::free(icu_data);
 			icu_data = NULL;
 			return false;
@@ -66,7 +66,7 @@ bool TLICUDataLoader::load(String p_path) {
 		err = U_ZERO_ERROR;
 		u_init(&err);
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			std::free(icu_data);
 			icu_data = NULL;
 			return false;

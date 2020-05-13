@@ -12,13 +12,13 @@ For original source, see https://github.com/godotengine/godot/blob/master/scene/
 
 #ifdef GODOT_MODULE
 #include "core/bind/core_bind.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #define File _File
 #else
 #include <File.hpp>
 #include <ResourceLoader.hpp>
-#include <Texture.hpp>
-#include <VisualServer.hpp>
+#include <Texture2D.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -208,7 +208,6 @@ TLBitmapFontFace::TLBitmapFontFace() {
 
 void TLBitmapFontFace::_init() {
 
-	txt_flags = Texture::FLAG_VIDEO_SURFACE;
 	bmp_size = 0;
 	ascent = 0.0f;
 	descent = 0.0f;
@@ -304,9 +303,9 @@ void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_
 
 		ERR_FAIL_COND(gl.id >= texture_cache.size());
 
-		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(p_pos + gl.align * scale, gl.uv.size * scale), texture_cache[gl.id]->get_rid(), gl.uv, p_modulate, false, RID(), false);
+		RenderingServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(p_pos + gl.align * scale, gl.uv.size * scale), texture_cache[gl.id]->get_rid(), gl.uv, p_modulate, false, RID(), RID(), Color(1, 1, 1, 1), false);
 	} else {
-		WARN_PRINTS("Font not loaded or glyph not found!")
+		WARN_PRINT("Font not loaded or glyph not found!");
 	}
 }
 
@@ -364,7 +363,7 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 	Ref<File> file;
 	file.instance();
 	if (file->open(p_resource_path, File::READ) != Error::OK) {
-		ERR_PRINTS("Can't open bitmap font file: \"" + p_resource_path + "\"");
+		ERR_PRINT("Can't open bitmap font file: \"" + p_resource_path + "\"");
 		if (was_loaded) emit_signal(_CHANGED); //Only emit when old valid font is unloaded during this call, to prevent cyclic calls
 		return false;
 	}
@@ -427,18 +426,17 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 				String base_dir = p_resource_path.get_base_dir();
 				String file_name = base_dir.plus_file(keys["file"]);
 #ifdef GODOT_MODULE
-				Ref<Texture> tex = ResourceLoader::load(file_name);
+				Ref<Texture2D> tex = ResourceLoader::load(file_name);
 #else
-				Ref<Texture> tex = cast_to<Texture>(*ResourceLoader::get_singleton()->load(file_name));
+				Ref<Texture2D> tex = cast_to<Texture2D>(*ResourceLoader::get_singleton()->load(file_name));
 #endif
 				if (tex.is_null()) {
-					ERR_PRINTS("Can't load bitmap font texture: \"" + file_name + "\"");
+					ERR_PRINT("Can't load bitmap font texture: \"" + file_name + "\"");
 					clear_cache();
 					file->close();
 					if (was_loaded) emit_signal(_CHANGED);
 					return false;
 				} else {
-					tex->set_flags(txt_flags);
 					texture_cache.push_back(tex);
 				}
 			}
@@ -556,24 +554,3 @@ int TLBitmapFontFace::get_base_size() const {
 	return loaded ? bmp_size : 0;
 }
 
-void TLBitmapFontFace::set_texture_flags(int p_flags) {
-
-	if (txt_flags != p_flags) {
-		txt_flags = p_flags;
-		if (!loaded)
-			load(path);
-		if (loaded) {
-			for (size_t i = 0; i < texture_cache.size(); i++) {
-				Ref<Texture> &tex = texture_cache[i];
-				if (!tex.is_null())
-					tex->set_flags(txt_flags);
-			}
-			emit_signal(_CHANGED);
-		}
-	}
-}
-
-int TLBitmapFontFace::get_texture_flags() const {
-
-	return txt_flags;
-}

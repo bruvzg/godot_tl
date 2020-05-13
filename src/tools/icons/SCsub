@@ -1,78 +1,21 @@
 #!/usr/bin/env python
 
-Import('env')
-from compat import StringIO
+Import("env")
 
-def make_tl_icons_action(target, source, env):
+from platform_methods import run_in_subprocess
+import icons_builders
 
-    import os
+make_icons_builder = Builder(
+    action=run_in_subprocess(icons_builders.make_icons_action), suffix=".h", src_suffix=".svg"
+)
 
-    dst = target[0].srcnode().abspath
-    svg_icons = source
+env["BUILDERS"]["MakeIconsBuilder"] = make_icons_builder
 
-    icons_string = StringIO()
+# Editor's own icons
+icon_sources = Glob("*.svg")
 
-    for f in svg_icons:
+# Module icons
+for module_icons in env.module_icons_paths:
+    icon_sources += Glob("#" + module_icons + "/*.svg")
 
-        fname = str(f)
-
-        icons_string.write('\t"')
-
-        with open(fname, 'rb') as svgf:
-            b = svgf.read(1)
-            while(len(b) == 1):
-                icons_string.write("\\" + str(hex(ord(b)))[1:])
-                b = svgf.read(1)
-
-
-        icons_string.write('"')
-        if fname != svg_icons[-1]:
-            icons_string.write(",")
-        icons_string.write('\n')
-
-    s = StringIO()
-    s.write("/* THIS FILE IS GENERATED DO NOT EDIT */\n")
-    s.write("#ifndef _TL_EDITOR_ICONS_H\n")
-    s.write("#define _TL_EDITOR_ICONS_H\n")
-    s.write("static const int tl_icons_count = {};\n".format(len(svg_icons)))
-    s.write("static const char *tl_icons_sources[] = {\n")
-    s.write(icons_string.getvalue())
-    s.write('};\n\n')
-    s.write("static const char *tl_icons_names[] = {\n")
-
-    # this is used to store the indices of thumbnail icons
-    index = 0
-    for f in svg_icons:
-
-        fname = str(f)
-
-        icon_name = os.path.basename(fname)[5:-4].title().replace("_", "")
-        # some special cases
-        if icon_name in ['Int', 'Bool', 'Float']:
-            icon_name = icon_name.lower()
-
-        s.write('\t"{0}"'.format(icon_name))
-
-        if fname != svg_icons[-1]:
-            s.write(",")
-        s.write('\n')
-
-        index += 1
-
-    s.write('};\n')
-
-    s.write("#endif\n")
-
-    with open(dst, "w") as f:
-        f.write(s.getvalue())
-
-    s.close()
-    icons_string.close()
-
-make_tl_icons_builder = Builder(action=make_tl_icons_action,
-                                    suffix='.h',
-                                    src_suffix='.svg')
-env['BUILDERS']['MakeEditorIconsBuilder'] = make_tl_icons_builder
-env.Alias('tl_icons', [env.MakeEditorIconsBuilder('icons.gen.h', Glob("*.svg"))])
-
-Export('env')
+env.Alias("gdtl_icons", [env.MakeIconsBuilder("icons.gen.h", icon_sources)])

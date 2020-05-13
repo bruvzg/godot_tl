@@ -56,11 +56,9 @@ protected:
 
 	void clear_cache();
 
-	std::vector<Ref<Texture> > texture_cache;
+	std::vector<Ref<Texture2D> > texture_cache;
 	std::map<uint32_t, Glyph> glyph_cache;
 	std::map<KerningPairKey, int> kerning_map;
-
-	int txt_flags;
 
 	mutable std::map<int, TLBitmapFontFaceAtSize *> sizes;
 
@@ -87,9 +85,6 @@ public:
 	virtual double get_height(int p_size) const override;
 
 	virtual int get_base_size() const override;
-
-	virtual void set_texture_flags(int p_flags) override;
-	virtual int get_texture_flags() const override;
 
 	//HB internals
 	bool has_glyph(uint32_t p_codepoint) const;

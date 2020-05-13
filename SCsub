@@ -3,8 +3,6 @@
 Import('env')
 Import('env_modules')
 
-from compat import isbasestring
-
 SConscript('src/SCsub')
 
 if env['builtin_runtime']:

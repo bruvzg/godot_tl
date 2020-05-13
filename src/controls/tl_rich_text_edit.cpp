@@ -10,7 +10,8 @@
 #include "core/os/file_access.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
+#include "scene/main/viewport.h"
 #define File _File
 #else
 #include <File.hpp>
@@ -21,9 +22,9 @@
 #include <MainLoop.hpp>
 #include <OS.hpp>
 #include <StyleBox.hpp>
-#include <Texture.hpp>
+#include <Texture2D.hpp>
 #include <Theme.hpp>
-#include <VisualServer.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -201,7 +202,7 @@ TLRichTextEdit::TLRichTextEdit() {
 TLRichTextEdit::~TLRichTextEdit() {
 
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
-		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+		paragraphs[i]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	}
 }
 
@@ -239,7 +240,7 @@ void TLRichTextEdit::_init() {
 #else
 	new_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
 #endif
-	new_para->connect("paragraph_changed", this, "_update_ctx_rect");
+	new_para->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	paragraphs.push_back(new_para);
 
 #ifdef GODOT_MODULE
@@ -247,17 +248,17 @@ void TLRichTextEdit::_init() {
 #else
 	selection = Ref<TLRichTextEditSelection>::__internal_constructor(TLRichTextEditSelection::_new());
 #endif
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 };
 
 void TLRichTextEdit::clear() {
 
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
-		paragraphs[i]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+		paragraphs[i]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	}
 	paragraphs.clear();
 	if (ime_temp_para.is_valid())
-		ime_temp_para->disconnect("paragraph_changed", this, "_update_ctx_rect");
+		ime_temp_para->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	ime_temp_para = Ref<TLShapedParagraph>();
 
 	selection->caret.p = 0;
@@ -271,7 +272,7 @@ void TLRichTextEdit::clear() {
 #else
 	new_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
 #endif
-	new_para->connect("paragraph_changed", this, "_update_ctx_rect");
+	new_para->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	paragraphs.push_back(new_para);
 }
 
@@ -349,9 +350,9 @@ void TLRichTextEdit::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
-	paragraphs[p_index]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+	paragraphs[p_index]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	paragraphs[p_index] = p_para;
-	paragraphs[p_index]->connect("paragraph_changed", this, "_update_ctx_rect");
+	paragraphs[p_index]->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	_update_ctx_rect();
 }
@@ -374,7 +375,7 @@ int TLRichTextEdit::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 	} else {
 		new_para = p_para;
 	}
-	new_para->connect("paragraph_changed", this, "_update_ctx_rect");
+	new_para->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	_fix_selection();
 	_update_ctx_rect();
@@ -392,7 +393,7 @@ void TLRichTextEdit::remove_paragraph(int p_index) {
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
-	paragraphs[p_index]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+	paragraphs[p_index]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	paragraphs.erase(paragraphs.begin() + p_index);
 	_fix_selection();
 	_update_ctx_rect();
@@ -433,10 +434,10 @@ Ref<TLRichTextEditSelection> TLRichTextEdit::get_selection() const {
 
 void TLRichTextEdit::set_selection(Ref<TLRichTextEditSelection> p_selection) {
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
 	_fix_selection();
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 }
@@ -1018,7 +1019,7 @@ void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, cons
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
 			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
-			paragraphs[first_para + 1]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
 
@@ -1033,15 +1034,15 @@ void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, cons
 	p_selection->start = p_selection->end;
 	p_selection->caret = p_selection->end;
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 	update();
 }
 
-void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1051,7 +1052,7 @@ void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, cons
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
 			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
-			paragraphs[first_para + 1]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
 
@@ -1066,15 +1067,15 @@ void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, cons
 	p_selection->start = p_selection->end;
 	p_selection->caret = p_selection->end;
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 	update();
 }
 
-void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1084,7 +1085,7 @@ void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, con
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
 			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
-			paragraphs[first_para + 1]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
 
@@ -1099,15 +1100,15 @@ void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, con
 	p_selection->start = p_selection->end;
 	p_selection->caret = p_selection->end;
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 	update();
 }
 
-void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text) {
+void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
 
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
@@ -1117,7 +1118,7 @@ void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, con
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
 			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
-			paragraphs[first_para + 1]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
 
@@ -1132,9 +1133,9 @@ void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, con
 	p_selection->start = p_selection->end;
 	p_selection->caret = p_selection->end;
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 	update();
@@ -1150,7 +1151,7 @@ void TLRichTextEdit::replace_sstring(Ref<TLRichTextEditSelection> p_selection, R
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
 			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
-			paragraphs[first_para + 1]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
 
@@ -1165,9 +1166,9 @@ void TLRichTextEdit::replace_sstring(Ref<TLRichTextEditSelection> p_selection, R
 	p_selection->start = p_selection->end;
 	p_selection->caret = p_selection->end;
 
-	selection->disconnect("selection_changed", this, "_update_ctx_rect");
+	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
-	selection->connect("selection_changed", this, "_update_ctx_rect");
+	selection->connect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 
 	emit_signal("cursor_changed");
 	update();
@@ -1222,7 +1223,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 	if (k) {
 #endif
 		if (k->is_pressed()) {
-			unsigned int code = k->get_scancode();
+			unsigned int code = k->get_keycode();
 
 			if (code == GLOBAL_CONST(KEY_LEFT)) {
 				if (k->get_command()) {
@@ -1282,7 +1283,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 				if (!readonly) {
 					if (k->get_command() && !k->get_shift() && !k->get_alt()) {
 						//plain text paste
-						String clipboard = OS::get_singleton()->get_clipboard();
+						String clipboard = DisplayServer::get_singleton()->clipboard_get();
 						replace_text(selection, clipboard);
 						accept_event();
 						emit_signal("cursor_changed");
@@ -1304,7 +1305,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 							}
 							text += "\n\n";
 						}
-						OS::get_singleton()->set_clipboard(text);
+						DisplayServer::get_singleton()->clipboard_set(text);
 					}
 				}
 			} else if (code == GLOBAL_CONST(KEY_X)) {
@@ -1322,7 +1323,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 							}
 							text += "\n\n";
 						}
-						OS::get_singleton()->set_clipboard(text);
+						DisplayServer::get_singleton()->clipboard_set(text);
 
 						replace_text(selection, "");
 						accept_event();
@@ -1341,7 +1342,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 #else
 						_first = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
 #endif
-						_first->connect("paragraph_changed", this, "_update_ctx_rect");
+						_first->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 						_first->copy_properties(paragraphs[selection->start.p]);
 						_first->set_string(paragraphs[selection->start.p]->get_string()->substr(0, selection->start.o, TEXT_TRIM_BREAK));
 
@@ -1351,12 +1352,12 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 #else
 						_second = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
 #endif
-						_second->connect("paragraph_changed", this, "_update_ctx_rect");
+						_second->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 						_second->copy_properties(paragraphs[selection->end.p]);
 						_second->set_string(paragraphs[selection->end.p]->get_string()->substr(selection->end.o, paragraphs[selection->end.p]->get_string()->length(), TEXT_TRIM_BREAK));
 
 						for (int i = selection->start.p; i <= selection->end.p; i++) {
-							paragraphs[selection->start.p]->disconnect("paragraph_changed", this, "_update_ctx_rect");
+							paragraphs[selection->start.p]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 							paragraphs.erase(paragraphs.begin() + selection->start.p);
 						}
 						paragraphs.insert(paragraphs.begin() + selection->start.p, _second);
@@ -1396,7 +1397,7 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 
 			if (!k->get_alt() && !k->get_command() && !k->get_metakey()) {
 				if (!readonly) {
-					if (k->get_unicode() >= 32 && k->get_scancode() != GLOBAL_CONST(KEY_DELETE)) {
+					if (k->get_unicode() >= 32 && k->get_keycode() != GLOBAL_CONST(KEY_DELETE)) {
 #ifdef GODOT_MODULE
 						CharType ucodestr[2] = { (CharType)k->get_unicode(), 0 };
 						replace_text(selection, ucodestr);
@@ -1490,7 +1491,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 	Size2 psize = p_para->get_size();
 
 	//draw current paragraph background
-	VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(margin[MARGIN_LEFT], p_offset), Size2(psize.x + p_para->get_indent(), psize.y)), p_para->get_back_color());
+	RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(margin[MARGIN_LEFT], p_offset), Size2(psize.x + p_para->get_indent(), psize.y)), p_para->get_back_color());
 
 	if (p_para->get_lines() == 0) {
 		//empty paragraph
@@ -1509,7 +1510,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 					caret_pos = n_caret_pos;
 					emit_signal("cursor_changed");
 				}
-				VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_string()->get_height() + p_para->get_line_spacing())), cursor_color);
+				RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_string()->get_height() + p_para->get_line_spacing())), cursor_color);
 			}
 		}
 		p_offset += p_para->get_string()->get_height() * p_para->get_line_spacing();
@@ -1554,7 +1555,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 								if (_start != _end && _start != -1 && _end != -1) {
 									std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(_start, _end);
 									for (int64_t k = 0; k < (int64_t)rects.size(); k++) {
-										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), ime_selection_color);
+										RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), ime_selection_color);
 									}
 								}
 
@@ -1582,7 +1583,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 											caret_pos = n_caret_pos;
 											emit_signal("cursor_changed");
 										}
-										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(_rect.size.width, 2)), cursor_color);
+										RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(_rect.size.width, 2)), cursor_color);
 									}
 								}
 							}
@@ -1619,7 +1620,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 							if (_start != _end && _start != -1 && _end != -1) {
 								std::vector<Rect2> rects = p_para->get_line(j)->get_highlight_shapes(MIN(_start, _end), MAX(_start, _end));
 								for (int64_t k = 0; k < (int64_t)rects.size(); k++) {
-									VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), selection_color);
+									RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent()) + rects[k].position, rects[k].size), selection_color);
 								}
 							}
 						}
@@ -1641,7 +1642,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 											emit_signal("cursor_changed");
 										}
 
-										VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
+										RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(2, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
 									}
 								} else {
 									Point2 n_caret_pos = Point2(p_para->get_indent() + x_ofs, p_offset - p_para->get_line(j)->get_ascent());
@@ -1649,7 +1650,7 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 										caret_pos = n_caret_pos;
 										emit_signal("cursor_changed");
 									}
-									VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
+									RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(caret_pos, Size2(1, p_para->get_line(j)->get_height() + p_para->get_line_spacing())), cursor_color);
 								}
 							}
 						}
@@ -1675,7 +1676,7 @@ void TLRichTextEdit::_notification(int p_what) {
 			Ref<Theme> theme = get_theme();
 			if (theme.is_valid()) {
 #ifdef GODOT_MODULE
-				Ref<StyleBox> style = get_stylebox("normal", "TextEdit");
+				Ref<StyleBox> style = get_theme_stylebox("normal", "TextEdit");
 				if (style.is_valid()) {
 					style->draw(ci, Rect2(Point2(), size));
 				}
@@ -1693,9 +1694,9 @@ void TLRichTextEdit::_notification(int p_what) {
 				selection_color = Color(0, 0.5, 0.5, 0.5);
 			}
 
-			VisualServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
+			RenderingServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
 
-			VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(margin[MARGIN_LEFT], margin[MARGIN_TOP]), content_size), bg_color);
+			RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(margin[MARGIN_LEFT], margin[MARGIN_TOP]), content_size), bg_color);
 
 			//real draw
 			float y_ofs = margin[MARGIN_TOP];
@@ -1715,20 +1716,18 @@ void TLRichTextEdit::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_FOCUS_ENTER: {
 
-			if (OS::get_singleton()->has_virtual_keyboard())
 #ifdef GODOT_MODULE
-				OS::get_singleton()->show_virtual_keyboard(String(), get_global_rect());
-#else
-				OS::get_singleton()->show_virtual_keyboard(String());
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+				DisplayServer::get_singleton()->virtual_keyboard_show(String(), get_global_rect(), 0);
 #endif
 
 			if (!readonly && selectable) {
-				OS::get_singleton()->set_ime_active(true);
+				DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
 				float y_ofs = margin[MARGIN_TOP];
 				for (int i = 0; i <= selection->start.p; i++) {
 					y_ofs = y_ofs + paragraphs[i]->get_size().y + para_spacing;
 				}
-				OS::get_singleton()->set_ime_position(get_global_position() + Point2(0, y_ofs)); // TODO + cursor_pos.x
+				DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + Point2(0, y_ofs), get_viewport()->get_window_id()); // TODO + cursor_pos.x
 			}
 
 			in_focus = true;
@@ -1736,15 +1735,15 @@ void TLRichTextEdit::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_FOCUS_EXIT: {
 
-			if (OS::get_singleton()->has_virtual_keyboard())
-				OS::get_singleton()->hide_virtual_keyboard();
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+				DisplayServer::get_singleton()->virtual_keyboard_hide();
 
-			OS::get_singleton()->set_ime_position(Point2());
-			OS::get_singleton()->set_ime_active(false);
+			DisplayServer::get_singleton()->window_set_ime_position(Point2(), get_viewport()->get_window_id());
+			DisplayServer::get_singleton()->window_set_ime_active(false, get_viewport()->get_window_id());
 
 			//0. free existing ime paragraph
 			if (ime_temp_para.is_valid()) {
-				ime_temp_para->disconnect("paragraph_changed", this, "_update_ctx_rect");
+				ime_temp_para->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 				ime_temp_para = Ref<TLShapedParagraph>();
 			}
 
@@ -1757,22 +1756,22 @@ void TLRichTextEdit::_notification(int p_what) {
 
 				//0. free existing ime paragraph
 				if (ime_temp_para.is_valid()) {
-					ime_temp_para->disconnect("paragraph_changed", this, "_update_ctx_rect");
+					ime_temp_para->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 					ime_temp_para = Ref<TLShapedParagraph>();
 				}
 
 				//1. construct ime paragraph
-				String ime_text = OS::get_singleton()->get_ime_text();
+				String ime_text = DisplayServer::get_singleton()->ime_get_text();
 				if (ime_text != "") {
-					ime_cursor = OS::get_singleton()->get_ime_selection().x;
-					ime_selection_len = OS::get_singleton()->get_ime_selection().y;
+					ime_cursor = DisplayServer::get_singleton()->ime_get_selection().x;
+					ime_selection_len = DisplayServer::get_singleton()->ime_get_selection().y;
 
 #ifdef GODOT_MODULE
 					ime_temp_para.instance();
 #else
 					ime_temp_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
 #endif
-					ime_temp_para->connect("paragraph_changed", this, "_update_ctx_rect");
+					ime_temp_para->connect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 					ime_temp_para->copy_properties(paragraphs[selection->start.p]);
 					ime_temp_para->get_string()->add_sstring(paragraphs[selection->start.p]->get_string());
 
@@ -1799,7 +1798,7 @@ void TLRichTextEdit::_notification(int p_what) {
 					for (int i = 0; i <= selection->start.p; i++) {
 						y_ofs = y_ofs + paragraphs[i]->get_size().y + para_spacing;
 					}
-					OS::get_singleton()->set_ime_position(get_global_position() + Point2(0, y_ofs)); // TODO  + cursor_pos.x
+					DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + Point2(0, y_ofs), get_viewport()->get_window_id()); // TODO  + cursor_pos.x
 				}
 				update();
 			}
@@ -1913,7 +1912,7 @@ void TLRichTextEdit::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_paragraph_spacing", "value"), &TLRichTextEdit::set_paragraph_spacing);
 	ClassDB::bind_method(D_METHOD("get_paragraph_spacing"), &TLRichTextEdit::get_paragraph_spacing);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "paragraph_spacing"), "set_paragraph_spacing", "get_paragraph_spacing");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "paragraph_spacing"), "set_paragraph_spacing", "get_paragraph_spacing");
 
 	ClassDB::bind_method(D_METHOD("get_paragraphs"), &TLRichTextEdit::get_paragraphs);
 	ClassDB::bind_method(D_METHOD("get_paragraph", "index"), &TLRichTextEdit::get_paragraph);

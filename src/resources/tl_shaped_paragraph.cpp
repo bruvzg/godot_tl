@@ -14,7 +14,7 @@ TLShapedParagraph::TLShapedParagraph() {
 TLShapedParagraph::~TLShapedParagraph() {
 
 	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
-		line_ctx[i]->disconnect("string_changed", this, "_line_change_warning");
+		line_ctx[i]->disconnect("string_changed", callable_mp(this, &TLShapedParagraph::_line_change_warning));
 	}
 }
 
@@ -26,7 +26,7 @@ void TLShapedParagraph::_init() {
 	ctx = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
 #endif
 
-	ctx->connect("string_changed", this, "_update_paragraph");
+	ctx->connect("string_changed", callable_mp(this, &TLShapedParagraph::_update_paragraph));
 
 	width = -1.0f;
 	max_line_width = 0.0f;
@@ -58,14 +58,14 @@ void TLShapedParagraph::copy_properties(Ref<TLShapedParagraph> p_source) {
 
 void TLShapedParagraph::_line_change_warning() {
 
-	WARN_PRINTS("DO NOT EDIT")
+	WARN_PRINT("DO NOT EDIT");
 	_update_paragraph(); //regenerate changed lines
 }
 
 void TLShapedParagraph::_update_paragraph() {
 
 	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
-		line_ctx[i]->disconnect("string_changed", this, "_line_change_warning");
+		line_ctx[i]->disconnect("string_changed", callable_mp(this, &TLShapedParagraph::_line_change_warning));
 	}
 	line_ctx.clear();
 	word_bounds = ctx->break_words();
@@ -86,7 +86,7 @@ void TLShapedParagraph::_update_paragraph() {
 		for (int64_t i = 0; i < (int64_t)line_bounds.size(); i++) {
 			Ref<TLShapedAttributedString> line = ctx->substr(prev, line_bounds[i], TEXT_TRIM_BREAK);
 			line->shape();
-			line->connect("string_changed", this, "_line_change_warning");
+			line->connect("string_changed", callable_mp(this, &TLShapedParagraph::_line_change_warning));
 			if ((halign == PARA_HALIGN_FILL) && (width > 0.0f)) {
 				line->extend_to_width(width, jst_flags);
 			}
@@ -195,12 +195,12 @@ void TLShapedParagraph::set_string(Ref<TLShapedAttributedString> p_string) {
 #else
 		ctx = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
 #endif
-		ctx->connect("string_changed", this, "_update_paragraph");
+		ctx->connect("string_changed", callable_mp(this, &TLShapedParagraph::_update_paragraph));
 		_update_paragraph();
 	} else if (ctx != p_string) {
-		ctx->disconnect("string_changed", this, "_update_paragraph");
+		ctx->disconnect("string_changed", callable_mp(this, &TLShapedParagraph::_update_paragraph));
 		ctx = p_string;
-		ctx->connect("string_changed", this, "_update_paragraph");
+		ctx->connect("string_changed", callable_mp(this, &TLShapedParagraph::_update_paragraph));
 		_update_paragraph();
 	}
 }
@@ -275,11 +275,11 @@ void TLShapedParagraph::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_width", "width"), &TLShapedParagraph::set_width);
 	ClassDB::bind_method(D_METHOD("get_width"), &TLShapedParagraph::get_width);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "width"), "set_width", "get_width");
 
 	ClassDB::bind_method(D_METHOD("set_indent", "indent"), &TLShapedParagraph::set_indent);
 	ClassDB::bind_method(D_METHOD("get_indent"), &TLShapedParagraph::get_indent);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "indent"), "set_indent", "get_indent");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "indent"), "set_indent", "get_indent");
 
 	ClassDB::bind_method(D_METHOD("set_back_color", "bcolor"), &TLShapedParagraph::set_back_color);
 	ClassDB::bind_method(D_METHOD("get_back_color"), &TLShapedParagraph::get_back_color);
@@ -287,7 +287,7 @@ void TLShapedParagraph::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_line_spacing", "line_spacing"), &TLShapedParagraph::set_line_spacing);
 	ClassDB::bind_method(D_METHOD("get_line_spacing"), &TLShapedParagraph::get_line_spacing);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "line_spacing"), "set_line_spacing", "get_line_spacing");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "line_spacing"), "set_line_spacing", "get_line_spacing");
 
 	ClassDB::bind_method(D_METHOD("set_string", "string"), &TLShapedParagraph::set_string);
 	ClassDB::bind_method(D_METHOD("get_string"), &TLShapedParagraph::get_string);

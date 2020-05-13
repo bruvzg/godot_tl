@@ -6,17 +6,12 @@
 - Version: 1.3.14
 - License: LGPL 2.1+ or GPL 2 or MPL
 
-## freetype
-
-- Upstream: https://www.freetype.org
-- Version: 2.10.2
-- License: FreeType License (BSD-like) or GPL 2
-
 ## HarfBuzz
 
 - Upstream: https://github.com/behdad/harfbuzz
 - Version: 2.6.6
 - License: MIT-like License
+- Note: hb_mutex.hh is replace with std::mutext implementation.
 
 ## ICU4C
 

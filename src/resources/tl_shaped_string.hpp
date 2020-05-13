@@ -278,20 +278,20 @@ public:
 	virtual void add_text(const String p_text);
 	virtual void replace_text(int64_t p_start, int64_t p_end, const String p_text);
 
-	PoolByteArray get_utf8() const;
-	void set_utf8(const PoolByteArray p_text);
-	virtual void add_utf8(const PoolByteArray p_text);
-	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PoolByteArray p_text);
+	PackedByteArray get_utf8() const;
+	void set_utf8(const PackedByteArray p_text);
+	virtual void add_utf8(const PackedByteArray p_text);
+	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
 
-	PoolByteArray get_utf16() const;
-	void set_utf16(const PoolByteArray p_text);
-	virtual void add_utf16(const PoolByteArray p_text);
-	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PoolByteArray p_text);
+	PackedByteArray get_utf16() const;
+	void set_utf16(const PackedByteArray p_text);
+	virtual void add_utf16(const PackedByteArray p_text);
+	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
 
-	PoolByteArray get_utf32() const;
-	void set_utf32(const PoolByteArray p_text);
-	virtual void add_utf32(const PoolByteArray p_text);
-	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PoolByteArray p_text);
+	PackedByteArray get_utf32() const;
+	void set_utf32(const PackedByteArray p_text);
+	virtual void add_utf32(const PackedByteArray p_text);
+	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
 
 	virtual void add_sstring(Ref<TLShapedString> p_text);
 	virtual void replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text);

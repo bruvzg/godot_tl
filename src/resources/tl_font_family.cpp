@@ -389,7 +389,7 @@ TLFontFallbackIterator TLFontFamily::get_face_for_language(String p_style, hb_la
 void TLFontFamily::add_face(String p_style, Ref<TLFontFace> p_ref) {
 
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
-		ERR_PRINTS("Type mismatch");
+		ERR_PRINT("Type mismatch");
 		return;
 	}
 
@@ -416,7 +416,7 @@ void TLFontFamily::add_face(String p_style, Ref<TLFontFace> p_ref) {
 void TLFontFamily::add_face_unlinked(String p_style, Ref<TLFontFace> p_ref) {
 
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
-		ERR_PRINTS("Type mismatch");
+		ERR_PRINT("Type mismatch");
 		return;
 	}
 
@@ -434,7 +434,7 @@ void TLFontFamily::add_face_unlinked(String p_style, Ref<TLFontFace> p_ref) {
 void TLFontFamily::add_face_for_script(String p_style, Ref<TLFontFace> p_ref, String p_script) {
 
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
-		ERR_PRINTS("Type mismatch");
+		ERR_PRINT("Type mismatch");
 		return;
 	}
 
@@ -453,7 +453,7 @@ void TLFontFamily::add_face_for_script(String p_style, Ref<TLFontFace> p_ref, St
 void TLFontFamily::add_face_for_language(String p_style, Ref<TLFontFace> p_ref, String p_lang) {
 
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
-		ERR_PRINTS("Type mismatch");
+		ERR_PRINT("Type mismatch");
 		return;
 	}
 
@@ -519,7 +519,7 @@ void TLFontFamily::_font_changed() {
 void TLFontFamily::_inc_ref(Ref<TLFontFace> &p_font) {
 	if (p_font.is_null()) return;
 	if (_ref_count.count(p_font) == 0) {
-		p_font->connect(_CHANGED, this, "_font_changed");
+		p_font->connect(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed));
 		_ref_count[p_font] = 1;
 	} else {
 		_ref_count[p_font]++;
@@ -529,8 +529,8 @@ void TLFontFamily::_inc_ref(Ref<TLFontFace> &p_font) {
 void TLFontFamily::_dec_ref(Ref<TLFontFace> &p_font) {
 	if (p_font.is_null()) return;
 	if (_ref_count.count(p_font) == 1) {
-		if (p_font->is_connected(_CHANGED, this, "_font_changed")) {
-			p_font->disconnect(_CHANGED, this, "_font_changed");
+		if (p_font->is_connected(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed))) {
+			p_font->disconnect(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed));
 		}
 		_ref_count.erase(p_font);
 	} else {

@@ -40,22 +40,22 @@ protected:
 	static unsigned long ft_stream_io(FT_Stream p_stream, unsigned long p_offset, unsigned char *p_buffer, unsigned long p_count);
 	static void ft_stream_close(FT_Stream p_stream);
 
-	//Texture cache
-	struct GlyphTexture {
-		PoolByteArray imgdata;
+	//Texture2D cache
+	struct GlyphTexture2D {
+		PackedByteArray imgdata;
 		//Image::Format format;
 		//RID rid;
 		Ref<ImageTexture> image;
 		std::vector<int> offsets;
 		int texture_size;
 
-		GlyphTexture() {
+		GlyphTexture2D() {
 			image.instance();
 			texture_size = 0;
 		};
 	};
 
-	struct TexturePosition {
+	struct Texture2DPosition {
 		int index;
 		int x;
 		int y;
@@ -75,7 +75,7 @@ protected:
 		}
 	};
 
-	TexturePosition find_texture_pos_for_glyph(int p_color_size, Image::Format p_image_format, int p_width, int p_height);
+	Texture2DPosition find_texture_pos_for_glyph(int p_color_size, Image::Format p_image_format, int p_width, int p_height);
 	Glyph bitmap_to_glyph(FT_Bitmap p_bitmap, int p_yofs, int p_xofs);
 	void clear_cache();
 
@@ -92,7 +92,7 @@ protected:
 	float descent;
 	float height;
 
-	std::vector<GlyphTexture> texture_cache;
+	std::vector<GlyphTexture2D> texture_cache;
 	std::map<uint32_t, Glyph> glyph_cache;
 	std::map<uint32_t, Glyph> glyph_outline_cache;
 
@@ -123,7 +123,6 @@ public:
 	double get_descent() const;
 	double get_height() const;
 
-	void set_texture_flags(int p_flags);
 	void set_hinting(int p_hinting);
 	void set_force_autohinter(bool p_force);
 	void set_oversampling(float p_oversampling);
@@ -136,7 +135,6 @@ protected:
 	float oversampling;
 	DynamicFaceHinting hinting;
 	bool force_autohinter;
-	int txt_flags;
 
 	const uint8_t *font_mem;
 	int font_mem_size;
@@ -168,9 +166,6 @@ public:
 	virtual double get_ascent(int p_size) const override;
 	virtual double get_descent(int p_size) const override;
 	virtual double get_height(int p_size) const override;
-
-	virtual void set_texture_flags(int p_flags) override;
-	virtual int get_texture_flags() const override;
 
 	void set_hinting(int p_hinting);
 	int get_hinting() const;

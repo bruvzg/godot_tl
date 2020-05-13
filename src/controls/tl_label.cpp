@@ -36,7 +36,7 @@
 #include <StyleBox.hpp>
 #include <Theme.hpp>
 #include <TranslationServer.hpp>
-#include <VisualServer.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 float TLLabel::_get_base_font_height() const {
@@ -105,7 +105,7 @@ void TLLabel::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
 
 		if (clip) {
-			VisualServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
+			RenderingServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
 		}
 
 		if (_lines_dirty)
@@ -119,12 +119,12 @@ void TLLabel::_notification(int p_what) {
 		StringName cname = get_class_name();
 		if (cname == "TLLabel") cname = "Label";
 
-		Ref<StyleBox> style = get_stylebox("normal", cname);
-		Color font_color = get_color("font_color", cname);
-		Color font_color_shadow = get_color("font_color_shadow", cname);
-		bool use_outline = get_constant("shadow_as_outline", cname);
-		Point2 shadow_ofs(get_constant("shadow_offset_x", cname), get_constant("shadow_offset_y", cname));
-		int line_spacing = get_constant("line_spacing", cname);
+		Ref<StyleBox> style = get_theme_stylebox("normal", cname);
+		Color font_color = get_theme_color("font_color", cname);
+		Color font_color_shadow = get_theme_color("font_color_shadow", cname);
+		bool use_outline = get_theme_constant("shadow_as_outline", cname);
+		Point2 shadow_ofs(get_theme_constant("shadow_offset_x", cname), get_theme_constant("shadow_offset_y", cname));
+		int line_spacing = get_theme_constant("line_spacing", cname);
 #else
 		Ref<Theme> theme = get_theme();
 		if (theme.is_null()) {
@@ -235,7 +235,7 @@ Size2 TLLabel::get_minimum_size() const {
 	StringName cname = get_class_name();
 	if (cname == "TLLabel") cname = "Label";
 
-	Size2 min_style = get_stylebox("normal", cname)->get_minimum_size();
+	Size2 min_style = get_theme_stylebox("normal", cname)->get_minimum_size();
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -274,7 +274,7 @@ int TLLabel::get_visible_line_count() const {
 	StringName cname = get_class_name();
 	if (cname == "TLLabel") cname = "Label";
 
-	int line_spacing = get_constant("line_spacing", cname);
+	int line_spacing = get_theme_constant("line_spacing", cname);
 #else
 	int line_spacing = get_constant("line_spacing", "Label");
 #endif
@@ -287,7 +287,7 @@ int TLLabel::get_visible_line_count() const {
 	for (int64_t i = lines_skipped; i < (int64_t)s_lines.size(); i++) {
 		total_h += s_lines[i]->get_height() + line_spacing;
 #ifdef GODOT_MODULE
-		if (total_h > (get_size().height - get_stylebox("normal", cname)->get_minimum_size().height + line_spacing)) {
+		if (total_h > (get_size().height - get_theme_stylebox("normal", cname)->get_minimum_size().height + line_spacing)) {
 			break;
 		}
 #else
@@ -318,8 +318,8 @@ void TLLabel::_reshape_lines() {
 	StringName cname = get_class_name();
 	if (cname == "TLLabel") cname = "Label";
 
-	Ref<StyleBox> style = get_stylebox("normal", cname);
-	int line_spacing = get_constant("line_spacing", cname);
+	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
+	int line_spacing = get_theme_constant("line_spacing", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -666,7 +666,7 @@ void TLLabel::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "uppercase"), "set_uppercase", "is_uppercase");
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "visible_characters", PROPERTY_HINT_RANGE, "-1,128000,1", PROPERTY_USAGE_EDITOR), "set_visible_characters", "get_visible_characters");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent_visible", PROPERTY_HINT_RANGE, "0,1,0.001"), "set_percent_visible", "get_percent_visible");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "percent_visible", PROPERTY_HINT_RANGE, "0,1,0.001"), "set_percent_visible", "get_percent_visible");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "lines_skipped", PROPERTY_HINT_RANGE, "0,999,1"), "set_lines_skipped", "get_lines_skipped");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_lines_visible", PROPERTY_HINT_RANGE, "-1,999,1"), "set_max_lines_visible", "get_max_lines_visible");
 }
@@ -787,7 +787,7 @@ TLLabel::TLLabel() {
 void TLLabel::_init() {
 
 	s_paragraph.instance();
-	s_paragraph->connect("string_changed", this, "_font_changed");
+	s_paragraph->connect("string_changed", callable_mp(this, &TLLabel::_font_changed));
 
 	base_direction = TEXT_DIRECTION_AUTO;
 	ot_features = "";

@@ -51,17 +51,17 @@ namespace godot {};
 #define CLAMP(m_a, m_min, m_max) (((m_a) < (m_min)) ? (m_min) : (((m_a) > (m_max)) ? m_max : m_a))
 #endif
 
-#ifdef WARN_PRINTS
-#undef WARN_PRINTS
+#ifdef WARN_PRINT
+#undef WARN_PRINT
 #endif
 
-#define WARN_PRINTS(m_text) godot::api->godot_print_warning(String(m_text).utf8().get_data(), __FUNCTION__, __FILE__, __LINE__);
+#define WARN_PRINT(m_text) godot::api->godot_print_warning(String(m_text).utf8().get_data(), __FUNCTION__, __FILE__, __LINE__);
 
-#ifdef ERR_PRINTS
-#undef ERR_PRINTS
+#ifdef ERR_PRINT
+#undef ERR_PRINT
 #endif
 
-#define ERR_PRINTS(m_text) godot::api->godot_print_error(String(m_text).utf8().get_data(), __FUNCTION__, __FILE__, __LINE__);
+#define ERR_PRINT(m_text) godot::api->godot_print_error(String(m_text).utf8().get_data(), __FUNCTION__, __FILE__, __LINE__);
 
 #ifndef _ALWAYS_INLINE_
 #if defined(__GNUC__) && (__GNUC__ >= 4)

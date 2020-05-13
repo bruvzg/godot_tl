@@ -20,7 +20,7 @@ enum TextAttribute {
 	TEXT_ATTRIBUTE_FONT_SIZE = 3, //int
 	TEXT_ATTRIBUTE_FONT_FEATURES = 4, //String - 4 letter tag comma separated list
 	TEXT_ATTRIBUTE_LANGUAGE = 5, //String - 4 letter tag + css mode
-	TEXT_ATTRIBUTE_REPLACEMENT_IMAGE = 6, //Ref<Texture>
+	TEXT_ATTRIBUTE_REPLACEMENT_IMAGE = 6, //Ref<Texture2D>
 	TEXT_ATTRIBUTE_REPLACEMENT_RECT = 7, //Size2
 	TEXT_ATTRIBUTE_REPLACEMENT_ID = 8, //Variant
 	TEXT_ATTRIBUTE_REPLACEMENT_VALIGN = 9, //int (TextVAlign)
@@ -82,7 +82,7 @@ protected:
 	virtual void _shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font, bool p_font_override = false);
 	virtual void _shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font) override;
 	virtual void _shape_rect_run(hb_direction_t p_run_direction, const Size2 &p_size, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
-	virtual void _shape_image_run(hb_direction_t p_run_direction, const Ref<Texture> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
+	virtual void _shape_image_run(hb_direction_t p_run_direction, const Ref<Texture2D> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
 
 public:
 	virtual float get_cluster_face_size(int64_t p_index) const override;
@@ -93,9 +93,9 @@ public:
 	virtual void replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) override;
 
 	virtual void replace_text(int64_t p_start, int64_t p_end, const String p_text) override;
-	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PoolByteArray p_text) override;
-	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PoolByteArray p_text) override;
-	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PoolByteArray p_text) override;
+	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
+	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
+	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
 
 	virtual void add_attribute(int64_t p_attribute, Variant p_value, int64_t p_start, int64_t p_end);
 	virtual void remove_attribute(int64_t p_attribute, int64_t p_start, int64_t p_end);

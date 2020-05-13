@@ -86,17 +86,17 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		HBoxContainer *hbox = memnew(HBoxContainer);
 		Button *rem_btn = memnew(Button);
 		rem_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-		rem_btn->connect("pressed", this, "_clear", varray(p_object));
+		rem_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_clear), varray(p_object));
 		rem_btn->set_text("Clear");
 		hbox->add_child(rem_btn);
 		Button *cln_btn = memnew(Button);
 		cln_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-		cln_btn->connect("pressed", this, "_reject", varray(p_object));
+		cln_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_reject), varray(p_object));
 		cln_btn->set_text("Remove");
 		hbox->add_child(cln_btn);
 		Button *new_btn = memnew(Button);
 		new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-		new_btn->connect("pressed", this, "_commit", varray(p_object));
+		new_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_commit), varray(p_object));
 		new_btn->set_text("Add");
 		hbox->add_child(new_btn);
 		add_custom_control(hbox);
@@ -110,7 +110,7 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		hbox->add_child(new_name);
 		Button *new_btn = memnew(Button);
 		new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-		new_btn->connect("pressed", this, "_new_style", varray(p_object, new_name));
+		new_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_new_style), varray(p_object, new_name));
 		new_btn->set_text("Add style");
 		hbox->add_child(new_btn);
 		add_custom_control(hbox);
@@ -127,7 +127,7 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		} else if (tokens[1] == "_remove_style") {
 			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[0] + "\" style");
-			rem_btn->connect("pressed", this, "_remove_style", varray(p_object, tokens[0]));
+			rem_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_remove_style), varray(p_object, tokens[0]));
 			add_custom_control(rem_btn);
 			return true;
 		} else if (tokens[1] == "_add_lang") {
@@ -139,7 +139,7 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			hbox->add_child(new_name);
 			Button *new_btn = memnew(Button);
 			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-			new_btn->connect("pressed", this, "_new_lang", varray(p_object, tokens[0], new_name));
+			new_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_new_lang), varray(p_object, tokens[0], new_name));
 			new_btn->set_text("Add language");
 			hbox->add_child(new_btn);
 			add_custom_control(hbox);
@@ -153,7 +153,7 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 			hbox->add_child(new_name);
 			Button *new_btn = memnew(Button);
 			new_btn->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-			new_btn->connect("pressed", this, "_new_script", varray(p_object, tokens[0], new_name));
+			new_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_new_script), varray(p_object, tokens[0], new_name));
 			new_btn->set_text("Add script");
 			hbox->add_child(new_btn);
 			add_custom_control(hbox);
@@ -163,14 +163,14 @@ bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant
 		if (tokens[3] == "_remove_script" && tokens[1] == "script") {
 			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[2] + "\" script");
-			rem_btn->connect("pressed", this, "_remove_script", varray(p_object, tokens[0], tokens[2]));
+			rem_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_remove_script), varray(p_object, tokens[0], tokens[2]));
 			add_custom_control(rem_btn);
 			return true;
 		}
 		if (tokens[3] == "_remove_lang" && tokens[1] == "lang") {
 			Button *rem_btn = memnew(Button);
 			rem_btn->set_text("Remove \"" + tokens[2] + "\" language");
-			rem_btn->connect("pressed", this, "_remove_lang", varray(p_object, tokens[0], tokens[2]));
+			rem_btn->connect("pressed", callable_mp(this, &EditorInspectorPluginTLFontFamily::_remove_lang), varray(p_object, tokens[0], tokens[2]));
 			add_custom_control(rem_btn);
 			return true;
 		}
@@ -190,7 +190,7 @@ void TLFontFamilyPreview::_ff_changed(const String &p_text) {
 }
 
 void TLFontFamilyPreview::_redraw() {
-	VisualServer::get_singleton()->canvas_item_add_rect(preview->get_canvas_item(), Rect2(Point2(), preview->get_size()), Color(0.8, 0.8, 0.8, 1));
+	RenderingServer::get_singleton()->canvas_item_add_rect(preview->get_canvas_item(), Rect2(Point2(), preview->get_size()), Color(0.8, 0.8, 0.8, 1));
 	str->draw(preview->get_canvas_item(), Point2((preview->get_rect().size.x - str->get_width()) / 2, (preview->get_rect().size.y - str->get_height()) / 2 + str->get_ascent()), Color(0, 0, 0, 1));
 }
 
@@ -210,10 +210,10 @@ TLFontFamilyPreview::TLFontFamilyPreview() {
 	str->set_text("Etaoin shrdlu");
 	preview = memnew(Control);
 	preview->set_custom_minimum_size(Size2(0, 50 * EDSCALE));
-	preview->connect("draw", this, "_redraw");
+	preview->connect("draw", callable_mp(this, &TLFontFamilyPreview::_redraw));
 	add_child(preview);
 	ctl = memnew(LineEdit);
 	ctl->set_text("Etaoin shrdlu");
-	ctl->connect("text_changed", this, "_ff_changed");
+	ctl->connect("text_changed", callable_mp(this, &TLFontFamilyPreview::_ff_changed));
 	add_child(ctl);
 }

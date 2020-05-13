@@ -71,9 +71,6 @@ public:
 
 	virtual int get_base_size() const;
 
-	virtual void set_texture_flags(int p_flags);
-	virtual int get_texture_flags() const;
-
 #ifdef GODOT_MODULE
 	static void _bind_methods();
 #else

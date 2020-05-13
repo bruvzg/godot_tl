@@ -3,8 +3,6 @@
 Import('env')
 Import('env_modules')
 
-from compat import isbasestring
-
 env_harfbuzz = env_modules.Clone()
 
 # Thirdparty source files
@@ -76,7 +74,6 @@ env_harfbuzz.Append(CCFLAGS=[
     '-DHAVE_ICU_BUILTIN',
     '-DHAVE_ICU',
     '-DHAVE_FREETYPE',
-    '-DHB_NO_MT',
     '-DHAVE_FT_FACE_GETCHARVARIANTINDEX'
 ])
 
@@ -102,7 +99,7 @@ lib = env_thirdparty.add_library("harfbuzz_builtin", sources)
 # and then plain strings for system library. We insert between the two.
 inserted = False
 for idx, linklib in enumerate(env["LIBS"]):
-    if isbasestring(linklib): # first system lib such as "X11", otherwise SCons lib object
+    if isinstance(linklib, (str, bytes)):  # first system lib such as "X11", otherwise SCons lib object
         env["LIBS"].insert(idx, lib)
         inserted = True
         break

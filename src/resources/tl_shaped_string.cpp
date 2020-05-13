@@ -6,11 +6,11 @@
 
 #ifdef GODOT_MODULE
 #include "core/translation.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #else
 #include <GlobalConstants.hpp>
 #include <TranslationServer.hpp>
-#include <VisualServer.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -157,7 +157,7 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 
 			UScriptCode sc = uscript_getScript(ch, &err);
 			if (U_FAILURE(err)) {
-				ERR_PRINTS(u_errorName(err));
+				ERR_PRINT(u_errorName(err));
 				ERR_FAIL_COND(true);
 			}
 			if (u_getIntPropertyValue(ch, UCHAR_BIDI_PAIRED_BRACKET_TYPE) != U_BPT_NONE) {
@@ -410,7 +410,7 @@ void TLShapedString::_shape_full_string() {
 		UErrorCode err = U_ZERO_ERROR;
 		bidi_iter = ubidi_openSized(data_size, 0, &err);
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			ERR_FAIL_COND(true);
 		}
 		switch (base_direction) {
@@ -439,12 +439,12 @@ void TLShapedString::_shape_full_string() {
 				}
 			} break;
 			case TEXT_DIRECTION_INVALID: {
-				ERR_PRINTS("Invalid base direction!");
+				ERR_PRINT("Invalid base direction!");
 				ERR_FAIL_COND(true);
 			}
 		}
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			ERR_FAIL_COND(true);
 		}
 	}
@@ -458,7 +458,7 @@ void TLShapedString::_shape_full_string() {
 	UErrorCode err = U_ZERO_ERROR;
 	int64_t bidi_run_count = ubidi_countRuns(bidi_iter, &err);
 	if (U_FAILURE(err)) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		ERR_FAIL_COND(true);
 	}
 
@@ -556,12 +556,12 @@ void TLShapedString::_shape_substring(TLShapedString *p_ref, int64_t p_start, in
 
 	p_ref->base_direction = base_direction;
 	p_ref->para_direction = para_direction;
-	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
-		p_ref->base_font->disconnect(_CHANGED, p_ref, "_font_changed");
+	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, callable_mp(p_ref, &TLShapedString::_font_changed))) {
+		p_ref->base_font->disconnect(_CHANGED, callable_mp(p_ref, &TLShapedString::_font_changed));
 	}
 	p_ref->base_font = base_font;
-	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
-		p_ref->base_font->connect(_CHANGED, p_ref, "_font_changed");
+	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, callable_mp(p_ref, &TLShapedString::_font_changed))) {
+		p_ref->base_font->connect(_CHANGED, callable_mp(p_ref, &TLShapedString::_font_changed));
 	}
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
@@ -670,7 +670,7 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 		int64_t last_cluster_id = -1;
 		for (unsigned int i = 0; i < glyph_count; i++) {
 			if (glyph_info[i].cluster >= data_size) {
-				ERR_PRINTS("HarfBuzz return invalid cluster index");
+				ERR_PRINT("HarfBuzz return invalid cluster index");
 				ERR_FAIL_COND(true);
 			}
 			if (last_cluster_id != (int64_t)glyph_info[i].cluster) {
@@ -835,16 +835,16 @@ Ref<TLFontFamily> TLShapedString::get_base_font() const {
 
 void TLShapedString::set_base_font(const Ref<TLFontFamily> p_font) {
 	if (!cast_to<TLFontFamily>(*p_font)) {
-		ERR_PRINTS("Type mismatch");
+		ERR_PRINT("Type mismatch");
 		return;
 	}
 	if (base_font != p_font) {
-		if (base_font.is_valid() && base_font->is_connected(_CHANGED, this, "_font_changed")) {
-			base_font->disconnect(_CHANGED, this, "_font_changed");
+		if (base_font.is_valid() && base_font->is_connected(_CHANGED, callable_mp(this, &TLShapedString::_font_changed))) {
+			base_font->disconnect(_CHANGED, callable_mp(this, &TLShapedString::_font_changed));
 		}
 		base_font = p_font;
-		if (base_font.is_valid() && !base_font->is_connected(_CHANGED, this, "_font_changed")) {
-			base_font->connect(_CHANGED, this, "_font_changed");
+		if (base_font.is_valid() && !base_font->is_connected(_CHANGED, callable_mp(this, &TLShapedString::_font_changed))) {
+			base_font->connect(_CHANGED, callable_mp(this, &TLShapedString::_font_changed));
 		}
 
 		_clear_visual();
@@ -1192,7 +1192,7 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;
 	if (ret->base_font.is_valid()) {
-		ret->base_font->connect(_CHANGED, ret.ptr(), "_font_changed");
+		ret->base_font->connect(_CHANGED, callable_mp(ret.ptr(), &TLShapedString::_font_changed));
 	}
 	ret->base_style = base_style;
 	ret->base_size = base_size;
@@ -1994,7 +1994,7 @@ Vector2 TLShapedString::draw_cluster(RID p_canvas_item, const Point2 p_position,
 		} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 			//NOP
 		} else {
-			ERR_PRINTS("Invalid cluster type");
+			ERR_PRINT("Invalid cluster type");
 		}
 		ofs += visual[p_index].glyphs[i].advance;
 	}
@@ -2032,9 +2032,9 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
 					if (brk_ops[k].hard) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
 					}
 				}
 			}
@@ -2043,9 +2043,9 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
 					if (jst_ops[k].kashida) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0.5, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0.5, 1), 2);
 					}
 				}
 			}
@@ -2055,7 +2055,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 		if (visual[i].glyphs.size() > 0) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
 				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
-				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(w, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
+				RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(w, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
 				if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 					TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
 				} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_TEXT) {
@@ -2066,7 +2066,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 				ofs += Vector2(w, 0);
 			}
 		} else {
-			VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.3));
+			RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.3));
 			ofs += Vector2(15, 0); //Skip
 		}
 		ofs += Vector2(10, 0);
@@ -2103,9 +2103,9 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if ((brk_ops[k].position >= visual[i].start) && (brk_ops[k].position <= visual[i].end)) {
 					if (brk_ops[k].hard) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0, 0), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, -10), p_position + ofs + Point2(w, 0), Color(1, 0.5, 0), 2);
 					}
 				}
 			}
@@ -2114,9 +2114,9 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if ((jst_ops[k].position >= visual[i].start) && (jst_ops[k].position <= visual[i].end)) {
 					if (jst_ops[k].kashida) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0, 1), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0.5, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(w, 0), p_position + ofs + Point2(w, +10), Color(0, 0.5, 1), 2);
 					}
 				}
 			}
@@ -2128,7 +2128,7 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 				ofs += Vector2(w, 0);
 			}
 		} else {
-			VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 20)), p_modulate);
+			RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 20)), p_modulate);
 			ofs += Vector2(15, 0); //Skip
 		}
 		ofs += Vector2(10, 0);
@@ -2153,9 +2153,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			for (int64_t k = 0; k < (int64_t)brk_ops.size(); k++) {
 				if (brk_ops[k].position == i) {
 					if (brk_ops[k].hard) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0, 0), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0.5, 0), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -10), p_position + ofs + Point2(0, 0), Color(1, 0.5, 0), 2);
 					}
 				}
 			}
@@ -2164,9 +2164,9 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 			for (int64_t k = 0; k < (int64_t)jst_ops.size(); k++) {
 				if (jst_ops[k].position == i) {
 					if (jst_ops[k].kashida) {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0, 1), 2);
 					} else {
-						VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0.5, 1), 2);
+						RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 0), p_position + ofs + Point2(0, +10), Color(0, 0.5, 1), 2);
 					}
 				}
 			}
@@ -2192,7 +2192,7 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 							break;
 						}
 					}
-					VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
+					RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs + Point2(0, 30), Size2(w - 2, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
 					if (_font.is_valid()) {
 						_font->_draw_char(p_canvas_item, p_position + ofs + Point2(0, 30), ch, p_modulate, 16);
 					}
@@ -2212,9 +2212,9 @@ void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Colo
 		return;
 
 #ifdef DEBUG_DISPLAY_METRICS
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, -ascent), p_position + Point2(width, -ascent), Color(1, 0, 0, 0.5), 1);
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, 0), p_position + Point2(width, 0), Color(1, 1, 0, 0.5), 1);
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, descent), p_position + Point2(width, descent), Color(0, 0, 1, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, -ascent), p_position + Point2(width, -ascent), Color(1, 0, 0, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, 0), p_position + Point2(width, 0), Color(1, 1, 0, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, descent), p_position + Point2(width, descent), Color(0, 0, 1, 0.5), 1);
 #endif
 
 	Vector2 ofs;
@@ -2227,7 +2227,7 @@ void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Colo
 			} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 				//NOP
 			} else {
-				ERR_PRINTS("Invalid cluster type");
+				ERR_PRINT("Invalid cluster type");
 			}
 			ofs += visual[i].glyphs[j].advance;
 		}
@@ -2368,7 +2368,7 @@ String TLShapedString::get_text() const {
 		int32_t _length = 0;
 		u_strToWCS(NULL, 0, &_length, data, data_size, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return String();
 		} else {
 			err = U_ZERO_ERROR;
@@ -2378,7 +2378,7 @@ String TLShapedString::get_text() const {
 			std::memset(_data, 0x00, (_length + 1) * sizeof(wchar_t));
 			u_strToWCS(_data, _length, &_length, data, data_size, &err);
 			if (U_FAILURE(err)) {
-				ERR_PRINTS(u_errorName(err));
+				ERR_PRINT(u_errorName(err));
 				std::free(_data);
 				return String();
 			}
@@ -2391,9 +2391,9 @@ String TLShapedString::get_text() const {
 	return ret;
 }
 
-PoolByteArray TLShapedString::get_utf8() const {
+PackedByteArray TLShapedString::get_utf8() const {
 
-	PoolByteArray ret;
+	PackedByteArray ret;
 
 	if (data_size > 0) {
 		UErrorCode err = U_ZERO_ERROR;
@@ -2401,14 +2401,14 @@ PoolByteArray TLShapedString::get_utf8() const {
 		int32_t _subs = 0;
 		u_strToUTF8WithSub(NULL, 0, &_length, data, data_size, 0xFFFD, &_subs, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return ret;
 		} else {
 			err = U_ZERO_ERROR;
 			ret.resize(_length);
-			u_strToUTF8WithSub((char *)ret.write().ptr(), _length, &_length, data, data_size, 0xFFFD, &_subs, &err);
+			u_strToUTF8WithSub((char *)ret.ptrw(), _length, &_length, data, data_size, 0xFFFD, &_subs, &err);
 			if (U_FAILURE(err)) {
-				ERR_PRINTS(u_errorName(err));
+				ERR_PRINT(u_errorName(err));
 				ret.resize(0);
 				return ret;
 			}
@@ -2418,21 +2418,21 @@ PoolByteArray TLShapedString::get_utf8() const {
 	return ret;
 }
 
-PoolByteArray TLShapedString::get_utf16() const {
+PackedByteArray TLShapedString::get_utf16() const {
 
-	PoolByteArray ret;
+	PackedByteArray ret;
 
 	if (data_size > 0) {
 		ret.resize(data_size * sizeof(UChar));
-		std::memcpy(ret.write().ptr(), data, data_size * sizeof(UChar));
+		std::memcpy(ret.ptrw(), data, data_size * sizeof(UChar));
 	}
 
 	return ret;
 }
 
-PoolByteArray TLShapedString::get_utf32() const {
+PackedByteArray TLShapedString::get_utf32() const {
 
-	PoolByteArray ret;
+	PackedByteArray ret;
 
 	if (data_size > 0) {
 		UErrorCode err = U_ZERO_ERROR;
@@ -2440,14 +2440,14 @@ PoolByteArray TLShapedString::get_utf32() const {
 		int32_t _subs = 0;
 		u_strToUTF32WithSub(NULL, 0, &_length, data, data_size, 0xFFFD, &_subs, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return ret;
 		} else {
 			err = U_ZERO_ERROR;
 			ret.resize(_length * sizeof(UChar32));
-			u_strToUTF32WithSub((UChar32 *)ret.write().ptr(), _length, &_length, data, data_size, 0xFFFD, &_subs, &err);
+			u_strToUTF32WithSub((UChar32 *)ret.ptrw(), _length, &_length, data, data_size, 0xFFFD, &_subs, &err);
 			if (U_FAILURE(err)) {
-				ERR_PRINTS(u_errorName(err));
+				ERR_PRINT(u_errorName(err));
 				ret.resize(0);
 				return ret;
 			}
@@ -2482,7 +2482,7 @@ void TLShapedString::set_text(const String p_text) {
 
 	u_strFromWCS(NULL, 0, &_real_length, _data, _length, &err);
 	if (err != U_BUFFER_OVERFLOW_ERROR) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	} else {
 		err = U_ZERO_ERROR;
@@ -2490,7 +2490,7 @@ void TLShapedString::set_text(const String p_text) {
 		u_strFromWCS(data, _real_length, &_real_length, _data, _length, &err);
 		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		}
 		data_size += _real_length;
@@ -2499,7 +2499,7 @@ void TLShapedString::set_text(const String p_text) {
 	emit_signal("string_changed");
 }
 
-void TLShapedString::set_utf8(const PoolByteArray p_text) {
+void TLShapedString::set_utf8(const PackedByteArray p_text) {
 
 	_clear_props();
 
@@ -2517,17 +2517,17 @@ void TLShapedString::set_utf8(const PoolByteArray p_text) {
 	if (_length == 0)
 		return;
 
-	u_strFromUTF8WithSub(NULL, 0, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF8WithSub(NULL, 0, &_real_length, (const char *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 	if (err != U_BUFFER_OVERFLOW_ERROR) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	} else {
 		err = U_ZERO_ERROR;
 		data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
-		u_strFromUTF8WithSub(data, _real_length, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		u_strFromUTF8WithSub(data, _real_length, &_real_length, (const char *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		}
 		data_size += _real_length;
@@ -2536,7 +2536,7 @@ void TLShapedString::set_utf8(const PoolByteArray p_text) {
 	emit_signal("string_changed");
 }
 
-void TLShapedString::set_utf16(const PoolByteArray p_text) {
+void TLShapedString::set_utf16(const PackedByteArray p_text) {
 
 	_clear_props();
 
@@ -2557,14 +2557,14 @@ void TLShapedString::set_utf16(const PoolByteArray p_text) {
 	data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
 	if (!data)
 		return;
-	std::memcpy(data, p_text.read().ptr(), _real_length * sizeof(UChar));
+	std::memcpy(data, p_text.ptr(), _real_length * sizeof(UChar));
 	data[_real_length] = 0x0000;
 	data_size += _real_length;
 	char_size = u_countChar32(data, data_size);
 	emit_signal("string_changed");
 }
 
-void TLShapedString::set_utf32(const PoolByteArray p_text) {
+void TLShapedString::set_utf32(const PackedByteArray p_text) {
 
 	_clear_props();
 
@@ -2582,17 +2582,17 @@ void TLShapedString::set_utf32(const PoolByteArray p_text) {
 	if (_length == 0)
 		return;
 
-	u_strFromUTF32WithSub(NULL, 0, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF32WithSub(NULL, 0, &_real_length, (const UChar32 *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 	if (err != U_BUFFER_OVERFLOW_ERROR) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	} else {
 		err = U_ZERO_ERROR;
 		data = (UChar *)std::malloc((_real_length + 1) * sizeof(UChar));
-		u_strFromUTF32WithSub(data, _real_length, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		u_strFromUTF32WithSub(data, _real_length, &_real_length, (const UChar32 *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 		data[_real_length] = 0x0000;
 		if (U_FAILURE(err)) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		}
 		data_size += _real_length;
@@ -2606,17 +2606,17 @@ void TLShapedString::add_text(const String p_text) {
 	replace_text(data_size, data_size, p_text);
 }
 
-void TLShapedString::add_utf8(const PoolByteArray p_text) {
+void TLShapedString::add_utf8(const PackedByteArray p_text) {
 
 	replace_utf8(data_size, data_size, p_text);
 }
 
-void TLShapedString::add_utf16(const PoolByteArray p_text) {
+void TLShapedString::add_utf16(const PackedByteArray p_text) {
 
 	replace_utf16(data_size, data_size, p_text);
 }
 
-void TLShapedString::add_utf32(const PoolByteArray p_text) {
+void TLShapedString::add_utf32(const PackedByteArray p_text) {
 
 	replace_utf32(data_size, data_size, p_text);
 }
@@ -2629,7 +2629,7 @@ void TLShapedString::add_sstring(Ref<TLShapedString> p_text) {
 void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
@@ -2648,7 +2648,7 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 	if (_length != 0) {
 		u_strFromWCS(NULL, 0, &_real_length, _data, _length, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		} else {
 			err = U_ZERO_ERROR;
@@ -2667,7 +2667,7 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 
 	u_strFromWCS(&data[p_start], _real_length, &_real_length, _data, _length, &err);
 	if (U_FAILURE(err)) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	}
 	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
@@ -2676,10 +2676,10 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 	emit_signal("string_changed");
 }
 
-void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
@@ -2691,9 +2691,9 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByte
 	int32_t _subs = 0;
 
 	if (_length != 0) {
-		u_strFromUTF8WithSub(NULL, 0, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		u_strFromUTF8WithSub(NULL, 0, &_real_length, (const char *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		} else {
 			err = U_ZERO_ERROR;
@@ -2710,9 +2710,9 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByte
 	}
 	data = new_data;
 
-	u_strFromUTF8WithSub(&data[p_start], _real_length, &_real_length, (const char *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF8WithSub(&data[p_start], _real_length, &_real_length, (const char *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 	if (U_FAILURE(err)) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	}
 	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
@@ -2721,10 +2721,10 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByte
 	emit_signal("string_changed");
 }
 
-void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
@@ -2747,7 +2747,7 @@ void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByt
 	}
 	data = new_data;
 
-	std::memcpy(&data[p_start], p_text.read().ptr(), _real_length * sizeof(UChar));
+	std::memcpy(&data[p_start], p_text.ptr(), _real_length * sizeof(UChar));
 	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
 
 	data_size = data_size - (p_end - p_start) + _real_length;
@@ -2755,10 +2755,10 @@ void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByt
 	emit_signal("string_changed");
 }
 
-void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
@@ -2770,9 +2770,9 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByt
 	int32_t _subs = 0;
 
 	if (_length != 0) {
-		u_strFromUTF32WithSub(NULL, 0, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+		u_strFromUTF32WithSub(NULL, 0, &_real_length, (const UChar32 *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 		if (err != U_BUFFER_OVERFLOW_ERROR) {
-			ERR_PRINTS(u_errorName(err));
+			ERR_PRINT(u_errorName(err));
 			return;
 		} else {
 			err = U_ZERO_ERROR;
@@ -2788,9 +2788,9 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByt
 	}
 	data = new_data;
 
-	u_strFromUTF32WithSub(&data[p_start], _real_length, &_real_length, (const UChar32 *)p_text.read().ptr(), _length, 0xFFFD, &_subs, &err);
+	u_strFromUTF32WithSub(&data[p_start], _real_length, &_real_length, (const UChar32 *)p_text.ptr(), _length, 0xFFFD, &_subs, &err);
 	if (U_FAILURE(err)) {
-		ERR_PRINTS(u_errorName(err));
+		ERR_PRINT(u_errorName(err));
 		return;
 	}
 	data[data_size - (p_end - p_start) + _real_length] = 0x0000;
@@ -2802,12 +2802,12 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByt
 void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
 	if (p_text.is_null()) {
-		ERR_PRINTS("Invalid string");
+		ERR_PRINT("Invalid string");
 		return;
 	}
 
@@ -2836,19 +2836,19 @@ void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShape
 void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
 
 	if (p_source.is_null()) {
-		ERR_PRINTS("Invalid string");
+		ERR_PRINT("Invalid string");
 		return;
 	}
 
 	base_direction = p_source->base_direction;
 	language = p_source->language;
 	font_features = p_source->font_features;
-	if (base_font.is_valid() && base_font->is_connected(_CHANGED, this, "_font_changed")) {
-		base_font->disconnect(_CHANGED, this, "_font_changed");
+	if (base_font.is_valid() && base_font->is_connected(_CHANGED, callable_mp(this, &TLShapedString::_font_changed))) {
+		base_font->disconnect(_CHANGED, callable_mp(this, &TLShapedString::_font_changed));
 	}
 	base_font = p_source->base_font;
-	if (base_font.is_valid() && !base_font->is_connected(_CHANGED, this, "_font_changed")) {
-		base_font->connect(_CHANGED, this, "_font_changed");
+	if (base_font.is_valid() && !base_font->is_connected(_CHANGED, callable_mp(this, &TLShapedString::_font_changed))) {
+		base_font->connect(_CHANGED, callable_mp(this, &TLShapedString::_font_changed));
 	}
 	base_size = p_source->base_size;
 	base_style = p_source->base_style;

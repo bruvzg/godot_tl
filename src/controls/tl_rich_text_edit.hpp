@@ -171,9 +171,9 @@ public:
 	Point2 get_caret_position();
 
 	void replace_text(Ref<TLRichTextEditSelection> p_selection, const String p_text);
-	void replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
-	void replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
-	void replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PoolByteArray p_text);
+	void replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text);
+	void replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text);
+	void replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text);
 	void replace_sstring(Ref<TLRichTextEditSelection> p_selection, Ref<TLShapedString> p_text);
 
 	void add_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute, Variant p_value);

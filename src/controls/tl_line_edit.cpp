@@ -37,7 +37,8 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/translation.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
+#include "scene/main/viewport.h"
 #else
 #include <Image.hpp>
 #include <InputEventKey.hpp>
@@ -46,10 +47,10 @@
 #include <MainLoop.hpp>
 #include <OS.hpp>
 #include <StyleBox.hpp>
-#include <Texture.hpp>
+#include <Texture2D.hpp>
 #include <Theme.hpp>
 #include <TranslationServer.hpp>
-#include <VisualServer.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 #ifdef TOOLS_ENABLED
@@ -86,9 +87,8 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 #endif
 
 		if (b->is_pressed() && b->get_button_index() == GLOBAL_CONST(BUTTON_RIGHT) && context_menu_enabled) {
-			menu->set_position(get_global_transform().xform(get_local_mouse_position()));
+			menu->set_position(get_screen_transform().xform(get_local_mouse_position()));
 			menu->set_size(Vector2(1, 1));
-			menu->set_scale(get_global_transform().get_scale());
 			menu->popup();
 			grab_focus();
 			return;
@@ -158,11 +158,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			selection.creating = false;
 			selection.doubleclick = false;
 
-			if (OS::get_singleton()->has_virtual_keyboard())
 #ifdef GODOT_MODULE
-				OS::get_singleton()->show_virtual_keyboard(text, get_global_rect());
-#else
-				OS::get_singleton()->show_virtual_keyboard(text);
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+				DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length);
 #endif
 		}
 
@@ -236,7 +234,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 		}
 #endif
 
-		unsigned int code = k->get_scancode();
+		unsigned int code = k->get_keycode();
 
 		if (k->get_command()) {
 
@@ -349,9 +347,8 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_ENTER): {
 
 					emit_signal("text_entered", text);
-					if (OS::get_singleton()->has_virtual_keyboard())
-						OS::get_singleton()->hide_virtual_keyboard();
-
+					if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+						DisplayServer::get_singleton()->virtual_keyboard_hide();
 					return;
 				} break;
 
@@ -585,7 +582,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			if (handled) {
 				accept_event();
 			} else if (!k->get_alt() && !k->get_command()) {
-				if (k->get_unicode() >= 32 && k->get_scancode() != GLOBAL_CONST(KEY_DELETE)) {
+				if (k->get_unicode() >= 32 && k->get_keycode() != GLOBAL_CONST(KEY_DELETE)) {
 
 					if (editable) {
 						selection_delete();
@@ -705,12 +702,12 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 	if (!clear_button_enabled || !Rect2(Point2(), get_size()).has_point(p_pos)) {
 		return false;
 	}
-	Ref<Texture> icon = Control::get_icon("clear");
+	Ref<Texture2D> icon = Control::get_theme_icon("clear");
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
 	if (cname == "TLLineEdit") cname = "LineEdit";
 
-	int x_ofs = get_stylebox("normal", cname)->get_offset().x;
+	int x_ofs = get_theme_stylebox("normal", cname)->get_offset().x;
 #else
 	int x_ofs = 0;
 #endif
@@ -729,8 +726,8 @@ void TLLineEdit::_notification(int p_what) {
 				cursor_set_blink_enabled(EDITOR_DEF("text_editor/cursor/caret_blink", false));
 				cursor_set_blink_speed(EDITOR_DEF("text_editor/cursor/caret_blink_speed", 0.65));
 
-				if (!EditorSettings::get_singleton()->is_connected("settings_changed", this, "_editor_settings_changed")) {
-					EditorSettings::get_singleton()->connect("settings_changed", this, "_editor_settings_changed");
+				if (!EditorSettings::get_singleton()->is_connected("settings_changed", callable_mp(this, &TLLineEdit::_editor_settings_changed))) {
+					EditorSettings::get_singleton()->connect("settings_changed", callable_mp(this, &TLLineEdit::_editor_settings_changed));
 				}
 			}
 		} break;
@@ -743,12 +740,12 @@ void TLLineEdit::_notification(int p_what) {
 			set_cursor_position(get_cursor_position());
 
 		} break;
-		case MainLoop::NOTIFICATION_WM_FOCUS_IN: {
+		case NOTIFICATION_FOCUS_ENTER: {
 			window_has_focus = true;
 			draw_caret = true;
 			update();
 		} break;
-		case MainLoop::NOTIFICATION_WM_FOCUS_OUT: {
+		case NOTIFICATION_FOCUS_EXIT: {
 			window_has_focus = false;
 			draw_caret = false;
 			update();
@@ -771,7 +768,7 @@ void TLLineEdit::_notification(int p_what) {
 			StringName cname = get_class_name();
 			if (cname == "TLLineEdit") cname = "LineEdit";
 
-			Ref<StyleBox> style = get_stylebox("normal", cname);
+			Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
 			Ref<Theme> theme = get_theme();
 			if (theme.is_null()) {
@@ -783,7 +780,7 @@ void TLLineEdit::_notification(int p_what) {
 			float disabled_alpha = 1.0; // used to set the disabled input text color
 			if (!is_editable()) {
 #ifdef GODOT_MODULE
-				style = get_stylebox("read_only", cname);
+				style = get_theme_stylebox("read_only", cname);
 #else
 				style = theme->get_stylebox("read_only", "LineEdit");
 #endif
@@ -823,10 +820,10 @@ void TLLineEdit::_notification(int p_what) {
 			int y_ofs = style->get_offset().y + (y_area - MAX(_get_base_font_height(), line->get_height())) / 2;
 
 #ifdef GODOT_MODULE
-			Color selection_color = get_color("selection_color", cname);
-			Color font_color = get_color("font_color", cname);
-			Color font_color_selected = get_color("font_color_selected", cname);
-			Color cursor_color = get_color("cursor_color", cname);
+			Color selection_color = get_theme_color("selection_color", cname);
+			Color font_color = get_theme_color("font_color", cname);
+			Color font_color_selected = get_theme_color("font_color_selected", cname);
+			Color cursor_color = get_theme_color("cursor_color", cname);
 #else
 			Color selection_color = theme->get_color("selection_color", "LineEdit");
 			Color font_color = theme->get_color("font_color", "LineEdit");
@@ -841,14 +838,14 @@ void TLLineEdit::_notification(int p_what) {
 
 			bool display_clear_icon = !using_placeholder && is_editable() && clear_button_enabled;
 			if (right_icon.is_valid() || display_clear_icon) {
-				Ref<Texture> r_icon = display_clear_icon ? Control::get_icon("clear") : right_icon;
+				Ref<Texture2D> r_icon = display_clear_icon ? Control::get_theme_icon("clear") : right_icon;
 				Color color_icon(1, 1, 1, disabled_alpha * .9);
 				if (display_clear_icon) {
 #ifdef GODOT_MODULE
 					if (clear_button_status.press_attempt && clear_button_status.pressing_inside) {
-						color_icon = get_color("clear_button_color_pressed", cname);
+						color_icon = get_theme_color("clear_button_color_pressed", cname);
 					} else {
-						color_icon = get_color("clear_button_color", cname);
+						color_icon = get_theme_color("clear_button_color", cname);
 					}
 #else
 					if (clear_button_status.press_attempt && clear_button_status.pressing_inside) {
@@ -875,7 +872,7 @@ void TLLineEdit::_notification(int p_what) {
 			if (line->length() == 0) {
 				//Draw solid caret at the start of empty line
 				if ((cursor_pos == 0) && draw_caret) {
-					VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs, y_ofs), Size2(1, caret_height)), cursor_color);
+					RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs, y_ofs), Size2(1, caret_height)), cursor_color);
 				}
 			} else {
 				//Skip offscreen
@@ -885,9 +882,9 @@ void TLLineEdit::_notification(int p_what) {
 				}
 
 #ifdef DEBUG_DISPLAY_METRICS
-				VisualServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, -line->get_ascent()), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), -line->get_ascent()), Color(1, 0, 0, 0.5), 1);
-				VisualServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, 0), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), 0), Color(1, 1, 0, 0.5), 1);
-				VisualServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, line->get_descent()), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), line->get_descent()), Color(0, 0, 1, 0.5), 1);
+				RenderingServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, -line->get_ascent()), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), -line->get_ascent()), Color(1, 0, 0, 0.5), 1);
+				RenderingServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, 0), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), 0), Color(1, 1, 0, 0.5), 1);
+				RenderingServer::get_singleton()->canvas_item_add_line(ci, Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(0, line->get_descent()), Point2(x_ofs, y_ofs + line->get_ascent()) - wpos_ofs + Point2(line->get_width(), line->get_descent()), Color(0, 0, 1, 0.5), 1);
 #endif
 
 				//Draw selection rects
@@ -897,7 +894,7 @@ void TLLineEdit::_notification(int p_what) {
 						float s_st = x_ofs + sranges[i].position.x - wpos_ofs.x >= 0 ? x_ofs + sranges[i].position.x - wpos_ofs.x : x_ofs;
 						if (s_st < ofs_max) {
 							float s_wdt = s_st + sranges[i].size.x <= ofs_max ? sranges[i].size.x : ofs_max - s_st;
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(s_st, y_ofs), Size2(s_wdt, caret_height)), selection_color);
+							RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(s_st, y_ofs), Size2(s_wdt, caret_height)), selection_color);
 						}
 					}
 				}
@@ -920,30 +917,30 @@ void TLLineEdit::_notification(int p_what) {
 					if (carets.size() == 1) {
 						//Draw solid caret (leading or midcluster)
 #ifdef TOOLS_ENABLED
-						VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height)), cursor_color);
+						RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height)), cursor_color);
 #else
-						VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(1, caret_height)), cursor_color);
+						RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(1, caret_height)), cursor_color);
 #endif
 					} else if (carets.size() == 2) {
 						//Draw split caret (leading and trailing)
 						float inv_caret_circle_size = 3.0;
 #ifdef TOOLS_ENABLED
-						VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height / 2)), cursor_color);
+						RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height / 2)), cursor_color);
 						if (x_ofs + carets[1] - wpos_ofs.x < 0) {
-							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), style->get_offset().y), inv_caret_circle_size, cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_circle(ci, Point2(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), style->get_offset().y), inv_caret_circle_size, cursor_color);
 						} else if (x_ofs + carets[1] - wpos_ofs.x > ofs_max) {
-							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, style->get_offset().y), inv_caret_circle_size, cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, style->get_offset().y), inv_caret_circle_size, cursor_color);
 						} else {
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[1], y_ofs + caret_height / 2) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height / 2)), cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[1], y_ofs + caret_height / 2) - wpos_ofs, Size2(Math::round(EDSCALE), caret_height / 2)), cursor_color);
 						}
 #else
-						VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
+						RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[0], y_ofs) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
 						if (x_ofs + carets[1] - wpos_ofs.x < 0) {
-							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), style->get_offset().y), inv_caret_circle_size, cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_circle(ci, Point2(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), style->get_offset().y), inv_caret_circle_size, cursor_color);
 						} else if (x_ofs + carets[1] - wpos_ofs.x > ofs_max) {
-							VisualServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, style->get_offset().y), inv_caret_circle_size, cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_circle(ci, Point2(ofs_max, style->get_offset().y), inv_caret_circle_size, cursor_color);
 						} else {
-							VisualServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[1], y_ofs + caret_height / 2) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
+							RenderingServer::get_singleton()->canvas_item_add_rect(ci, Rect2(Point2(x_ofs + carets[1], y_ofs + caret_height / 2) - wpos_ofs, Size2(1, caret_height / 2)), cursor_color);
 						}
 #endif
 					}
@@ -952,11 +949,11 @@ void TLLineEdit::_notification(int p_what) {
 
 			if (has_focus()) {
 
-				OS::get_singleton()->set_ime_active(true);
-				OS::get_singleton()->set_ime_position(get_global_position() + Point2(using_placeholder ? 0 : x_ofs, y_ofs + caret_height));
+				DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
+				DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + Point2(using_placeholder ? 0 : x_ofs, y_ofs + caret_height), get_viewport()->get_window_id());
 			}
 		} break;
-		case NOTIFICATION_FOCUS_ENTER: {
+		case NOTIFICATION_WM_FOCUS_IN: {
 
 			if (caret_blink_enabled) {
 				caret_blink_timer->start();
@@ -964,40 +961,38 @@ void TLLineEdit::_notification(int p_what) {
 				draw_caret = true;
 			}
 
-			OS::get_singleton()->set_ime_active(true);
+			DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
 			Point2 cursor_pos = Point2(get_cursor_position(), 1) * get_minimum_size().height;
-			OS::get_singleton()->set_ime_position(get_global_position() + cursor_pos);
+			DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + cursor_pos, get_viewport()->get_window_id());
 
-			if (OS::get_singleton()->has_virtual_keyboard())
 #ifdef GODOT_MODULE
-				OS::get_singleton()->show_virtual_keyboard(text, get_global_rect());
-#else
-				OS::get_singleton()->show_virtual_keyboard(text);
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+				DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length);
 #endif
 
 		} break;
-		case NOTIFICATION_FOCUS_EXIT: {
+		case NOTIFICATION_WM_FOCUS_OUT: {
 
 			if (caret_blink_enabled) {
 				caret_blink_timer->stop();
 			}
 
-			OS::get_singleton()->set_ime_position(Point2());
-			OS::get_singleton()->set_ime_active(false);
+			DisplayServer::get_singleton()->window_set_ime_position(Point2(), get_viewport()->get_window_id());
+			DisplayServer::get_singleton()->window_set_ime_active(false, get_viewport()->get_window_id());
 			ime_text = "";
 			ime_selection = Point2();
 
 			_text_reshape();
 
-			if (OS::get_singleton()->has_virtual_keyboard())
-				OS::get_singleton()->hide_virtual_keyboard();
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+				DisplayServer::get_singleton()->virtual_keyboard_hide();
 
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
 
 			if (has_focus()) {
-				ime_text = OS::get_singleton()->get_ime_text();
-				ime_selection = OS::get_singleton()->get_ime_selection();
+				ime_text = DisplayServer::get_singleton()->ime_get_text();
+				ime_selection = DisplayServer::get_singleton()->ime_get_selection();
 
 				_text_reshape();
 				update();
@@ -1014,21 +1009,21 @@ void TLLineEdit::_notification(int p_what) {
 void TLLineEdit::copy_text() {
 
 	if (selection.enabled && !pass) {
-		OS::get_singleton()->set_clipboard(text.substr(selection.begin, selection.end - selection.begin));
+		DisplayServer::get_singleton()->clipboard_set(text.substr(selection.begin, selection.end - selection.begin));
 	}
 }
 
 void TLLineEdit::cut_text() {
 
 	if (selection.enabled && !pass) {
-		OS::get_singleton()->set_clipboard(text.substr(selection.begin, selection.end - selection.begin));
+		DisplayServer::get_singleton()->clipboard_set(text.substr(selection.begin, selection.end - selection.begin));
 		selection_delete();
 	}
 }
 
 void TLLineEdit::paste_text() {
 
-	String paste_buffer = OS::get_singleton()->get_clipboard();
+	String paste_buffer = DisplayServer::get_singleton()->clipboard_get();
 
 	if (paste_buffer != "") {
 
@@ -1098,7 +1093,7 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 	StringName cname = get_class_name();
 	if (cname == "TLLineEdit") cname = "LineEdit";
 
-	Ref<StyleBox> style = get_stylebox("normal", cname);
+	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1308,7 +1303,7 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 	StringName cname = get_class_name();
 	if (cname == "TLLineEdit") cname = "LineEdit";
 
-	Ref<StyleBox> style = get_stylebox("normal", cname);
+	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1339,7 +1334,7 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 
 	bool display_clear_icon = !text.empty() && is_editable() && clear_button_enabled;
 	if (right_icon.is_valid() || display_clear_icon) {
-		Ref<Texture> r_icon = display_clear_icon ? Control::get_icon("clear") : right_icon;
+		Ref<Texture2D> r_icon = display_clear_icon ? Control::get_theme_icon("clear") : right_icon;
 		window_width -= r_icon->get_width();
 	}
 
@@ -1415,7 +1410,7 @@ Size2 TLLineEdit::get_minimum_size() const {
 	StringName cname = get_class_name();
 	if (cname == "TLLineEdit") cname = "LineEdit";
 
-	Ref<StyleBox> style = get_stylebox("normal", cname);
+	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1430,7 +1425,7 @@ Size2 TLLineEdit::get_minimum_size() const {
 	//minimum size of text
 	int space_size = 10;
 #ifdef GODOT_MODULE
-	int mstext = get_constant("minimum_spaces", cname) * space_size;
+	int mstext = get_theme_constant("minimum_spaces", cname) * space_size;
 #else
 	int mstext = get_constant("minimum_spaces", "LineEdit") * space_size;
 #endif
@@ -1651,7 +1646,7 @@ bool TLLineEdit::is_clear_button_enabled() const {
 	return clear_button_enabled;
 }
 
-void TLLineEdit::set_right_icon(const Ref<Texture> &p_icon) {
+void TLLineEdit::set_right_icon(const Ref<Texture2D> &p_icon) {
 	if (right_icon == p_icon) {
 		return;
 	}
@@ -1835,10 +1830,10 @@ void TLLineEdit::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clear_button_enabled"), "set_clear_button_enabled", "is_clear_button_enabled");
 	ADD_GROUP("Placeholder", "placeholder_");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "placeholder_text"), "set_placeholder", "get_placeholder");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "placeholder_alpha", PROPERTY_HINT_RANGE, "0,1,0.001"), "set_placeholder_alpha", "get_placeholder_alpha");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "placeholder_alpha", PROPERTY_HINT_RANGE, "0,1,0.001"), "set_placeholder_alpha", "get_placeholder_alpha");
 	ADD_GROUP("Caret", "caret_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "caret_blink"), "cursor_set_blink_enabled", "cursor_get_blink_enabled");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "caret_blink_speed", PROPERTY_HINT_RANGE, "0.1,10,0.01"), "cursor_set_blink_speed", "cursor_get_blink_speed");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "caret_blink_speed", PROPERTY_HINT_RANGE, "0.1,10,0.01"), "cursor_set_blink_speed", "cursor_get_blink_speed");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "caret_position"), "set_cursor_position", "get_cursor_position");
 }
 
@@ -2000,7 +1995,7 @@ TLLineEdit::TLLineEdit() {
 
 void TLLineEdit::_init() {
 	line.instance();
-	line->connect("string_changed", this, "_font_changed");
+	line->connect("string_changed", callable_mp(this, &TLLineEdit::_font_changed));
 
 	base_direction = TEXT_DIRECTION_AUTO;
 	last_input_direction = TEXT_DIRECTION_AUTO;
@@ -2034,7 +2029,7 @@ void TLLineEdit::_init() {
 	caret_blink_timer = memnew(Timer);
 	add_child(caret_blink_timer);
 	caret_blink_timer->set_wait_time(0.65);
-	caret_blink_timer->connect("timeout", this, "_toggle_draw_caret");
+	caret_blink_timer->connect("timeout", callable_mp(this, &TLLineEdit::_toggle_draw_caret));
 	cursor_set_blink_enabled(false);
 
 	context_menu_enabled = true;
@@ -2049,6 +2044,6 @@ void TLLineEdit::_init() {
 	menu->add_separator();
 	menu->add_item(TranslationServer::get_singleton()->translate("Undo"), MENU_UNDO, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_Z));
 	menu->add_item(TranslationServer::get_singleton()->translate("Redo"), MENU_REDO, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_MASK_SHIFT) | GLOBAL_CONST(KEY_Z));
-	menu->connect("id_pressed", this, "menu_option");
+	menu->connect("id_pressed", callable_mp(this, &TLLineEdit::menu_option));
 	expand_to_text_length = false;
 }

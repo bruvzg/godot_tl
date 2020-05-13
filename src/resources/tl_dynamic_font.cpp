@@ -10,13 +10,13 @@ For original source, see https://github.com/godotengine/godot/blob/master/scene/
 
 #ifdef GODOT_MODULE
 #include "core/bind/core_bind.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #define File _File
 #else
 #include <File.hpp>
 #include <GlobalConstants.hpp>
-#include <Texture.hpp>
-#include <VisualServer.hpp>
+#include <Texture2D.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 #include "tl_dynamic_font.hpp"
@@ -45,8 +45,8 @@ unsigned long TLDynamicFontFaceAtSize::ft_stream_io(FT_Stream p_stream, unsigned
 	if (p_count == 0)
 		return 0;
 
-	PoolByteArray buffer = file->get_buffer(p_count);
-	memcpy(p_buffer, buffer.read().ptr(), buffer.size());
+	PackedByteArray buffer = file->get_buffer(p_count);
+	memcpy(p_buffer, buffer.ptr(), buffer.size());
 
 	return buffer.size();
 }
@@ -63,7 +63,6 @@ TLDynamicFontFaceAtSize::TLDynamicFontFaceAtSize() {
 
 	hinting = DF_HINTING_NORMAL;
 	force_autohinter = false;
-	txt_flags = Texture::FLAG_VIDEO_SURFACE;
 	scale_color_font = 1.0f;
 	oversampling = 1.0f;
 
@@ -118,7 +117,7 @@ void TLDynamicFontFaceAtSize::draw_glyph(RID p_canvas_item, const Point2 p_pos, 
 				modulate.r = modulate.g = modulate.b = 1.0;
 			}
 
-			VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(gl.align + p_pos, gl.size * Vector2(scale_color_font, scale_color_font)), texture_cache[gl.id].image->get_rid(), gl.uv, modulate, false, RID(), false);
+			RenderingServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(gl.align + p_pos, gl.size * Vector2(scale_color_font, scale_color_font)), texture_cache[gl.id].image->get_rid(), gl.uv, modulate, false, RID(), RID(), Color(1, 1, 1, 1), false);
 		}
 	}
 }
@@ -148,7 +147,7 @@ void TLDynamicFontFaceAtSize::draw_glyph_outline(RID p_canvas_item, const Point2
 				modulate.r = modulate.g = modulate.b = 1.0;
 			}
 
-			VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(gl.align + p_pos, gl.size * Vector2(scale_color_font, scale_color_font)), texture_cache[gl.id].image->get_rid(), gl.uv, modulate, false, RID(), false);
+			RenderingServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(gl.align + p_pos, gl.size * Vector2(scale_color_font, scale_color_font)), texture_cache[gl.id].image->get_rid(), gl.uv, modulate, false, RID(), RID(), Color(1, 1, 1, 1), false);
 		}
 	}
 }
@@ -172,12 +171,11 @@ Array TLDynamicFontFaceAtSize::get_glyph_outline(const Point2 p_pos, uint32_t p_
 
 		int prev = 0;
 		for (int i = 0; i < ol.n_contours; i++) {
-			PoolVector3Array contour;
+			PackedVector3Array contour;
 			contour.resize(ol.contours[i] - prev);
-			PoolVector3Array::Write w = contour.write();
 
 			for (int j = 0; j < ol.contours[i] - prev; j++) {
-				w[j] = Vector3(p_pos.x + ol.points[prev + 1 + j].x, p_pos.y + ol.points[prev + 1 + j].x, ol.tags[prev + 1 + j]);
+				contour.write[j] = Vector3(p_pos.x + ol.points[prev + 1 + j].x, p_pos.y + ol.points[prev + 1 + j].x, ol.tags[prev + 1 + j]);
 			}
 			prev = ol.contours[i];
 			ret.push_back(contour);
@@ -188,8 +186,8 @@ Array TLDynamicFontFaceAtSize::get_glyph_outline(const Point2 p_pos, uint32_t p_
 	return ret;
 }
 
-TLDynamicFontFaceAtSize::TexturePosition TLDynamicFontFaceAtSize::find_texture_pos_for_glyph(int p_color_size, Image::Format p_image_format, int p_width, int p_height) {
-	TexturePosition ret;
+TLDynamicFontFaceAtSize::Texture2DPosition TLDynamicFontFaceAtSize::find_texture_pos_for_glyph(int p_color_size, Image::Format p_image_format, int p_width, int p_height) {
+	Texture2DPosition ret;
 	ret.index = -1;
 	ret.x = 0;
 	ret.y = 0;
@@ -199,7 +197,7 @@ TLDynamicFontFaceAtSize::TexturePosition TLDynamicFontFaceAtSize::find_texture_p
 
 	for (size_t i = 0; i < texture_cache.size(); i++) {
 
-		const GlyphTexture &gl = texture_cache[i];
+		const GlyphTexture2D &gl = texture_cache[i];
 
 		if (gl.image->get_format() != p_image_format)
 			continue;
@@ -248,15 +246,14 @@ TLDynamicFontFaceAtSize::TexturePosition TLDynamicFontFaceAtSize::find_texture_p
 		texsize = _next_power_of_2(texsize);
 		texsize = MIN(texsize, 4096);
 
-		GlyphTexture tex;
+		GlyphTexture2D tex;
 		tex.texture_size = texsize;
 		tex.imgdata.resize(texsize * texsize * p_color_size); //grayscale alpha
 
 		//zero texture
-		PoolByteArray::Write w = tex.imgdata.write();
 		ERR_FAIL_COND_V(texsize * texsize * p_color_size > tex.imgdata.size(), ret);
 		for (int i = 0; i < texsize * texsize * p_color_size; i++) {
-			w[i] = 0;
+			tex.imgdata.write[i] = 0;
 		}
 
 		tex.offsets.resize(texsize);
@@ -286,16 +283,14 @@ TLDynamicFontFaceAtSize::Glyph TLDynamicFontFaceAtSize::bitmap_to_glyph(FT_Bitma
 	int color_size = p_bitmap.pixel_mode == FT_PIXEL_MODE_BGRA ? 4 : 2;
 	Image::Format require_format = color_size == 4 ? Image::FORMAT_RGBA8 : Image::FORMAT_LA8;
 
-	TexturePosition tex_pos = find_texture_pos_for_glyph(color_size, require_format, mw, mh);
+	Texture2DPosition tex_pos = find_texture_pos_for_glyph(color_size, require_format, mw, mh);
 	ERR_FAIL_COND_V(tex_pos.index < 0, Glyph());
 
 	//fit character in char texture
 
-	GlyphTexture &tex = texture_cache[tex_pos.index];
+	GlyphTexture2D &tex = texture_cache[tex_pos.index];
 
 	{
-		PoolByteArray::Write wr = tex.imgdata.write();
-
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 
@@ -305,23 +300,23 @@ TLDynamicFontFaceAtSize::Glyph TLDynamicFontFaceAtSize::bitmap_to_glyph(FT_Bitma
 					case FT_PIXEL_MODE_MONO: {
 						int byte = i * p_bitmap.pitch + (j >> 3);
 						int bit = 1 << (7 - (j % 8));
-						wr[ofs + 0] = 255; //grayscale as 1
-						wr[ofs + 1] = (p_bitmap.buffer[byte] & bit) ? 255 : 0;
+						tex.imgdata.write[ofs + 0] = 255; //grayscale as 1
+						tex.imgdata.write[ofs + 1] = (p_bitmap.buffer[byte] & bit) ? 255 : 0;
 					} break;
 					case FT_PIXEL_MODE_GRAY:
-						wr[ofs + 0] = 255; //grayscale as 1
-						wr[ofs + 1] = p_bitmap.buffer[i * p_bitmap.pitch + j];
+						tex.imgdata.write[ofs + 0] = 255; //grayscale as 1
+						tex.imgdata.write[ofs + 1] = p_bitmap.buffer[i * p_bitmap.pitch + j];
 						break;
 					case FT_PIXEL_MODE_BGRA: {
 						int ofs_color = i * p_bitmap.pitch + (j << 2);
-						wr[ofs + 2] = p_bitmap.buffer[ofs_color + 0];
-						wr[ofs + 1] = p_bitmap.buffer[ofs_color + 1];
-						wr[ofs + 0] = p_bitmap.buffer[ofs_color + 2];
-						wr[ofs + 3] = p_bitmap.buffer[ofs_color + 3];
+						tex.imgdata.write[ofs + 2] = p_bitmap.buffer[ofs_color + 0];
+						tex.imgdata.write[ofs + 1] = p_bitmap.buffer[ofs_color + 1];
+						tex.imgdata.write[ofs + 0] = p_bitmap.buffer[ofs_color + 2];
+						tex.imgdata.write[ofs + 3] = p_bitmap.buffer[ofs_color + 3];
 					} break;
 					// TODO: FT_PIXEL_MODE_LCD
 					default:
-						ERR_PRINTS("Font uses unsupported pixel format: " + String::num_int64(p_bitmap.pixel_mode));
+						ERR_PRINT("Font uses unsupported pixel format: " + String::num_int64(p_bitmap.pixel_mode));
 						ERR_FAIL_V(Glyph());
 						break;
 				}
@@ -339,7 +334,7 @@ TLDynamicFontFaceAtSize::Glyph TLDynamicFontFaceAtSize::bitmap_to_glyph(FT_Bitma
 		image.instance();
 		image->create_from_data(tex.texture_size, tex.texture_size, 0, require_format, tex.imgdata);
 #endif
-		tex.image->create_from_image(image, txt_flags);
+		tex.image->create_from_image(image);
 	}
 
 	// update height array
@@ -460,7 +455,7 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size, const uin
 		p_size = 1;
 
 	if (FT_Init_FreeType(&ft_library) != 0) {
-		ERR_PRINTS("Error initializing FreeType library");
+		ERR_PRINT("Error initializing FreeType library");
 		clear_cache();
 		return false;
 	}
@@ -481,7 +476,7 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size, const uin
 	} else {
 		File *file = memnew(File);
 		if (file->open(p_resource_path, File::READ) != Error::OK) {
-			ERR_PRINTS("Can't open dynamic font file: \"" + p_resource_path + "\"");
+			ERR_PRINT("Can't open dynamic font file: \"" + p_resource_path + "\"");
 			clear_cache();
 			FT_Done_FreeType(ft_library);
 			return false;
@@ -499,7 +494,7 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size, const uin
 	}
 
 	if (FT_Open_Face(ft_library, &ft_args, 0, &ft_face) != 0) {
-		ERR_PRINTS("Error loading dynamic font: \"" + p_resource_path + "\" - FreeType uninitialized");
+		ERR_PRINT("Error loading dynamic font: \"" + p_resource_path + "\" - FreeType uninitialized");
 		clear_cache();
 		FT_Done_FreeType(ft_library);
 		return false;
@@ -535,7 +530,7 @@ bool TLDynamicFontFaceAtSize::load(String p_resource_path, int p_size, const uin
 
 	hb_font = hb_ft_font_create(ft_face, NULL);
 	if (!hb_font) {
-		ERR_PRINTS("Error loading dynamic font: \"" + p_resource_path + "\" - HarfBuzz uninitialized");
+		ERR_PRINT("Error loading dynamic font: \"" + p_resource_path + "\" - HarfBuzz uninitialized");
 		clear_cache();
 		FT_Done_FreeType(ft_library);
 		return false;
@@ -792,20 +787,6 @@ double TLDynamicFontFaceAtSize::get_height() const {
 	return loaded ? height : 0.0f;
 }
 
-void TLDynamicFontFaceAtSize::set_texture_flags(int p_flags) {
-
-	if (txt_flags != p_flags) {
-		txt_flags = p_flags;
-		if (loaded) {
-			for (int64_t i = 0; i < texture_cache.size(); i++) {
-				Ref<ImageTexture> &tex = texture_cache[i].image;
-				if (!tex.is_null())
-					tex->set_flags(txt_flags);
-			}
-		}
-	}
-}
-
 void TLDynamicFontFaceAtSize::set_hinting(int p_hinting) {
 
 	if (hinting != p_hinting) {
@@ -851,7 +832,6 @@ void TLDynamicFontFace::_init() {
 
 	hinting = DF_HINTING_NORMAL;
 	force_autohinter = false;
-	txt_flags = Texture::FLAG_VIDEO_SURFACE;
 	oversampling = 1.0f;
 	font_mem = NULL;
 	font_mem_size = 0;
@@ -873,7 +853,6 @@ hb_font_t *TLDynamicFontFace::get_hb_font(int p_size) const {
 		return sizes.at(p_size)->get_hb_font();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -894,7 +873,6 @@ float TLDynamicFontFace::get_glyph_scale(int p_size) const {
 		return sizes.at(p_size)->get_glyph_scale();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -915,7 +893,6 @@ void TLDynamicFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32
 		sizes.at(p_size)->draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate);
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -936,7 +913,6 @@ void TLDynamicFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32
 		sizes.at(p_size)->_draw_char(p_canvas_item, p_pos, p_codepoint, p_modulate);
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -956,7 +932,6 @@ void TLDynamicFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos
 		sizes.at(p_size)->draw_glyph_outline(p_canvas_item, p_pos, p_codepoint, p_modulate);
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -976,7 +951,6 @@ Array TLDynamicFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepo
 		return sizes.at(p_size)->get_glyph_outline(p_pos, p_codepoint);
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -1029,7 +1003,6 @@ std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 		return sizes.begin()->second->unicode_scripts_supported();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -1039,7 +1012,7 @@ std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 			return f_at_s->unicode_scripts_supported();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINT("Font not loaded!");
 	return std::vector<hb_script_t>();
 }
 
@@ -1051,7 +1024,6 @@ double TLDynamicFontFace::get_ascent(int p_size) const {
 		return sizes.at(p_size)->get_ascent();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -1061,7 +1033,7 @@ double TLDynamicFontFace::get_ascent(int p_size) const {
 			return f_at_s->get_ascent();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINT("Font not loaded!");
 	return 0.0f;
 }
 
@@ -1073,7 +1045,6 @@ double TLDynamicFontFace::get_descent(int p_size) const {
 		return sizes.at(p_size)->get_descent();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -1083,7 +1054,7 @@ double TLDynamicFontFace::get_descent(int p_size) const {
 			return f_at_s->get_descent();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINT("Font not loaded!");
 	return 0.0f;
 }
 
@@ -1095,7 +1066,6 @@ double TLDynamicFontFace::get_height(int p_size) const {
 		return sizes.at(p_size)->get_height();
 	} else {
 		TLDynamicFontFaceAtSize *f_at_s = new TLDynamicFontFaceAtSize();
-		f_at_s->set_texture_flags(txt_flags);
 		f_at_s->set_hinting(hinting);
 		f_at_s->set_force_autohinter(force_autohinter);
 		f_at_s->set_oversampling(oversampling);
@@ -1105,24 +1075,8 @@ double TLDynamicFontFace::get_height(int p_size) const {
 			return f_at_s->get_height();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINT("Font not loaded!");
 	return 0.0f;
-}
-
-void TLDynamicFontFace::set_texture_flags(int p_flags) {
-
-	if (txt_flags != p_flags) {
-		txt_flags = p_flags;
-		for (auto it = sizes.begin(); it != sizes.end(); ++it) {
-			it->second->set_texture_flags(p_flags);
-		}
-		emit_signal(_CHANGED);
-	}
-}
-
-int TLDynamicFontFace::get_texture_flags() const {
-
-	return txt_flags;
 }
 
 void TLDynamicFontFace::set_hinting(int p_hinting) {
@@ -1197,7 +1151,7 @@ void TLDynamicFontFace::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "force_autohinter"), "set_force_autohinter", "get_force_autohinter");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "hinting", PROPERTY_HINT_ENUM, "None,Light,Normal"), "set_hinting", "get_hinting");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "oversampling"), "set_oversampling", "get_oversampling");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "oversampling"), "set_oversampling", "get_oversampling");
 
 	BIND_ENUM_CONSTANT(DF_HINTING_NONE);
 	BIND_ENUM_CONSTANT(DF_HINTING_LIGHT);

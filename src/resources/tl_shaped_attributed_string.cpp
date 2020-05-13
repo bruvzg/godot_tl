@@ -7,11 +7,11 @@
 #ifdef GODOT_MODULE
 #include "core/dictionary.h"
 #include "core/translation.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #else
 #include <Dictionary.hpp>
 #include <TranslationServer.hpp>
-#include <VisualServer.hpp>
+#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -52,12 +52,12 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 	p_ref->data[p_end - p_start] = 0x0000;
 	p_ref->base_direction = base_direction;
 	p_ref->para_direction = para_direction;
-	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
-		p_ref->base_font->disconnect(_CHANGED, p_ref, "_font_changed");
+	if (p_ref->base_font.is_valid() && p_ref->base_font->is_connected(_CHANGED, callable_mp((TLShapedString *)p_ref, &TLShapedString::_font_changed))) {
+		p_ref->base_font->disconnect(_CHANGED, callable_mp((TLShapedString *)p_ref, &TLShapedString::_font_changed));
 	}
 	p_ref->base_font = base_font;
-	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, p_ref, "_font_changed")) {
-		p_ref->base_font->connect(_CHANGED, p_ref, "_font_changed");
+	if (p_ref->base_font.is_valid() && !p_ref->base_font->is_connected(_CHANGED, callable_mp((TLShapedString *)p_ref, &TLShapedString::_font_changed))) {
+		p_ref->base_font->connect(_CHANGED, callable_mp((TLShapedString *)p_ref, &TLShapedString::_font_changed));
 	}
 	p_ref->base_style = base_style;
 	p_ref->base_size = base_size;
@@ -351,7 +351,7 @@ void TLShapedAttributedString::_shape_rect_run(hb_direction_t p_run_direction, c
 	}
 }
 
-void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, const Ref<Texture> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end) {
+void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, const Ref<Texture2D> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end) {
 
 	//"Shape" monotone image run
 	if (p_run_direction == HB_DIRECTION_LTR) {
@@ -425,7 +425,7 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 
 	//Handle image runs
 	if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
-		Ref<Texture> image = Ref<Texture>(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
+		Ref<Texture2D> image = Ref<Texture2D>(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 		if (!image.is_null()) {
 			int64_t align = TEXT_VALIGN_CENTER;
 			if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_VALIGN)) {
@@ -647,7 +647,7 @@ Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;
 	if (ret->base_font.is_valid()) {
-		ret->base_font->connect(_CHANGED, ret.ptr(), "_font_changed");
+		ret->base_font->connect(_CHANGED, callable_mp((TLShapedString *)ret.ptr(), &TLShapedString::_font_changed));
 	}
 	ret->base_style = base_style;
 	ret->base_size = base_size;
@@ -667,8 +667,8 @@ void TLShapedAttributedString::_disconnect_fonts() {
 		for (auto F = E->get().front(); F; F = F->next()) {
 			if (F->key() == TEXT_ATTRIBUTE_FONT) {
 				Ref<TLFontFamily> font = F->get();
-				if (font.is_valid() && font != base_font && font->is_connected(_CHANGED, this, "_font_changed")) {
-					font->disconnect(_CHANGED, this, "_font_changed");
+				if (font.is_valid() && font != base_font && font->is_connected(_CHANGED, callable_mp((TLShapedString *)this, &TLShapedString::_font_changed))) {
+					font->disconnect(_CHANGED, callable_mp((TLShapedString *)this, &TLShapedString::_font_changed));
 				}
 			}
 		}
@@ -680,8 +680,8 @@ void TLShapedAttributedString::_reconnect_fonts() {
 		for (auto F = E->get().front(); F; F = F->next()) {
 			if (F->key() == TEXT_ATTRIBUTE_FONT) {
 				Ref<TLFontFamily> font = F->get();
-				if (font.is_valid() && font != base_font && !font->is_connected(_CHANGED, this, "_font_changed")) {
-					font->connect(_CHANGED, this, "_font_changed");
+				if (font.is_valid() && font != base_font && !font->is_connected(_CHANGED, callable_mp((TLShapedString *)this, &TLShapedString::_font_changed))) {
+					font->connect(_CHANGED, callable_mp((TLShapedString *)this, &TLShapedString::_font_changed));
 				}
 			}
 		}
@@ -692,7 +692,7 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 
 	if (p_end == -1) p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
 	}
 
@@ -700,13 +700,13 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 	if (p_attribute == TEXT_ATTRIBUTE_FONT) {
 		Ref<TLFontFamily> _ref = p_value;
 		if (!cast_to<TLFontFamily>(*_ref)) {
-			ERR_PRINTS("Type mismatch");
+			ERR_PRINT("Type mismatch");
 			return;
 		}
 	} else if (p_attribute == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
-		Ref<Texture> _ref = p_value;
-		if (!cast_to<Texture>(*_ref)) {
-			ERR_PRINTS("Type mismatch");
+		Ref<Texture2D> _ref = p_value;
+		if (!cast_to<Texture2D>(*_ref)) {
+			ERR_PRINT("Type mismatch");
 			return;
 		}
 	}
@@ -749,7 +749,7 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 
 	if (p_end == -1) p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
 	}
 
@@ -787,7 +787,7 @@ void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end)
 
 	if (p_end == -1) p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
 	}
 
@@ -910,7 +910,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR)) {
 				Color _hl_color = Color(attrib->get()[TEXT_ATTRIBUTE_HIGHLIGHT_COLOR]);
 				Rect2 _rect = get_cluster_rect(p_index);
-				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
+				RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
 			}
 			visual[p_index].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[p_index].glyphs[i].offset - Point2(0, visual[p_index].ascent), visual[i].glyphs[i].codepoint, _color, _size);
 
@@ -925,7 +925,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 				if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
 					_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 				}
-				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[p_index].width, descent), _ln_color, _width);
+				RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[p_index].width, descent), _ln_color, _width);
 			}
 			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
 				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
@@ -933,7 +933,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 				if (attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH)) {
 					_width = float(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH]);
 				}
-				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[p_index].descent - visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, 2 * visual[p_index].descent - visual[p_index].ascent), _ln_color, _width);
+				RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[p_index].descent - visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, 2 * visual[p_index].descent - visual[p_index].ascent), _ln_color, _width);
 			}
 			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_COLOR)) {
 				Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_COLOR]);
@@ -941,14 +941,14 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 				if (attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_WIDTH)) {
 					_width = float(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_WIDTH]);
 				}
-				VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, -visual[p_index].ascent), _ln_color, _width);
+				RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[p_index].ascent), p_position + ofs + Point2(visual[p_index].width, -visual[p_index].ascent), _ln_color, _width);
 			}
 			ofs += visual[p_index].glyphs[i].advance;
 		}
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_IMAGE) {
 		auto attrib = format_attributes.find_closest(visual[p_index].start);
 		if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
-			Ref<Texture> image = Ref<Texture>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
+			Ref<Texture2D> image = Ref<Texture2D>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 			if (!image.is_null()) {
 				image->draw(p_canvas_item, p_position + ofs + Point2(0, -visual[p_index].ascent));
 			}
@@ -959,7 +959,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 		ofs += Vector2(visual[p_index].width, 0);
 	} else {
-		WARN_PRINTS("Invalid cluster type")
+		WARN_PRINT("Invalid cluster type");
 	}
 
 	return ofs;
@@ -973,15 +973,15 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 	if (!valid)
 		return;
 #ifdef DEBUG_DISPLAY_METRICS
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, -ascent), p_position + Point2(width, -ascent), Color(1, 0, 0, 0.5), 1);
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, 0), p_position + Point2(width, 0), Color(1, 1, 0, 0.5), 1);
-	VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, descent), p_position + Point2(width, descent), Color(0, 0, 1, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, -ascent), p_position + Point2(width, -ascent), Color(1, 0, 0, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, 0), p_position + Point2(width, 0), Color(1, 1, 0, 0.5), 1);
+	RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + Point2(0, descent), p_position + Point2(width, descent), Color(0, 0, 1, 0.5), 1);
 #endif
 
 	Vector2 ofs;
 	for (int64_t i = 0; i < (int64_t)visual.size(); i++) {
 #ifdef DEBUG_DISPLAY_METRICS
-		VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), Color(1, 0.5, 0.5, 0.2), 3);
+		RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), Color(1, 0.5, 0.5, 0.2), 3);
 #endif
 		if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
@@ -1004,7 +1004,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_HIGHLIGHT_COLOR)) {
 					Color _hl_color = Color(attrib->get()[TEXT_ATTRIBUTE_HIGHLIGHT_COLOR]);
 					Rect2 _rect = get_cluster_rect(i);
-					VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
+					RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + _rect.position, _rect.size), _hl_color);
 				}
 				visual[i].font_face->draw_glyph(p_canvas_item, p_position + ofs + visual[i].glyphs[j].offset - Point2(0, visual[i].ascent), visual[i].glyphs[j].codepoint, _color, _size);
 
@@ -1019,7 +1019,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 					if (attrib->get().has(TEXT_ATTRIBUTE_UNDERLINE_WIDTH)) {
 						_width = float(attrib->get()[TEXT_ATTRIBUTE_UNDERLINE_WIDTH]);
 					}
-					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[i].width, descent), _ln_color, _width);
+					RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, descent), p_position + ofs + Point2(visual[i].width, descent), _ln_color, _width);
 				}
 				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR)) {
 					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR]);
@@ -1028,7 +1028,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 						_width = float(attrib->get()[TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH]);
 					}
 
-					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[i].descent - visual[i].ascent), p_position + ofs + Point2(visual[i].width, 2 * visual[i].descent - visual[i].ascent), _ln_color, _width);
+					RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, 2 * visual[i].descent - visual[i].ascent), p_position + ofs + Point2(visual[i].width, 2 * visual[i].descent - visual[i].ascent), _ln_color, _width);
 				}
 				if (attrib && attrib->get().has(TEXT_ATTRIBUTE_OVERLINE_COLOR)) {
 					Color _ln_color = Color(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_COLOR]);
@@ -1037,14 +1037,14 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 						_width = float(attrib->get()[TEXT_ATTRIBUTE_OVERLINE_WIDTH]);
 					}
 
-					VisualServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), _ln_color, _width);
+					RenderingServer::get_singleton()->canvas_item_add_line(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent), p_position + ofs + Point2(visual[i].width, -visual[i].ascent), _ln_color, _width);
 				}
 				ofs += visual[i].glyphs[j].advance;
 			}
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_IMAGE) {
 			auto attrib = format_attributes.find_closest(visual[i].start);
 			if (attrib && attrib->get().has(TEXT_ATTRIBUTE_REPLACEMENT_IMAGE)) {
-				Ref<Texture> image = Ref<Texture>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
+				Ref<Texture2D> image = Ref<Texture2D>(attrib->get()[TEXT_ATTRIBUTE_REPLACEMENT_IMAGE]);
 				if (!image.is_null()) {
 					image->draw(p_canvas_item, p_position + ofs + Point2(0, -visual[i].ascent));
 				}
@@ -1055,7 +1055,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 			ofs += Vector2(visual[i].width, 0);
 		} else {
-			WARN_PRINTS("Invalid cluster type")
+			WARN_PRINT("Invalid cluster type");
 		}
 	}
 }
@@ -1063,7 +1063,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 bool TLShapedAttributedString::has_attribute(int64_t p_attribute, int64_t p_index) const {
 
 	if (p_index < 0 || p_index > data_size) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, false);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
@@ -1084,7 +1084,7 @@ bool TLShapedAttributedString::has_attribute(int64_t p_attribute, int64_t p_inde
 Variant TLShapedAttributedString::get_attribute(int64_t p_attribute, int64_t p_index) const {
 
 	if (p_index < 0 || p_index > data_size) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, Variant());
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
@@ -1218,7 +1218,7 @@ Array TLShapedAttributedString::save_attributes_dict() const {
 					run["relp_valign"] = sit->get();
 				} break;
 				default: {
-					ERR_PRINTS("Invalid format attribute")
+					ERR_PRINT("Invalid format attribute");
 				} break;
 			}
 		}
@@ -1274,20 +1274,20 @@ Array TLShapedAttributedString::save_attributes_dict() const {
 int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64_t p_index) const {
 
 	if (p_index < 0 || p_index > data_size) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, -1);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
 		auto attrib = format_attributes.find_closest(p_index);
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
 	} else {
 		auto attrib = style_attributes.find_closest(p_index);
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
@@ -1297,30 +1297,30 @@ int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64
 int64_t TLShapedAttributedString::get_attribute_end(int64_t p_attribute, int64_t p_index) const {
 
 	if (p_index < 0 || p_index > data_size) {
-		ERR_PRINTS("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
+		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, -1);
 	}
 	if (p_attribute <= TEXT_ATTRIBUTE_MAX_FORMAT_ATTRIBUTE) {
 		auto attrib = format_attributes.find_closest(p_index);
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		attrib = attrib->next();
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
 	} else {
 		auto attrib = style_attributes.find_closest(p_index);
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		attrib = attrib->next();
 		if (!attrib) {
-			ERR_PRINTS("Attribute not set");
+			ERR_PRINT("Attribute not set");
 			ERR_FAIL_COND_V(true, -1);
 		}
 		return attrib->key();
@@ -1362,7 +1362,7 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 	emit_signal("string_changed");
 }
 
-void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	int32_t _len = data_size;
 
@@ -1397,7 +1397,7 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 	emit_signal("string_changed");
 }
 
-void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	int32_t _len = data_size;
 
@@ -1432,7 +1432,7 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 	emit_signal("string_changed");
 }
 
-void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, const PoolByteArray p_text) {
+void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
 
 	int32_t _len = data_size;
 
@@ -1470,12 +1470,12 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
 
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
-		ERR_PRINTS("Invalid range");
+		ERR_PRINT("Invalid range");
 		return;
 	}
 
 	if (p_text.is_null()) {
-		ERR_PRINTS("Invalid string");
+		ERR_PRINT("Invalid string");
 		return;
 	}
 
@@ -1527,7 +1527,7 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
 
 	if (p_ref.is_null()) {
-		ERR_PRINTS("Invalid string");
+		ERR_PRINT("Invalid string");
 		return;
 	}
 
@@ -1626,7 +1626,7 @@ bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_v
 			if (v.is_null()) return false;
 		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
 			Object *p_obj = p_value;
-			Ref<Texture> v = Ref<Texture>(Object::cast_to<Texture>(p_obj));
+			Ref<Texture2D> v = Ref<Texture2D>(Object::cast_to<Texture2D>(p_obj));
 			if (v.is_null()) return false;
 		}
 		_edited_attrib_value = p_value;
@@ -1713,7 +1713,7 @@ void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) co
 			p_list->push_back(PropertyInfo(Variant::INT, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: {
-			p_list->push_back(PropertyInfo(Variant::OBJECT, "attribute/value", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "attribute/value", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		} break;
 		case TEXT_ATTRIBUTE_REPLACEMENT_RECT: {
 			p_list->push_back(PropertyInfo(Variant::VECTOR2, "attribute/value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
@@ -1820,7 +1820,7 @@ bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
 			if (v.is_null()) return false;
 		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
 			Object *p_obj = p_value;
-			Ref<Texture> v = Ref<Texture>(Object::cast_to<Texture>(p_obj));
+			Ref<Texture2D> v = Ref<Texture2D>(Object::cast_to<Texture2D>(p_obj));
 			if (v.is_null()) return false;
 		}
 		_edited_attrib_value = p_value;
@@ -1922,7 +1922,7 @@ Array TLShapedAttributedString::_get_property_list() const {
 			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: {
 				prop["type"] = GlobalConstants::TYPE_OBJECT;
 				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
-				prop["hint_string"] = "Texture";
+				prop["hint_string"] = "Texture2D";
 			} break;
 			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: {
 				prop["type"] = GlobalConstants::TYPE_VECTOR2;
