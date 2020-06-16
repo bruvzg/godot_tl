@@ -797,7 +797,7 @@ void TLDynamicFontFaceAtSize::set_texture_flags(int p_flags) {
 	if (txt_flags != p_flags) {
 		txt_flags = p_flags;
 		if (loaded) {
-			for (int64_t i = 0; i < texture_cache.size(); i++) {
+			for (size_t i = 0; i < texture_cache.size(); i++) {
 				Ref<ImageTexture> &tex = texture_cache[i].image;
 				if (!tex.is_null())
 					tex->set_flags(txt_flags);
