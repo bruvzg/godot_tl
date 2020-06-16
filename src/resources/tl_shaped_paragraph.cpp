@@ -4,22 +4,21 @@
 
 #include "resources/tl_shaped_paragraph.hpp"
 
-TLShapedParagraph::TLShapedParagraph() {
+static float min_paragraph_width = 20.0f;
 
+TLShapedParagraph::TLShapedParagraph() {
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 TLShapedParagraph::~TLShapedParagraph() {
-
 	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
 		line_ctx[i]->disconnect("string_changed", callable_mp(this, &TLShapedParagraph::_line_change_warning));
 	}
 }
 
 void TLShapedParagraph::_init() {
-
 #ifdef GODOT_MODULE
 	ctx.instance();
 #else
@@ -42,7 +41,6 @@ void TLShapedParagraph::_init() {
 }
 
 void TLShapedParagraph::copy_properties(Ref<TLShapedParagraph> p_source) {
-
 	ctx->copy_properties(p_source->ctx);
 
 	width = p_source->width;
@@ -57,13 +55,11 @@ void TLShapedParagraph::copy_properties(Ref<TLShapedParagraph> p_source) {
 }
 
 void TLShapedParagraph::_line_change_warning() {
-
 	WARN_PRINT("DO NOT EDIT");
 	_update_paragraph(); //regenerate changed lines
 }
 
 void TLShapedParagraph::_update_paragraph() {
-
 	for (int64_t i = 0; i < (int64_t)line_ctx.size(); i++) {
 		line_ctx[i]->disconnect("string_changed", callable_mp(this, &TLShapedParagraph::_line_change_warning));
 	}
@@ -103,22 +99,18 @@ void TLShapedParagraph::_update_paragraph() {
 }
 
 Size2 TLShapedParagraph::get_size() const {
-
 	return Size2(max_line_width, height);
 }
 
 std::vector<int> TLShapedParagraph::get_word_bounds() const {
-
 	return word_bounds;
 }
 
 std::vector<int> TLShapedParagraph::get_line_bounds() const {
-
 	return line_bounds;
 }
 
 Array TLShapedParagraph::_get_word_bounds() const {
-
 	Array ret;
 	for (int64_t i = 0; i < (int64_t)word_bounds.size(); i++) {
 		ret.push_back(word_bounds[i]);
@@ -127,7 +119,6 @@ Array TLShapedParagraph::_get_word_bounds() const {
 }
 
 Array TLShapedParagraph::_get_line_bounds() const {
-
 	Array ret;
 	for (int64_t i = 0; i < (int64_t)line_bounds.size(); i++) {
 		ret.push_back(line_bounds[i]);
@@ -136,7 +127,6 @@ Array TLShapedParagraph::_get_line_bounds() const {
 }
 
 void TLShapedParagraph::set_width(float p_width) {
-
 	if (width != p_width) {
 		width = p_width;
 		_update_paragraph();
@@ -144,24 +134,20 @@ void TLShapedParagraph::set_width(float p_width) {
 }
 
 float TLShapedParagraph::get_width() const {
-
 	return width;
 }
 
 void TLShapedParagraph::set_indent(float p_indent) {
-
 	if (indent != p_indent) {
 		indent = p_indent;
 		_update_paragraph();
 	}
 }
 float TLShapedParagraph::get_indent() const {
-
 	return indent;
 }
 
 void TLShapedParagraph::set_back_color(Color p_bcolor) {
-
 	if (back_color != p_bcolor) {
 		back_color = p_bcolor;
 		_update_paragraph();
@@ -169,12 +155,10 @@ void TLShapedParagraph::set_back_color(Color p_bcolor) {
 }
 
 Color TLShapedParagraph::get_back_color() const {
-
 	return back_color;
 }
 
 void TLShapedParagraph::set_line_spacing(float p_line_spacing) {
-
 	if (line_spacing != p_line_spacing) {
 		line_spacing = p_line_spacing;
 		_update_paragraph();
@@ -182,12 +166,10 @@ void TLShapedParagraph::set_line_spacing(float p_line_spacing) {
 }
 
 float TLShapedParagraph::get_line_spacing() const {
-
 	return line_spacing;
 }
 
 void TLShapedParagraph::set_string(Ref<TLShapedAttributedString> p_string) {
-
 	if (p_string.is_null()) {
 #ifdef GODOT_MODULE
 		ctx = Ref<TLShapedAttributedString>();
@@ -206,12 +188,10 @@ void TLShapedParagraph::set_string(Ref<TLShapedAttributedString> p_string) {
 }
 
 Ref<TLShapedAttributedString> TLShapedParagraph::get_string() const {
-
 	return ctx;
 }
 
 void TLShapedParagraph::set_brk_flags(int p_flags) {
-
 	if (brk_flags != p_flags) {
 		brk_flags = (TextBreak)p_flags;
 		_update_paragraph();
@@ -219,12 +199,10 @@ void TLShapedParagraph::set_brk_flags(int p_flags) {
 }
 
 int TLShapedParagraph::get_brk_flags() const {
-
 	return brk_flags;
 }
 
 void TLShapedParagraph::set_jst_flags(int p_flags) {
-
 	if (jst_flags != p_flags) {
 		jst_flags = (TextJustification)p_flags;
 		_update_paragraph();
@@ -232,12 +210,10 @@ void TLShapedParagraph::set_jst_flags(int p_flags) {
 }
 
 int TLShapedParagraph::get_jst_flags() const {
-
 	return jst_flags;
 }
 
 void TLShapedParagraph::set_halign(int p_halign) {
-
 	if (p_halign != halign) {
 		halign = (ParaHAlign)p_halign;
 		_update_paragraph();
@@ -249,12 +225,10 @@ int TLShapedParagraph::get_halign() const {
 }
 
 int TLShapedParagraph::get_lines() const {
-
 	return line_ctx.size();
 }
 
 Ref<TLShapedAttributedString> TLShapedParagraph::get_line(int p_index) const {
-
 	if ((p_index < 0) || (p_index >= (int64_t)line_ctx.size()))
 		return Ref<TLShapedAttributedString>();
 
@@ -264,7 +238,6 @@ Ref<TLShapedAttributedString> TLShapedParagraph::get_line(int p_index) const {
 #ifdef GODOT_MODULE
 
 void TLShapedParagraph::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("copy_properties", "source"), &TLShapedParagraph::copy_properties);
 
 	ClassDB::bind_method(D_METHOD("_update_paragraph"), &TLShapedParagraph::_update_paragraph);
@@ -351,7 +324,6 @@ Array TLShapedParagraph::_get_property_list() const {
 }
 
 void TLShapedParagraph::_register_methods() {
-
 	register_method("copy_properties", &TLShapedParagraph::copy_properties);
 
 	register_method("_update_paragraph", &TLShapedParagraph::_update_paragraph);

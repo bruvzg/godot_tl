@@ -112,7 +112,6 @@ TLFontFallbackIterator TLFontFallbackIterator::next() const {
 }
 
 TLFontFallbackIterator::TLFontFallbackIterator(Ref<TLFontFace> p_font) {
-
 	font = p_font;
 	data = NULL;
 	script = HB_SCRIPT_INVALID;
@@ -231,7 +230,6 @@ void TLFontIterator::_register_methods() {
 /*************************************************************************/
 
 TLFontFamily::TLFontFamily() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
@@ -261,7 +259,7 @@ void TLFontFamily::add_script(String p_style, String p_script) {
 	if (styles.count(p_style.to_upper()) > 0) {
 		hb_script_t scr = hb_script_from_string(p_script.ascii().get_data(), -1);
 		if (styles[p_style.to_upper()].linked_src_chain.count(scr) == 0) {
-			styles[p_style.to_upper()].linked_src_chain[scr] = std::vector<Ref<TLFontFace> >();
+			styles[p_style.to_upper()].linked_src_chain[scr] = std::vector<Ref<TLFontFace>>();
 			emit_signal(_CHANGED);
 #ifdef GODOT_MODULE
 			_change_notify();
@@ -276,7 +274,7 @@ void TLFontFamily::add_language(String p_style, String p_lang) {
 	if (styles.count(p_style.to_upper()) > 0) {
 		hb_language_t lang = hb_language_from_string(p_lang.ascii().get_data(), -1);
 		if (styles[p_style.to_upper()].linked_lang_chain.count(lang) == 0) {
-			styles[p_style.to_upper()].linked_lang_chain[lang] = std::vector<Ref<TLFontFace> >();
+			styles[p_style.to_upper()].linked_lang_chain[lang] = std::vector<Ref<TLFontFace>>();
 			emit_signal(_CHANGED);
 #ifdef GODOT_MODULE
 			_change_notify();
@@ -324,7 +322,6 @@ void TLFontFamily::remove_language(String p_style, String p_lang) {
 }
 
 void TLFontFamily::remove_style(String p_style) {
-
 	for (auto E = styles[p_style.to_upper()].main_chain.begin(); E != styles[p_style.to_upper()].main_chain.end(); ++E) {
 		_dec_ref(*E);
 	}
@@ -349,12 +346,10 @@ void TLFontFamily::remove_style(String p_style) {
 }
 
 bool TLFontFamily::has_style(String p_style) const {
-
 	return styles.count(p_style.to_upper()) > 0;
 }
 
 TLFontFallbackIterator TLFontFamily::get_face(String p_style) const {
-
 	if (styles.count(p_style.to_upper()) > 0) {
 		return TLFontFallbackIterator(&styles.at(p_style.to_upper()));
 	} else {
@@ -363,7 +358,6 @@ TLFontFallbackIterator TLFontFamily::get_face(String p_style) const {
 }
 
 TLFontFallbackIterator TLFontFamily::get_face_for_script(String p_style, hb_script_t p_script) const {
-
 	if (styles.count(p_style.to_upper()) > 0) {
 		if (styles.at(p_style.to_upper()).linked_src_chain.count(p_script) > 0) {
 			return TLFontFallbackIterator(&styles.at(p_style.to_upper()), p_script);
@@ -375,7 +369,6 @@ TLFontFallbackIterator TLFontFamily::get_face_for_script(String p_style, hb_scri
 }
 
 TLFontFallbackIterator TLFontFamily::get_face_for_language(String p_style, hb_language_t p_lang) const {
-
 	if (styles.count(p_style.to_upper()) > 0) {
 		if (styles.at(p_style.to_upper()).linked_lang_chain.count(p_lang) > 0) {
 			return TLFontFallbackIterator(&styles.at(p_style.to_upper()), p_lang);
@@ -387,7 +380,6 @@ TLFontFallbackIterator TLFontFamily::get_face_for_language(String p_style, hb_la
 }
 
 void TLFontFamily::add_face(String p_style, Ref<TLFontFace> p_ref) {
-
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
 		ERR_PRINT("Type mismatch");
 		return;
@@ -414,7 +406,6 @@ void TLFontFamily::add_face(String p_style, Ref<TLFontFace> p_ref) {
 }
 
 void TLFontFamily::add_face_unlinked(String p_style, Ref<TLFontFace> p_ref) {
-
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
 		ERR_PRINT("Type mismatch");
 		return;
@@ -432,7 +423,6 @@ void TLFontFamily::add_face_unlinked(String p_style, Ref<TLFontFace> p_ref) {
 }
 
 void TLFontFamily::add_face_for_script(String p_style, Ref<TLFontFace> p_ref, String p_script) {
-
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
 		ERR_PRINT("Type mismatch");
 		return;
@@ -451,7 +441,6 @@ void TLFontFamily::add_face_for_script(String p_style, Ref<TLFontFace> p_ref, St
 }
 
 void TLFontFamily::add_face_for_language(String p_style, Ref<TLFontFace> p_ref, String p_lang) {
-
 	if (p_ref.is_valid() && !cast_to<TLFontFace>(*p_ref)) {
 		ERR_PRINT("Type mismatch");
 		return;
@@ -517,7 +506,8 @@ void TLFontFamily::_font_changed() {
 }
 
 void TLFontFamily::_inc_ref(Ref<TLFontFace> &p_font) {
-	if (p_font.is_null()) return;
+	if (p_font.is_null())
+		return;
 	if (_ref_count.count(p_font) == 0) {
 		p_font->connect(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed));
 		_ref_count[p_font] = 1;
@@ -527,7 +517,8 @@ void TLFontFamily::_inc_ref(Ref<TLFontFace> &p_font) {
 }
 
 void TLFontFamily::_dec_ref(Ref<TLFontFace> &p_font) {
-	if (p_font.is_null()) return;
+	if (p_font.is_null())
+		return;
 	if (_ref_count.count(p_font) == 1) {
 		if (p_font->is_connected(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed))) {
 			p_font->disconnect(_CHANGED, callable_mp(this, &TLFontFamily::_font_changed));
@@ -541,7 +532,6 @@ void TLFontFamily::_dec_ref(Ref<TLFontFace> &p_font) {
 #ifdef GODOT_MODULE
 
 bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
-
 	String name = p_name;
 	Vector<String> tokens = name.split("/");
 	if (tokens.size() >= 2) {
@@ -642,7 +632,6 @@ bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
 }
 
 bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
-
 	String name = p_name;
 
 	Vector<String> tokens = name.split("/");
@@ -683,7 +672,6 @@ bool TLFontFamily::_get(const StringName &p_name, Variant &r_ret) const {
 }
 
 void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
-
 	for (auto it = styles.begin(); it != styles.end(); ++it) {
 		p_list->push_back(PropertyInfo(Variant::NIL, it->first.to_lower() + "/" + "_prev_style", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL));
 		for (int64_t i = 0; i < (int64_t)it->second.main_chain.size(); i++) {
@@ -715,7 +703,6 @@ void TLFontFamily::_get_property_list(List<PropertyInfo> *p_list) const {
 }
 
 void TLFontFamily::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("_font_changed"), &TLFontFamily::_font_changed);
 
 	ClassDB::bind_method(D_METHOD("add_style", "style"), &TLFontFamily::add_style);
@@ -741,7 +728,6 @@ void TLFontFamily::_bind_methods() {
 #else
 
 bool TLFontFamily::_set(String p_name, Variant p_value) {
-
 	String name = p_name;
 	PoolStringArray tokens = name.split("/");
 	if (tokens.size() >= 2) {
@@ -848,7 +834,6 @@ bool TLFontFamily::_set(String p_name, Variant p_value) {
 }
 
 Variant TLFontFamily::_get(String p_name) const {
-
 	String name = p_name;
 
 	PoolStringArray tokens = name.split("/");
@@ -887,10 +872,8 @@ Variant TLFontFamily::_get(String p_name) const {
 }
 
 Array TLFontFamily::_get_property_list() const {
-
 	Array ret;
 	for (auto it = styles.begin(); it != styles.end(); ++it) {
-
 		{
 			Dictionary prop;
 			prop["name"] = it->first.to_lower() + "/" + "_prev_style";
@@ -961,7 +944,6 @@ Array TLFontFamily::_get_property_list() const {
 			ret.push_back(prop);
 		}
 		for (auto sit = it->second.linked_lang_chain.begin(); sit != it->second.linked_lang_chain.end(); ++sit) {
-
 			for (int i = 0; i < sit->second.size(); i++) {
 				Dictionary prop;
 				prop["name"] = it->first.to_lower() + "/lang/" + hb_language_to_string(sit->first) + "/" + String::num_int64(i);
@@ -1022,7 +1004,6 @@ Array TLFontFamily::_get_property_list() const {
 }
 
 void TLFontFamily::_register_methods() {
-
 	register_method("_font_changed", &TLFontFamily::_font_changed);
 
 	register_method("add_style", &TLFontFamily::add_style);

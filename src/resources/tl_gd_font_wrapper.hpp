@@ -20,10 +20,9 @@
 using namespace godot;
 
 class TLGDFontWrapper : public Font {
-
 	GODOT_CLASS(TLGDFontWrapper, Font);
 
-	mutable std::map<int64_t, Ref<TLShapedString> > sstr;
+	mutable std::map<int64_t, Ref<TLShapedString>> sstr;
 	mutable std::list<int64_t> sids;
 
 	int scdepth;
@@ -56,6 +55,8 @@ public:
 
 	virtual float get_ascent() const;
 	virtual float get_descent() const;
+	virtual float get_underline_position() const { return 2; };
+	virtual float get_underline_thickness() const { return 1; };
 
 	virtual Size2 get_char_size(CharType p_char, CharType p_next = 0) const;
 	virtual Size2 get_string_size(const String &p_text) const;

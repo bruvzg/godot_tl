@@ -1,8 +1,8 @@
 diff --git a/editor/SCsub b/editor/SCsub
-index 2b560f68e8..0481837354 100644
+index 651dd5fffd..1413f2e665 100644
 --- a/editor/SCsub
 +++ b/editor/SCsub
-@@ -86,6 +86,8 @@ if env['tools']:
+@@ -86,6 +86,8 @@ if env["tools"]:
      env.Depends("#editor/builtin_fonts.gen.h", flist)
      env.CommandNoCache("#editor/builtin_fonts.gen.h", flist, run_in_subprocess(editor_builders.make_fonts_header))
  
@@ -12,10 +12,10 @@ index 2b560f68e8..0481837354 100644
  
      SConscript("debugger/SCsub")
 diff --git a/editor/editor_fonts.cpp b/editor/editor_fonts.cpp
-index 171b7a2176..a5f3a9700e 100644
+index cf00c536a7..06186a2ed6 100644
 --- a/editor/editor_fonts.cpp
 +++ b/editor/editor_fonts.cpp
-@@ -35,58 +35,31 @@
+@@ -35,68 +35,41 @@
  #include "editor_scale.h"
  #include "editor_settings.h"
  #include "scene/resources/default_theme/default_theme.h"
@@ -90,8 +90,11 @@ index 171b7a2176..a5f3a9700e 100644
  
  void editor_register_fonts(Ref<Theme> p_theme) {
  	DirAccess *dir = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
-@@ -96,7 +69,7 @@ void editor_register_fonts(Ref<Theme> p_theme) {
- 	bool font_antialiased = (bool)EditorSettings::get_singleton()->get("interface/editor/font_antialiased");
+ 
+ 	/* Custom font */
+ 
+-	bool font_antialiased = (bool)EditorSettings::get_singleton()->get("interface/editor/font_antialiased");
++	//bool font_antialiased = (bool)EditorSettings::get_singleton()->get("interface/editor/font_antialiased");
  	int font_hinting_setting = (int)EditorSettings::get_singleton()->get("interface/editor/font_hinting");
  
 -	DynamicFontData::Hinting font_hinting;
@@ -281,10 +284,10 @@ index 171b7a2176..a5f3a9700e 100644
  	MAKE_DEFAULT_FONT(df, default_font_size);
  	p_theme->set_font("font", "Node", df); // Default theme font
 diff --git a/editor/editor_settings.cpp b/editor/editor_settings.cpp
-index 92e3f61ca5..98fc6d5742 100644
+index 5f293f1fb3..6cfb6fb077 100644
 --- a/editor/editor_settings.cpp
 +++ b/editor/editor_settings.cpp
-@@ -272,7 +272,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
+@@ -265,7 +265,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
  		// Some locales are not properly supported currently in Godot due to lack of font shaping
  		// (e.g. Arabic or Hindi), so even though we have work in progress translations for them,
  		// we skip them as they don't render properly. (GH-28577)
@@ -293,7 +296,7 @@ index 92e3f61ca5..98fc6d5742 100644
  
  		String best;
  
-@@ -285,10 +285,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
+@@ -277,10 +277,10 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
  			// Skip locales which we can't render properly (see above comment).
  			// Test against language code without regional variants (e.g. ur_PK).
  			String lang_code = locale.get_slice("_", 0);

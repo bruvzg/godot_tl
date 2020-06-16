@@ -47,7 +47,6 @@ using namespace godot;
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 class TLLabel : public Control {
-
 	GODOT_CLASS(TLLabel, Control);
 
 public:
@@ -82,7 +81,7 @@ private:
 	String language;
 
 	Ref<TLShapedString> s_paragraph;
-	std::vector<Ref<TLShapedString> > s_lines;
+	std::vector<Ref<TLShapedString>> s_lines;
 
 	void _reshape_lines();
 	bool _lines_dirty;

@@ -1,0 +1,61 @@
+language: cpp
+
+dist: bionic
+
+stages:
+  - check
+  - build
+
+branches:
+  only:
+    - godot_4
+
+matrix:
+  include:
+    - name: Static checks (clang-format)
+      stage: check
+      env: STATIC_CHECKS=yes
+      os: linux
+      compiler: gcc
+      addons:
+        apt:
+          packages:
+            - clang-format-8
+
+    - name: Linux module (Tools, Debug, 4.0.0-dev)
+      stage: build
+      env: GDNATIVE=no GDVER=40
+      os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - &linux_deps [libasound2-dev, libgl1-mesa-dev, libglu1-mesa-dev, libx11-dev, libxcursor-dev, libxi-dev, libxinerama-dev, libxrandr-dev]
+
+    - name: Linux module (Export Template, Release, 4.0.0-dev)"
+      stage: build
+      env: GDNATIVE=no GDVER=40e
+      os: linux
+      compiler: clang
+      addons:
+        apt:
+          packages:
+            - *linux_deps
+
+install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      pyenv global 3.8 system;
+      pip3 install --user scons;
+    fi
+  - scons --version
+
+script:
+  - if [ "$STATIC_CHECKS" = "yes" ]; then
+      bash ./.scripts/clang_format.sh;
+    elif [ "$GDVER" = "40" ]; then
+      bash ./.scripts/module_build_4_0_0.sh;
+    elif [ "$GDVER" = "40e" ]; then
+      bash ./.scripts/module_build_4_0_0_export.sh;
+    fi

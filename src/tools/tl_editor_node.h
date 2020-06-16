@@ -17,7 +17,7 @@ class TLEditorNode : public Node {
 
 	EditorNode *editor;
 
-	Map<String, Ref<ImageTexture> > type_icons;
+	Map<String, Ref<ImageTexture>> type_icons;
 
 	static TLEditorNode *singleton;
 

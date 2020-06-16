@@ -10,8 +10,8 @@
 #include "core/os/file_access.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "servers/rendering_server.h"
 #include "scene/main/viewport.h"
+#include "servers/rendering_server.h"
 #define File _File
 #else
 #include <File.hpp>
@@ -21,10 +21,10 @@
 #include <InputEventMouseMotion.hpp>
 #include <MainLoop.hpp>
 #include <OS.hpp>
+#include <RenderingServer.hpp>
 #include <StyleBox.hpp>
 #include <Texture2D.hpp>
 #include <Theme.hpp>
-#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -32,7 +32,6 @@
 /*************************************************************************/
 
 TLRichTextEditSelection::TLRichTextEditSelection() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
@@ -47,12 +46,10 @@ void TLRichTextEditSelection::_init() {
 }
 
 int TLRichTextEditSelection::get_caret_para() {
-
 	return caret.p;
 }
 
 void TLRichTextEditSelection::set_caret_para(int p_value) {
-
 	if (caret.p != p_value) {
 		caret.p = p_value;
 		emit_signal("selection_changed");
@@ -60,12 +57,10 @@ void TLRichTextEditSelection::set_caret_para(int p_value) {
 }
 
 int TLRichTextEditSelection::get_caret_offset() {
-
 	return caret.o;
 }
 
 void TLRichTextEditSelection::set_caret_offset(int p_value) {
-
 	if (caret.o != p_value) {
 		caret.o = p_value;
 		emit_signal("selection_changed");
@@ -73,12 +68,10 @@ void TLRichTextEditSelection::set_caret_offset(int p_value) {
 }
 
 int TLRichTextEditSelection::get_start_para() {
-
 	return start.p;
 }
 
 void TLRichTextEditSelection::set_start_para(int p_value) {
-
 	if (start.p != p_value) {
 		start.p = p_value;
 		emit_signal("selection_changed");
@@ -86,12 +79,10 @@ void TLRichTextEditSelection::set_start_para(int p_value) {
 }
 
 int TLRichTextEditSelection::get_start_offset() {
-
 	return start.o;
 }
 
 void TLRichTextEditSelection::set_start_offset(int p_value) {
-
 	if (start.o != p_value) {
 		start.o = p_value;
 		emit_signal("selection_changed");
@@ -99,12 +90,10 @@ void TLRichTextEditSelection::set_start_offset(int p_value) {
 }
 
 int TLRichTextEditSelection::get_end_para() {
-
 	return end.p;
 }
 
 void TLRichTextEditSelection::set_end_para(int p_value) {
-
 	if (end.p != p_value) {
 		end.p = p_value;
 		emit_signal("selection_changed");
@@ -112,12 +101,10 @@ void TLRichTextEditSelection::set_end_para(int p_value) {
 }
 
 int TLRichTextEditSelection::get_end_offset() {
-
 	return end.o;
 }
 
 void TLRichTextEditSelection::set_end_offset(int p_value) {
-
 	if (end.o != p_value) {
 		end.o = p_value;
 		emit_signal("selection_changed");
@@ -127,7 +114,6 @@ void TLRichTextEditSelection::set_end_offset(int p_value) {
 #ifdef GODOT_MODULE
 
 void TLRichTextEditSelection::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("get_caret_para"), &TLRichTextEditSelection::get_caret_para);
 	ClassDB::bind_method(D_METHOD("set_caret_para", "value"), &TLRichTextEditSelection::set_caret_para);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "caret_para"), "set_caret_para", "get_caret_para");
@@ -158,7 +144,6 @@ void TLRichTextEditSelection::_bind_methods() {
 #else
 
 void TLRichTextEditSelection::_register_methods() {
-
 	register_method("get_caret_para", &TLRichTextEditSelection::get_caret_para);
 	register_method("set_caret_para", &TLRichTextEditSelection::set_caret_para);
 	register_property<TLRichTextEditSelection, int>("caret_para", &TLRichTextEditSelection::set_caret_para, &TLRichTextEditSelection::get_caret_para, 0);
@@ -193,21 +178,18 @@ void TLRichTextEditSelection::_register_methods() {
 /*************************************************************************/
 
 TLRichTextEdit::TLRichTextEdit() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 TLRichTextEdit::~TLRichTextEdit() {
-
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	}
 }
 
 void TLRichTextEdit::_init() {
-
 	set_focus_mode(FOCUS_ALL);
 
 	para_spacing = 3.0f;
@@ -252,7 +234,6 @@ void TLRichTextEdit::_init() {
 };
 
 void TLRichTextEdit::clear() {
-
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		paragraphs[i]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	}
@@ -285,7 +266,6 @@ void TLRichTextEdit::remove_child_notify(Node *p_child) {
 }
 
 void TLRichTextEdit::_update_ctx_rect() {
-
 	content_size = Size2(0, 0);
 	for (int64_t i = 0; i < (int64_t)paragraphs.size(); i++) {
 		if (ime_temp_para.is_valid()) {
@@ -328,17 +308,14 @@ void TLRichTextEdit::_update_ctx_rect() {
 }
 
 Size2 TLRichTextEdit::get_minimum_size() const {
-
 	return content_size;
 }
 
 int TLRichTextEdit::get_paragraphs() {
-
 	return paragraphs.size();
 }
 
 Ref<TLShapedParagraph> TLRichTextEdit::get_paragraph(int p_index) const {
-
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return Ref<TLShapedParagraph>();
 
@@ -346,7 +323,6 @@ Ref<TLShapedParagraph> TLRichTextEdit::get_paragraph(int p_index) const {
 }
 
 void TLRichTextEdit::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
-
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
@@ -358,7 +334,6 @@ void TLRichTextEdit::set_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
 }
 
 int TLRichTextEdit::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index) {
-
 	if ((p_index < 0) || (p_index > (int64_t)paragraphs.size()))
 		return -1;
 
@@ -389,7 +364,6 @@ int TLRichTextEdit::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 }
 
 void TLRichTextEdit::remove_paragraph(int p_index) {
-
 	if ((p_index < 0) || (p_index >= (int64_t)paragraphs.size()))
 		return;
 
@@ -407,33 +381,42 @@ void TLRichTextEdit::remove_paragraph(int p_index) {
 }
 
 void TLRichTextEdit::_fix_selection() {
+	if (selection->start.p < 0)
+		selection->start.p = 0;
+	if (selection->start.p >= (int64_t)paragraphs.size())
+		selection->start.p = (int64_t)paragraphs.size() - 1;
 
-	if (selection->start.p < 0) selection->start.p = 0;
-	if (selection->start.p >= (int64_t)paragraphs.size()) selection->start.p = (int64_t)paragraphs.size() - 1;
+	if (selection->start.o < 0)
+		selection->start.o = 0;
+	if (selection->start.o >= paragraphs[selection->start.p]->get_string()->length())
+		selection->start.o = paragraphs[selection->start.p]->get_string()->length();
 
-	if (selection->start.o < 0) selection->start.o = 0;
-	if (selection->start.o >= paragraphs[selection->start.p]->get_string()->length()) selection->start.o = paragraphs[selection->start.p]->get_string()->length();
+	if (selection->end.p < 0)
+		selection->end.p = 0;
+	if (selection->end.p >= (int64_t)paragraphs.size())
+		selection->end.p = (int64_t)paragraphs.size() - 1;
 
-	if (selection->end.p < 0) selection->end.p = 0;
-	if (selection->end.p >= (int64_t)paragraphs.size()) selection->end.p = (int64_t)paragraphs.size() - 1;
+	if (selection->end.o < 0)
+		selection->end.o = 0;
+	if (selection->end.o >= paragraphs[selection->end.p]->get_string()->length())
+		selection->end.o = paragraphs[selection->end.p]->get_string()->length();
 
-	if (selection->end.o < 0) selection->end.o = 0;
-	if (selection->end.o >= paragraphs[selection->end.p]->get_string()->length()) selection->end.o = paragraphs[selection->end.p]->get_string()->length();
+	if (selection->caret.p < 0)
+		selection->caret.p = 0;
+	if (selection->caret.p >= (int64_t)paragraphs.size())
+		selection->caret.p = (int64_t)paragraphs.size() - 1;
 
-	if (selection->caret.p < 0) selection->caret.p = 0;
-	if (selection->caret.p >= (int64_t)paragraphs.size()) selection->caret.p = (int64_t)paragraphs.size() - 1;
-
-	if (selection->caret.o < 0) selection->caret.o = 0;
-	if (selection->caret.o >= paragraphs[selection->caret.p]->get_string()->length()) selection->caret.o = paragraphs[selection->caret.p]->get_string()->length();
+	if (selection->caret.o < 0)
+		selection->caret.o = 0;
+	if (selection->caret.o >= paragraphs[selection->caret.p]->get_string()->length())
+		selection->caret.o = paragraphs[selection->caret.p]->get_string()->length();
 }
 
 Ref<TLRichTextEditSelection> TLRichTextEdit::get_selection() const {
-
 	return selection;
 }
 
 void TLRichTextEdit::set_selection(Ref<TLRichTextEditSelection> p_selection) {
-
 	selection->disconnect("selection_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 	selection = p_selection;
 	_fix_selection();
@@ -443,7 +426,6 @@ void TLRichTextEdit::set_selection(Ref<TLRichTextEditSelection> p_selection) {
 }
 
 void TLRichTextEdit::add_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute, Variant p_value) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
@@ -452,7 +434,6 @@ void TLRichTextEdit::add_attribute(Ref<TLRichTextEditSelection> p_selection, int
 }
 
 void TLRichTextEdit::remove_attribute(Ref<TLRichTextEditSelection> p_selection, int p_attribute) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
@@ -461,7 +442,6 @@ void TLRichTextEdit::remove_attribute(Ref<TLRichTextEditSelection> p_selection, 
 }
 
 void TLRichTextEdit::remove_attributes(Ref<TLRichTextEditSelection> p_selection) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		int _start = (i == p_selection->start.p) ? p_selection->start.o : 0;
 		int _end = (i == p_selection->end.p) ? p_selection->end.o : paragraphs[i]->get_string()->length();
@@ -470,61 +450,52 @@ void TLRichTextEdit::remove_attributes(Ref<TLRichTextEditSelection> p_selection)
 }
 
 void TLRichTextEdit::set_paragraph_width(Ref<TLRichTextEditSelection> p_selection, float p_width) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_width(p_width);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_indent(Ref<TLRichTextEditSelection> p_selection, float p_indent) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_indent(p_indent);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_back_color(Ref<TLRichTextEditSelection> p_selection, Color p_bcolor) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_back_color(p_bcolor);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_line_spacing(Ref<TLRichTextEditSelection> p_selection, float p_line_spacing) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_line_spacing(p_line_spacing);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_brk_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_brk_flags(p_flags);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_jst_flags(Ref<TLRichTextEditSelection> p_selection, int p_flags) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_jst_flags(p_flags);
 	}
 }
 
 void TLRichTextEdit::set_paragraph_halign(Ref<TLRichTextEditSelection> p_selection, int p_halign) {
-
 	for (int64_t i = p_selection->start.p; i <= p_selection->end.p; i++) {
 		paragraphs[i]->set_halign(p_halign);
 	}
 }
 
 Point2 TLRichTextEdit::get_caret_position() {
-
 	return caret_pos;
 }
 
 void TLRichTextEdit::_hit_test(Point2 p_position, bool p_shift) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return;
@@ -592,7 +563,6 @@ void TLRichTextEdit::_hit_test(Point2 p_position, bool p_shift) {
 }
 
 Rect2 TLRichTextEdit::get_cluster_rect_hit_test(Point2 p_position) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return Rect2();
@@ -630,7 +600,6 @@ Rect2 TLRichTextEdit::get_cluster_rect_hit_test(Point2 p_position) {
 }
 
 Array TLRichTextEdit::get_cluster_glyphs_hit_test(Point2 p_position) {
-
 	Array glyphs;
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
@@ -677,7 +646,6 @@ Array TLRichTextEdit::get_cluster_glyphs_hit_test(Point2 p_position) {
 }
 
 String TLRichTextEdit::get_cluster_debug_info_hit_test(Point2 p_position) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_position.y < margin[MARGIN_TOP]) {
 		return String();
@@ -727,7 +695,6 @@ String TLRichTextEdit::get_cluster_debug_info_hit_test(Point2 p_position) {
 }
 
 void TLRichTextEdit::_change_selection(bool p_shift, TLRichTextEdit::AdvDir p_dir, TextDirection p_last_imp_dir) {
-
 	if ((!p_shift) && (selection->start != selection->end)) {
 		if (p_dir % 2 != 0) {
 			selection->caret = selection->start;
@@ -1010,7 +977,6 @@ void TLRichTextEdit::_change_selection(bool p_shift, TLRichTextEdit::AdvDir p_di
 }
 
 void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, const String p_text) {
-
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
 		int last_para = p_selection->end.p;
@@ -1018,7 +984,8 @@ void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, cons
 		int offset = paragraphs[first_para]->get_string()->length();
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
-			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
+			if (i != last_para)
+				offset += paragraphs[first_para + 1]->get_string()->length();
 			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
@@ -1043,7 +1010,6 @@ void TLRichTextEdit::replace_text(Ref<TLRichTextEditSelection> p_selection, cons
 }
 
 void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
-
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
 		int last_para = p_selection->end.p;
@@ -1051,7 +1017,8 @@ void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, cons
 		int offset = paragraphs[first_para]->get_string()->length();
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
-			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
+			if (i != last_para)
+				offset += paragraphs[first_para + 1]->get_string()->length();
 			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
@@ -1076,7 +1043,6 @@ void TLRichTextEdit::replace_utf8(Ref<TLRichTextEditSelection> p_selection, cons
 }
 
 void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
-
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
 		int last_para = p_selection->end.p;
@@ -1084,7 +1050,8 @@ void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, con
 		int offset = paragraphs[first_para]->get_string()->length();
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
-			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
+			if (i != last_para)
+				offset += paragraphs[first_para + 1]->get_string()->length();
 			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
@@ -1109,7 +1076,6 @@ void TLRichTextEdit::replace_utf16(Ref<TLRichTextEditSelection> p_selection, con
 }
 
 void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, const PackedByteArray p_text) {
-
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
 		int last_para = p_selection->end.p;
@@ -1117,7 +1083,8 @@ void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, con
 		int offset = paragraphs[first_para]->get_string()->length();
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
-			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
+			if (i != last_para)
+				offset += paragraphs[first_para + 1]->get_string()->length();
 			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
@@ -1142,7 +1109,6 @@ void TLRichTextEdit::replace_utf32(Ref<TLRichTextEditSelection> p_selection, con
 }
 
 void TLRichTextEdit::replace_sstring(Ref<TLRichTextEditSelection> p_selection, Ref<TLShapedString> p_text) {
-
 	if (p_selection->start.p != p_selection->end.p) {
 		int first_para = p_selection->start.p;
 		int last_para = p_selection->end.p;
@@ -1150,7 +1116,8 @@ void TLRichTextEdit::replace_sstring(Ref<TLRichTextEditSelection> p_selection, R
 		int offset = paragraphs[first_para]->get_string()->length();
 		for (int i = first_para + 1; i <= last_para; i++) {
 			paragraphs[first_para]->get_string()->add_sstring(paragraphs[first_para + 1]->get_string());
-			if (i != last_para) offset += paragraphs[first_para + 1]->get_string()->length();
+			if (i != last_para)
+				offset += paragraphs[first_para + 1]->get_string()->length();
 			paragraphs[first_para + 1]->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
 			paragraphs.erase(paragraphs.begin() + first_para + 1);
 		}
@@ -1416,7 +1383,6 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 }
 
 void TLRichTextEdit::debug_draw(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
@@ -1439,7 +1405,6 @@ void TLRichTextEdit::debug_draw(RID p_canvas_item, const Point2 p_position, cons
 }
 
 void TLRichTextEdit::debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
@@ -1462,7 +1427,6 @@ void TLRichTextEdit::debug_draw_as_hex(RID p_canvas_item, const Point2 p_positio
 }
 
 void TLRichTextEdit::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	float y_ofs = margin[MARGIN_TOP];
 	if (p_hit_position.y < margin[MARGIN_TOP]) {
 		return;
@@ -1485,7 +1449,6 @@ void TLRichTextEdit::debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p
 }
 
 float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset) {
-
 	Size2 size = get_size();
 	RID ci = get_canvas_item();
 	Size2 psize = p_para->get_size();
@@ -1665,11 +1628,10 @@ float TLRichTextEdit::_draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index
 }
 
 void TLRichTextEdit::_notification(int p_what) {
-
 	switch (p_what) {
 		case NOTIFICATION_READY: {
 			_update_ctx_rect();
-		}
+		} break;
 		case NOTIFICATION_DRAW: {
 			RID ci = get_canvas_item();
 			Size2 size = get_size();
@@ -1715,7 +1677,6 @@ void TLRichTextEdit::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_FOCUS_ENTER: {
-
 #ifdef GODOT_MODULE
 			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
 				DisplayServer::get_singleton()->virtual_keyboard_show(String(), get_global_rect(), 0);
@@ -1734,7 +1695,6 @@ void TLRichTextEdit::_notification(int p_what) {
 			update();
 		} break;
 		case NOTIFICATION_FOCUS_EXIT: {
-
 			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
 				DisplayServer::get_singleton()->virtual_keyboard_hide();
 
@@ -1751,9 +1711,7 @@ void TLRichTextEdit::_notification(int p_what) {
 			update();
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
-
 			if (in_focus && !readonly && selectable) {
-
 				//0. free existing ime paragraph
 				if (ime_temp_para.is_valid()) {
 					ime_temp_para->disconnect("paragraph_changed", callable_mp(this, &TLRichTextEdit::_update_ctx_rect));
@@ -1784,7 +1742,8 @@ void TLRichTextEdit::_notification(int p_what) {
 						offset = paragraphs[first_para]->get_string()->length();
 						for (int i = first_para + 1; i <= last_para; i++) {
 							ime_temp_para->get_string()->add_sstring(paragraphs[i]->get_string());
-							if (i != last_para) offset += paragraphs[i]->get_string()->length();
+							if (i != last_para)
+								offset += paragraphs[i]->get_string()->length();
 						}
 					}
 
@@ -1810,46 +1769,38 @@ void TLRichTextEdit::_notification(int p_what) {
 }
 
 void TLRichTextEdit::set_back_color(Color p_color) {
-
 	bg_color = p_color;
 	update();
 }
 
 Color TLRichTextEdit::get_back_color() const {
-
 	return bg_color;
 }
 
 void TLRichTextEdit::set_paragraph_spacing(float p_value) {
-
 	para_spacing = p_value;
 	update();
 }
 
 float TLRichTextEdit::get_paragraph_spacing() const {
-
 	return para_spacing;
 }
 
 void TLRichTextEdit::set_readonly(bool p_value) {
-
 	readonly = p_value;
 	update();
 }
 
 bool TLRichTextEdit::get_readonly() const {
-
 	return readonly;
 }
 
 void TLRichTextEdit::set_selectable(bool p_value) {
-
 	selectable = p_value;
 	update();
 }
 
 bool TLRichTextEdit::get_selectable() const {
-
 	return selectable;
 }
 
@@ -1860,7 +1811,8 @@ bool TLRichTextEdit::_set(const StringName &p_name, const Variant &p_value) {
 	Vector<String> tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
 		int64_t index = (int64_t)tokens[1].to_int();
-		if (index < 0) return false;
+		if (index < 0)
+			return false;
 		if (index < (int64_t)paragraphs.size()) {
 			Object *p_obj = p_value;
 			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
@@ -1902,7 +1854,6 @@ void TLRichTextEdit::_get_property_list(List<PropertyInfo> *p_list) const {
 }
 
 void TLRichTextEdit::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("clear"), &TLRichTextEdit::clear);
 	ClassDB::bind_method(D_METHOD("_update_ctx_rect"), &TLRichTextEdit::_update_ctx_rect);
 
@@ -1972,7 +1923,8 @@ bool TLRichTextEdit::_set(String p_name, Variant p_value) {
 	PoolStringArray tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
 		int64_t index = (int64_t)tokens[1].to_int();
-		if (index < 0) return false;
+		if (index < 0)
+			return false;
 		if (index < (int64_t)paragraphs.size()) {
 			Object *p_obj = p_value;
 			Ref<TLShapedParagraph> p = Ref<TLShapedParagraph>(Object::cast_to<TLShapedParagraph>(p_obj));
@@ -1994,12 +1946,12 @@ bool TLRichTextEdit::_set(String p_name, Variant p_value) {
 }
 
 Variant TLRichTextEdit::_get(String p_name) const {
-
 	String name = p_name;
 	PoolStringArray tokens = name.split("/");
 	if (tokens.size() == 2 && tokens[0] == "paragraphs") {
 		int64_t index = (int64_t)tokens[1].to_int();
-		if (index >= 0 && index < (int64_t)paragraphs.size()) return get_paragraph(index);
+		if (index >= 0 && index < (int64_t)paragraphs.size())
+			return get_paragraph(index);
 	}
 	return Variant();
 }
@@ -2030,7 +1982,6 @@ Array TLRichTextEdit::_get_property_list() const {
 }
 
 void TLRichTextEdit::_register_methods() {
-
 	register_method("clear", &TLRichTextEdit::clear);
 	register_method("_update_ctx_rect", &TLRichTextEdit::_update_ctx_rect);
 

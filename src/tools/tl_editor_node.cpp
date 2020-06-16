@@ -12,13 +12,11 @@
 TLEditorNode *TLEditorNode::singleton = NULL;
 
 void TLEditorNode::_notification(int p_notification) {
-
 	switch (p_notification) {
 		case Node::NOTIFICATION_ENTER_TREE:
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
-
 			//Register node type icons
-			for (Map<String, Ref<ImageTexture> >::Element *E = type_icons.front(); E; E = E->next()) {
+			for (Map<String, Ref<ImageTexture>>::Element *E = type_icons.front(); E; E = E->next()) {
 				editor->get_theme_base()->get_theme()->set_icon(E->key(), "EditorIcons", E->get());
 			}
 		}
@@ -30,7 +28,6 @@ void TLEditorNode::_bind_methods(){
 };
 
 TLEditorNode::TLEditorNode(EditorNode *p_editor) {
-
 	singleton = this;
 
 	editor = p_editor;
@@ -55,6 +52,5 @@ TLEditorNode::TLEditorNode(EditorNode *p_editor) {
 };
 
 TLEditorNode::~TLEditorNode() {
-
 	singleton = NULL;
 };

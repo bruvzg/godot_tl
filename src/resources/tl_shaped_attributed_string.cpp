@@ -10,8 +10,8 @@
 #include "servers/rendering_server.h"
 #else
 #include <Dictionary.hpp>
-#include <TranslationServer.hpp>
 #include <RenderingServer.hpp>
+#include <TranslationServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -19,7 +19,6 @@
 /*************************************************************************/
 
 void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref, int64_t p_start, int64_t p_end, int p_trim) const {
-
 	if (!p_ref)
 		return;
 
@@ -102,7 +101,6 @@ void TLShapedAttributedString::_shape_substring(TLShapedAttributedString *p_ref,
 }
 
 void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
-
 	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? format_attributes.find_closest(p_start) : format_attributes.find_closest(p_end - 1);
 	if (!attrib_iter) {
 		//Shape as plain string
@@ -153,9 +151,11 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 	if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
 		String cluster_language = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 		hb_language_t _language = hb_language_from_string(cluster_language.ascii().get_data(), -1);
-		if (_language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, _language);
+		if (_language != HB_LANGUAGE_INVALID)
+			hb_buffer_set_language(hb_buffer, _language);
 	} else {
-		if (language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, language);
+		if (language != HB_LANGUAGE_INVALID)
+			hb_buffer_set_language(hb_buffer, language);
 	}
 
 	hb_buffer_add_utf32(hb_buffer, (const uint32_t *)&p_codepoint, 1, 0, 1);
@@ -217,7 +217,6 @@ void TLShapedAttributedString::_shape_single_cluster(int64_t p_start, int64_t p_
 }
 
 void TLShapedAttributedString::_generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const {
-
 	auto attrib_iter = format_attributes.find_closest(p_start);
 	if (!attrib_iter) {
 		TLShapedString::_generate_justification_opportunies(p_start, p_end, p_lang, p_ops);
@@ -227,7 +226,6 @@ void TLShapedAttributedString::_generate_justification_opportunies(int32_t p_sta
 	int64_t sh_start = (attrib_iter) ? MAX(p_start, attrib_iter->key()) : p_start;
 	int64_t sh_end = (attrib_iter->next()) ? MIN(p_end, attrib_iter->next()->key()) : p_end;
 	while (true) {
-
 		if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
 			String s_lang = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 			TLShapedString::_generate_justification_opportunies(sh_start, sh_end, s_lang.ascii().get_data(), p_ops);
@@ -235,15 +233,16 @@ void TLShapedAttributedString::_generate_justification_opportunies(int32_t p_sta
 			TLShapedString::_generate_justification_opportunies(sh_start, sh_end, p_lang, p_ops);
 		}
 
-		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
-		if (sh_end == p_end) break;
+		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end))
+			attrib_iter = attrib_iter->next();
+		if (sh_end == p_end)
+			break;
 		sh_start = sh_end;
 		sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_end) : p_end;
 	}
 }
 
 void TLShapedAttributedString::_generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const {
-
 	auto attrib_iter = format_attributes.find_closest(p_start);
 	if (!attrib_iter) {
 		TLShapedString::_generate_break_opportunies(p_start, p_end, p_lang, p_ops);
@@ -253,7 +252,6 @@ void TLShapedAttributedString::_generate_break_opportunies(int32_t p_start, int3
 	int64_t sh_start = (attrib_iter) ? MAX(p_start, attrib_iter->key()) : p_start;
 	int64_t sh_end = (attrib_iter->next()) ? MIN(p_end, attrib_iter->next()->key()) : p_end;
 	while (true) {
-
 		if (attrib_iter->get().has(TEXT_ATTRIBUTE_LANGUAGE)) {
 			String s_lang = attrib_iter->get()[TEXT_ATTRIBUTE_LANGUAGE];
 			TLShapedString::_generate_break_opportunies(sh_start, sh_end, s_lang.ascii().get_data(), p_ops);
@@ -261,15 +259,16 @@ void TLShapedAttributedString::_generate_break_opportunies(int32_t p_start, int3
 			TLShapedString::_generate_break_opportunies(sh_start, sh_end, p_lang, p_ops);
 		}
 
-		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
-		if (sh_end == p_end) break;
+		if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end))
+			attrib_iter = attrib_iter->next();
+		if (sh_end == p_end)
+			break;
 		sh_start = sh_end;
 		sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_end) : p_end;
 	}
 }
 
 void TLShapedAttributedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font) {
-
 	auto attrib_iter = (p_run_direction == HB_DIRECTION_LTR) ? format_attributes.find_closest(p_run_start) : format_attributes.find_closest(p_run_end - 1);
 	if (!attrib_iter) {
 		//Shape as plain string
@@ -282,13 +281,17 @@ void TLShapedAttributedString::_shape_bidi_script_run(hb_direction_t p_run_direc
 	while (true) {
 		_shape_bidi_script_attrib_run(p_run_direction, p_run_script, attrib_iter->get(), sh_start, sh_end, p_font);
 		if (p_run_direction == HB_DIRECTION_LTR) {
-			if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end)) attrib_iter = attrib_iter->next();
-			if (sh_end == p_run_end) break;
+			if (attrib_iter->next() && (attrib_iter->next()->key() <= sh_end))
+				attrib_iter = attrib_iter->next();
+			if (sh_end == p_run_end)
+				break;
 			sh_start = sh_end;
 			sh_end = (attrib_iter->next()) ? MIN(attrib_iter->next()->key(), p_run_end) : p_run_end;
 		} else {
-			if (attrib_iter->prev() && (attrib_iter->key() >= sh_start)) attrib_iter = attrib_iter->prev();
-			if (sh_start == p_run_start) break;
+			if (attrib_iter->prev() && (attrib_iter->key() >= sh_start))
+				attrib_iter = attrib_iter->prev();
+			if (sh_start == p_run_start)
+				break;
 			sh_end = sh_start;
 			sh_start = (attrib_iter->prev()) ? MAX(attrib_iter->key(), p_run_start) : p_run_start;
 		}
@@ -296,7 +299,6 @@ void TLShapedAttributedString::_shape_bidi_script_run(hb_direction_t p_run_direc
 }
 
 void TLShapedAttributedString::_shape_rect_run(hb_direction_t p_run_direction, const Size2 &p_size, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end) {
-
 	//"Shape" monotone image run
 	if (p_run_direction == HB_DIRECTION_LTR) {
 		for (int64_t i = p_run_start; i < p_run_end; i++) {
@@ -352,7 +354,6 @@ void TLShapedAttributedString::_shape_rect_run(hb_direction_t p_run_direction, c
 }
 
 void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, const Ref<Texture2D> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end) {
-
 	//"Shape" monotone image run
 	if (p_run_direction == HB_DIRECTION_LTR) {
 		for (int64_t i = p_run_start; i < p_run_end; i++) {
@@ -408,7 +409,6 @@ void TLShapedAttributedString::_shape_image_run(hb_direction_t p_run_direction, 
 }
 
 void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font, bool p_font_override) {
-
 	//Handle rects for embedded custom objects
 	if (p_attribs.has(TEXT_ATTRIBUTE_REPLACEMENT_RECT)) {
 		Size2 rect = Size2(p_attribs[TEXT_ATTRIBUTE_REPLACEMENT_RECT]);
@@ -482,9 +482,11 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 	if (p_attribs.has(TEXT_ATTRIBUTE_LANGUAGE)) {
 		String cluster_language = p_attribs[TEXT_ATTRIBUTE_LANGUAGE];
 		hb_language_t _language = hb_language_from_string(cluster_language.ascii().get_data(), -1);
-		if (_language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, _language);
+		if (_language != HB_LANGUAGE_INVALID)
+			hb_buffer_set_language(hb_buffer, _language);
 	} else {
-		if (language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, language);
+		if (language != HB_LANGUAGE_INVALID)
+			hb_buffer_set_language(hb_buffer, language);
 	}
 
 	hb_buffer_add_utf16(hb_buffer, (const uint16_t *)data, data_size, p_run_start, p_run_end - p_run_start);
@@ -589,8 +591,10 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 				}
 				visual.push_back(run_clusters[i]);
 			} else {
-				if (failed_subrun_start >= run_clusters[i].start) failed_subrun_start = run_clusters[i].start;
-				if (failed_subrun_end <= run_clusters[i].end) failed_subrun_end = run_clusters[i].end;
+				if (failed_subrun_start >= run_clusters[i].start)
+					failed_subrun_start = run_clusters[i].start;
+				if (failed_subrun_end <= run_clusters[i].end)
+					failed_subrun_end = run_clusters[i].end;
 			}
 		}
 		if (failed_subrun_start != p_run_end + 1) {
@@ -604,27 +608,25 @@ void TLShapedAttributedString::_shape_bidi_script_attrib_run(hb_direction_t p_ru
 }
 
 bool TLShapedAttributedString::_compare_attributes(const Map<TextAttribute, Variant> &p_first, const Map<TextAttribute, Variant> &p_second) const {
-
-	if (p_first.size() != p_second.size()) return false;
+	if (p_first.size() != p_second.size())
+		return false;
 	for (auto E = p_first.front(); E; E = E->next()) {
 		auto F = p_second.find(E->key());
-		if ((!F) || (E->get() != F->get())) return false;
+		if ((!F) || (E->get() != F->get()))
+			return false;
 	}
 	return true;
 }
 
-void TLShapedAttributedString::_ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant> > &p_attributes) {
-
+void TLShapedAttributedString::_ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant>> &p_attributes) {
 	//Ensures there is a run break at offset.
 	auto attrib = p_attributes.find_closest(p_key);
 	p_attributes[p_key] = (attrib) ? attrib->get() : Map<TextAttribute, Variant>();
 }
 
-void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, Variant> > &p_attributes) {
-
+void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, Variant>> &p_attributes) {
 	std::vector<int> erase_list;
 	for (auto E = p_attributes.front(); E; E = E->next()) {
-
 		if (E->prev() && (_compare_attributes(E->get(), E->prev()->get()))) {
 			erase_list.push_back(E->key());
 		}
@@ -636,7 +638,6 @@ void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, 
 }
 
 Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_end, int p_trim) const {
-
 	Ref<TLShapedAttributedString> ret;
 #ifdef GODOT_MODULE
 	ret.instance();
@@ -689,8 +690,8 @@ void TLShapedAttributedString::_reconnect_fonts() {
 }
 
 void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_value, int64_t p_start, int64_t p_end) {
-
-	if (p_end == -1) p_end = data_size;
+	if (p_end == -1)
+		p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
@@ -716,7 +717,8 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 		_ensure_break(0, format_attributes);
 		_ensure_break(p_start, format_attributes);
 
-		if (p_end < data_size) _ensure_break(p_end, format_attributes);
+		if (p_end < data_size)
+			_ensure_break(p_end, format_attributes);
 
 		auto attrib = format_attributes.find(p_start);
 		while (attrib && ((attrib->key() < p_end) || (p_end == data_size))) {
@@ -733,7 +735,8 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 		_ensure_break(0, style_attributes);
 		_ensure_break(p_start, style_attributes);
 
-		if (p_end < data_size) _ensure_break(p_end, style_attributes);
+		if (p_end < data_size)
+			_ensure_break(p_end, style_attributes);
 
 		auto attrib = style_attributes.find(p_start);
 		while (attrib && ((attrib->key() < p_end) || (p_end == data_size))) {
@@ -746,8 +749,8 @@ void TLShapedAttributedString::add_attribute(int64_t p_attribute, Variant p_valu
 }
 
 void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_start, int64_t p_end) {
-
-	if (p_end == -1) p_end = data_size;
+	if (p_end == -1)
+		p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
@@ -757,7 +760,8 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 		_disconnect_fonts();
 		_ensure_break(p_start, format_attributes);
 
-		if (p_end < data_size) _ensure_break(p_end, format_attributes);
+		if (p_end < data_size)
+			_ensure_break(p_end, format_attributes);
 
 		auto attrib = format_attributes.find(p_start);
 		while (attrib && (attrib->key() < p_end)) {
@@ -770,7 +774,8 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 	} else {
 		_ensure_break(p_start, style_attributes);
 
-		if (p_end < data_size) _ensure_break(p_end, style_attributes);
+		if (p_end < data_size)
+			_ensure_break(p_end, style_attributes);
 
 		auto attrib = style_attributes.find(p_start);
 		while (attrib && (attrib->key() < p_end)) {
@@ -784,8 +789,8 @@ void TLShapedAttributedString::remove_attribute(int64_t p_attribute, int64_t p_s
 }
 
 void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end) {
-
-	if (p_end == -1) p_end = data_size;
+	if (p_end == -1)
+		p_end = data_size;
 	if (p_start < 0 || p_end > data_size || p_start > p_end) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_start) + " ..." + String::num_int64(p_end) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND(true);
@@ -821,7 +826,6 @@ void TLShapedAttributedString::remove_attributes(int64_t p_start, int64_t p_end)
 }
 
 void TLShapedAttributedString::clear_attributes() {
-
 	_disconnect_fonts();
 	format_attributes.clear();
 	style_attributes.clear();
@@ -830,7 +834,6 @@ void TLShapedAttributedString::clear_attributes() {
 }
 
 Array TLShapedAttributedString::get_embedded_rects() {
-
 	Array ret;
 
 	if (!valid)
@@ -860,7 +863,6 @@ Array TLShapedAttributedString::get_embedded_rects() {
 }
 
 float TLShapedAttributedString::get_cluster_face_size(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedAttributedString *>(this)->_shape_full_string();
 
@@ -880,7 +882,6 @@ float TLShapedAttributedString::get_cluster_face_size(int64_t p_index) const {
 }
 
 Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate) {
-
 	if (!valid)
 		const_cast<TLShapedAttributedString *>(this)->_shape_full_string();
 
@@ -966,7 +967,6 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 }
 
 void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate) {
-
 	if (!valid)
 		const_cast<TLShapedAttributedString *>(this)->_shape_full_string();
 
@@ -1061,7 +1061,6 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 }
 
 bool TLShapedAttributedString::has_attribute(int64_t p_attribute, int64_t p_index) const {
-
 	if (p_index < 0 || p_index > data_size) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, false);
@@ -1082,7 +1081,6 @@ bool TLShapedAttributedString::has_attribute(int64_t p_attribute, int64_t p_inde
 }
 
 Variant TLShapedAttributedString::get_attribute(int64_t p_attribute, int64_t p_index) const {
-
 	if (p_index < 0 || p_index > data_size) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, Variant());
@@ -1111,7 +1109,6 @@ Variant TLShapedAttributedString::get_attribute(int64_t p_attribute, int64_t p_i
 }
 
 void TLShapedAttributedString::load_attributes_dict(Array p_array) {
-
 	clear_attributes();
 	for (int64_t i = 0; i < (int64_t)p_array.size(); i++) {
 		Dictionary item = p_array[i];
@@ -1183,7 +1180,6 @@ void TLShapedAttributedString::load_attributes_dict(Array p_array) {
 }
 
 Array TLShapedAttributedString::save_attributes_dict() const {
-
 	Array ret;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		Dictionary item;
@@ -1272,7 +1268,6 @@ Array TLShapedAttributedString::save_attributes_dict() const {
 }
 
 int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64_t p_index) const {
-
 	if (p_index < 0 || p_index > data_size) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, -1);
@@ -1295,7 +1290,6 @@ int64_t TLShapedAttributedString::get_attribute_start(int64_t p_attribute, int64
 }
 
 int64_t TLShapedAttributedString::get_attribute_end(int64_t p_attribute, int64_t p_index) const {
-
 	if (p_index < 0 || p_index > data_size) {
 		ERR_PRINT("Invalid substring range [" + String::num_int64(p_index) + "] / " + String::num_int64(data_size));
 		ERR_FAIL_COND_V(true, -1);
@@ -1328,7 +1322,6 @@ int64_t TLShapedAttributedString::get_attribute_end(int64_t p_attribute, int64_t
 }
 
 void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, const String p_text) {
-
 	int32_t _len = data_size;
 
 	TLShapedString::replace_text(p_start, p_end, p_text);
@@ -1337,7 +1330,7 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 
 	_disconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
 			new_format_attributes[it->key()] = it->get();
@@ -1349,7 +1342,7 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 
 	_reconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start)
 			new_style_attributes[it->key()] = it->get();
@@ -1363,7 +1356,6 @@ void TLShapedAttributedString::replace_text(int64_t p_start, int64_t p_end, cons
 }
 
 void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	int32_t _len = data_size;
 
 	TLShapedString::replace_utf8(p_start, p_end, p_text);
@@ -1372,7 +1364,7 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 
 	_disconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
 			new_format_attributes[it->key()] = it->get();
@@ -1384,7 +1376,7 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 
 	_reconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start)
 			new_style_attributes[it->key()] = it->get();
@@ -1398,7 +1390,6 @@ void TLShapedAttributedString::replace_utf8(int64_t p_start, int64_t p_end, cons
 }
 
 void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	int32_t _len = data_size;
 
 	TLShapedString::replace_utf16(p_start, p_end, p_text);
@@ -1407,7 +1398,7 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 
 	_disconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
 			new_format_attributes[it->key()] = it->get();
@@ -1419,7 +1410,7 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 
 	_reconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start)
 			new_style_attributes[it->key()] = it->get();
@@ -1433,7 +1424,6 @@ void TLShapedAttributedString::replace_utf16(int64_t p_start, int64_t p_end, con
 }
 
 void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	int32_t _len = data_size;
 
 	TLShapedString::replace_utf32(p_start, p_end, p_text);
@@ -1442,7 +1432,7 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 
 	_disconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
 			new_format_attributes[it->key()] = it->get();
@@ -1454,7 +1444,7 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 
 	_reconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start)
 			new_style_attributes[it->key()] = it->get();
@@ -1468,7 +1458,6 @@ void TLShapedAttributedString::replace_utf32(int64_t p_start, int64_t p_end, con
 }
 
 void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -1489,7 +1478,7 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 
 	_disconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_format_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_format_attributes;
 	for (auto it = format_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start) {
 			new_format_attributes[it->key()] = it->get();
@@ -1506,7 +1495,7 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 
 	_reconnect_fonts();
 
-	Map<int, Map<TextAttribute, Variant> > new_style_attributes;
+	Map<int, Map<TextAttribute, Variant>> new_style_attributes;
 	for (auto it = style_attributes.front(); it; it = it->next()) {
 		if (it->key() <= p_start)
 			new_style_attributes[it->key()] = it->get();
@@ -1525,7 +1514,6 @@ void TLShapedAttributedString::replace_sstring(int64_t p_start, int64_t p_end, R
 }
 
 void TLShapedAttributedString::add_sstring(Ref<TLShapedString> p_ref) {
-
 	if (p_ref.is_null()) {
 		ERR_PRINT("Invalid string");
 		return;
@@ -1597,25 +1585,62 @@ bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_v
 	if (name == "attribute/type") {
 		int64_t v = p_value;
 		switch (v) {
-			case 0: _edited_attrib = TEXT_ATTRIBUTE_FONT; break;
-			case 1: _edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE; break;
-			case 2: _edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE; break;
-			case 3: _edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES; break;
-			case 4: _edited_attrib = TEXT_ATTRIBUTE_LANGUAGE; break;
-			case 5: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE; break;
-			case 6: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT; break;
-			case 7: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID; break;
-			case 8: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN; break;
-			case 9: _edited_attrib = TEXT_ATTRIBUTE_COLOR; break;
-			case 10: _edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR; break;
-			case 11: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR; break;
-			case 12: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH; break;
-			case 13: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR; break;
-			case 14: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH; break;
-			case 15: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR; break;
-			case 16: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH; break;
-			case 17: _edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR; break;
-			default: return false;
+			case 0:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT;
+				break;
+			case 1:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE;
+				break;
+			case 2:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE;
+				break;
+			case 3:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES;
+				break;
+			case 4:
+				_edited_attrib = TEXT_ATTRIBUTE_LANGUAGE;
+				break;
+			case 5:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE;
+				break;
+			case 6:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT;
+				break;
+			case 7:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID;
+				break;
+			case 8:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN;
+				break;
+			case 9:
+				_edited_attrib = TEXT_ATTRIBUTE_COLOR;
+				break;
+			case 10:
+				_edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR;
+				break;
+			case 11:
+				_edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR;
+				break;
+			case 12:
+				_edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH;
+				break;
+			case 13:
+				_edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR;
+				break;
+			case 14:
+				_edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH;
+				break;
+			case 15:
+				_edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR;
+				break;
+			case 16:
+				_edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH;
+				break;
+			case 17:
+				_edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR;
+				break;
+			default:
+				return false;
 		}
 		_change_notify();
 		return true;
@@ -1623,27 +1648,35 @@ bool TLShapedAttributedString::_set(const StringName &p_name, const Variant &p_v
 		if (_edited_attrib == TEXT_ATTRIBUTE_FONT) {
 			Object *p_obj = p_value;
 			Ref<TLFontFamily> v = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
-			if (v.is_null()) return false;
+			if (v.is_null())
+				return false;
 		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
 			Object *p_obj = p_value;
 			Ref<Texture2D> v = Ref<Texture2D>(Object::cast_to<Texture2D>(p_obj));
-			if (v.is_null()) return false;
+			if (v.is_null())
+				return false;
 		}
 		_edited_attrib_value = p_value;
 		_change_notify();
 		return true;
 	} else if (name == "attribute/start") {
 		_edited_attrib_start = (int64_t)p_value;
-		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
-		if (_edited_attrib_start > data_size) _edited_attrib_start = data_size;
-		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
+		if (_edited_attrib_start < 0)
+			_edited_attrib_start = 0;
+		if (_edited_attrib_start > data_size)
+			_edited_attrib_start = data_size;
+		if (_edited_attrib_start > _edited_attrib_end)
+			_edited_attrib_end = _edited_attrib_start;
 		_change_notify();
 		return true;
 	} else if (name == "attribute/end") {
 		_edited_attrib_end = (int64_t)p_value;
-		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
-		if (_edited_attrib_end > data_size) _edited_attrib_end = data_size;
-		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
+		if (_edited_attrib_end < 0)
+			_edited_attrib_end = 0;
+		if (_edited_attrib_end > data_size)
+			_edited_attrib_end = data_size;
+		if (_edited_attrib_end < _edited_attrib_start)
+			_edited_attrib_start = _edited_attrib_end;
 		_change_notify();
 		return true;
 	} else if (name == "attribute_dict") {
@@ -1657,25 +1690,62 @@ bool TLShapedAttributedString::_get(const StringName &p_name, Variant &r_ret) co
 	String name = p_name;
 	if (name == "attribute/type") {
 		switch (_edited_attrib) {
-			case TEXT_ATTRIBUTE_FONT: r_ret = 0; break;
-			case TEXT_ATTRIBUTE_FONT_STYLE: r_ret = 1; break;
-			case TEXT_ATTRIBUTE_FONT_SIZE: r_ret = 2; break;
-			case TEXT_ATTRIBUTE_FONT_FEATURES: r_ret = 3; break;
-			case TEXT_ATTRIBUTE_LANGUAGE: r_ret = 4; break;
-			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: r_ret = 5; break;
-			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: r_ret = 6; break;
-			case TEXT_ATTRIBUTE_REPLACEMENT_ID: r_ret = 7; break;
-			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: r_ret = 8; break;
-			case TEXT_ATTRIBUTE_COLOR: r_ret = 9; break;
-			case TEXT_ATTRIBUTE_OUTLINE_COLOR: r_ret = 10; break;
-			case TEXT_ATTRIBUTE_UNDERLINE_COLOR: r_ret = 11; break;
-			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH: r_ret = 12; break;
-			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR: r_ret = 13; break;
-			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH: r_ret = 14; break;
-			case TEXT_ATTRIBUTE_OVERLINE_COLOR: r_ret = 15; break;
-			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: r_ret = 16; break;
-			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR: r_ret = 17; break;
-			default: return false;
+			case TEXT_ATTRIBUTE_FONT:
+				r_ret = 0;
+				break;
+			case TEXT_ATTRIBUTE_FONT_STYLE:
+				r_ret = 1;
+				break;
+			case TEXT_ATTRIBUTE_FONT_SIZE:
+				r_ret = 2;
+				break;
+			case TEXT_ATTRIBUTE_FONT_FEATURES:
+				r_ret = 3;
+				break;
+			case TEXT_ATTRIBUTE_LANGUAGE:
+				r_ret = 4;
+				break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE:
+				r_ret = 5;
+				break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_RECT:
+				r_ret = 6;
+				break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID:
+				r_ret = 7;
+				break;
+			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN:
+				r_ret = 8;
+				break;
+			case TEXT_ATTRIBUTE_COLOR:
+				r_ret = 9;
+				break;
+			case TEXT_ATTRIBUTE_OUTLINE_COLOR:
+				r_ret = 10;
+				break;
+			case TEXT_ATTRIBUTE_UNDERLINE_COLOR:
+				r_ret = 11;
+				break;
+			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
+				r_ret = 12;
+				break;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR:
+				r_ret = 13;
+				break;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
+				r_ret = 14;
+				break;
+			case TEXT_ATTRIBUTE_OVERLINE_COLOR:
+				r_ret = 15;
+				break;
+			case TEXT_ATTRIBUTE_OVERLINE_WIDTH:
+				r_ret = 16;
+				break;
+			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR:
+				r_ret = 17;
+				break;
+			default:
+				return false;
 		}
 		return true;
 	} else if (name == "attribute/value") {
@@ -1741,7 +1811,6 @@ void TLShapedAttributedString::_get_property_list(List<PropertyInfo> *p_list) co
 }
 
 void TLShapedAttributedString::_bind_methods() {
-
 	//Attribute control
 	ClassDB::bind_method(D_METHOD("commit_attribute"), &TLShapedAttributedString::commit_attribute);
 	ClassDB::bind_method(D_METHOD("reject_attribute"), &TLShapedAttributedString::reject_attribute);
@@ -1791,25 +1860,62 @@ bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
 	if (name == "attribute/type") {
 		int64_t v = p_value;
 		switch (v) {
-			case 0: _edited_attrib = TEXT_ATTRIBUTE_FONT; break;
-			case 1: _edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE; break;
-			case 2: _edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE; break;
-			case 3: _edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES; break;
-			case 4: _edited_attrib = TEXT_ATTRIBUTE_LANGUAGE; break;
-			case 5: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE; break;
-			case 6: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT; break;
-			case 7: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID; break;
-			case 8: _edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN; break;
-			case 9: _edited_attrib = TEXT_ATTRIBUTE_COLOR; break;
-			case 10: _edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR; break;
-			case 11: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR; break;
-			case 12: _edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH; break;
-			case 13: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR; break;
-			case 14: _edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH; break;
-			case 15: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR; break;
-			case 16: _edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH; break;
-			case 17: _edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR; break;
-			default: return false;
+			case 0:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT;
+				break;
+			case 1:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_STYLE;
+				break;
+			case 2:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_SIZE;
+				break;
+			case 3:
+				_edited_attrib = TEXT_ATTRIBUTE_FONT_FEATURES;
+				break;
+			case 4:
+				_edited_attrib = TEXT_ATTRIBUTE_LANGUAGE;
+				break;
+			case 5:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_IMAGE;
+				break;
+			case 6:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_RECT;
+				break;
+			case 7:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_ID;
+				break;
+			case 8:
+				_edited_attrib = TEXT_ATTRIBUTE_REPLACEMENT_VALIGN;
+				break;
+			case 9:
+				_edited_attrib = TEXT_ATTRIBUTE_COLOR;
+				break;
+			case 10:
+				_edited_attrib = TEXT_ATTRIBUTE_OUTLINE_COLOR;
+				break;
+			case 11:
+				_edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_COLOR;
+				break;
+			case 12:
+				_edited_attrib = TEXT_ATTRIBUTE_UNDERLINE_WIDTH;
+				break;
+			case 13:
+				_edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR;
+				break;
+			case 14:
+				_edited_attrib = TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH;
+				break;
+			case 15:
+				_edited_attrib = TEXT_ATTRIBUTE_OVERLINE_COLOR;
+				break;
+			case 16:
+				_edited_attrib = TEXT_ATTRIBUTE_OVERLINE_WIDTH;
+				break;
+			case 17:
+				_edited_attrib = TEXT_ATTRIBUTE_HIGHLIGHT_COLOR;
+				break;
+			default:
+				return false;
 		}
 		property_list_changed_notify();
 		return true;
@@ -1817,27 +1923,35 @@ bool TLShapedAttributedString::_set(String p_name, Variant p_value) {
 		if (_edited_attrib == TEXT_ATTRIBUTE_FONT) {
 			Object *p_obj = p_value;
 			Ref<TLFontFamily> v = Ref<TLFontFamily>(Object::cast_to<TLFontFamily>(p_obj));
-			if (v.is_null()) return false;
+			if (v.is_null())
+				return false;
 		} else if (_edited_attrib == TEXT_ATTRIBUTE_REPLACEMENT_IMAGE) {
 			Object *p_obj = p_value;
 			Ref<Texture2D> v = Ref<Texture2D>(Object::cast_to<Texture2D>(p_obj));
-			if (v.is_null()) return false;
+			if (v.is_null())
+				return false;
 		}
 		_edited_attrib_value = p_value;
 		property_list_changed_notify();
 		return true;
 	} else if (name == "attribute/start") {
 		_edited_attrib_start = (int64_t)p_value;
-		if (_edited_attrib_start < 0) _edited_attrib_start = 0;
-		if (_edited_attrib_start > data_size) _edited_attrib_start = data_size;
-		if (_edited_attrib_start > _edited_attrib_end) _edited_attrib_end = _edited_attrib_start;
+		if (_edited_attrib_start < 0)
+			_edited_attrib_start = 0;
+		if (_edited_attrib_start > data_size)
+			_edited_attrib_start = data_size;
+		if (_edited_attrib_start > _edited_attrib_end)
+			_edited_attrib_end = _edited_attrib_start;
 		property_list_changed_notify();
 		return true;
 	} else if (name == "attribute/end") {
 		_edited_attrib_end = (int64_t)p_value;
-		if (_edited_attrib_end < 0) _edited_attrib_end = 0;
-		if (_edited_attrib_end > data_size) _edited_attrib_end = data_size;
-		if (_edited_attrib_end < _edited_attrib_start) _edited_attrib_start = _edited_attrib_end;
+		if (_edited_attrib_end < 0)
+			_edited_attrib_end = 0;
+		if (_edited_attrib_end > data_size)
+			_edited_attrib_end = data_size;
+		if (_edited_attrib_end < _edited_attrib_start)
+			_edited_attrib_start = _edited_attrib_end;
 		property_list_changed_notify();
 		return true;
 	} else if (name == "attribute_dict") {
@@ -1851,25 +1965,44 @@ Variant TLShapedAttributedString::_get(String p_name) const {
 	String name = p_name;
 	if (name == "attribute/type") {
 		switch (_edited_attrib) {
-			case TEXT_ATTRIBUTE_FONT: return 0;
-			case TEXT_ATTRIBUTE_FONT_STYLE: return 1;
-			case TEXT_ATTRIBUTE_FONT_SIZE: return 2;
-			case TEXT_ATTRIBUTE_FONT_FEATURES: return 3;
-			case TEXT_ATTRIBUTE_LANGUAGE: return 4;
-			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE: return 5;
-			case TEXT_ATTRIBUTE_REPLACEMENT_RECT: return 6;
-			case TEXT_ATTRIBUTE_REPLACEMENT_ID: return 7;
-			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN: return 8;
-			case TEXT_ATTRIBUTE_COLOR: return 9;
-			case TEXT_ATTRIBUTE_OUTLINE_COLOR: return 10;
-			case TEXT_ATTRIBUTE_UNDERLINE_COLOR: return 11;
-			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH: return 12;
-			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR: return 13;
-			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH: return 14;
-			case TEXT_ATTRIBUTE_OVERLINE_COLOR: return 15;
-			case TEXT_ATTRIBUTE_OVERLINE_WIDTH: return 16;
-			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR: return 17;
-			default: return Variant();
+			case TEXT_ATTRIBUTE_FONT:
+				return 0;
+			case TEXT_ATTRIBUTE_FONT_STYLE:
+				return 1;
+			case TEXT_ATTRIBUTE_FONT_SIZE:
+				return 2;
+			case TEXT_ATTRIBUTE_FONT_FEATURES:
+				return 3;
+			case TEXT_ATTRIBUTE_LANGUAGE:
+				return 4;
+			case TEXT_ATTRIBUTE_REPLACEMENT_IMAGE:
+				return 5;
+			case TEXT_ATTRIBUTE_REPLACEMENT_RECT:
+				return 6;
+			case TEXT_ATTRIBUTE_REPLACEMENT_ID:
+				return 7;
+			case TEXT_ATTRIBUTE_REPLACEMENT_VALIGN:
+				return 8;
+			case TEXT_ATTRIBUTE_COLOR:
+				return 9;
+			case TEXT_ATTRIBUTE_OUTLINE_COLOR:
+				return 10;
+			case TEXT_ATTRIBUTE_UNDERLINE_COLOR:
+				return 11;
+			case TEXT_ATTRIBUTE_UNDERLINE_WIDTH:
+				return 12;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_COLOR:
+				return 13;
+			case TEXT_ATTRIBUTE_STRIKETHROUGH_WIDTH:
+				return 14;
+			case TEXT_ATTRIBUTE_OVERLINE_COLOR:
+				return 15;
+			case TEXT_ATTRIBUTE_OVERLINE_WIDTH:
+				return 16;
+			case TEXT_ATTRIBUTE_HIGHLIGHT_COLOR:
+				return 17;
+			default:
+				return Variant();
 		}
 	} else if (name == "attribute/value") {
 		return _edited_attrib_value;
@@ -1994,7 +2127,6 @@ Array TLShapedAttributedString::_get_property_list() const {
 }
 
 void TLShapedAttributedString::_register_methods() {
-
 	//Attribute control
 	register_method("commit_attribute", &TLShapedAttributedString::commit_attribute);
 	register_method("reject_attribute", &TLShapedAttributedString::reject_attribute);

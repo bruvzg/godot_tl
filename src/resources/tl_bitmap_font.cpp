@@ -16,9 +16,9 @@ For original source, see https://github.com/godotengine/godot/blob/master/scene/
 #define File _File
 #else
 #include <File.hpp>
+#include <RenderingServer.hpp>
 #include <ResourceLoader.hpp>
 #include <Texture2D.hpp>
-#include <RenderingServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -139,7 +139,6 @@ static hb_bool_t hb_bmp_get_font_h_extents(hb_font_t *font, void *font_data, hb_
 }
 
 static hb_font_funcs_t *_hb_bmp_get_font_funcs(void) {
-
 	hb_font_funcs_t *funcs = hb_font_funcs_create();
 
 	hb_font_funcs_set_font_h_extents_func(funcs, hb_bmp_get_font_h_extents, nullptr, nullptr);
@@ -181,14 +180,12 @@ hb_font_t *hb_bmp_font_create(TLBitmapFontFaceAtSize *bm_face, hb_destroy_func_t
 /*************************************************************************/
 
 TLBitmapFontFaceAtSize::TLBitmapFontFaceAtSize() {
-
 	hb_font = NULL;
 	font = NULL;
 	size = 0;
 }
 
 TLBitmapFontFaceAtSize::~TLBitmapFontFaceAtSize() {
-
 	if (hb_font) {
 		hb_font_destroy(hb_font);
 		hb_font = NULL;
@@ -200,14 +197,12 @@ TLBitmapFontFaceAtSize::~TLBitmapFontFaceAtSize() {
 /*************************************************************************/
 
 TLBitmapFontFace::TLBitmapFontFace() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 void TLBitmapFontFace::_init() {
-
 	bmp_size = 0;
 	ascent = 0.0f;
 	descent = 0.0f;
@@ -216,13 +211,11 @@ void TLBitmapFontFace::_init() {
 }
 
 TLBitmapFontFace::~TLBitmapFontFace() {
-
 	clear_cache();
 	loaded = false;
 }
 
 float TLBitmapFontFace::get_glyph_advance(uint32_t p_codepoint, int p_size) const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
@@ -234,7 +227,6 @@ float TLBitmapFontFace::get_glyph_advance(uint32_t p_codepoint, int p_size) cons
 }
 
 Point2 TLBitmapFontFace::get_glyph_align(uint32_t p_codepoint, int p_size) const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
@@ -246,7 +238,6 @@ Point2 TLBitmapFontFace::get_glyph_align(uint32_t p_codepoint, int p_size) const
 }
 
 Size2 TLBitmapFontFace::get_glyph_size(uint32_t p_codepoint, int p_size) const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 	float scale = (float)p_size / bmp_size;
@@ -258,7 +249,6 @@ Size2 TLBitmapFontFace::get_glyph_size(uint32_t p_codepoint, int p_size) const {
 }
 
 float TLBitmapFontFace::get_kerning_pair(uint32_t p_codepoint_l, uint32_t p_codepoint_r, int p_size) const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 
@@ -277,7 +267,6 @@ float TLBitmapFontFace::get_kerning_pair(uint32_t p_codepoint_l, uint32_t p_code
 }
 
 bool TLBitmapFontFace::has_glyph(uint32_t p_codepoint) const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 
@@ -285,20 +274,18 @@ bool TLBitmapFontFace::has_glyph(uint32_t p_codepoint) const {
 }
 
 void TLBitmapFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
-
 	draw_glyph(p_canvas_item, p_pos, p_codepoint, p_modulate, p_size);
 }
 
 void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
-
-	if (p_size < 1) return;
+	if (p_size < 1)
+		return;
 
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 
 	float scale = (float)p_size / bmp_size;
 	if (loaded && (glyph_cache.count(p_codepoint) > 0)) {
-
 		const Glyph &gl = glyph_cache.at(p_codepoint);
 
 		ERR_FAIL_COND(gl.id >= texture_cache.size());
@@ -310,8 +297,8 @@ void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_
 }
 
 hb_font_t *TLBitmapFontFace::get_hb_font(int p_size) const {
-
-	if (p_size < 1) return NULL;
+	if (p_size < 1)
+		return NULL;
 
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
@@ -333,7 +320,6 @@ hb_font_t *TLBitmapFontFace::get_hb_font(int p_size) const {
 }
 
 void TLBitmapFontFace::clear_cache() {
-
 	texture_cache.clear();
 	glyph_cache.clear();
 	kerning_map.clear();
@@ -344,14 +330,12 @@ void TLBitmapFontFace::clear_cache() {
 }
 
 void TLBitmapFontFace::set_font_path(String p_resource_path) {
-
 	if (path != p_resource_path) {
 		load(p_resource_path);
 	}
 }
 
 bool TLBitmapFontFace::load(String p_resource_path) {
-
 	path = p_resource_path;
 	bool was_loaded = loaded;
 	if (loaded) {
@@ -364,12 +348,12 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 	file.instance();
 	if (file->open(p_resource_path, File::READ) != Error::OK) {
 		ERR_PRINT("Can't open bitmap font file: \"" + p_resource_path + "\"");
-		if (was_loaded) emit_signal(_CHANGED); //Only emit when old valid font is unloaded during this call, to prevent cyclic calls
+		if (was_loaded)
+			emit_signal(_CHANGED); //Only emit when old valid font is unloaded during this call, to prevent cyclic calls
 		return false;
 	}
 
 	while (true) {
-
 		String line = file->get_line();
 
 		int delimiter = line.find(" ", 0);
@@ -381,7 +365,6 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 			pos++;
 
 		while (pos < line.length()) {
-
 			int eq = line.find("=", pos);
 			if (eq == -1)
 				break;
@@ -434,7 +417,8 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 					ERR_PRINT("Can't load bitmap font texture: \"" + file_name + "\"");
 					clear_cache();
 					file->close();
-					if (was_loaded) emit_signal(_CHANGED);
+					if (was_loaded)
+						emit_signal(_CHANGED);
 					return false;
 				} else {
 					texture_cache.push_back(tex);
@@ -510,7 +494,6 @@ bool TLBitmapFontFace::load(String p_resource_path) {
 }
 
 std::vector<hb_script_t> TLBitmapFontFace::unicode_scripts_supported() const {
-
 	std::vector<hb_script_t> ret;
 	//TODO: detect supported scripts!
 	ret.push_back(HB_SCRIPT_COMMON);
@@ -518,8 +501,8 @@ std::vector<hb_script_t> TLBitmapFontFace::unicode_scripts_supported() const {
 }
 
 double TLBitmapFontFace::get_ascent(int p_size) const {
-
-	if (p_size < 1) return 0.0f;
+	if (p_size < 1)
+		return 0.0f;
 
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)
@@ -528,8 +511,8 @@ double TLBitmapFontFace::get_ascent(int p_size) const {
 }
 
 double TLBitmapFontFace::get_descent(int p_size) const {
-
-	if (p_size < 1) return 0.0f;
+	if (p_size < 1)
+		return 0.0f;
 
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)
@@ -538,8 +521,8 @@ double TLBitmapFontFace::get_descent(int p_size) const {
 }
 
 double TLBitmapFontFace::get_height(int p_size) const {
-
-	if (p_size < 1) return 0.0f;
+	if (p_size < 1)
+		return 0.0f;
 
 	float scale = (float)p_size / bmp_size;
 	if (!loaded)
@@ -548,9 +531,7 @@ double TLBitmapFontFace::get_height(int p_size) const {
 }
 
 int TLBitmapFontFace::get_base_size() const {
-
 	if (!loaded)
 		const_cast<TLBitmapFontFace *>(this)->load(path);
 	return loaded ? bmp_size : 0;
 }
-

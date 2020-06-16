@@ -81,7 +81,7 @@ void EditorInspectorPluginTLFontFamily::parse_begin(Object *p_object) {
 	//NOP
 }
 
-bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant::Type p_type, const String &p_path, PropertyHint p_hint, const String &p_hint_text, int p_usage) {
+bool EditorInspectorPluginTLFontFamily::parse_property(Object *p_object, Variant::Type p_type, const String &p_path, PropertyHint p_hint, const String &p_hint_text, int p_usage, bool p_wide) {
 	if (p_path == "attribute/_commit") {
 		HBoxContainer *hbox = memnew(HBoxContainer);
 		Button *rem_btn = memnew(Button);

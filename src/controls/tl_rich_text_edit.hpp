@@ -108,7 +108,7 @@ protected:
 	bool in_focus;
 	bool selectable;
 
-	std::vector<Ref<TLShapedParagraph> > paragraphs;
+	std::vector<Ref<TLShapedParagraph>> paragraphs;
 	Ref<TLShapedParagraph> ime_temp_para;
 
 	void _fix_selection();
