@@ -37,7 +37,6 @@ using namespace godot;
 #include "tools/tl_editor_node.h"
 
 void tl_init_callback() {
-
 	EditorNode *editor = EditorNode::get_singleton();
 	editor->add_child(memnew(TLEditorNode(editor)));
 };
@@ -45,7 +44,6 @@ void tl_init_callback() {
 #endif
 
 void register_godot_tl_types() {
-
 	TLFontFace::initialize_hex_font();
 
 	ClassDB::register_class<TLICUDataLoader>();
@@ -72,7 +70,6 @@ void register_godot_tl_types() {
 }
 
 void unregister_godot_tl_types() {
-
 	TLFontFace::finish_hex_font();
 	TLICUDataLoader::unload();
 
@@ -83,13 +80,11 @@ void unregister_godot_tl_types() {
 #else
 
 extern "C" void GDN_EXPORT gdtl_gdnative_init(godot_gdnative_init_options *p_options) {
-
 	//Init GDNative
 	Godot::gdnative_init(p_options);
 }
 
 extern "C" void GDN_EXPORT gdtl_gdnative_terminate(godot_gdnative_terminate_options *p_options) {
-
 	TLFontFace::finish_hex_font();
 	TLICUDataLoader::unload();
 
@@ -101,7 +96,6 @@ extern "C" void GDN_EXPORT gdtl_gdnative_terminate(godot_gdnative_terminate_opti
 }
 
 extern "C" void GDN_EXPORT gdtl_nativescript_init(void *p_handle) {
-
 	Godot::nativescript_init(p_handle);
 
 	TLFontFace::initialize_hex_font();

@@ -44,7 +44,4 @@ env_godot_tl.Append(CXXFLAGS=[
 	'-DGODOT_MODULE'
 ])
 
-if (not env_godot_tl.msvc):
-    env_godot_tl.Append(CXXFLAGS=["-std=c++14"])
-
 env_godot_tl.add_source_files(env.modules_sources, sources)

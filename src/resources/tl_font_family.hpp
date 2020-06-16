@@ -16,13 +16,12 @@
 using namespace godot;
 
 struct StyleData {
-	std::vector<Ref<TLFontFace> > main_chain;
-	std::map<hb_script_t, std::vector<Ref<TLFontFace> > > linked_src_chain;
-	std::map<hb_language_t, std::vector<Ref<TLFontFace> > > linked_lang_chain;
+	std::vector<Ref<TLFontFace>> main_chain;
+	std::map<hb_script_t, std::vector<Ref<TLFontFace>>> linked_src_chain;
+	std::map<hb_language_t, std::vector<Ref<TLFontFace>>> linked_lang_chain;
 };
 
 class TLFontFallbackIterator {
-
 protected:
 	enum ChainID {
 		LANG_CHAIN,

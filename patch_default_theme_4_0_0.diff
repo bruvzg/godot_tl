@@ -1,0 +1,287 @@
+diff --git a/scene/resources/default_theme/SCsub b/scene/resources/default_theme/SCsub
+index fc61250247..49ada33af7 100644
+--- a/scene/resources/default_theme/SCsub
++++ b/scene/resources/default_theme/SCsub
+@@ -2,4 +2,23 @@
+ 
+ Import("env")
+ 
++import os
++import os.path
++from platform_methods import run_in_subprocess
++
++import glob
++import editor_builders
++
++path = env.Dir('.').abspath
++
++# Fonts
++flist = glob.glob(path + "/../../../thirdparty/fonts/*.ttf")
++flist.extend(glob.glob(path + "/../../../thirdparty/fonts/*.otf"))
++flist.sort()
++env.Depends("builtin_noto_fonts.gen.h", flist)
++env.CommandNoCache("builtin_noto_fonts.gen.h", flist, run_in_subprocess(editor_builders.make_fonts_header))
++
++env.Append(CXXFLAGS=["-DGODOT_MODULE"])
++env.Append(CPPPATH=["#modules/godot_tl/src/resources", "#modules/godot_tl/src", "#modules/godot_tl/subprojects/graphite2/include", "#modules/godot_tl/subprojects/harfbuzz/src", "#modules/godot_tl/subprojects/icu4c/source/common"])
++
+ env.add_source_files(env.scene_sources, "*.cpp")
+diff --git a/scene/resources/default_theme/default_theme.cpp b/scene/resources/default_theme/default_theme.cpp
+index fd5c861eb5..a51bc438c8 100644
+--- a/scene/resources/default_theme/default_theme.cpp
++++ b/scene/resources/default_theme/default_theme.cpp
+@@ -35,8 +35,11 @@
+ #include "core/os/os.h"
+ #include "theme_data.h"
+ 
+-#include "font_hidpi.inc"
+-#include "font_lodpi.inc"
++#include "builtin_noto_fonts.gen.h"
++
++#include "modules/godot_tl/src/resources/tl_font_family.hpp"
++#include "modules/godot_tl/src/resources/tl_dynamic_font.hpp"
++#include "modules/godot_tl/src/resources/tl_gd_font_wrapper.hpp"
+ 
+ typedef Map<const void *, Ref<ImageTexture>> TexCacheMap;
+ 
+@@ -95,6 +98,7 @@ static Ref<Texture2D> make_icon(T p_src) {
+ 	return texture;
+ }
+ 
++/*
+ static Ref<BitmapFont> make_font(int p_height, int p_ascent, int p_charcount, const int *p_char_rects, int p_kerning_count, const int *p_kernings, int p_w, int p_h, const unsigned char *p_img) {
+ 	Ref<BitmapFont> font(memnew(BitmapFont));
+ 
+@@ -128,6 +132,7 @@ static Ref<BitmapFont> make_font(int p_height, int p_ascent, int p_charcount, co
+ 
+ 	return font;
+ }
++*/
+ 
+ static Ref<StyleBox> make_empty_stylebox(float p_margin_left = -1, float p_margin_top = -1, float p_margin_right = -1, float p_margin_botton = -1) {
+ 	Ref<StyleBox> style(memnew(StyleBoxEmpty));
+@@ -848,10 +853,80 @@ void make_default_theme(bool p_hidpi, Ref<Font> p_font) {
+ 	Ref<Font> default_font;
+ 	if (p_font.is_valid()) {
+ 		default_font = p_font;
+-	} else if (p_hidpi) {
+-		default_font = make_font(_hidpi_font_height, _hidpi_font_ascent, _hidpi_font_charcount, &_hidpi_font_charrects[0][0], _hidpi_font_kerning_pair_count, &_hidpi_font_kerning_pairs[0][0], _hidpi_font_img_width, _hidpi_font_img_height, _hidpi_font_img_data);
+ 	} else {
+-		default_font = make_font(_lodpi_font_height, _lodpi_font_ascent, _lodpi_font_charcount, &_lodpi_font_charrects[0][0], _lodpi_font_kerning_pair_count, &_lodpi_font_kerning_pairs[0][0], _lodpi_font_img_width, _lodpi_font_img_height, _lodpi_font_img_data);
++#ifdef OSX_ENABLED
++		DynamicFaceHinting font_hinting = DF_HINTING_NONE;
++#else
++		DynamicFaceHinting font_hinting = DF_HINTING_LIGHT;
++#endif
++		Ref<TLDynamicFontFace> DefaultFont;
++		DefaultFont.instance();
++		DefaultFont->set_hinting(font_hinting);
++		DefaultFont->set_font_ptr(_font_NotoSansUI_Regular, _font_NotoSansUI_Regular_size);
++		DefaultFont->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> DefaultFontBold;
++		DefaultFontBold.instance();
++		DefaultFontBold->set_hinting(font_hinting);
++		DefaultFontBold->set_font_ptr(_font_NotoSansUI_Bold, _font_NotoSansUI_Bold_size);
++		DefaultFontBold->set_force_autohinter(true); // just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontFallback;
++		FontFallback.instance();
++		FontFallback->set_hinting(font_hinting);
++		FontFallback->set_font_ptr(_font_DroidSansFallback, _font_DroidSansFallback_size);
++		FontFallback->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontJapanese;
++		FontJapanese.instance();
++		FontJapanese->set_hinting(font_hinting);
++		FontJapanese->set_font_ptr(_font_DroidSansJapanese, _font_DroidSansJapanese_size);
++		FontJapanese->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontArabic;
++		FontArabic.instance();
++		FontArabic->set_hinting(font_hinting);
++		FontArabic->set_font_ptr(_font_NotoNaskhArabicUI_Regular, _font_NotoNaskhArabicUI_Regular_size);
++		FontArabic->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontHebrew;
++		FontHebrew.instance();
++		FontHebrew->set_hinting(font_hinting);
++		FontHebrew->set_font_ptr(_font_NotoSansHebrew_Regular, _font_NotoSansHebrew_Regular_size);
++		FontHebrew->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontThai;
++		FontThai.instance();
++		FontThai->set_hinting(font_hinting);
++		FontThai->set_font_ptr(_font_NotoSansThaiUI_Regular, _font_NotoSansThaiUI_Regular_size);
++		FontThai->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLDynamicFontFace> FontHindi;
++		FontHindi.instance();
++		FontHindi->set_hinting(font_hinting);
++		FontHindi->set_font_ptr(_font_NotoSansDevanagariUI_Regular, _font_NotoSansDevanagariUI_Regular_size);
++		FontHindi->set_force_autohinter(true); //just looks better..i think?
++
++		Ref<TLFontFamily> dff;
++		dff.instance();
++		dff->add_style("Default");
++		dff->add_style("Bold");
++		dff->add_style("Source");
++		dff->add_face("Default", DefaultFont);
++		dff->add_face("Default", FontArabic);
++		dff->add_face("Default", FontHebrew);
++		dff->add_face("Default", FontThai);
++		dff->add_face("Default", FontHindi);
++		dff->add_face("Default", FontJapanese);
++		dff->add_face("Default", FontFallback);
++
++		Ref<TLGDFontWrapper> df;
++		df.instance();
++		df->set_base_font(dff);
++		df->set_base_font_style("Default");
++		df->set_base_font_size(16);
++
++		default_font = df;
+ 	}
+ 	Ref<Font> large_font = default_font;
+ 	fill_default_theme(t, default_font, large_font, default_icon, default_style, p_hidpi ? 2.0 : 1.0);
+diff --git a/scene/resources/default_theme/editor_builders.py b/scene/resources/default_theme/editor_builders.py
+new file mode 100644
+index 0000000000..ea32e24f6e
+--- /dev/null
++++ b/scene/resources/default_theme/editor_builders.py
+@@ -0,0 +1,135 @@
++"""Functions used to generate source files during build time
++
++All such functions are invoked in a subprocess on Windows to prevent build flakiness.
++
++"""
++import os
++import os.path
++from platform_methods import subprocess_main
++
++
++def make_doc_header(target, source, env):
++
++    dst = target[0]
++    g = open(dst, "w", encoding="utf-8")
++    buf = ""
++    docbegin = ""
++    docend = ""
++    for src in source:
++        if not src.endswith(".xml"):
++            continue
++        with open(src, "r", encoding="utf-8") as f:
++            content = f.read()
++        buf += content
++
++    buf = (docbegin + buf + docend).encode("utf-8")
++    decomp_size = len(buf)
++    import zlib
++
++    buf = zlib.compress(buf)
++
++    g.write("/* THIS FILE IS GENERATED DO NOT EDIT */\n")
++    g.write("#ifndef _DOC_DATA_RAW_H\n")
++    g.write("#define _DOC_DATA_RAW_H\n")
++    g.write("static const int _doc_data_compressed_size = " + str(len(buf)) + ";\n")
++    g.write("static const int _doc_data_uncompressed_size = " + str(decomp_size) + ";\n")
++    g.write("static const unsigned char _doc_data_compressed[] = {\n")
++    for i in range(len(buf)):
++        g.write("\t" + str(buf[i]) + ",\n")
++    g.write("};\n")
++
++    g.write("#endif")
++
++    g.close()
++
++
++def make_fonts_header(target, source, env):
++
++    dst = target[0]
++
++    g = open(dst, "w", encoding="utf-8")
++
++    g.write("/* THIS FILE IS GENERATED DO NOT EDIT */\n")
++    g.write("#ifndef _EDITOR_FONTS_H\n")
++    g.write("#define _EDITOR_FONTS_H\n")
++
++    # saving uncompressed, since freetype will reference from memory pointer
++    xl_names = []
++    for i in range(len(source)):
++        with open(source[i], "rb") as f:
++            buf = f.read()
++
++        name = os.path.splitext(os.path.basename(source[i]))[0]
++
++        g.write("static const int _font_" + name + "_size = " + str(len(buf)) + ";\n")
++        g.write("static const unsigned char _font_" + name + "[] = {\n")
++        for j in range(len(buf)):
++            g.write("\t" + str(buf[j]) + ",\n")
++
++        g.write("};\n")
++
++    g.write("#endif")
++
++    g.close()
++
++
++def make_translations_header(target, source, env, category):
++
++    dst = target[0]
++
++    g = open(dst, "w", encoding="utf-8")
++
++    g.write("/* THIS FILE IS GENERATED DO NOT EDIT */\n")
++    g.write("#ifndef _{}_TRANSLATIONS_H\n".format(category.upper()))
++    g.write("#define _{}_TRANSLATIONS_H\n".format(category.upper()))
++
++    import zlib
++    import os.path
++
++    sorted_paths = sorted(source, key=lambda path: os.path.splitext(os.path.basename(path))[0])
++
++    xl_names = []
++    for i in range(len(sorted_paths)):
++        with open(sorted_paths[i], "rb") as f:
++            buf = f.read()
++        decomp_size = len(buf)
++        buf = zlib.compress(buf)
++        name = os.path.splitext(os.path.basename(sorted_paths[i]))[0]
++
++        g.write("static const unsigned char _{}_translation_{}_compressed[] = {{\n".format(category, name))
++        for j in range(len(buf)):
++            g.write("\t" + str(buf[j]) + ",\n")
++
++        g.write("};\n")
++
++        xl_names.append([name, len(buf), str(decomp_size)])
++
++    g.write("struct {}TranslationList {{\n".format(category.capitalize()))
++    g.write("\tconst char* lang;\n")
++    g.write("\tint comp_size;\n")
++    g.write("\tint uncomp_size;\n")
++    g.write("\tconst unsigned char* data;\n")
++    g.write("};\n\n")
++    g.write("static {}TranslationList _{}_translations[] = {{\n".format(category.capitalize(), category))
++    for x in xl_names:
++        g.write(
++            '\t{{ "{}", {}, {}, _{}_translation_{}_compressed }},\n'.format(x[0], str(x[1]), str(x[2]), category, x[0])
++        )
++    g.write("\t{nullptr, 0, 0, nullptr}\n")
++    g.write("};\n")
++
++    g.write("#endif")
++
++    g.close()
++
++
++def make_editor_translations_header(target, source, env):
++    make_translations_header(target, source, env, "editor")
++
++
++def make_doc_translations_header(target, source, env):
++    make_translations_header(target, source, env, "doc")
++
++
++if __name__ == "__main__":
++    subprocess_main(globals())

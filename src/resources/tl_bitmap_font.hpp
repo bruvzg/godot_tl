@@ -16,7 +16,6 @@ using namespace godot;
 class TLBitmapFontFace;
 
 struct TLBitmapFontFaceAtSize {
-
 	const TLBitmapFontFace *font;
 	hb_font_t *hb_font;
 	int size;
@@ -56,7 +55,7 @@ protected:
 
 	void clear_cache();
 
-	std::vector<Ref<Texture2D> > texture_cache;
+	std::vector<Ref<Texture2D>> texture_cache;
 	std::map<uint32_t, Glyph> glyph_cache;
 	std::map<KerningPairKey, int> kerning_map;
 
@@ -68,23 +67,23 @@ public:
 
 	void _init();
 
-	virtual hb_font_t *get_hb_font(int p_size) const override;
+	virtual hb_font_t *get_hb_font(int p_size) const;
 
-	virtual void _draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override; //raw char for debug only, do not use
-	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const override;
+	virtual void _draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const; //raw char for debug only, do not use
+	virtual void draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const;
 
-	virtual std::vector<hb_script_t> unicode_scripts_supported() const override;
+	virtual std::vector<hb_script_t> unicode_scripts_supported() const;
 
 	//GDNative methods
-	virtual bool load(String p_resource_path) override;
+	virtual bool load(String p_resource_path);
 
-	virtual void set_font_path(String p_resource_path) override;
+	virtual void set_font_path(String p_resource_path);
 
-	virtual double get_ascent(int p_size) const override;
-	virtual double get_descent(int p_size) const override;
-	virtual double get_height(int p_size) const override;
+	virtual double get_ascent(int p_size) const;
+	virtual double get_descent(int p_size) const;
+	virtual double get_height(int p_size) const;
 
-	virtual int get_base_size() const override;
+	virtual int get_base_size() const;
 
 	//HB internals
 	bool has_glyph(uint32_t p_codepoint) const;

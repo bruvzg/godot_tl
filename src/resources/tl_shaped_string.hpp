@@ -82,7 +82,6 @@ protected:
 	};
 
 	struct Glyph {
-
 		UChar32 codepoint;
 		Point2 offset;
 		Point2 advance;
@@ -93,7 +92,6 @@ protected:
 	};
 
 	struct Cluster {
-
 		int cl_type;
 
 		int64_t start;
@@ -127,9 +125,7 @@ protected:
 	};
 
 	class ScriptIterator {
-
 		struct ScriptRange {
-
 			int32_t start;
 			int32_t end;
 			hb_script_t script;
@@ -138,7 +134,6 @@ protected:
 		static bool same_script(int32_t p_script_one, int32_t p_script_two);
 
 		_ALWAYS_INLINE_ int32_t next_bound(const UChar *p_chars, int32_t p_offset, int32_t p_length) const {
-
 			if (p_offset < 0)
 				p_offset = 0;
 
@@ -165,13 +160,11 @@ protected:
 	};
 
 	struct BreakOpportunity {
-
 		int64_t position;
 		bool hard;
 	};
 
 	struct JustificationOpportunity {
-
 		int64_t position;
 		bool kashida;
 	};

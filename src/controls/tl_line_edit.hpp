@@ -49,7 +49,6 @@ using namespace godot;
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 class TLLineEdit : public Control {
-
 	GODOT_CLASS(TLLineEdit, Control);
 
 public:
@@ -105,7 +104,6 @@ private:
 	Ref<Texture2D> right_icon;
 
 	struct Selection {
-
 		int begin;
 		int end;
 		int cursor_start;

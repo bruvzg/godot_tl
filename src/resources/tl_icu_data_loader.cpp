@@ -17,24 +17,20 @@
 uint8_t *TLICUDataLoader::icu_data = NULL;
 
 TLICUDataLoader::TLICUDataLoader() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 void TLICUDataLoader::_init() {
-
 	//NOP
 }
 
 TLICUDataLoader::~TLICUDataLoader() {
-
 	//NOP
 }
 
 bool TLICUDataLoader::load(String p_path) {
-
 	if (!icu_data) {
 		Ref<File> file;
 		file.instance();
@@ -77,7 +73,6 @@ bool TLICUDataLoader::load(String p_path) {
 }
 
 void TLICUDataLoader::unload() {
-
 	if (icu_data) {
 		std::free(icu_data);
 		icu_data = NULL;
@@ -85,19 +80,16 @@ void TLICUDataLoader::unload() {
 }
 
 void TLICUDataLoader::set_data_path(String p_resource_path) {
-
 	path = p_resource_path;
 	load(path);
 }
 
 String TLICUDataLoader::get_data_path() const {
-
 	return path;
 }
 
 #ifdef GODOT_MODULE
 void TLICUDataLoader::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("load", "resource_path"), &TLICUDataLoader::load);
 	ClassDB::bind_method(D_METHOD("get_data_path"), &TLICUDataLoader::get_data_path);
 	ClassDB::bind_method(D_METHOD("set_data_path", "path"), &TLICUDataLoader::set_data_path);
@@ -106,7 +98,6 @@ void TLICUDataLoader::_bind_methods() {
 }
 #else
 void TLICUDataLoader::_register_methods() {
-
 	register_method("load", &TLICUDataLoader::load);
 	register_method("get_data_path", &TLICUDataLoader::get_data_path);
 	register_method("set_data_path", &TLICUDataLoader::set_data_path);

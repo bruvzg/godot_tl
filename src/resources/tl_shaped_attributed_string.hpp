@@ -63,39 +63,39 @@ protected:
 		_CLUSTER_TYPE_RECT = 12 //Reserved rect for embedded object
 	};
 
-	Map<int, Map<TextAttribute, Variant> > format_attributes;
-	Map<int, Map<TextAttribute, Variant> > style_attributes;
+	Map<int, Map<TextAttribute, Variant>> format_attributes;
+	Map<int, Map<TextAttribute, Variant>> style_attributes;
 
 	virtual void _disconnect_fonts();
 	virtual void _reconnect_fonts();
 
 	virtual bool _compare_attributes(const Map<TextAttribute, Variant> &p_first, const Map<TextAttribute, Variant> &p_second) const;
-	virtual void _ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant> > &p_attributes);
-	virtual void _optimize_attributes(Map<int, Map<TextAttribute, Variant> > &p_attributes);
+	virtual void _ensure_break(int64_t p_key, Map<int, Map<TextAttribute, Variant>> &p_attributes);
+	virtual void _optimize_attributes(Map<int, Map<TextAttribute, Variant>> &p_attributes);
 
 	void _shape_substring(TLShapedAttributedString *p_ref, int64_t p_start, int64_t p_end, int p_trim) const;
 
-	virtual void _generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const override;
-	virtual void _generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const override;
+	virtual void _generate_justification_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<JustificationOpportunity> &p_ops) const;
+	virtual void _generate_break_opportunies(int32_t p_start, int32_t p_end, const char *p_lang, /*out*/ std::vector<BreakOpportunity> &p_ops) const;
 
-	virtual void _shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override = false) const override;
+	virtual void _shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override = false) const;
 	virtual void _shape_bidi_script_attrib_run(hb_direction_t p_run_direction, hb_script_t p_run_script, const Map<TextAttribute, Variant> &p_attribs, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font, bool p_font_override = false);
-	virtual void _shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font) override;
+	virtual void _shape_bidi_script_run(hb_direction_t p_run_direction, hb_script_t p_run_script, int32_t p_run_start, int32_t p_run_end, TLFontFallbackIterator p_font);
 	virtual void _shape_rect_run(hb_direction_t p_run_direction, const Size2 &p_size, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
 	virtual void _shape_image_run(hb_direction_t p_run_direction, const Ref<Texture2D> &p_image, TextVAlign p_align, int32_t p_run_start, int32_t p_run_end);
 
 public:
-	virtual float get_cluster_face_size(int64_t p_index) const override;
+	virtual float get_cluster_face_size(int64_t p_index) const;
 
-	virtual Ref<TLShapedString> substr(int64_t p_start, int64_t p_end, int p_trim) const override;
+	virtual Ref<TLShapedString> substr(int64_t p_start, int64_t p_end, int p_trim) const;
 
-	virtual void add_sstring(Ref<TLShapedString> p_text) override;
-	virtual void replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) override;
+	virtual void add_sstring(Ref<TLShapedString> p_text);
+	virtual void replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text);
 
-	virtual void replace_text(int64_t p_start, int64_t p_end, const String p_text) override;
-	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
-	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
-	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) override;
+	virtual void replace_text(int64_t p_start, int64_t p_end, const String p_text);
+	virtual void replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
+	virtual void replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
+	virtual void replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text);
 
 	virtual void add_attribute(int64_t p_attribute, Variant p_value, int64_t p_start, int64_t p_end);
 	virtual void remove_attribute(int64_t p_attribute, int64_t p_start, int64_t p_end);
@@ -112,8 +112,8 @@ public:
 	virtual void load_attributes_dict(Array p_array);
 	virtual Array save_attributes_dict() const;
 
-	virtual Vector2 draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate = Color(1, 1, 1)) override;
-	virtual void draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1)) override;
+	virtual Vector2 draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate = Color(1, 1, 1));
+	virtual void draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate = Color(1, 1, 1));
 
 	Array get_embedded_rects();
 

@@ -7,8 +7,8 @@
 #else
 #include <GlobalConstants.hpp>
 #include <Image.hpp>
-#include <Texture2D.hpp>
 #include <RenderingServer.hpp>
+#include <Texture2D.hpp>
 #endif
 
 #include "tl_font.hpp"
@@ -16,24 +16,20 @@
 Ref<ImageTexture> TLFontFace::hex_box_img_tex = NULL;
 
 TLFontFace::TLFontFace() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 void TLFontFace::_init() {
-
 	//NOP
 }
 
 TLFontFace::~TLFontFace() {
-
 	//NOP
 }
 
 void TLFontFace::initialize_hex_font() {
-
 	PackedByteArray hex_box_data;
 	hex_box_data.resize(167);
 	std::memcpy(hex_box_data.ptrw(), _hex_box_img_data, 167);
@@ -47,7 +43,6 @@ void TLFontFace::initialize_hex_font() {
 }
 
 void TLFontFace::finish_hex_font() {
-
 	hex_box_img_tex.unref();
 }
 
@@ -79,7 +74,6 @@ void TLFontFace::_draw_small_int(RID p_canvas_item, const Point2 p_pos, uint32_t
 }
 
 void TLFontFace::draw_hexbox(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate) {
-
 	uint8_t a = p_codepoint & 0x0F;
 	uint8_t b = (p_codepoint >> 4) & 0x0F;
 	uint8_t c = (p_codepoint >> 8) & 0x0F;
@@ -125,18 +119,15 @@ void TLFontFace::draw_hexbox(RID p_canvas_item, const Point2 p_pos, uint32_t p_c
 }
 
 void TLFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
-
 	WARN_PRINT("Not implemented, pure virtual function call!");
 }
 
 void TLFontFace::_draw_char(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
-
 	//raw char for debug only, do not use
 	WARN_PRINT("Not implemented, pure virtual function call!");
 }
 
 void TLFontFace::draw_glyph_outline(RID p_canvas_item, const Point2 p_pos, uint32_t p_codepoint, const Color p_modulate, int p_size) const {
-
 	WARN_PRINT("Not implemented, pure virtual function call!");
 }
 
@@ -145,27 +136,23 @@ Array TLFontFace::get_glyph_outline(const Point2 p_pos, uint32_t p_codepoint, in
 }
 
 float TLFontFace::get_glyph_scale(int p_size) const {
-
 	return 1.0f;
 }
 
 hb_font_t *TLFontFace::get_hb_font(int p_size) const {
-
 	return NULL;
 }
 
 bool TLFontFace::load(String p_resource_path) {
-
 	WARN_PRINT("Not implemented, pure virtual function call!");
 	return false;
 }
 
 Array TLFontFace::_unicode_scripts_supported() const {
-
 	Array ret;
 
 	std::vector<hb_script_t> _sup = unicode_scripts_supported();
-	for (int i = 0; i < _sup.size(); i++) {
+	for (size_t i = 0; i < _sup.size(); i++) {
 		char tag[5] = "";
 		hb_tag_to_string(hb_script_to_iso15924_tag(_sup[i]), tag);
 		ret.push_back(String(tag).to_upper());
@@ -175,44 +162,36 @@ Array TLFontFace::_unicode_scripts_supported() const {
 }
 
 std::vector<hb_script_t> TLFontFace::unicode_scripts_supported() const {
-
 	return std::vector<hb_script_t>();
 }
 
 double TLFontFace::get_ascent(int p_size) const {
-
 	return 0.0f;
 }
 
 double TLFontFace::get_descent(int p_size) const {
-
 	return 0.0f;
 }
 
 double TLFontFace::get_height(int p_size) const {
-
 	return 0.0f;
 }
 
 int TLFontFace::get_base_size() const {
-
 	return 0;
 }
 
 void TLFontFace::set_font_path(String p_resource_path) {
-
 	WARN_PRINT("Not implemented, pure virtual function call!");
 	path = p_resource_path;
 }
 
 String TLFontFace::get_font_path() const {
-
 	return path;
 }
 
 #ifdef GODOT_MODULE
 void TLFontFace::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("load", "resource_path"), &TLFontFace::load);
 
 	ClassDB::bind_method(D_METHOD("draw_glyph", "canvas_item", "pos", "codepoint", "modulate", "size"), &TLFontFace::draw_glyph);
@@ -236,7 +215,6 @@ void TLFontFace::_bind_methods() {
 #else
 
 void TLFontFace::_register_methods() {
-
 	register_method("load", &TLFontFace::load);
 
 	register_method("draw_glyph", &TLFontFace::draw_glyph);

@@ -9,8 +9,8 @@
 #include "servers/rendering_server.h"
 #else
 #include <GlobalConstants.hpp>
-#include <TranslationServer.hpp>
 #include <RenderingServer.hpp>
+#include <TranslationServer.hpp>
 #endif
 
 /*************************************************************************/
@@ -168,8 +168,10 @@ TLShapedString::ScriptIterator::ScriptIterator(const UChar *p_chars, int32_t p_s
 					UChar32 paired_ch = u_getBidiPairedBracket(ch);
 					while (paren_sp >= 0 && paren_stack[paren_sp].pair_index != paired_ch)
 						paren_sp -= 1;
-					if (paren_sp < start_sp) start_sp = paren_sp;
-					if (paren_sp >= 0) sc = paren_stack[paren_sp].script_code;
+					if (paren_sp < start_sp)
+						start_sp = paren_sp;
+					if (paren_sp >= 0)
+						sc = paren_stack[paren_sp].script_code;
 				}
 			}
 
@@ -216,7 +218,6 @@ void TLShapedString::_clear_props() {
 }
 
 void TLShapedString::_clear_visual() {
-
 	valid = false;
 	visual.clear();
 	ascent = 0.0f;
@@ -289,7 +290,8 @@ void TLShapedString::_generate_kashida_justification_opportunies(int64_t p_start
 				}
 			}
 		}
-		if (!is_transparent(c)) pc = c;
+		if (!is_transparent(c))
+			pc = c;
 		i++;
 	}
 	if (kashida_pos > -1) {
@@ -358,7 +360,6 @@ void TLShapedString::_generate_break_opportunies(int32_t p_start, int32_t p_end,
 		return;
 	}
 	while (ubrk_next(bi) != UBRK_DONE) {
-
 		UChar32 nch;
 		U16_GET(data, 0, p_start + ubrk_current(bi), data_size, nch);
 		if ((nch != 0x1361) || (ubrk_getRuleStatus(bi) == UBRK_LINE_HARD)) { //do not soft break before ethiopic wordspace
@@ -654,7 +655,8 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 	}
 	hb_buffer_set_script(hb_buffer, p_run_script);
 
-	if (language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, language);
+	if (language != HB_LANGUAGE_INVALID)
+		hb_buffer_set_language(hb_buffer, language);
 
 	hb_buffer_add_utf16(hb_buffer, (const uint16_t *)data, data_size, p_run_start, p_run_end - p_run_start);
 	hb_shape(hb_font, hb_buffer, font_features.empty() ? NULL : &font_features[0], font_features.size());
@@ -741,8 +743,10 @@ void TLShapedString::_shape_bidi_script_run(hb_direction_t p_run_direction, hb_s
 				}
 				visual.push_back(run_clusters[i]);
 			} else {
-				if (failed_subrun_start >= run_clusters[i].start) failed_subrun_start = run_clusters[i].start;
-				if (failed_subrun_end <= run_clusters[i].end) failed_subrun_end = run_clusters[i].end;
+				if (failed_subrun_start >= run_clusters[i].start)
+					failed_subrun_start = run_clusters[i].start;
+				if (failed_subrun_end <= run_clusters[i].end)
+					failed_subrun_end = run_clusters[i].end;
 			}
 		}
 		if (failed_subrun_start != p_run_end + 1) {
@@ -774,13 +778,15 @@ void TLShapedString::_shape_hex_run(hb_direction_t p_run_direction, int32_t p_ru
 			hex_cluster.width = w;
 			hex_cluster.glyphs.push_back(Glyph(c, Point2(0, 0), Point2(w, 0)));
 			visual.push_back(hex_cluster);
-			if (!U16_IS_SINGLE(data[i])) i++; //SKIP SURROGATE
+			if (!U16_IS_SINGLE(data[i]))
+				i++; //SKIP SURROGATE
 			i++;
 		}
 	} else {
 		int32_t i = p_run_end - 1;
 		while (i >= p_run_start) {
-			if (!U16_IS_SINGLE(data[i])) i--; //SKIP SURROGATE
+			if (!U16_IS_SINGLE(data[i]))
+				i--; //SKIP SURROGATE
 			UChar32 c = get_char(i);
 			float w = (c <= 0xFF) ? 14 : ((c <= 0xFFFF) ? 20 : 26);
 			Cluster hex_cluster;
@@ -882,13 +888,13 @@ String TLShapedString::get_features() const {
 	for (int64_t i = 0; i < (int64_t)font_features.size(); i++) {
 		hb_feature_to_string(const_cast<hb_feature_t *>(&font_features[i]), _feature, 255);
 		ret += String(_feature);
-		if (i != (int64_t)font_features.size() - 1) ret += String(",");
+		if (i != (int64_t)font_features.size() - 1)
+			ret += String(",");
 	}
 	return ret;
 }
 
 void TLShapedString::set_features(const String p_features) {
-
 #ifdef GODOT_MODULE
 	Vector<String> v_features = p_features.split(",");
 #else
@@ -907,24 +913,20 @@ void TLShapedString::set_features(const String p_features) {
 }
 
 String TLShapedString::get_language() const {
-
 	return String(hb_language_to_string(language));
 }
 
 void TLShapedString::set_language(const String p_language) {
-
 	language = hb_language_from_string(p_language.ascii().get_data(), -1);
 	_clear_visual();
 	emit_signal("string_changed");
 }
 
 bool TLShapedString::get_preserve_control() const {
-
 	return preserve_control;
 }
 
 void TLShapedString::set_preserve_control(bool p_enable) {
-
 	if (preserve_control != p_enable) {
 		preserve_control = p_enable;
 		_clear_visual();
@@ -933,7 +935,6 @@ void TLShapedString::set_preserve_control(bool p_enable) {
 }
 
 bool TLShapedString::shape() {
-
 	if (!valid)
 		_shape_full_string();
 
@@ -941,27 +942,22 @@ bool TLShapedString::shape() {
 }
 
 bool TLShapedString::is_valid() const {
-
 	return valid;
 }
 
 bool TLShapedString::empty() const {
-
 	return data_size == 0;
 }
 
 int64_t TLShapedString::length() const {
-
 	return data_size;
 }
 
 int64_t TLShapedString::char_count() const {
-
 	return char_size;
 }
 
 float TLShapedString::get_ascent() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -983,7 +979,6 @@ float TLShapedString::get_ascent() const {
 }
 
 float TLShapedString::get_descent() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1005,7 +1000,6 @@ float TLShapedString::get_descent() const {
 }
 
 float TLShapedString::get_width() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1016,7 +1010,6 @@ float TLShapedString::get_width() const {
 }
 
 float TLShapedString::get_height() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1038,7 +1031,6 @@ float TLShapedString::get_height() const {
 }
 
 std::vector<int> TLShapedString::break_words() const {
-
 	std::vector<int> ret;
 
 	if (!valid)
@@ -1068,7 +1060,6 @@ std::vector<int> TLShapedString::break_words() const {
 }
 
 std::vector<int> TLShapedString::break_jst() const {
-
 	std::vector<int> ret;
 
 	if (!valid)
@@ -1088,7 +1079,6 @@ std::vector<int> TLShapedString::break_jst() const {
 }
 
 std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) const {
-
 	std::vector<int> ret;
 
 	if (p_flags < 0 || p_flags > TEXT_BREAK_MANDATORY_AND_ANYWHERE)
@@ -1181,7 +1171,6 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 }
 
 Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p_trim) const {
-
 	Ref<TLShapedString> ret;
 #ifdef GODOT_MODULE
 	ret.instance();
@@ -1208,7 +1197,6 @@ Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p
 }
 
 void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_direction_t p_run_direction, hb_script_t p_run_script, UChar32 p_codepoint, TLFontFallbackIterator p_font, /*out*/ Cluster &p_cluster, bool p_font_override) const {
-
 	//Shape single cluster using HarfBuzz
 	hb_font_t *hb_font = p_font.value()->get_hb_font(base_size);
 	if (!hb_font) {
@@ -1226,7 +1214,8 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 	}
 	hb_buffer_set_script(hb_buffer, p_run_script);
 
-	if (language != HB_LANGUAGE_INVALID) hb_buffer_set_language(hb_buffer, language);
+	if (language != HB_LANGUAGE_INVALID)
+		hb_buffer_set_language(hb_buffer, language);
 
 	hb_buffer_add_utf32(hb_buffer, (const uint32_t *)&p_codepoint, 1, 0, 1);
 	hb_shape(hb_font, hb_buffer, font_features.empty() ? NULL : &font_features[0], font_features.size());
@@ -1268,7 +1257,6 @@ void TLShapedString::_shape_single_cluster(int64_t p_start, int64_t p_end, hb_di
 }
 
 float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) {
-
 	if (p_flags < 0 || p_flags > TEXT_JUSTIFICATION_INTERCHAR_ONLY)
 		return width;
 
@@ -1439,7 +1427,6 @@ float TLShapedString::extend_to_width(float p_width, TextJustification p_flags) 
 }
 
 int64_t TLShapedString::get_cluster_index(int64_t p_position) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1455,12 +1442,10 @@ int64_t TLShapedString::get_cluster_index(int64_t p_position) const {
 }
 
 float TLShapedString::get_cluster_face_size(int64_t p_index) const {
-
 	return base_size;
 }
 
 Ref<TLFontFace> TLShapedString::get_cluster_face(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1474,7 +1459,6 @@ Ref<TLFontFace> TLShapedString::get_cluster_face(int64_t p_index) const {
 }
 
 int64_t TLShapedString::get_cluster_glyphs(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1488,7 +1472,6 @@ int64_t TLShapedString::get_cluster_glyphs(int64_t p_index) const {
 }
 
 uint32_t TLShapedString::get_cluster_glyph(int64_t p_index, int64_t p_glyph) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1505,7 +1488,6 @@ uint32_t TLShapedString::get_cluster_glyph(int64_t p_index, int64_t p_glyph) con
 }
 
 Point2 TLShapedString::get_cluster_glyph_offset(int64_t p_index, int64_t p_glyph) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1522,7 +1504,6 @@ Point2 TLShapedString::get_cluster_glyph_offset(int64_t p_index, int64_t p_glyph
 }
 
 Point2 TLShapedString::get_cluster_glyph_advance(int64_t p_index, int64_t p_glyph) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1539,7 +1520,6 @@ Point2 TLShapedString::get_cluster_glyph_advance(int64_t p_index, int64_t p_glyp
 }
 
 Rect2 TLShapedString::get_cluster_rect(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1553,7 +1533,6 @@ Rect2 TLShapedString::get_cluster_rect(int64_t p_index) const {
 }
 
 String TLShapedString::get_cluster_debug_info(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1576,7 +1555,6 @@ String TLShapedString::get_cluster_debug_info(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_leading_edge(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1594,7 +1572,6 @@ float TLShapedString::get_cluster_leading_edge(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_trailing_edge(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1612,7 +1589,6 @@ float TLShapedString::get_cluster_trailing_edge(int64_t p_index) const {
 }
 
 int64_t TLShapedString::get_cluster_start(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1626,7 +1602,6 @@ int64_t TLShapedString::get_cluster_start(int64_t p_index) const {
 }
 
 int64_t TLShapedString::get_cluster_end(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1640,7 +1615,6 @@ int64_t TLShapedString::get_cluster_end(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_ascent(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1654,7 +1628,6 @@ float TLShapedString::get_cluster_ascent(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_descent(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1668,7 +1641,6 @@ float TLShapedString::get_cluster_descent(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_width(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1682,7 +1654,6 @@ float TLShapedString::get_cluster_width(int64_t p_index) const {
 }
 
 float TLShapedString::get_cluster_height(int64_t p_index) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1696,7 +1667,6 @@ float TLShapedString::get_cluster_height(int64_t p_index) const {
 }
 
 std::vector<Rect2> TLShapedString::get_highlight_shapes(int64_t p_start, int64_t p_end) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1756,7 +1726,6 @@ std::vector<Rect2> TLShapedString::get_highlight_shapes(int64_t p_start, int64_t
 }
 
 std::vector<float> TLShapedString::get_cursor_positions(int64_t p_position, TextDirection p_primary_dir) const {
-
 	if (p_primary_dir < 0 || p_primary_dir > TEXT_DIRECTION_AUTO)
 		return std::vector<float>();
 
@@ -1803,8 +1772,10 @@ std::vector<float> TLShapedString::get_cursor_positions(int64_t p_position, Text
 			ret.push_back(get_cluster_leading_edge(leading_cluster));
 		}
 	} else {
-		if (leading_cluster != -1) ret.push_back(get_cluster_leading_edge(leading_cluster));
-		if (trailing_cluster != -1) ret.push_back(get_cluster_trailing_edge(trailing_cluster));
+		if (leading_cluster != -1)
+			ret.push_back(get_cluster_leading_edge(leading_cluster));
+		if (trailing_cluster != -1)
+			ret.push_back(get_cluster_trailing_edge(trailing_cluster));
 	}
 
 	if (mid_cluster != -1) {
@@ -1821,7 +1792,6 @@ std::vector<float> TLShapedString::get_cursor_positions(int64_t p_position, Text
 }
 
 TextDirection TLShapedString::get_char_direction(int64_t p_position) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1837,7 +1807,6 @@ TextDirection TLShapedString::get_char_direction(int64_t p_position) const {
 }
 
 int64_t TLShapedString::next_safe_bound(int64_t p_offset) const {
-
 	if (p_offset < 0 || data_size == 0)
 		p_offset = 0;
 
@@ -1848,7 +1817,6 @@ int64_t TLShapedString::next_safe_bound(int64_t p_offset) const {
 }
 
 int64_t TLShapedString::prev_safe_bound(int64_t p_offset) const {
-
 	if (p_offset < 0 || data_size == 0)
 		return 0;
 
@@ -1859,7 +1827,6 @@ int64_t TLShapedString::prev_safe_bound(int64_t p_offset) const {
 }
 
 int64_t TLShapedString::pos_wcs_to_u16(int64_t p_position) const {
-
 	int64_t _from = 0;
 	if ((sizeof(wchar_t) == 4) && (char_size != data_size)) {
 		U16_FWD_N(data, _from, data_size, p_position);
@@ -1870,7 +1837,6 @@ int64_t TLShapedString::pos_wcs_to_u16(int64_t p_position) const {
 }
 
 int64_t TLShapedString::pos_u16_to_wcs(int64_t p_position) const {
-
 	if ((sizeof(wchar_t) == 4) && (char_size != data_size)) {
 		int64_t i = 0;
 		int64_t c = 0;
@@ -1890,7 +1856,6 @@ int64_t TLShapedString::pos_u16_to_wcs(int64_t p_position) const {
 }
 
 int64_t TLShapedString::hit_test_cluster(float p_position) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1920,7 +1885,6 @@ int64_t TLShapedString::hit_test_cluster(float p_position) const {
 }
 
 int64_t TLShapedString::hit_test(float p_position) const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1964,7 +1928,6 @@ int64_t TLShapedString::hit_test(float p_position) const {
 }
 
 int64_t TLShapedString::clusters() const {
-
 	if (!valid)
 		const_cast<TLShapedString *>(this)->_shape_full_string();
 
@@ -1975,7 +1938,6 @@ int64_t TLShapedString::clusters() const {
 }
 
 Vector2 TLShapedString::draw_cluster(RID p_canvas_item, const Point2 p_position, int64_t p_index, const Color p_modulate) {
-
 	if (!valid)
 		_shape_full_string();
 
@@ -2003,7 +1965,6 @@ Vector2 TLShapedString::draw_cluster(RID p_canvas_item, const Point2 p_position,
 }
 
 void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	if (!valid)
 		_shape_full_string();
 
@@ -2054,7 +2015,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, 40), visual[i].end, p_modulate);
 		if (visual[i].glyphs.size() > 0) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
-				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+				float wg = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(w, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
 				if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 					TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
@@ -2063,7 +2024,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 				} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 					//NOP
 				}
-				ofs += Vector2(w, 0);
+				ofs += Vector2(wg, 0);
 			}
 		} else {
 			RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.3));
@@ -2074,7 +2035,6 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 }
 
 void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	if (!valid)
 		_shape_full_string();
 
@@ -2123,9 +2083,9 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 		}
 		if (visual[i].glyphs.size() > 0) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
-				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+				float wg = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
-				ofs += Vector2(w, 0);
+				ofs += Vector2(wg, 0);
 			}
 		} else {
 			RenderingServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 20)), p_modulate);
@@ -2136,7 +2096,6 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 }
 
 void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Color p_modulate, bool p_draw_brk_ops, bool p_draw_jst_ops) {
-
 	std::vector<BreakOpportunity> brk_ops;
 	if (p_draw_brk_ops) {
 		_generate_break_opportunies(0, data_size, hb_language_to_string(language), brk_ops);
@@ -2204,7 +2163,6 @@ void TLShapedString::draw_logical_as_hex(RID p_canvas_item, const Point2 p_posit
 }
 
 void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Color p_modulate) {
-
 	if (!valid)
 		_shape_full_string();
 
@@ -2235,7 +2193,6 @@ void TLShapedString::draw(RID p_canvas_item, const Point2 p_position, const Colo
 }
 
 Array TLShapedString::_break_words() const {
-
 	Array ret;
 
 	std::vector<int> words = break_words();
@@ -2247,7 +2204,6 @@ Array TLShapedString::_break_words() const {
 }
 
 Array TLShapedString::_break_jst() const {
-
 	Array ret;
 
 	std::vector<int> jst = break_jst();
@@ -2259,7 +2215,6 @@ Array TLShapedString::_break_jst() const {
 }
 
 Array TLShapedString::_break_lines(float p_width, int64_t p_flags) const {
-
 	Array ret;
 	if (p_flags < 0 || p_flags > TEXT_BREAK_MANDATORY_AND_ANYWHERE)
 		return ret;
@@ -2273,7 +2228,6 @@ Array TLShapedString::_break_lines(float p_width, int64_t p_flags) const {
 }
 
 Array TLShapedString::_get_highlight_shapes(int64_t p_start, int64_t p_end) const {
-
 	Array ret;
 	std::vector<Rect2> rects = get_highlight_shapes(p_start, p_end);
 	for (int64_t i = 0; i < (int64_t)rects.size(); i++) {
@@ -2284,7 +2238,6 @@ Array TLShapedString::_get_highlight_shapes(int64_t p_start, int64_t p_end) cons
 }
 
 Array TLShapedString::_get_cursor_positions(int64_t p_position, int64_t p_primary_dir) const {
-
 	Array ret;
 	if (p_primary_dir < 0 || p_primary_dir > TEXT_DIRECTION_AUTO)
 		return ret;
@@ -2298,7 +2251,6 @@ Array TLShapedString::_get_cursor_positions(int64_t p_position, int64_t p_primar
 }
 
 float TLShapedString::_extend_to_width(float p_width, int64_t p_flags) {
-
 	if (p_flags < 0 || p_flags > TEXT_JUSTIFICATION_INTERCHAR_ONLY)
 		return width;
 
@@ -2306,14 +2258,12 @@ float TLShapedString::_extend_to_width(float p_width, int64_t p_flags) {
 }
 
 TLShapedString::TLShapedString() {
-
 #ifdef GODOT_MODULE
 	_init();
 #endif
 }
 
 void TLShapedString::_init() {
-
 	valid = false;
 	preserve_control = false;
 
@@ -2335,7 +2285,6 @@ void TLShapedString::_init() {
 }
 
 TLShapedString::~TLShapedString() {
-
 	if (bidi_iter) {
 		ubidi_close(bidi_iter);
 		bidi_iter = NULL;
@@ -2359,7 +2308,6 @@ TLShapedString::~TLShapedString() {
 //Data in/out
 
 String TLShapedString::get_text() const {
-
 	String ret;
 	if (data_size > 0) {
 		wchar_t *_data = NULL;
@@ -2392,7 +2340,6 @@ String TLShapedString::get_text() const {
 }
 
 PackedByteArray TLShapedString::get_utf8() const {
-
 	PackedByteArray ret;
 
 	if (data_size > 0) {
@@ -2419,7 +2366,6 @@ PackedByteArray TLShapedString::get_utf8() const {
 }
 
 PackedByteArray TLShapedString::get_utf16() const {
-
 	PackedByteArray ret;
 
 	if (data_size > 0) {
@@ -2431,7 +2377,6 @@ PackedByteArray TLShapedString::get_utf16() const {
 }
 
 PackedByteArray TLShapedString::get_utf32() const {
-
 	PackedByteArray ret;
 
 	if (data_size > 0) {
@@ -2458,7 +2403,6 @@ PackedByteArray TLShapedString::get_utf32() const {
 }
 
 void TLShapedString::set_text(const String p_text) {
-
 	_clear_props();
 
 	UErrorCode err = U_ZERO_ERROR;
@@ -2472,7 +2416,8 @@ void TLShapedString::set_text(const String p_text) {
 #endif
 
 	//clear
-	if (data) std::free(data);
+	if (data)
+		std::free(data);
 	data = NULL;
 	data_size = 0;
 	char_size = 0;
@@ -2500,7 +2445,6 @@ void TLShapedString::set_text(const String p_text) {
 }
 
 void TLShapedString::set_utf8(const PackedByteArray p_text) {
-
 	_clear_props();
 
 	UErrorCode err = U_ZERO_ERROR;
@@ -2509,7 +2453,8 @@ void TLShapedString::set_utf8(const PackedByteArray p_text) {
 	int32_t _subs = 0;
 
 	//clear
-	if (data) std::free(data);
+	if (data)
+		std::free(data);
 	data = NULL;
 	data_size = 0;
 	char_size = 0;
@@ -2537,14 +2482,14 @@ void TLShapedString::set_utf8(const PackedByteArray p_text) {
 }
 
 void TLShapedString::set_utf16(const PackedByteArray p_text) {
-
 	_clear_props();
 
 	int64_t _length = p_text.size();
 	int32_t _real_length = 0;
 
 	//clear
-	if (data) std::free(data);
+	if (data)
+		std::free(data);
 	data = NULL;
 	data_size = 0;
 	char_size = 0;
@@ -2565,7 +2510,6 @@ void TLShapedString::set_utf16(const PackedByteArray p_text) {
 }
 
 void TLShapedString::set_utf32(const PackedByteArray p_text) {
-
 	_clear_props();
 
 	UErrorCode err = U_ZERO_ERROR;
@@ -2574,7 +2518,8 @@ void TLShapedString::set_utf32(const PackedByteArray p_text) {
 	int32_t _subs = 0;
 
 	//clear
-	if (data) std::free(data);
+	if (data)
+		std::free(data);
 	data = NULL;
 	data_size = 0;
 	char_size = 0;
@@ -2602,32 +2547,26 @@ void TLShapedString::set_utf32(const PackedByteArray p_text) {
 }
 
 void TLShapedString::add_text(const String p_text) {
-
 	replace_text(data_size, data_size, p_text);
 }
 
 void TLShapedString::add_utf8(const PackedByteArray p_text) {
-
 	replace_utf8(data_size, data_size, p_text);
 }
 
 void TLShapedString::add_utf16(const PackedByteArray p_text) {
-
 	replace_utf16(data_size, data_size, p_text);
 }
 
 void TLShapedString::add_utf32(const PackedByteArray p_text) {
-
 	replace_utf32(data_size, data_size, p_text);
 }
 
 void TLShapedString::add_sstring(Ref<TLShapedString> p_text) {
-
 	replace_sstring(data_size, data_size, p_text);
 }
 
 void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -2677,7 +2616,6 @@ void TLShapedString::replace_text(int64_t p_start, int64_t p_end, const String p
 }
 
 void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -2722,7 +2660,6 @@ void TLShapedString::replace_utf8(int64_t p_start, int64_t p_end, const PackedBy
 }
 
 void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -2756,7 +2693,6 @@ void TLShapedString::replace_utf16(int64_t p_start, int64_t p_end, const PackedB
 }
 
 void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PackedByteArray p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -2800,7 +2736,6 @@ void TLShapedString::replace_utf32(int64_t p_start, int64_t p_end, const PackedB
 }
 
 void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShapedString> p_text) {
-
 	if ((p_start < 0) || (p_start > p_end) || (p_end > data_size)) {
 		ERR_PRINT("Invalid range");
 		return;
@@ -2834,7 +2769,6 @@ void TLShapedString::replace_sstring(int64_t p_start, int64_t p_end, Ref<TLShape
 }
 
 void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
-
 	if (p_source.is_null()) {
 		ERR_PRINT("Invalid string");
 		return;
@@ -2860,7 +2794,6 @@ void TLShapedString::copy_properties(Ref<TLShapedString> p_source) {
 #ifdef GODOT_MODULE
 
 void TLShapedString::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("_font_changed"), &TLShapedString::_font_changed);
 
 	ClassDB::bind_method(D_METHOD("copy_properties", "source"), &TLShapedString::copy_properties);
@@ -3043,7 +2976,6 @@ Array TLShapedString::_get_property_list() const {
 }
 
 void TLShapedString::_register_methods() {
-
 	register_method("_font_changed", &TLShapedString::_font_changed);
 
 	register_method("copy_properties", &TLShapedString::copy_properties);

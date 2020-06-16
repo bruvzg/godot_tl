@@ -63,19 +63,17 @@ diff --git a/scene/gui/spin_box.cpp b/scene/gui/spin_box.cpp
 index 92377949f8..93cc621dfa 100644
 --- a/scene/gui/spin_box.cpp
 +++ b/scene/gui/spin_box.cpp
-@@ -218,12 +218,12 @@ void SpinBox::_notification(int p_what) {
+@@ -198,10 +198,10 @@ void SpinBox::_notification(int p_what) {
  	}
  }
  
 -void SpinBox::set_align(LineEdit::Align p_align) {
 +void SpinBox::set_align(int p_align) {
- 
  	line_edit->set_align(p_align);
  }
  
 -LineEdit::Align SpinBox::get_align() const {
 +int SpinBox::get_align() const {
- 
  	return line_edit->get_align();
  }
 diff --git a/scene/gui/spin_box.h b/scene/gui/spin_box.h

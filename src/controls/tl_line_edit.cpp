@@ -37,8 +37,8 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/translation.h"
-#include "servers/rendering_server.h"
 #include "scene/main/viewport.h"
+#include "servers/rendering_server.h"
 #else
 #include <Image.hpp>
 #include <InputEventKey.hpp>
@@ -46,11 +46,11 @@
 #include <InputEventMouseMotion.hpp>
 #include <MainLoop.hpp>
 #include <OS.hpp>
+#include <RenderingServer.hpp>
 #include <StyleBox.hpp>
 #include <Texture2D.hpp>
 #include <Theme.hpp>
 #include <TranslationServer.hpp>
-#include <RenderingServer.hpp>
 #endif
 
 #ifdef TOOLS_ENABLED
@@ -59,12 +59,10 @@
 #endif
 
 static bool _is_text_char(wchar_t c) {
-
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
 }
 
 float TLLineEdit::_get_base_font_height() const {
-
 	if (line->get_base_font().is_valid())
 		if (line->get_base_font()->get_face(line->get_base_font_style()).is_valid())
 			if (line->get_base_font()->get_face(line->get_base_font_style()).value().is_valid())
@@ -99,7 +97,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 
 		_reset_caret_blink_timer();
 		if (b->is_pressed()) {
-
 			accept_event(); //don't pass event further when clicked on text field
 			if (!text.empty() && is_editable() && _is_over_clear_button(b->get_position())) {
 				clear_button_status.press_attempt = true;
@@ -112,14 +109,11 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			set_cursor_at_pixel_pos(b->get_position().x);
 
 			if (b->get_shift()) {
-
 				selection_fill_at_cursor();
 				selection.creating = true;
 
 			} else {
-
 				if (b->is_doubleclick()) {
-
 					selection.enabled = true;
 					selection.begin = 0;
 					selection.end = text.length();
@@ -129,12 +123,10 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				selection.drag_attempt = false;
 
 				if ((cursor_pos < selection.begin) || (cursor_pos > selection.end) || !selection.enabled) {
-
 					deselect();
 					selection.cursor_start = cursor_pos;
 					selection.creating = true;
 				} else if (selection.enabled) {
-
 					selection.drag_attempt = true;
 				}
 			}
@@ -142,7 +134,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			update();
 
 		} else {
-
 			if (!text.empty() && is_editable() && clear_button_enabled) {
 				bool press_attempt = clear_button_status.press_attempt;
 				clear_button_status.press_attempt = false;
@@ -184,7 +175,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 		}
 
 		if (m->get_button_mask() & GLOBAL_CONST(BUTTON_LEFT)) {
-
 			if (selection.creating) {
 				set_cursor_at_pixel_pos(m->get_position().x);
 				selection_fill_at_cursor();
@@ -206,7 +196,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 #ifdef APPLE_STYLE_KEYS
 		if (k->get_control() && !k->get_shift() && !k->get_alt() && !k->get_command()) {
 			uint32_t remap_key = KEY_UNKNOWN;
-			switch (k->get_scancode()) {
+			switch (k->get_keycode()) {
 				case KEY_F: {
 					remap_key = KEY_RIGHT;
 				} break;
@@ -228,7 +218,7 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			}
 
 			if (remap_key != KEY_UNKNOWN) {
-				k->set_scancode(remap_key);
+				k->set_keycode(remap_key);
 				k->set_control(false);
 			}
 		}
@@ -237,11 +227,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 		unsigned int code = k->get_keycode();
 
 		if (k->get_command()) {
-
 			bool handled = true;
 
 			switch (code) {
-
 				case GLOBAL_CONST(KEY_D): { // Swap curent input direction (primary cursor)
 
 					last_input_direction = (last_input_direction == TEXT_DIRECTION_LTR) ? TEXT_DIRECTION_RTL : TEXT_DIRECTION_LTR;
@@ -266,7 +254,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_V): { // PASTE
 
 					if (editable) {
-
 						paste_text();
 					}
 
@@ -285,7 +272,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_U): { // Delete from start to cursor
 
 					if (editable) {
-
 						deselect();
 						text = text.substr(cursor_pos, text.length() - cursor_pos);
 
@@ -299,7 +285,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_Y): { // PASTE (Yank for unix users)
 
 					if (editable) {
-
 						paste_text();
 					}
 
@@ -307,7 +292,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_K): { // Delete from cursor_pos to end
 
 					if (editable) {
-
 						deselect();
 						text = text.substr(0, cursor_pos);
 						_text_reshape();
@@ -339,13 +323,10 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 
 		_reset_caret_blink_timer();
 		if (!k->get_metakey()) {
-
 			bool handled = true;
 			switch (code) {
-
 				case GLOBAL_CONST(KEY_KP_ENTER):
 				case GLOBAL_CONST(KEY_ENTER): {
-
 					emit_signal("text_entered", text);
 					if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
 						DisplayServer::get_singleton()->virtual_keyboard_hide();
@@ -353,7 +334,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				} break;
 
 				case GLOBAL_CONST(KEY_BACKSPACE): {
-
 					if (!editable)
 						break;
 
@@ -398,9 +378,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						break;
 					}
 					// numlock disabled. fallthrough to key_left
+					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_LEFT): {
-
 #ifndef APPLE_STYLE_KEYS
 					if (!k->get_alt())
 #endif
@@ -410,7 +390,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 					if (k->get_command()) {
 						set_cursor_position(0);
 					} else if (k->get_alt()) {
-
 #else
 					if (k->get_alt()) {
 						handled = false;
@@ -445,9 +424,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						break;
 					}
 					// numlock disabled. fallthrough to key_right
+					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_RIGHT): {
-
 					shift_selection_check_pre(k->get_shift());
 
 #ifdef APPLE_STYLE_KEYS
@@ -483,21 +462,20 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 
 				} break;
 				case GLOBAL_CONST(KEY_UP): {
-
 					shift_selection_check_pre(k->get_shift());
-					if (get_cursor_position() == 0) handled = false;
+					if (get_cursor_position() == 0)
+						handled = false;
 					set_cursor_position(0);
 					shift_selection_check_post(k->get_shift());
 				} break;
 				case GLOBAL_CONST(KEY_DOWN): {
-
 					shift_selection_check_pre(k->get_shift());
-					if (get_cursor_position() == text.length()) handled = false;
+					if (get_cursor_position() == text.length())
+						handled = false;
 					set_cursor_position(text.length());
 					shift_selection_check_post(k->get_shift());
 				} break;
 				case GLOBAL_CONST(KEY_DELETE): {
-
 					if (!editable)
 						break;
 
@@ -529,7 +507,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						bool prev_char = false;
 
 						while (cc < text.length()) {
-
 							bool ischar = _is_text_char(text[cc]);
 
 							if (prev_char && !ischar)
@@ -552,9 +529,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						break;
 					}
 					// numlock disabled. fallthrough to key_home
+					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_HOME): {
-
 					shift_selection_check_pre(k->get_shift());
 					set_cursor_position(0);
 					shift_selection_check_post(k->get_shift());
@@ -565,16 +542,15 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						break;
 					}
 					// numlock disabled. fallthrough to key_end
+					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_END): {
-
 					shift_selection_check_pre(k->get_shift());
 					set_cursor_position(text.length());
 					shift_selection_check_post(k->get_shift());
 				} break;
 
 				default: {
-
 					handled = false;
 				} break;
 			}
@@ -583,7 +559,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				accept_event();
 			} else if (!k->get_alt() && !k->get_command()) {
 				if (k->get_unicode() >= 32 && k->get_keycode() != GLOBAL_CONST(KEY_DELETE)) {
-
 					if (editable) {
 						selection_delete();
 						wchar_t ucodestr[2] = { (wchar_t)k->get_unicode(), 0 };
@@ -605,7 +580,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 }
 
 void TLLineEdit::set_text_direction(int p_text_direction) {
-
 	ERR_FAIL_INDEX((int)p_text_direction, 4);
 	if (base_direction != (TextDirection)p_text_direction) {
 		base_direction = (TextDirection)p_text_direction;
@@ -615,12 +589,10 @@ void TLLineEdit::set_text_direction(int p_text_direction) {
 }
 
 int TLLineEdit::get_text_direction() const {
-
 	return base_direction;
 }
 
 void TLLineEdit::set_ot_features(const String p_features) {
-
 	if (ot_features != p_features) {
 		ot_features = p_features;
 		_text_reshape();
@@ -629,12 +601,10 @@ void TLLineEdit::set_ot_features(const String p_features) {
 }
 
 String TLLineEdit::get_ot_features() const {
-
 	return ot_features;
 }
 
 void TLLineEdit::set_language(const String p_language) {
-
 	if (language != p_language) {
 		language = p_language;
 		_text_reshape();
@@ -643,24 +613,20 @@ void TLLineEdit::set_language(const String p_language) {
 }
 
 String TLLineEdit::get_language() const {
-
 	return language;
 }
 
 void TLLineEdit::set_align(int p_align) {
-
 	ERR_FAIL_INDEX((int)p_align, 4);
 	align = (Align)p_align;
 	update();
 }
 
 int TLLineEdit::get_align() const {
-
 	return align;
 }
 
 Variant TLLineEdit::get_drag_data(const Point2 &p_point) {
-
 	if (selection.drag_attempt && selection.enabled) {
 		String t = text.substr(selection.begin, selection.end - selection.begin);
 		TLLabel *l = memnew(TLLabel);
@@ -673,12 +639,10 @@ Variant TLLineEdit::get_drag_data(const Point2 &p_point) {
 }
 
 bool TLLineEdit::can_drop_data(const Point2 &p_point, const Variant &p_data) const {
-
 	return p_data.get_type() == Variant::STRING;
 }
 
 void TLLineEdit::drop_data(const Point2 &p_point, const Variant &p_data) {
-
 	if (p_data.get_type() == Variant::STRING) {
 		set_cursor_at_pixel_pos(p_point.x);
 		int selected = selection.end - selection.begin;
@@ -705,7 +669,8 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 	Ref<Texture2D> icon = Control::get_theme_icon("clear");
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit") cname = "LineEdit";
+	if (cname == "TLLineEdit")
+		cname = "LineEdit";
 
 	int x_ofs = get_theme_stylebox("normal", cname)->get_offset().x;
 #else
@@ -718,7 +683,6 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 }
 
 void TLLineEdit::_notification(int p_what) {
-
 	switch (p_what) {
 #ifdef TOOLS_ENABLED
 		case NOTIFICATION_ENTER_TREE: {
@@ -733,7 +697,6 @@ void TLLineEdit::_notification(int p_what) {
 		} break;
 #endif
 		case NOTIFICATION_RESIZED: {
-
 			if (expand_to_text_length) {
 				window_pos = 0; //force scroll back since it's expanding to text length
 			}
@@ -751,7 +714,6 @@ void TLLineEdit::_notification(int p_what) {
 			update();
 		} break;
 		case NOTIFICATION_DRAW: {
-
 			if ((!has_focus() && !menu->has_focus()) || !window_has_focus) {
 				draw_caret = false;
 			}
@@ -766,7 +728,8 @@ void TLLineEdit::_notification(int p_what) {
 
 #ifdef GODOT_MODULE
 			StringName cname = get_class_name();
-			if (cname == "TLLineEdit") cname = "LineEdit";
+			if (cname == "TLLineEdit")
+				cname = "LineEdit";
 
 			Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -798,13 +761,11 @@ void TLLineEdit::_notification(int p_what) {
 			bool using_placeholder = text.empty();
 
 			switch (align) {
-
 				case ALIGN_FILL:
 				case ALIGN_LEFT: {
 					x_ofs = style->get_offset().x;
 				} break;
 				case ALIGN_CENTER: {
-
 					if (window_pos != 0) {
 						x_ofs = style->get_offset().x;
 					} else {
@@ -948,13 +909,11 @@ void TLLineEdit::_notification(int p_what) {
 			}
 
 			if (has_focus()) {
-
 				DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
 				DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + Point2(using_placeholder ? 0 : x_ofs, y_ofs + caret_height), get_viewport()->get_window_id());
 			}
 		} break;
 		case NOTIFICATION_WM_FOCUS_IN: {
-
 			if (caret_blink_enabled) {
 				caret_blink_timer->start();
 			} else {
@@ -972,7 +931,6 @@ void TLLineEdit::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_WM_FOCUS_OUT: {
-
 			if (caret_blink_enabled) {
 				caret_blink_timer->stop();
 			}
@@ -989,7 +947,6 @@ void TLLineEdit::_notification(int p_what) {
 
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
-
 			if (has_focus()) {
 				ime_text = DisplayServer::get_singleton()->ime_get_text();
 				ime_selection = DisplayServer::get_singleton()->ime_get_selection();
@@ -1000,21 +957,18 @@ void TLLineEdit::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_THEME_CHANGED: {
-
 			_text_reshape();
 		} break;
 	}
 }
 
 void TLLineEdit::copy_text() {
-
 	if (selection.enabled && !pass) {
 		DisplayServer::get_singleton()->clipboard_set(text.substr(selection.begin, selection.end - selection.begin));
 	}
 }
 
 void TLLineEdit::cut_text() {
-
 	if (selection.enabled && !pass) {
 		DisplayServer::get_singleton()->clipboard_set(text.substr(selection.begin, selection.end - selection.begin));
 		selection_delete();
@@ -1022,12 +976,11 @@ void TLLineEdit::cut_text() {
 }
 
 void TLLineEdit::paste_text() {
-
 	String paste_buffer = DisplayServer::get_singleton()->clipboard_get();
 
 	if (paste_buffer != "") {
-
-		if (selection.enabled) selection_delete();
+		if (selection.enabled)
+			selection_delete();
 		append_at_cursor(paste_buffer);
 
 		if (!text_changed_dirty) {
@@ -1073,7 +1026,6 @@ void TLLineEdit::redo() {
 }
 
 void TLLineEdit::shift_selection_check_pre(bool p_shift) {
-
 	if (!selection.enabled && p_shift) {
 		selection.cursor_start = cursor_pos;
 	}
@@ -1082,16 +1034,15 @@ void TLLineEdit::shift_selection_check_pre(bool p_shift) {
 }
 
 void TLLineEdit::shift_selection_check_post(bool p_shift) {
-
 	if (p_shift)
 		selection_fill_at_cursor();
 }
 
 void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
-
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit") cname = "LineEdit";
+	if (cname == "TLLineEdit")
+		cname = "LineEdit";
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -1112,13 +1063,11 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 
 	float x_ofs = 0.0;
 	switch (align) {
-
 		case ALIGN_FILL:
 		case ALIGN_LEFT: {
 			x_ofs = style->get_offset().x;
 		} break;
 		case ALIGN_CENTER: {
-
 			if (window_pos != 0) {
 				x_ofs = style->get_offset().x;
 			} else {
@@ -1177,8 +1126,8 @@ void TLLineEdit::_toggle_draw_caret() {
 }
 
 void TLLineEdit::delete_char() {
-
-	if ((text.length() <= 0) || (cursor_pos == 0)) return;
+	if ((text.length() <= 0) || (cursor_pos == 0))
+		return;
 
 	text.erase(cursor_pos - 1, 1);
 
@@ -1190,7 +1139,6 @@ void TLLineEdit::delete_char() {
 }
 
 void TLLineEdit::delete_text(int p_from_column, int p_to_column) {
-
 	text.erase(p_from_column, p_to_column - p_from_column);
 
 	_text_reshape();
@@ -1198,7 +1146,6 @@ void TLLineEdit::delete_text(int p_from_column, int p_to_column) {
 	cursor_pos -= CLAMP(cursor_pos - p_from_column, 0, p_to_column - p_from_column);
 
 	if (cursor_pos >= text.length()) {
-
 		cursor_pos = text.length();
 	}
 
@@ -1213,7 +1160,6 @@ void TLLineEdit::delete_text(int p_from_column, int p_to_column) {
 }
 
 void TLLineEdit::set_text(String p_text) {
-
 	clear_internal();
 	append_at_cursor(p_text);
 	update();
@@ -1222,7 +1168,6 @@ void TLLineEdit::set_text(String p_text) {
 }
 
 Ref<TLFontFamily> TLLineEdit::get_base_font() const {
-
 	return line->get_base_font();
 }
 
@@ -1231,49 +1176,41 @@ void TLLineEdit::_font_changed() {
 }
 
 void TLLineEdit::set_base_font(const Ref<TLFontFamily> p_font) {
-
 	line->set_base_font(p_font);
 	_text_reshape();
 	update();
 }
 
 String TLLineEdit::get_base_font_style() const {
-
 	return line->get_base_font_style();
 }
 
 void TLLineEdit::set_base_font_style(const String p_style) {
-
 	line->set_base_font_style(p_style);
 	_text_reshape();
 	update();
 }
 
 int TLLineEdit::get_base_font_size() const {
-
 	return line->get_base_font_size();
 }
 
 void TLLineEdit::set_base_font_size(int p_size) {
-
 	line->set_base_font_size(p_size);
 	_text_reshape();
 	update();
 }
 
 void TLLineEdit::clear() {
-
 	clear_internal();
 	_text_changed();
 }
 
 String TLLineEdit::get_text() const {
-
 	return text;
 }
 
 void TLLineEdit::set_placeholder(String p_text) {
-
 	placeholder = tr(p_text);
 
 	_text_reshape();
@@ -1282,26 +1219,23 @@ void TLLineEdit::set_placeholder(String p_text) {
 }
 
 String TLLineEdit::get_placeholder() const {
-
 	return placeholder;
 }
 
 void TLLineEdit::set_placeholder_alpha(float p_alpha) {
-
 	placeholder_alpha = p_alpha;
 	update();
 }
 
 float TLLineEdit::get_placeholder_alpha() const {
-
 	return placeholder_alpha;
 }
 
 void TLLineEdit::set_cursor_position(int p_pos) {
-
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit") cname = "LineEdit";
+	if (cname == "TLLineEdit")
+		cname = "LineEdit";
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -1327,7 +1261,6 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 	cursor_pos = p_pos;
 
 	if (!is_inside_tree()) {
-
 		window_pos = 0;
 		return;
 	}
@@ -1367,21 +1300,19 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 }
 
 int TLLineEdit::get_cursor_position() const {
-
 	return cursor_pos;
 }
 
 void TLLineEdit::set_window_pos(int p_pos) {
-
 	window_pos = p_pos;
-	if (window_pos < 0) window_pos = 0;
-	if (window_pos >= line->clusters()) window_pos = line->clusters() - 1;
+	if (window_pos < 0)
+		window_pos = 0;
+	if (window_pos >= line->clusters())
+		window_pos = line->clusters() - 1;
 }
 
 void TLLineEdit::append_at_cursor(String p_text) {
-
 	if ((max_length <= 0) || (text.length() + p_text.length() <= max_length)) {
-
 		String pre = text.substr(0, cursor_pos);
 		String post = text.substr(cursor_pos, text.length() - cursor_pos);
 		text = pre + p_text + post;
@@ -1392,7 +1323,6 @@ void TLLineEdit::append_at_cursor(String p_text) {
 }
 
 void TLLineEdit::clear_internal() {
-
 	_clear_undo_stack();
 
 	cursor_pos = 0;
@@ -1405,10 +1335,10 @@ void TLLineEdit::clear_internal() {
 }
 
 Size2 TLLineEdit::get_minimum_size() const {
-
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit") cname = "LineEdit";
+	if (cname == "TLLineEdit")
+		cname = "LineEdit";
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -1442,7 +1372,6 @@ Size2 TLLineEdit::get_minimum_size() const {
 /* selection */
 
 void TLLineEdit::deselect() {
-
 	selection.begin = 0;
 	selection.end = 0;
 	selection.cursor_start = 0;
@@ -1453,7 +1382,6 @@ void TLLineEdit::deselect() {
 }
 
 void TLLineEdit::selection_delete() {
-
 	if (selection.enabled)
 		delete_text(selection.begin, selection.end);
 
@@ -1461,19 +1389,16 @@ void TLLineEdit::selection_delete() {
 }
 
 void TLLineEdit::set_max_length(int p_max_length) {
-
 	ERR_FAIL_COND(p_max_length < 0);
 	max_length = p_max_length;
 	set_text(text);
 }
 
 int TLLineEdit::get_max_length() const {
-
 	return max_length;
 }
 
 void TLLineEdit::selection_fill_at_cursor() {
-
 	selection.begin = cursor_pos;
 	selection.end = selection.cursor_start;
 
@@ -1487,7 +1412,6 @@ void TLLineEdit::selection_fill_at_cursor() {
 }
 
 void TLLineEdit::select_all() {
-
 	if (!text.length())
 		return;
 
@@ -1498,18 +1422,15 @@ void TLLineEdit::select_all() {
 }
 
 void TLLineEdit::set_editable(bool p_editable) {
-
 	editable = p_editable;
 	update();
 }
 
 bool TLLineEdit::is_editable() const {
-
 	return editable;
 }
 
 void TLLineEdit::set_secret(bool p_secret) {
-
 	pass = p_secret;
 
 	_text_reshape();
@@ -1517,12 +1438,10 @@ void TLLineEdit::set_secret(bool p_secret) {
 }
 
 bool TLLineEdit::is_secret() const {
-
 	return pass;
 }
 
 void TLLineEdit::set_secret_character(const String p_string) {
-
 	// An empty string as the secret character would crash the engine
 	// It also wouldn't make sense to use multiple characters as the secret character
 	if (p_string.length() != 1)
@@ -1539,7 +1458,6 @@ String TLLineEdit::get_secret_character() const {
 }
 
 void TLLineEdit::select(int p_from, int p_to) {
-
 	if (p_from == 0 && p_to == 0) {
 		deselect();
 		return;
@@ -1565,12 +1483,10 @@ void TLLineEdit::select(int p_from, int p_to) {
 }
 
 bool TLLineEdit::is_text_field() const {
-
 	return true;
 }
 
 void TLLineEdit::menu_option(int p_option) {
-
 	switch (p_option) {
 		case MENU_CUT: {
 			if (editable) {
@@ -1578,7 +1494,6 @@ void TLLineEdit::menu_option(int p_option) {
 			}
 		} break;
 		case MENU_COPY: {
-
 			copy_text();
 		} break;
 		case MENU_PASTE: {
@@ -1627,7 +1542,6 @@ void TLLineEdit::_editor_settings_changed() {
 }
 
 void TLLineEdit::set_expand_to_text_length(bool p_enabled) {
-
 	expand_to_text_length = p_enabled;
 	minimum_size_changed();
 	set_window_pos(0);
@@ -1655,7 +1569,6 @@ void TLLineEdit::set_right_icon(const Ref<Texture2D> &p_icon) {
 }
 
 void TLLineEdit::_text_reshape() {
-
 	String text_to_draw;
 	if (ime_text.length() > 0) {
 		text_to_draw = text.substr(0, cursor_pos) + ime_text + text.substr(cursor_pos, text.length());
@@ -1676,14 +1589,14 @@ void TLLineEdit::_text_reshape() {
 	line->set_features(ot_features);
 
 	if (line->clusters() > 0) {
-		if (window_pos >= line->clusters()) window_pos = line->clusters() - 1;
+		if (window_pos >= line->clusters())
+			window_pos = line->clusters() - 1;
 	} else {
 		window_pos = 0;
 	}
 }
 
 void TLLineEdit::_text_changed() {
-
 	if (expand_to_text_length)
 		minimum_size_changed();
 
@@ -1732,7 +1645,6 @@ void TLLineEdit::_create_undo_state() {
 #ifdef GODOT_MODULE
 
 void TLLineEdit::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("_font_changed"), &TLLineEdit::_font_changed);
 	ClassDB::bind_method(D_METHOD("_text_changed"), &TLLineEdit::_text_changed);
 	ClassDB::bind_method(D_METHOD("_toggle_draw_caret"), &TLLineEdit::_toggle_draw_caret);
@@ -1888,7 +1800,6 @@ Array TLLineEdit::_get_property_list() const {
 }
 
 void TLLineEdit::_register_methods() {
-
 	register_method("_font_changed", &TLLineEdit::_font_changed);
 	register_method("_text_changed", &TLLineEdit::_text_changed);
 	register_method("_toggle_draw_caret", &TLLineEdit::_toggle_draw_caret);

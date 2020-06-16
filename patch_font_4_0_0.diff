@@ -1,0 +1,21 @@
+diff --git a/scene/resources/font.h b/scene/resources/font.h
+index 9b99b85d22..dcedc602ee 100644
+--- a/scene/resources/font.h
++++ b/scene/resources/font.h
+@@ -48,14 +48,14 @@ public:
+ 	virtual float get_descent() const = 0;
+ 	virtual float get_underline_position() const = 0;
+ 	virtual float get_underline_thickness() const = 0;
+ 
+ 	virtual Size2 get_char_size(CharType p_char, CharType p_next = 0) const = 0;
+-	Size2 get_string_size(const String &p_string) const;
++	virtual Size2 get_string_size(const String &p_string) const;
+ 	Size2 get_wordwrap_string_size(const String &p_string, float p_width) const;
+ 
+ 	virtual bool is_distance_field_hint() const = 0;
+ 
+-	void draw(RID p_canvas_item, const Point2 &p_pos, const String &p_text, const Color &p_modulate = Color(1, 1, 1), int p_clip_w = -1, const Color &p_outline_modulate = Color(1, 1, 1)) const;
++	virtual void draw(RID p_canvas_item, const Point2 &p_pos, const String &p_text, const Color &p_modulate = Color(1, 1, 1), int p_clip_w = -1, const Color &p_outline_modulate = Color(1, 1, 1)) const;
+ 	void draw_halign(RID p_canvas_item, const Point2 &p_pos, HAlign p_align, float p_width, const String &p_text, const Color &p_modulate = Color(1, 1, 1), const Color &p_outline_modulate = Color(1, 1, 1)) const;
+ 
+ 	virtual bool has_outline() const { return false; }

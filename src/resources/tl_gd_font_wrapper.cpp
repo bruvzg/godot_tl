@@ -38,7 +38,7 @@ void TLGDFontWrapper::_register_methods() {
 	register_method("set_cache_depth", &TLGDFontWrapper::set_cache_depth);
 	register_method("get_cache_depth", &TLGDFontWrapper::get_cache_depth);
 
-	register_property<TLGDFontWrapper, Ref<TLFontFamily> >("base_font", &TLGDFontWrapper::set_base_font, &TLGDFontWrapper::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
+	register_property<TLGDFontWrapper, Ref<TLFontFamily>>("base_font", &TLGDFontWrapper::set_base_font, &TLGDFontWrapper::get_base_font, Ref<TLFontFamily>(), GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_NOEDITOR | GODOT_PROPERTY_USAGE_STORAGE), GODOT_PROPERTY_HINT_RESOURCE_TYPE, String("TLFontFamily"));
 	register_property<TLGDFontWrapper, String>("base_font_style", &TLGDFontWrapper::set_base_font_style, &TLGDFontWrapper::get_base_font_style, String("Regular"));
 	register_property<TLGDFontWrapper, int>("base_font_size", &TLGDFontWrapper::set_base_font_size, &TLGDFontWrapper::get_base_font_size, 12);
 
