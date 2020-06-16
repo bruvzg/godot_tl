@@ -46,9 +46,6 @@ env_godot_tl.Append(CXXFLAGS=[
 	'-DGODOT_MODULE'
 ])
 
-if (not env_godot_tl.msvc):
-    env_godot_tl.Append(CXXFLAGS=["-std=c++14"])
-
 env_thirdparty = env_godot_tl.Clone()
 lib = env_thirdparty.add_library("godot_tl_builtin", sources)
 
