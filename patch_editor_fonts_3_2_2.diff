@@ -2,15 +2,15 @@ diff --git a/editor/SCsub b/editor/SCsub
 index 2b560f68e8..0481837354 100644
 --- a/editor/SCsub
 +++ b/editor/SCsub
-@@ -86,6 +86,8 @@ if env['tools']:
+@@ -78,5 +78,7 @@
      env.Depends("#editor/builtin_fonts.gen.h", flist)
      env.CommandNoCache("#editor/builtin_fonts.gen.h", flist, run_in_subprocess(editor_builders.make_fonts_header))
  
-+    env.Append(CXXFLAGS=['-DGODOT_MODULE'])
-+    env.Append(CPPPATH=['#modules/godot_tl/src/resources', '#modules/godot_tl/src', '#modules/godot_tl/subprojects/graphite2/include', '#modules/godot_tl/subprojects/harfbuzz/src', '#modules/godot_tl/subprojects/icu4c/source/common'])
++    env.Append(CXXFLAGS=["-DGODOT_MODULE"])
++    env.Append(CPPPATH=["#modules/godot_tl/src/resources", "#modules/godot_tl/src", "#modules/godot_tl/subprojects/graphite2/include", "#modules/godot_tl/subprojects/harfbuzz/src", "#modules/godot_tl/subprojects/icu4c/source/common"])
      env.add_source_files(env.editor_sources, "*.cpp")
  
-     SConscript("debugger/SCsub")
+     SConscript('collada/SCsub')
 diff --git a/editor/editor_fonts.cpp b/editor/editor_fonts.cpp
 index 171b7a2176..a5f3a9700e 100644
 --- a/editor/editor_fonts.cpp
@@ -279,7 +279,7 @@ index 171b7a2176..a5f3a9700e 100644
 +
  	// Default font
  	MAKE_DEFAULT_FONT(df, default_font_size);
- 	p_theme->set_font("font", "Node", df); // Default theme font
+ 	p_theme->set_default_theme_font(df);
 diff --git a/editor/editor_settings.cpp b/editor/editor_settings.cpp
 index 92e3f61ca5..98fc6d5742 100644
 --- a/editor/editor_settings.cpp

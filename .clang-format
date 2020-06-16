@@ -116,6 +116,7 @@ Standard:        Cpp03
 ---
 ### ObjC specific config ###
 Language:        ObjC
+Standard:        Cpp03
 ObjCBlockIndentWidth: 4
 # ObjCSpaceAfterProperty: false
 # ObjCSpaceBeforeProtocolList: true
@@ -123,4 +124,5 @@ ObjCBlockIndentWidth: 4
 ### Java specific config ###
 Language:        Java
 # BreakAfterJavaFieldAnnotations: false
+JavaImportGroups: ['org.godotengine', 'android', 'androidx', 'com.android', 'com.google', 'java', 'javax']
 ...

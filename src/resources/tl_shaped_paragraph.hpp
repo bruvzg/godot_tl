@@ -17,8 +17,6 @@ enum ParaHAlign {
 	PARA_HALIGN_FILL = 3
 };
 
-static float min_paragraph_width = 20.0f;
-
 class TLShapedParagraph : public Resource {
 	GODOT_CLASS(TLShapedParagraph, Resource);
 

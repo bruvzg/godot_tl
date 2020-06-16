@@ -4,6 +4,8 @@
 
 #include "resources/tl_shaped_paragraph.hpp"
 
+static float min_paragraph_width = 20.0f;
+
 TLShapedParagraph::TLShapedParagraph() {
 
 #ifdef GODOT_MODULE

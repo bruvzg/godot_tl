@@ -2054,7 +2054,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 		TLFontFace::_draw_small_int(p_canvas_item, p_position + ofs + Point2(0, 40), visual[i].end, p_modulate);
 		if (visual[i].glyphs.size() > 0) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
-				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+				float wg = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(w, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.1));
 				if (visual[i].cl_type == (int)_CLUSTER_TYPE_HEX_BOX) {
 					TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
@@ -2063,7 +2063,7 @@ void TLShapedString::draw_dbg(RID p_canvas_item, const Point2 p_position, const 
 				} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 					//NOP
 				}
-				ofs += Vector2(w, 0);
+				ofs += Vector2(wg, 0);
 			}
 		} else {
 			VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 40)), Color(p_modulate.r, p_modulate.g, p_modulate.b, 0.3));
@@ -2123,9 +2123,9 @@ void TLShapedString::draw_as_hex(RID p_canvas_item, const Point2 p_position, con
 		}
 		if (visual[i].glyphs.size() > 0) {
 			for (int64_t j = 0; j < (int64_t)visual[i].glyphs.size(); j++) {
-				float w = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
+				float wg = (visual[i].glyphs[j].codepoint <= 0xFF) ? 14 : ((visual[i].glyphs[j].codepoint <= 0xFFFF) ? 20 : 26);
 				TLFontFace::draw_hexbox(p_canvas_item, p_position + ofs - Point2(0, 15), visual[i].glyphs[j].codepoint, p_modulate);
-				ofs += Vector2(w, 0);
+				ofs += Vector2(wg, 0);
 			}
 		} else {
 			VisualServer::get_singleton()->canvas_item_add_rect(p_canvas_item, Rect2(p_position + ofs - Point2(0, 15), Size2(15, 20)), p_modulate);

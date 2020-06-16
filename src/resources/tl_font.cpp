@@ -165,7 +165,7 @@ Array TLFontFace::_unicode_scripts_supported() const {
 	Array ret;
 
 	std::vector<hb_script_t> _sup = unicode_scripts_supported();
-	for (int i = 0; i < _sup.size(); i++) {
+	for (size_t i = 0; i < _sup.size(); i++) {
 		char tag[5] = "";
 		hb_tag_to_string(hb_script_to_iso15924_tag(_sup[i]), tag);
 		ret.push_back(String(tag).to_upper());
