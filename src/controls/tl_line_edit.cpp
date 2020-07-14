@@ -63,10 +63,13 @@ static bool _is_text_char(wchar_t c) {
 }
 
 float TLLineEdit::_get_base_font_height() const {
-	if (line->get_base_font().is_valid())
-		if (line->get_base_font()->get_face(line->get_base_font_style()).is_valid())
-			if (line->get_base_font()->get_face(line->get_base_font_style()).value().is_valid())
+	if (line->get_base_font().is_valid()) {
+		if (line->get_base_font()->get_face(line->get_base_font_style()).is_valid()) {
+			if (line->get_base_font()->get_face(line->get_base_font_style()).value().is_valid()) {
 				return line->get_base_font()->get_face(line->get_base_font_style()).value()->get_height(line->get_base_font_size());
+			}
+		}
+	}
 	return 5.0;
 }
 
@@ -89,11 +92,13 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			menu->set_size(Vector2(1, 1));
 			menu->popup();
 			grab_focus();
+			accept_event();
 			return;
 		}
 
-		if (b->get_button_index() != GLOBAL_CONST(BUTTON_LEFT))
+		if (b->get_button_index() != GLOBAL_CONST(BUTTON_LEFT)) {
 			return;
+		}
 
 		_reset_caret_blink_timer();
 		if (b->is_pressed()) {
@@ -150,8 +155,13 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 			selection.doubleclick = false;
 
 #ifdef GODOT_MODULE
-			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
-				DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length);
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD)) {
+				if (selection.enabled) {
+					DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length, selection.begin, selection.end);
+				} else {
+					DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length, cursor_pos);
+				}
+			}
 #endif
 		}
 
@@ -190,8 +200,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 	if (k) {
 #endif
 
-		if (!k->is_pressed())
+		if (!k->is_pressed()) {
 			return;
+		}
 
 #ifdef APPLE_STYLE_KEYS
 		if (k->get_control() && !k->get_shift() && !k->get_alt() && !k->get_command()) {
@@ -304,10 +315,14 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				} break;
 #ifdef APPLE_STYLE_KEYS
 				case GLOBAL_CONST(KEY_LEFT): { // Go to start of text - like HOME key
+					shift_selection_check_pre(k->get_shift());
 					set_cursor_position(0);
+					shift_selection_check_post(k->get_shift());
 				} break;
 				case GLOBAL_CONST(KEY_RIGHT): { // Go to end of text - like END key
+					shift_selection_check_pre(k->get_shift());
 					set_cursor_position(text.length());
+					shift_selection_check_post(k->get_shift());
 				} break;
 #endif
 				default: {
@@ -328,14 +343,16 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				case GLOBAL_CONST(KEY_KP_ENTER):
 				case GLOBAL_CONST(KEY_ENTER): {
 					emit_signal("text_entered", text);
-					if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+					if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD)) {
 						DisplayServer::get_singleton()->virtual_keyboard_hide();
-					return;
+					}
+
 				} break;
 
 				case GLOBAL_CONST(KEY_BACKSPACE): {
-					if (!editable)
+					if (!editable) {
 						break;
+					}
 
 					if (selection.enabled) {
 						selection_delete();
@@ -356,8 +373,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						while (cc > 0) {
 							bool ischar = _is_text_char(text[cc - 1]);
 
-							if (prev_char && !ischar)
+							if (prev_char && !ischar) {
 								break;
+							}
 
 							prev_char = ischar;
 							cc--;
@@ -382,9 +400,19 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				}
 				case GLOBAL_CONST(KEY_LEFT): {
 #ifndef APPLE_STYLE_KEYS
-					if (!k->get_alt())
+					if (!k->get_alt()) {
 #endif
+						if (selection.enabled && !k->get_shift()) {
+							set_cursor_position(selection.begin);
+							deselect();
+							handled = true;
+							break;
+						}
+
 						shift_selection_check_pre(k->get_shift());
+#ifndef APPLE_STYLE_KEYS
+					}
+#endif
 
 #ifdef APPLE_STYLE_KEYS
 					if (k->get_command()) {
@@ -402,8 +430,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						while (cc > 0) {
 							bool ischar = _is_text_char(text[cc - 1]);
 
-							if (prev_char && !ischar)
+							if (prev_char && !ischar) {
 								break;
+							}
 
 							prev_char = ischar;
 							cc--;
@@ -427,7 +456,20 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_RIGHT): {
-					shift_selection_check_pre(k->get_shift());
+#ifndef APPLE_STYLE_KEYS
+					if (k->get_alt()) {
+#endif
+						if (selection.enabled && !k->get_shift()) {
+							set_cursor_position(selection.end);
+							deselect();
+							handled = true;
+							break;
+						}
+
+						shift_selection_check_pre(k->get_shift());
+#ifndef APPLE_STYLE_KEYS
+					}
+#endif
 
 #ifdef APPLE_STYLE_KEYS
 					if (k->get_command()) {
@@ -445,8 +487,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						while (cc < text.length()) {
 							bool ischar = _is_text_char(text[cc]);
 
-							if (prev_char && !ischar)
+							if (prev_char && !ischar) {
 								break;
+							}
 
 							prev_char = ischar;
 							cc++;
@@ -463,21 +506,24 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 				} break;
 				case GLOBAL_CONST(KEY_UP): {
 					shift_selection_check_pre(k->get_shift());
-					if (get_cursor_position() == 0)
+					if (get_cursor_position() == 0) {
 						handled = false;
+					}
 					set_cursor_position(0);
 					shift_selection_check_post(k->get_shift());
 				} break;
 				case GLOBAL_CONST(KEY_DOWN): {
 					shift_selection_check_pre(k->get_shift());
-					if (get_cursor_position() == text.length())
+					if (get_cursor_position() == text.length()) {
 						handled = false;
+					}
 					set_cursor_position(text.length());
 					shift_selection_check_post(k->get_shift());
 				} break;
 				case GLOBAL_CONST(KEY_DELETE): {
-					if (!editable)
+					if (!editable) {
 						break;
+					}
 
 					if (k->get_shift() && !k->get_command() && !k->get_alt()) {
 						cut_text();
@@ -491,8 +537,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 
 					int text_len = text.length();
 
-					if (cursor_pos == text_len)
+					if (cursor_pos == text_len) {
 						break; // nothing to do
+					}
 
 #ifdef APPLE_STYLE_KEYS
 					if (k->get_alt()) {
@@ -509,8 +556,9 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						while (cc < text.length()) {
 							bool ischar = _is_text_char(text[cc]);
 
-							if (prev_char && !ischar)
+							if (prev_char && !ischar) {
 								break;
+							}
 							prev_char = ischar;
 							cc++;
 						}
@@ -528,7 +576,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						handled = false;
 						break;
 					}
-					// numlock disabled. fallthrough to key_home
 					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_HOME): {
@@ -541,7 +588,6 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 						handled = false;
 						break;
 					}
-					// numlock disabled. fallthrough to key_end
 					[[fallthrough]];
 				}
 				case GLOBAL_CONST(KEY_END): {
@@ -549,7 +595,17 @@ void TLLineEdit::_gui_input(InputEvent *p_event) {
 					set_cursor_position(text.length());
 					shift_selection_check_post(k->get_shift());
 				} break;
+				case GLOBAL_CONST(KEY_MENU): {
+					if (context_menu_enabled) {
+						std::vector<float> carets = line->get_cursor_positions(cursor_pos, last_input_direction);
+						Point2 pos = Point2(carets[0], (get_size().y + _get_base_font_height()) / 2);
+						menu->set_position(get_global_transform().xform(pos));
+						menu->set_size(Vector2(1, 1));
 
+						menu->popup();
+						menu->grab_focus();
+					}
+				} break;
 				default: {
 					handled = false;
 				} break;
@@ -669,8 +725,9 @@ bool TLLineEdit::_is_over_clear_button(const Point2 &p_pos) const {
 	Ref<Texture2D> icon = Control::get_theme_icon("clear");
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit")
+	if (cname == "TLLineEdit") {
 		cname = "LineEdit";
+	}
 
 	int x_ofs = get_theme_stylebox("normal", cname)->get_offset().x;
 #else
@@ -703,12 +760,17 @@ void TLLineEdit::_notification(int p_what) {
 			set_cursor_position(get_cursor_position());
 
 		} break;
-		case NOTIFICATION_FOCUS_ENTER: {
+		case NOTIFICATION_TRANSLATION_CHANGED: {
+			placeholder_translated = tr(placeholder);
+			_text_reshape();
+			update();
+		} break;
+		case NOTIFICATION_WM_WINDOW_FOCUS_IN: {
 			window_has_focus = true;
 			draw_caret = true;
 			update();
 		} break;
-		case NOTIFICATION_FOCUS_EXIT: {
+		case NOTIFICATION_WM_WINDOW_FOCUS_OUT: {
 			window_has_focus = false;
 			draw_caret = false;
 			update();
@@ -728,8 +790,9 @@ void TLLineEdit::_notification(int p_what) {
 
 #ifdef GODOT_MODULE
 			StringName cname = get_class_name();
-			if (cname == "TLLineEdit")
+			if (cname == "TLLineEdit") {
 				cname = "LineEdit";
+			}
 
 			Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -793,8 +856,9 @@ void TLLineEdit::_notification(int p_what) {
 #endif
 
 			// draw placeholder color
-			if (using_placeholder)
+			if (using_placeholder) {
 				font_color.a *= placeholder_alpha;
+			}
 			font_color.a *= disabled_alpha;
 
 			bool display_clear_icon = !using_placeholder && is_editable() && clear_button_enabled;
@@ -913,37 +977,47 @@ void TLLineEdit::_notification(int p_what) {
 				DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + Point2(using_placeholder ? 0 : x_ofs, y_ofs + caret_height), get_viewport()->get_window_id());
 			}
 		} break;
-		case NOTIFICATION_WM_FOCUS_IN: {
+		case NOTIFICATION_FOCUS_ENTER: {
 			if (caret_blink_enabled) {
 				caret_blink_timer->start();
 			} else {
 				draw_caret = true;
 			}
 
-			DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
-			Point2 cursor_pos = Point2(get_cursor_position(), 1) * get_minimum_size().height;
-			DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + cursor_pos, get_viewport()->get_window_id());
+			if (get_viewport()->get_window_id() != DisplayServer::INVALID_WINDOW_ID) {
+				DisplayServer::get_singleton()->window_set_ime_active(true, get_viewport()->get_window_id());
+				Point2 cursor_pos = Point2(get_cursor_position(), 1) * get_minimum_size().height;
+				DisplayServer::get_singleton()->window_set_ime_position(get_global_position() + cursor_pos, get_viewport()->get_window_id());
+			}
 
 #ifdef GODOT_MODULE
-			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
-				DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length);
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD)) {
+				if (selection.enabled) {
+					DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length, selection.begin, selection.end);
+				} else {
+					DisplayServer::get_singleton()->virtual_keyboard_show(text, get_global_rect(), max_length, cursor_pos);
+				}
+			}
 #endif
 
 		} break;
-		case NOTIFICATION_WM_FOCUS_OUT: {
+		case NOTIFICATION_FOCUS_EXIT: {
 			if (caret_blink_enabled) {
 				caret_blink_timer->stop();
 			}
 
-			DisplayServer::get_singleton()->window_set_ime_position(Point2(), get_viewport()->get_window_id());
-			DisplayServer::get_singleton()->window_set_ime_active(false, get_viewport()->get_window_id());
+			if (get_viewport()->get_window_id() != DisplayServer::INVALID_WINDOW_ID) {
+				DisplayServer::get_singleton()->window_set_ime_position(Point2(), get_viewport()->get_window_id());
+				DisplayServer::get_singleton()->window_set_ime_active(false, get_viewport()->get_window_id());
+			}
 			ime_text = "";
 			ime_selection = Point2();
 
 			_text_reshape();
 
-			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD))
+			if (DisplayServer::get_singleton()->has_feature(DisplayServer::FEATURE_VIRTUAL_KEYBOARD)) {
 				DisplayServer::get_singleton()->virtual_keyboard_hide();
+			}
 
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
@@ -979,8 +1053,9 @@ void TLLineEdit::paste_text() {
 	String paste_buffer = DisplayServer::get_singleton()->clipboard_get();
 
 	if (paste_buffer != "") {
-		if (selection.enabled)
+		if (selection.enabled) {
 			selection_delete();
+		}
 		append_at_cursor(paste_buffer);
 
 		if (!text_changed_dirty) {
@@ -995,16 +1070,16 @@ void TLLineEdit::paste_text() {
 }
 
 void TLLineEdit::undo() {
-	if (undo_stack_pos == undo_stack.end()) {
+	if (undo_stack_pos == nullptr) {
 		if (undo_stack.size() <= 1) {
 			return;
 		}
-		undo_stack_pos = undo_stack.end();
-	} else if (undo_stack_pos == undo_stack.begin()) {
+		undo_stack_pos = undo_stack.back();
+	} else if (undo_stack_pos == undo_stack.front()) {
 		return;
 	}
-	undo_stack_pos--;
-	TextOperation op = (*undo_stack_pos);
+	undo_stack_pos = undo_stack_pos->prev();
+	TextOperation op = undo_stack_pos->get();
 	text = op.text;
 	_text_reshape();
 
@@ -1013,11 +1088,14 @@ void TLLineEdit::undo() {
 }
 
 void TLLineEdit::redo() {
-	if (undo_stack_pos == undo_stack.end()) {
+	if (undo_stack_pos == nullptr) {
 		return;
 	}
-	undo_stack_pos++;
-	TextOperation op = (*undo_stack_pos);
+	if (undo_stack_pos == undo_stack.back()) {
+		return;
+	}
+	undo_stack_pos = undo_stack_pos->next();
+	TextOperation op = undo_stack_pos->get();
 	text = op.text;
 	_text_reshape();
 
@@ -1029,22 +1107,26 @@ void TLLineEdit::shift_selection_check_pre(bool p_shift) {
 	if (!selection.enabled && p_shift) {
 		selection.cursor_start = cursor_pos;
 	}
-	if (!p_shift)
+	if (!p_shift) {
 		deselect();
+	}
 }
 
 void TLLineEdit::shift_selection_check_post(bool p_shift) {
-	if (p_shift)
+	if (p_shift) {
 		selection_fill_at_cursor();
+	}
 }
 
 void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit")
+	if (cname == "TLLineEdit") {
 		cname = "LineEdit";
+	}
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
+	int r_icon_width = Control::get_theme_icon("clear")->get_width();
 #else
 	Ref<Theme> theme = get_theme();
 	if (theme.is_null()) {
@@ -1052,8 +1134,10 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 		theme->copy_default_theme();
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "LineEdit");
+	int r_icon_width = theme->get_theme_icon("clear", "Control")->get_width();
 #endif
 	Size2 size = get_size();
+	bool display_clear_icon = !text.empty() && is_editable() && clear_button_enabled;
 
 	//Calc offscreen offset
 	float wpos_ofs = 0.0;
@@ -1069,13 +1153,21 @@ void TLLineEdit::set_cursor_at_pixel_pos(int p_x) {
 		} break;
 		case ALIGN_CENTER: {
 			if (window_pos != 0) {
-				x_ofs = style->get_offset().x;
+				x_ofs = int(style->get_offset().x);
 			} else {
-				x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - line->get_width()) / 2);
+				x_ofs = int(size.width - line->get_width()) / 2;
+			}
+
+			if (display_clear_icon) {
+				x_ofs -= int(r_icon_width / 2 + style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)));
 			}
 		} break;
 		case ALIGN_RIGHT: {
-			x_ofs = MAX(style->get_margin(GLOBAL_CONST(MARGIN_LEFT)), int(size.width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) - line->get_width()));
+			x_ofs = int(size.width - style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)) - line->get_width());
+
+			if (display_clear_icon) {
+				x_ofs -= int(r_icon_width + style->get_margin(GLOBAL_CONST(MARGIN_RIGHT)));
+			}
 		} break;
 	}
 
@@ -1126,8 +1218,9 @@ void TLLineEdit::_toggle_draw_caret() {
 }
 
 void TLLineEdit::delete_char() {
-	if ((text.length() <= 0) || (cursor_pos == 0))
+	if ((text.length() <= 0) || (cursor_pos == 0)) {
 		return;
+	}
 
 	text.erase(cursor_pos - 1, 1);
 
@@ -1139,6 +1232,9 @@ void TLLineEdit::delete_char() {
 }
 
 void TLLineEdit::delete_text(int p_from_column, int p_to_column) {
+	ERR_FAIL_COND_MSG(p_from_column < 0 || p_from_column > p_to_column || p_to_column > text.length(),
+			vformat("Positional parameters (from: %d, to: %d) are inverted or outside the text length (%d).", p_from_column, p_to_column, text.length()));
+
 	text.erase(p_from_column, p_to_column - p_from_column);
 
 	_text_reshape();
@@ -1211,7 +1307,8 @@ String TLLineEdit::get_text() const {
 }
 
 void TLLineEdit::set_placeholder(String p_text) {
-	placeholder = tr(p_text);
+	placeholder = p_text;
+	placeholder_translated = tr(placeholder);
 
 	_text_reshape();
 
@@ -1234,8 +1331,9 @@ float TLLineEdit::get_placeholder_alpha() const {
 void TLLineEdit::set_cursor_position(int p_pos) {
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit")
+	if (cname == "TLLineEdit") {
 		cname = "LineEdit";
+	}
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -1248,11 +1346,13 @@ void TLLineEdit::set_cursor_position(int p_pos) {
 #endif
 	float window_width = get_size().width - style->get_minimum_size().width;
 
-	if (p_pos > (int)text.length())
+	if (p_pos > (int)text.length()) {
 		p_pos = text.length();
+	}
 
-	if (p_pos < 0)
+	if (p_pos < 0) {
 		p_pos = 0;
+	}
 
 	//Save last direction
 	last_input_direction = line->get_char_direction(cursor_pos);
@@ -1305,10 +1405,12 @@ int TLLineEdit::get_cursor_position() const {
 
 void TLLineEdit::set_window_pos(int p_pos) {
 	window_pos = p_pos;
-	if (window_pos < 0)
+	if (window_pos < 0) {
 		window_pos = 0;
-	if (window_pos >= line->clusters())
+	}
+	if (window_pos >= line->clusters()) {
 		window_pos = line->clusters() - 1;
+	}
 }
 
 void TLLineEdit::append_at_cursor(String p_text) {
@@ -1317,12 +1419,14 @@ void TLLineEdit::append_at_cursor(String p_text) {
 		String post = text.substr(cursor_pos, text.length() - cursor_pos);
 		text = pre + p_text + post;
 		_text_reshape();
-
 		set_cursor_position(cursor_pos + p_text.length());
+	} else {
+		emit_signal("text_change_rejected");
 	}
 }
 
 void TLLineEdit::clear_internal() {
+	deselect();
 	_clear_undo_stack();
 
 	cursor_pos = 0;
@@ -1337,8 +1441,9 @@ void TLLineEdit::clear_internal() {
 Size2 TLLineEdit::get_minimum_size() const {
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLineEdit")
+	if (cname == "TLLineEdit") {
 		cname = "LineEdit";
+	}
 
 	Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 #else
@@ -1349,7 +1454,7 @@ Size2 TLLineEdit::get_minimum_size() const {
 	}
 	Ref<StyleBox> style = theme->get_stylebox("normal", "LineEdit");
 #endif
-	Size2 min = style->get_minimum_size();
+	Size2 min;
 	min.height += MAX(_get_base_font_height(), line->get_ascent() + line->get_descent());
 
 	//minimum size of text
@@ -1366,7 +1471,19 @@ Size2 TLLineEdit::get_minimum_size() const {
 
 	min.width += mstext;
 
-	return min;
+	// Take icons into account.
+	if (!text.empty() && is_editable() && clear_button_enabled) {
+#ifdef GODOT_MODULE
+		min.width = MAX(min.width, Control::get_theme_icon("clear")->get_width());
+		min.height = MAX(min.height, Control::get_theme_icon("clear")->get_height());
+#endif
+	}
+	if (right_icon.is_valid()) {
+		min.width = MAX(min.width, right_icon->get_width());
+		min.height = MAX(min.height, right_icon->get_height());
+	}
+
+	return style->get_minimum_size() + min;
 }
 
 /* selection */
@@ -1382,8 +1499,9 @@ void TLLineEdit::deselect() {
 }
 
 void TLLineEdit::selection_delete() {
-	if (selection.enabled)
+	if (selection.enabled) {
 		delete_text(selection.begin, selection.end);
+	}
 
 	deselect();
 }
@@ -1399,6 +1517,10 @@ int TLLineEdit::get_max_length() const {
 }
 
 void TLLineEdit::selection_fill_at_cursor() {
+	if (!selecting_enabled) {
+		return;
+	}
+
 	selection.begin = cursor_pos;
 	selection.end = selection.cursor_start;
 
@@ -1412,8 +1534,13 @@ void TLLineEdit::selection_fill_at_cursor() {
 }
 
 void TLLineEdit::select_all() {
-	if (!text.length())
+	if (!selecting_enabled) {
 		return;
+	}
+
+	if (!text.length()) {
+		return;
+	}
 
 	selection.begin = 0;
 	selection.end = text.length();
@@ -1422,7 +1549,14 @@ void TLLineEdit::select_all() {
 }
 
 void TLLineEdit::set_editable(bool p_editable) {
+	if (editable == p_editable) {
+		return;
+	}
+
 	editable = p_editable;
+	_generate_context_menu();
+
+	minimum_size_changed();
 	update();
 }
 
@@ -1432,7 +1566,6 @@ bool TLLineEdit::is_editable() const {
 
 void TLLineEdit::set_secret(bool p_secret) {
 	pass = p_secret;
-
 	_text_reshape();
 	update();
 }
@@ -1444,11 +1577,9 @@ bool TLLineEdit::is_secret() const {
 void TLLineEdit::set_secret_character(const String p_string) {
 	// An empty string as the secret character would crash the engine
 	// It also wouldn't make sense to use multiple characters as the secret character
-	if (p_string.length() != 1)
-		return;
+	ERR_FAIL_COND_MSG(p_string.length() != 1, "Secret character must be exactly one character long (" + itos(p_string.length()) + " characters given).");
 
 	secret_character = p_string;
-
 	_text_reshape();
 	update();
 }
@@ -1458,21 +1589,29 @@ String TLLineEdit::get_secret_character() const {
 }
 
 void TLLineEdit::select(int p_from, int p_to) {
+	if (!selecting_enabled) {
+		return;
+	}
+
 	if (p_from == 0 && p_to == 0) {
 		deselect();
 		return;
 	}
 
 	int len = text.length();
-	if (p_from < 0)
+	if (p_from < 0) {
 		p_from = 0;
-	if (p_from > len)
+	}
+	if (p_from > len) {
 		p_from = len;
-	if (p_to < 0 || p_to > len)
+	}
+	if (p_to < 0 || p_to > len) {
 		p_to = len;
+	}
 
-	if (p_from >= p_to)
+	if (p_from >= p_to) {
 		return;
+	}
 
 	selection.enabled = true;
 	selection.begin = p_from;
@@ -1552,7 +1691,11 @@ bool TLLineEdit::get_expand_to_text_length() const {
 }
 
 void TLLineEdit::set_clear_button_enabled(bool p_enabled) {
+	if (clear_button_enabled == p_enabled) {
+		return;
+	}
 	clear_button_enabled = p_enabled;
+	minimum_size_changed();
 	update();
 }
 
@@ -1560,12 +1703,41 @@ bool TLLineEdit::is_clear_button_enabled() const {
 	return clear_button_enabled;
 }
 
+void TLLineEdit::set_shortcut_keys_enabled(bool p_enabled) {
+	shortcut_keys_enabled = p_enabled;
+
+	_generate_context_menu();
+}
+
+bool TLLineEdit::is_shortcut_keys_enabled() const {
+	return shortcut_keys_enabled;
+}
+
+void TLLineEdit::set_selecting_enabled(bool p_enabled) {
+	selecting_enabled = p_enabled;
+
+	if (!selecting_enabled) {
+		deselect();
+	}
+
+	_generate_context_menu();
+}
+
+bool TLLineEdit::is_selecting_enabled() const {
+	return selecting_enabled;
+}
+
 void TLLineEdit::set_right_icon(const Ref<Texture2D> &p_icon) {
 	if (right_icon == p_icon) {
 		return;
 	}
 	right_icon = p_icon;
+	minimum_size_changed();
 	update();
+}
+
+Ref<Texture2D> TLLineEdit::get_right_icon() {
+	return right_icon;
 }
 
 void TLLineEdit::_text_reshape() {
@@ -1573,7 +1745,7 @@ void TLLineEdit::_text_reshape() {
 	if (ime_text.length() > 0) {
 		text_to_draw = text.substr(0, cursor_pos) + ime_text + text.substr(cursor_pos, text.length());
 	} else {
-		text_to_draw = text.empty() ? placeholder : text;
+		text_to_draw = text.empty() ? placeholder_translated : text;
 	}
 	if (pass && !text_to_draw.empty()) {
 		int count = text_to_draw.length();
@@ -1589,16 +1761,18 @@ void TLLineEdit::_text_reshape() {
 	line->set_features(ot_features);
 
 	if (line->clusters() > 0) {
-		if (window_pos >= line->clusters())
+		if (window_pos >= line->clusters()) {
 			window_pos = line->clusters() - 1;
+		}
 	} else {
 		window_pos = 0;
 	}
 }
 
 void TLLineEdit::_text_changed() {
-	if (expand_to_text_length)
+	if (expand_to_text_length) {
 		minimum_size_changed();
+	}
 
 	_emit_text_change();
 	_clear_redo();
@@ -1616,14 +1790,14 @@ void TLLineEdit::_emit_text_change() {
 
 void TLLineEdit::_clear_redo() {
 	_create_undo_state();
-	if (undo_stack_pos == undo_stack.end()) {
+	if (undo_stack_pos == nullptr) {
 		return;
 	}
 
-	undo_stack_pos++;
-	while (undo_stack_pos != undo_stack.end()) {
-		std::list<TextOperation>::iterator elem = undo_stack_pos;
-		undo_stack_pos++;
+	undo_stack_pos = undo_stack_pos->next();
+	while (undo_stack_pos) {
+		List<TextOperation>::Element *elem = undo_stack_pos;
+		undo_stack_pos = undo_stack_pos->next();
 		undo_stack.erase(elem);
 	}
 	_create_undo_state();
@@ -1631,7 +1805,7 @@ void TLLineEdit::_clear_redo() {
 
 void TLLineEdit::_clear_undo_stack() {
 	undo_stack.clear();
-	undo_stack_pos = undo_stack.end();
+	undo_stack_pos = nullptr;
 	_create_undo_state();
 }
 
@@ -1639,7 +1813,30 @@ void TLLineEdit::_create_undo_state() {
 	TextOperation op;
 	op.text = text;
 	op.cursor_pos = cursor_pos;
+	op.window_pos = window_pos;
 	undo_stack.push_back(op);
+}
+
+void TLLineEdit::_generate_context_menu() {
+	// Reorganize context menu.
+	menu->clear();
+	if (editable) {
+		menu->add_item(RTR("Cut"), MENU_CUT, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_X : 0);
+	}
+	menu->add_item(RTR("Copy"), MENU_COPY, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_C : 0);
+	if (editable) {
+		menu->add_item(RTR("Paste"), MENU_PASTE, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_V : 0);
+	}
+	menu->add_separator();
+	if (is_selecting_enabled()) {
+		menu->add_item(RTR("Select All"), MENU_SELECT_ALL, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_A : 0);
+	}
+	if (editable) {
+		menu->add_item(RTR("Clear"), MENU_CLEAR);
+		menu->add_separator();
+		menu->add_item(RTR("Undo"), MENU_UNDO, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_Z : 0);
+		menu->add_item(RTR("Redo"), MENU_REDO, is_shortcut_keys_enabled() ? KEY_MASK_CMD | KEY_MASK_SHIFT | KEY_Z : 0);
+	}
 }
 
 #ifdef GODOT_MODULE
@@ -1913,10 +2110,9 @@ void TLLineEdit::_init() {
 	ot_features = "";
 	language = "";
 
-	undo_stack_pos = undo_stack.end();
+	undo_stack_pos = nullptr;
 	_create_undo_state();
 	align = ALIGN_LEFT;
-
 	cursor_pos = 0;
 	window_pos = 0;
 	window_has_focus = true;
@@ -1928,10 +2124,11 @@ void TLLineEdit::_init() {
 	clear_button_enabled = false;
 	clear_button_status.press_attempt = false;
 	clear_button_status.pressing_inside = false;
+	shortcut_keys_enabled = true;
+	selecting_enabled = true;
 
 	deselect();
 	set_focus_mode(FOCUS_ALL);
-	editable = true;
 	set_default_cursor_shape(CURSOR_IBEAM);
 	set_mouse_filter(MOUSE_FILTER_STOP);
 
@@ -1946,15 +2143,8 @@ void TLLineEdit::_init() {
 	context_menu_enabled = true;
 	menu = memnew(PopupMenu);
 	add_child(menu);
-	menu->add_item(TranslationServer::get_singleton()->translate("Cut"), MENU_CUT, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_X));
-	menu->add_item(TranslationServer::get_singleton()->translate("Copy"), MENU_COPY, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_C));
-	menu->add_item(TranslationServer::get_singleton()->translate("Paste"), MENU_PASTE, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_V));
-	menu->add_separator();
-	menu->add_item(TranslationServer::get_singleton()->translate("Select All"), MENU_SELECT_ALL, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_A));
-	menu->add_item(TranslationServer::get_singleton()->translate("Clear"), MENU_CLEAR);
-	menu->add_separator();
-	menu->add_item(TranslationServer::get_singleton()->translate("Undo"), MENU_UNDO, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_Z));
-	menu->add_item(TranslationServer::get_singleton()->translate("Redo"), MENU_REDO, GLOBAL_CONST(KEY_MASK_CMD) | GLOBAL_CONST(KEY_MASK_SHIFT) | GLOBAL_CONST(KEY_Z));
+	editable = false; // Initialise to opposite first, so we get past the early-out in set_editable.
+	set_editable(true);
 	menu->connect("id_pressed", callable_mp(this, &TLLineEdit::menu_option));
 	expand_to_text_length = false;
 }

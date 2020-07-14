@@ -282,7 +282,7 @@ index cf00c536a7..06186a2ed6 100644
 +
  	// Default font
  	MAKE_DEFAULT_FONT(df, default_font_size);
- 	p_theme->set_font("font", "Node", df); // Default theme font
+ 	p_theme->set_default_font(df); // Default theme font
 diff --git a/editor/editor_settings.cpp b/editor/editor_settings.cpp
 index 5f293f1fb3..6cfb6fb077 100644
 --- a/editor/editor_settings.cpp

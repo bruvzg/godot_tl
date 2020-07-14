@@ -537,7 +537,7 @@ bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
 	if (tokens.size() >= 2) {
 		String style = tokens[0];
 		if (tokens.size() == 2) {
-			int64_t index = (int64_t)tokens[1].to_int64();
+			int64_t index = (int64_t)tokens[1].to_int();
 			if (index == (int64_t)styles[style.to_upper()].main_chain.size()) {
 				Ref<TLFontFace> face = p_value;
 				if (face.is_valid()) {
@@ -565,7 +565,7 @@ bool TLFontFamily::_set(const StringName &p_name, const Variant &p_value) {
 				}
 			}
 		} else if (tokens.size() == 4) {
-			int64_t index = (int64_t)tokens[3].to_int64();
+			int64_t index = (int64_t)tokens[3].to_int();
 			if (tokens[1] == "script") {
 				//add script
 				hb_script_t scr = hb_script_from_string(tokens[2].ascii().get_data(), -1);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLFontFamily" inherits="Resource" category="Core" version="3.2">
+<class name="TLFontFamily" inherits="Resource" version="4.0">
 	<brief_description>
 		A set of fonts that make up a font family.
 	</brief_description>
@@ -64,7 +64,7 @@
 			<argument index="1" name="language" type="String">
 			</argument>
 			<description>
-				Creates new font fallback list for the language, list is created automatically when [add_face] or [add_face_for_language] function is called.
+				Creates new font fallback list for the language, list is created automatically when [code]add_face[/code] or [code]add_face_for_language[/code] function is called.
 				Use ISO 639-1 (https://en.wikipedia.org/wiki/ISO_639-1) codes for the language names.
 			</description>
 		</method>
@@ -76,7 +76,7 @@
 			<argument index="1" name="script" type="String">
 			</argument>
 			<description>
-				Creates new font fallback list for the script, list is created automatically when [add_face] or [add_face_for_script] function is called.
+				Creates new font fallback list for the script, list is created automatically when [code]add_face[/code] or [code]add_face_for_script[/code] function is called.
 				Use ISO 15924 (https://en.wikipedia.org/wiki/ISO_15924) for the script names.
 			</description>
 		</method>
@@ -86,7 +86,7 @@
 			<argument index="0" name="style" type="String">
 			</argument>
 			<description>
-				Adds new style to the family, style is created automatically when any of the [add_face] functions is called.
+				Adds new style to the family, style is created automatically when any of the [code]add_face[/code] functions is called.
 			</description>
 		</method>
 		<method name="get_face" qualifiers="const">
@@ -161,17 +161,6 @@
 			</description>
 		</method>
 	</methods>
-	<members>
-		<member name="{style_name}/{index}" type="TLFontFace">
-			Font faces not linked to the language or script.
-		</member>
-		<member name="{style_name}/script/{tag}/{index}" type="TLFontFace">
-			Font faces linked to the script.
-		</member>
-		<member name="{style_name}/script/{lang}/{index}" type="TLFontFace">
-			Font faces linked to the language.
-		</member>
-	</members>
 	<constants>
 	</constants>
 </class>
