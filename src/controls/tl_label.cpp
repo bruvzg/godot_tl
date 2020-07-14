@@ -40,10 +40,13 @@
 #endif
 
 float TLLabel::_get_base_font_height() const {
-	if (s_paragraph->get_base_font().is_valid())
-		if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).is_valid())
-			if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).value().is_valid())
+	if (s_paragraph->get_base_font().is_valid()) {
+		if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).is_valid()) {
+			if (s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).value().is_valid()) {
 				return s_paragraph->get_base_font()->get_face(s_paragraph->get_base_font_style()).value()->get_height(s_paragraph->get_base_font_size());
+			}
+		}
+	}
 	return 5.0;
 }
 
@@ -53,6 +56,9 @@ void TLLabel::set_autowrap(bool p_autowrap) {
 		_lines_dirty = true;
 	}
 	update();
+	if (clip) {
+		minimum_size_changed();
+	}
 }
 
 bool TLLabel::has_autowrap() const {
@@ -84,13 +90,13 @@ int TLLabel::get_line_height() const {
 void TLLabel::_notification(int p_what) {
 	if (p_what == NOTIFICATION_TRANSLATION_CHANGED) {
 		String new_text = tr(text);
-		if (new_text == xl_text)
+		if (new_text == xl_text) {
 			return; //nothing new
+		}
 		xl_text = new_text;
 
 		s_paragraph->set_text(xl_text);
 		_reshape_lines();
-
 		update();
 	}
 
@@ -99,8 +105,9 @@ void TLLabel::_notification(int p_what) {
 			RenderingServer::get_singleton()->canvas_item_set_clip(get_canvas_item(), true);
 		}
 
-		if (_lines_dirty)
+		if (_lines_dirty) {
 			_reshape_lines();
+		}
 
 		RID ci = get_canvas_item();
 
@@ -108,8 +115,9 @@ void TLLabel::_notification(int p_what) {
 		Size2 size = get_size();
 #ifdef GODOT_MODULE
 		StringName cname = get_class_name();
-		if (cname == "TLLabel")
+		if (cname == "TLLabel") {
 			cname = "Label";
+		}
 
 		Ref<StyleBox> style = get_theme_stylebox("normal", cname);
 		Color font_color = get_theme_color("font_color", cname);
@@ -144,11 +152,13 @@ void TLLabel::_notification(int p_what) {
 			lines_visible++;
 		}
 
-		if (lines_visible > (int64_t)s_lines.size())
+		if (lines_visible > (int64_t)s_lines.size()) {
 			lines_visible = (int64_t)s_lines.size();
+		}
 
-		if (max_lines_visible >= 0 && lines_visible > max_lines_visible)
+		if (max_lines_visible >= 0 && lines_visible > max_lines_visible) {
 			lines_visible = max_lines_visible;
+		}
 
 		if (lines_visible > 0) {
 			switch (valign) {
@@ -220,8 +230,9 @@ void TLLabel::_notification(int p_what) {
 Size2 TLLabel::get_minimum_size() const {
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLabel")
+	if (cname == "TLLabel") {
 		cname = "Label";
+	}
 
 	Size2 min_style = get_theme_stylebox("normal", cname)->get_minimum_size();
 #else
@@ -233,25 +244,40 @@ Size2 TLLabel::get_minimum_size() const {
 	Size2 min_style = theme->get_stylebox("normal", "Label")->get_minimum_size();
 #endif
 	// don't want to mutable everything
-	if (_lines_dirty)
+	if (_lines_dirty) {
 		const_cast<TLLabel *>(this)->_reshape_lines();
+	}
 
 	if (autowrap)
 		return Size2(1, clip ? 1 : minsize.height) + min_style;
 	else {
 		Size2 ms = minsize;
-		if (clip)
+		if (clip) {
 			ms.width = 1;
+		}
 		return ms + min_style;
 	}
 }
 
-int TLLabel::get_line_count() const {
-	if (!is_inside_tree())
-		return 1;
-
-	if (_lines_dirty)
+int TLLabel::get_longest_line_width() const {
+	if (_lines_dirty) {
 		const_cast<TLLabel *>(this)->_reshape_lines();
+	}
+
+	float max_w = 0.0;
+	for (int64_t i = 0; i < (int64_t)s_lines.size(); i++) {
+		max_w = MAX(max_w, s_lines[i]->get_width());
+	}
+	return Math::ceil(max_w);
+}
+
+int TLLabel::get_line_count() const {
+	if (!is_inside_tree()) {
+		return 1;
+	}
+	if (_lines_dirty) {
+		const_cast<TLLabel *>(this)->_reshape_lines();
+	}
 
 	return s_lines.size();
 }
@@ -259,16 +285,18 @@ int TLLabel::get_line_count() const {
 int TLLabel::get_visible_line_count() const {
 #ifdef GODOT_MODULE
 	StringName cname = get_class_name();
-	if (cname == "TLLabel")
+	if (cname == "TLLabel") {
 		cname = "Label";
+	}
 
 	int line_spacing = get_theme_constant("line_spacing", cname);
 #else
 	int line_spacing = get_constant("line_spacing", "Label");
 #endif
 
-	if (_lines_dirty)
+	if (_lines_dirty) {
 		const_cast<TLLabel *>(this)->_reshape_lines();
+	}
 
 	float total_h = 0.0;
 	int64_t lines_visible = 0;
@@ -291,11 +319,13 @@ int TLLabel::get_visible_line_count() const {
 		lines_visible++;
 	}
 
-	if (lines_visible > (int64_t)s_lines.size())
+	if (lines_visible > (int64_t)s_lines.size()) {
 		lines_visible = (int64_t)s_lines.size();
+	}
 
-	if (max_lines_visible >= 0 && lines_visible > max_lines_visible)
+	if (max_lines_visible >= 0 && lines_visible > max_lines_visible) {
 		lines_visible = max_lines_visible;
+	}
 
 	return lines_visible;
 }
@@ -464,14 +494,16 @@ int TLLabel::get_valign() const {
 }
 
 void TLLabel::set_text(const String p_string) {
-	if (text == p_string)
+	if (text == p_string) {
 		return;
+	}
 	text = p_string;
 	xl_text = tr(p_string);
 	s_paragraph->set_text(xl_text);
 	_lines_dirty = true;
-	if (percent_visible < 1)
+	if (percent_visible < 1) {
 		visible_chars = get_total_character_count() * percent_visible;
+	}
 	update();
 }
 
@@ -546,7 +578,6 @@ int TLLabel::get_max_lines_visible() const {
 }
 
 int TLLabel::get_total_character_count() const {
-	/* ??? */
 	return xl_text.length();
 }
 

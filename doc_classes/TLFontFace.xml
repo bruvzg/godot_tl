@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLFontFace" inherits="Resource" category="Core" version="3.2">
+<class name="TLFontFace" inherits="Resource" version="4.0">
 	<brief_description>
 		*Virtual class*
 
@@ -111,9 +111,6 @@
 	<members>
 		<member name="font_path" type="String" setter="set_font_path" getter="get_font_path" default="&quot;&quot;">
 			Path of the font file.
-		</member>
-		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="0">
-			Underlaying textures flags, see Texture class documentation https://docs.godotengine.org/en/latest/classes/class_texture.html#enumerations for more info.
 		</member>
 	</members>
 	<constants>

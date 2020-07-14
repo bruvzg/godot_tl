@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLBitmapFontFace" inherits="TLFontFace" category="Core" version="3.2">
+<class name="TLBitmapFontFace" inherits="TLFontFace" version="4.0">
 	<brief_description>
 		An AngelCode Bitmap Font Generator bitmap font for drawing text.
 	</brief_description>
@@ -11,9 +11,6 @@
 	</tutorials>
 	<methods>
 	</methods>
-	<members>
-		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" override="true" default="2048" />
-	</members>
 	<constants>
 	</constants>
 </class>

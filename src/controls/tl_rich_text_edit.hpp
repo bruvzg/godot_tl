@@ -114,7 +114,7 @@ protected:
 	void _fix_selection();
 	void _update_ctx_rect();
 	float _draw_paragraph(Ref<TLShapedParagraph> p_para, int p_index, float p_offset);
-	Size2 get_minimum_size() const;
+	Size2 get_minimum_size() const override;
 
 	enum Margin {
 		MARGIN_LEFT,
@@ -210,8 +210,8 @@ public:
 	void debug_draw_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
 	void debug_draw_logical_as_hex(RID p_canvas_item, const Point2 p_position, const Point2 p_hit_position, bool p_draw_brk_ops = false, bool p_draw_jst_ops = false);
 
-	void add_child_notify(Node *p_child);
-	void remove_child_notify(Node *p_child);
+	void add_child_notify(Node *p_child) override;
+	void remove_child_notify(Node *p_child) override;
 
 #ifdef GODOT_MODULE
 	void _gui_input(const Ref<InputEvent> &p_event);

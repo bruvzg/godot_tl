@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLDynamicFontFace" inherits="TLFontFace" category="Core" version="3.2">
+<class name="TLDynamicFontFace" inherits="TLFontFace" version="4.0">
 	<brief_description>
 		A TrueType, OpenType or Graphite font for drawing text.
 	</brief_description>
@@ -26,7 +26,6 @@
 		<member name="oversampling" type="float" setter="set_oversampling" getter="get_oversampling" default="1.0">
 			Font oversampling factor.
 		</member>
-		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" override="true" default="2048" />
 	</members>
 	<constants>
 		<constant name="DF_HINTING_NONE" value="0" enum="DynamicFaceHinting">

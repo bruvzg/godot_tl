@@ -80,9 +80,9 @@ diff --git a/scene/gui/spin_box.h b/scene/gui/spin_box.h
 index 04491c8477..5ba31ece9f 100644
 --- a/scene/gui/spin_box.h
 +++ b/scene/gui/spin_box.h
-@@ -76,8 +76,8 @@ public:
+@@ -74,8 +74,8 @@ public:
  
- 	virtual Size2 get_minimum_size() const;
+ 	virtual Size2 get_minimum_size() const override;
  
 -	void set_align(LineEdit::Align p_align);
 -	LineEdit::Align get_align() const;

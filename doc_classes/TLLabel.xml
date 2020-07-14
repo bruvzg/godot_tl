@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLLabel" inherits="Control" category="Core" version="3.2">
+<class name="TLLabel" inherits="Control" version="4.0">
 	<brief_description>
 		Displays plain text in a line or wrapped inside a rectangle. For formatted text, use [TLRichTextEdit].
 		Copy of Godot [Label] with the shaping support. TLLabel uses the same theme items as the [Label].
@@ -67,7 +67,7 @@
 		<member name="max_lines_visible" type="int" setter="set_max_lines_visible" getter="get_max_lines_visible" default="-1">
 			Limits the lines of text the node shows on screen.
 		</member>
-		<member name="mouse_filter" type="int" setter="set_mouse_filter" getter="get_mouse_filter" override="true" default="2" />
+		<member name="mouse_filter" type="int" setter="set_mouse_filter" getter="get_mouse_filter" override="true" enum="Control.MouseFilter" default="2" />
 		<member name="ot_features" type="String" setter="set_ot_features" getter="get_ot_features" default="&quot;&quot;">
 			Comma separated list of OpenType feature tags.
 		</member>

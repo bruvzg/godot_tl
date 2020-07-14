@@ -110,7 +110,7 @@ public:
 
 	void _font_changed();
 
-	virtual Size2 get_minimum_size() const;
+	virtual Size2 get_minimum_size() const override;
 
 	void set_align(int p_align);
 	int get_align() const;
@@ -151,6 +151,8 @@ public:
 
 	void set_max_lines_visible(int p_lines);
 	int get_max_lines_visible() const;
+
+	int get_longest_line_width() const;
 
 	int get_line_height() const;
 	int get_line_count() const;

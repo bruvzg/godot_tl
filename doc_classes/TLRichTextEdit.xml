@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TLRichTextEdit" inherits="Control" category="Core" version="3.2">
+<class name="TLRichTextEdit" inherits="Control" version="4.0">
 	<brief_description>
 		Rich text display and input control.
 		Rich text can contain custom text, fonts, images and formatting.
@@ -145,7 +145,7 @@
 			<argument index="1" name="index" type="int">
 			</argument>
 			<description>
-				Inserts paragraph of text at the [index] position.
+				Inserts paragraph of text at the [code]index[/code] position.
 			</description>
 		</method>
 		<method name="remove_attribute">
@@ -204,7 +204,7 @@
 			</return>
 			<argument index="0" name="selection" type="TLRichTextEditSelection">
 			</argument>
-			<argument index="1" name="text" type="PoolByteArray">
+			<argument index="1" name="text" type="PackedByteArray">
 			</argument>
 			<description>
 				Replaces selection with the contents of the raw UTF-16 encoded string.
@@ -215,7 +215,7 @@
 			</return>
 			<argument index="0" name="selection" type="TLRichTextEditSelection">
 			</argument>
-			<argument index="1" name="text" type="PoolByteArray">
+			<argument index="1" name="text" type="PackedByteArray">
 			</argument>
 			<description>
 				Replaces selection with the contents of the raw UTF-32 encoded string.
@@ -226,7 +226,7 @@
 			</return>
 			<argument index="0" name="selection" type="TLRichTextEditSelection">
 			</argument>
-			<argument index="1" name="text" type="PoolByteArray">
+			<argument index="1" name="text" type="PackedByteArray">
 			</argument>
 			<description>
 				Replaces selection with the contents of the raw UTF-8 encoded string.
@@ -343,9 +343,6 @@
 		</member>
 		<member name="selectable" type="bool" setter="set_selectable" getter="get_selectable" default="true">
 			If [code]true[/code], the control allows text selection.
-		</member>
-		<member name="paragraphs/{index}" type="TLShapedParagraph">
-			Paragraphs of the text.
 		</member>
 	</members>
 	<signals>
