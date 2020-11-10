@@ -1,5 +1,13 @@
 ![libgdtl logo](logo.png)
 
+---
+
+# This branch is outdated and is not actively maintained!
+## Use https://github.com/godotengine/godot/pull/41100 for `Godot 4.0`.
+## Use `master` branch for `Godot 3.x`.
+
+---
+
 # libgdtl
 
 BiDi, shaping and basic text layout for Godot Engine.
