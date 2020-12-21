@@ -1,14 +1,14 @@
 ![libgdtl logo](logo.png)
 
-===
-===
+---
+---
 
 # ⚠️ This branch is outdated and is not actively maintained!
 # ⚠️ `Godot 4.0` have full BiDi and shaping support.
 # ⚠️ For `Godot 3.x` use `master` branch.
 
-===
-===
+---
+---
 
 # libgdtl
 
