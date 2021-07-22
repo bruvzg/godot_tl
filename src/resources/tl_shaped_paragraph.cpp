@@ -22,12 +22,7 @@ TLShapedParagraph::~TLShapedParagraph() {
 
 void TLShapedParagraph::_init() {
 
-#ifdef GODOT_MODULE
 	ctx.instance();
-#else
-	ctx = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
-#endif
-
 	ctx->connect("string_changed", this, "_update_paragraph");
 
 	width = -1.0f;
@@ -191,12 +186,8 @@ float TLShapedParagraph::get_line_spacing() const {
 void TLShapedParagraph::set_string(Ref<TLShapedAttributedString> p_string) {
 
 	if (p_string.is_null()) {
-#ifdef GODOT_MODULE
 		ctx = Ref<TLShapedAttributedString>();
 		ctx.instance();
-#else
-		ctx = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
-#endif
 		ctx->connect("string_changed", this, "_update_paragraph");
 		_update_paragraph();
 	} else if (ctx != p_string) {

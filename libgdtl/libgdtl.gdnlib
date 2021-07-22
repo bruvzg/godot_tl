@@ -10,7 +10,8 @@ symbol_prefix="gdtl_"
 Windows.32="res://addons/libgdtl/bin/windows.x86/libgdtl.dll"
 Windows.64="res://addons/libgdtl/bin/windows.x86_64/libgdtl.dll"
 
-OSX="res://addons/libgdtl/bin/darwin.x86_64/libgdtl.dylib"
+OSX.x86_64="res://addons/libgdtl/bin/darwin.x86_64/libgdtl.dylib"
+OSX.arm64="res://addons/libgdtl/bin/darwin.arm64/libgdtl.dylib"
 
 X11.x86_64="res://addons/libgdtl/bin/linux.x86_64/libgdtl.so"
 X11.x86="res://addons/libgdtl/bin/linux.x86/libgdtl.so"
@@ -22,14 +23,15 @@ Android.x86="res://addons/libgdtl/bin/android.x86/libgdtl.so"
 Android.armeabi-v7a="res://addons/libgdtl/bin/android.armv7/libgdtl.so"
 Android.arm64-v8a="res://addons/libgdtl/bin/android.arm64/libgdtl.so"
 
-iOS="res://addons/libgdtl/bin/ios.fat/libgdtl.a"
+iOS="res://addons/libgdtl/bin/ios/libgdtl.xcframework"
 
 [dependencies]
 
 Windows.32=[  ]
 Windows.64=[  ]
 
-OSX=[  ]
+OSX.x86_64=[  ]
+OSX.arm64=[  ]
 
 X11.x86_64=[  ]
 X11.x86=[  ]

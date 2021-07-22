@@ -6,7 +6,7 @@ BiDi, shaping and basic text layout for Godot Engine.
 
 ## Dependencies
 
-- Godot 3.1.x and 3.2.x
+- Godot 3.x (3.1+)
 - C++14 compiler
 - Meson build system (for gdnative module build only)
 - SCons build system

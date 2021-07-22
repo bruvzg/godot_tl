@@ -234,19 +234,11 @@ void TLRichTextEdit::_init() {
 	selectable = true;
 
 	Ref<TLShapedParagraph> new_para;
-#ifdef GODOT_MODULE
 	new_para.instance();
-#else
-	new_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 	new_para->connect("paragraph_changed", this, "_update_ctx_rect");
 	paragraphs.push_back(new_para);
 
-#ifdef GODOT_MODULE
 	selection.instance();
-#else
-	selection = Ref<TLRichTextEditSelection>::__internal_constructor(TLRichTextEditSelection::_new());
-#endif
 	selection->connect("selection_changed", this, "_update_ctx_rect");
 };
 
@@ -266,11 +258,7 @@ void TLRichTextEdit::clear() {
 	selection->end = selection->caret;
 
 	Ref<TLShapedParagraph> new_para;
-#ifdef GODOT_MODULE
 	new_para.instance();
-#else
-	new_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 	new_para->connect("paragraph_changed", this, "_update_ctx_rect");
 	paragraphs.push_back(new_para);
 }
@@ -365,11 +353,7 @@ int TLRichTextEdit::insert_paragraph(Ref<TLShapedParagraph> p_para, int p_index)
 
 	Ref<TLShapedParagraph> new_para;
 	if (p_para.is_null()) {
-#ifdef GODOT_MODULE
 		new_para.instance();
-#else
-		new_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 		new_para->copy_properties(paragraphs[index]);
 	} else {
 		new_para = p_para;
@@ -1336,21 +1320,13 @@ void TLRichTextEdit::_gui_input(InputEvent *p_event) {
 						replace_text(selection, "\n");
 					} else {
 						Ref<TLShapedParagraph> _first;
-#ifdef GODOT_MODULE
 						_first.instance();
-#else
-						_first = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 						_first->connect("paragraph_changed", this, "_update_ctx_rect");
 						_first->copy_properties(paragraphs[selection->start.p]);
 						_first->set_string(paragraphs[selection->start.p]->get_string()->substr(0, selection->start.o, TEXT_TRIM_BREAK));
 
 						Ref<TLShapedParagraph> _second;
-#ifdef GODOT_MODULE
 						_second.instance();
-#else
-						_second = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 						_second->connect("paragraph_changed", this, "_update_ctx_rect");
 						_second->copy_properties(paragraphs[selection->end.p]);
 						_second->set_string(paragraphs[selection->end.p]->get_string()->substr(selection->end.o, paragraphs[selection->end.p]->get_string()->length(), TEXT_TRIM_BREAK));
@@ -1767,11 +1743,7 @@ void TLRichTextEdit::_notification(int p_what) {
 					ime_cursor = OS::get_singleton()->get_ime_selection().x;
 					ime_selection_len = OS::get_singleton()->get_ime_selection().y;
 
-#ifdef GODOT_MODULE
 					ime_temp_para.instance();
-#else
-					ime_temp_para = Ref<TLShapedParagraph>::__internal_constructor(TLShapedParagraph::_new());
-#endif
 					ime_temp_para->connect("paragraph_changed", this, "_update_ctx_rect");
 					ime_temp_para->copy_properties(paragraphs[selection->start.p]);
 					ime_temp_para->get_string()->add_sstring(paragraphs[selection->start.p]->get_string());

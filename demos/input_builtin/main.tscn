@@ -165,7 +165,7 @@ func _cursorchange():
 
 func _ready():
 	var data_loader = TLICUDataLoader.new()
-	data_loader.load(\"res://icudt67l.dat\")
+	data_loader.load(\"res://fonts/icudt67l.dat\")
 
 	get_tree().get_root().connect(\"size_changed\", self, \"_onresize\")
 	$TLRichTextEdit.connect(\"cursor_changed\", self, \"_cursorchange\")

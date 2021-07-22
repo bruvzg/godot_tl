@@ -471,11 +471,7 @@ void TLFontFamily::add_face_for_language(String p_style, Ref<TLFontFace> p_ref, 
 
 Ref<TLFontIterator> TLFontFamily::_get_face(String p_style) const {
 	Ref<TLFontIterator> iter;
-#ifdef GODOT_MODULE
 	iter.instance();
-#else
-	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
-#endif
 	iter->_set_iter(get_face(p_style));
 
 	return iter;
@@ -483,11 +479,7 @@ Ref<TLFontIterator> TLFontFamily::_get_face(String p_style) const {
 
 Ref<TLFontIterator> TLFontFamily::_get_face_for_script(String p_style, String p_script) const {
 	Ref<TLFontIterator> iter;
-#ifdef GODOT_MODULE
 	iter.instance();
-#else
-	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
-#endif
 	hb_script_t scr = hb_script_from_string(p_script.ascii().get_data(), -1);
 	iter->_set_iter(get_face_for_script(p_style, scr));
 
@@ -496,11 +488,7 @@ Ref<TLFontIterator> TLFontFamily::_get_face_for_script(String p_style, String p_
 
 Ref<TLFontIterator> TLFontFamily::_get_face_for_language(String p_style, String p_lang) const {
 	Ref<TLFontIterator> iter;
-#ifdef GODOT_MODULE
 	iter.instance();
-#else
-	iter = Ref<TLFontIterator>::__internal_constructor(TLFontIterator::_new());
-#endif
 	hb_language_t lang = hb_language_from_string(p_lang.ascii().get_data(), -1);
 	iter->_set_iter(get_face_for_language(p_style, lang));
 

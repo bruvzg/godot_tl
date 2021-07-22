@@ -149,11 +149,7 @@ Size2 TLGDFontWrapper::get_string_size(const String &p_text) const {
 	if (sstr.count(hash) > 0) {
 		str = sstr[hash];
 	} else {
-#ifdef GODOT_MODULE
 		str.instance();
-#else
-		str = Ref<TLShapedString>::__internal_constructor(TLShapedString::_new());
-#endif
 		str->set_base_font(family);
 		str->set_base_font_style(fstyle);
 		str->set_base_font_size(fsize);
@@ -174,11 +170,7 @@ void TLGDFontWrapper::draw(RID p_canvas_item, const Point2 &p_pos, const String 
 	if (sstr.count(hash) > 0) {
 		str = sstr[hash];
 	} else {
-#ifdef GODOT_MODULE
 		str.instance();
-#else
-		str = Ref<TLShapedString>::__internal_constructor(TLShapedString::_new());
-#endif
 		str->set_base_font(family);
 		str->set_base_font_style(fstyle);
 		str->set_base_font_size(fsize);

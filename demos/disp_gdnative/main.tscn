@@ -15,7 +15,7 @@ func _on_item_selected(ID):
 
 func _ready():
 	var data_loader = TLICUDataLoader.new()
-	data_loader.load(\"res://icudt67l.dat\")
+	data_loader.load(\"res://fonts/icudt67l.dat\")
 
 	for c in $demos.get_children():
 		$demos_opt.add_item(\"Demo: \" + c.get_full_name())
@@ -1123,6 +1123,7 @@ margin_right = 1390.0
 margin_bottom = 570.0
 readonly = true
 syntax_highlighting = true
+
 [connection signal="item_selected" from="demos_opt" to="." method="_on_item_selected"]
 [connection signal="gui_input" from="demos/hit_test" to="demos/hit_test" method="_on_hit_test_gui_input"]
 [connection signal="gui_input" from="demos/hit_test_att" to="demos/hit_test_att" method="_on_hit_test_gui_input"]

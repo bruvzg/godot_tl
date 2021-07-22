@@ -11,7 +11,7 @@ cpu_family = 'x86_64'
 cpu = 'amd64'
 endian = 'little'
 
-[properties]
+[built-in options]
 c_args = ['--target=x86_64-none-linux-android21', '-march=x86-64', '-fPIC']
 cpp_args = ['--target=x86_64-none-linux-android21', '-march=x86-64', '-fPIC']
 c_link_args = ['--target=x86_64-none-linux-android21', '-march=x86-64']

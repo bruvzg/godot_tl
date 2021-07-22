@@ -1,0 +1,43 @@
+
+
+meson ./_macos_arm64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.osx.release.arm64 --cross-file ./toolchains/macos.arm64.toolchain
+ninja -C ./_macos_arm64
+
+meson ./_macos_x86_64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.osx.release.x86_64 --cross-file ./toolchains/macos.x86_64.toolchain
+ninja -C ./_macos_x86_64
+
+meson ./_windows_x86_64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.windows.release.64 --cross-file ./toolchains/mingw.x86_64.toolchain
+ninja -C ./_windows_x86_64
+
+meson ./_windows_x86 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.windows.release.32 --cross-file ./toolchains/mingw.x86.toolchain
+ninja -C ./_windows_x86
+
+meson ./_android_armv7 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.android.release.armv7 --cross-file ./toolchains/android.armv7.toolchain
+ninja -C ./_android_armv7
+
+meson ./_android_arm64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.android.release.arm64v8 --cross-file ./toolchains/android.arm64.toolchain
+ninja -C ./_android_arm64
+
+meson ./_android_x86 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.android.release.x86 --cross-file ./toolchains/android.x86.toolchain
+ninja -C ./_android_x86
+
+meson ./_android_x86_64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.android.release.x86_64 --cross-file ./toolchains/android.x86_64.toolchain
+ninja -C ./_android_x86_64
+
+meson ./_ios_arm64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.ios.release.arm64 --cross-file ./toolchains/ios.arm64.toolchain
+ninja -C ./_ios_arm64
+
+meson ./_ios_arm64_sim -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.ios.release.arm64.simulator --cross-file ./toolchains/ios.arm64_sim.toolchain
+ninja -C ./_ios_arm64_sim
+
+meson ./_ios_x86_64_sim -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.ios.release.x86_64.simulator --cross-file ./toolchains/ios.x86_64_sim.toolchain
+ninja -C ./_ios_x86_64_sim
+
+meson ./_linux_arm64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.linux.release.arm64 --cross-file ./toolchains/linux.arm64.toolchain
+ninja -C ./_linux_arm64
+
+meson ./_linux_x86 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.linux.release.x86 --cross-file ./toolchains/linux.x86.toolchain
+ninja -C ./_linux_x86
+
+meson ./_linux_x86_64 -Dstatic-runtime=false -Dbuiltin-runtime=true -Duse-graphite2=true --buildtype=release -Dgodot-cpp-lib-name=libgodot-cpp.linux.release.x86_64 --cross-file ./toolchains/linux.x86_64.toolchain
+ninja -C ./_linux_x86_64

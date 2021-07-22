@@ -151,7 +151,7 @@ if host_machine.system() == 'ios'
 		dependencies : dependencies,
 		link_args : link_args,
 		cpp_args : cpp_args,
-		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
+		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot-headers')
 	)
 else
 	shared_library(
@@ -160,6 +160,6 @@ else
 		dependencies : dependencies,
 		link_args : link_args,
 		cpp_args : cpp_args,
-		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot_headers')
+		include_directories : include_directories('src', 'godot-core', 'godot-cpp/include', 'godot-cpp/include/core', 'godot-cpp/include/gen', 'godot-cpp/godot-headers')
 	)
 endif

@@ -638,11 +638,7 @@ void TLShapedAttributedString::_optimize_attributes(Map<int, Map<TextAttribute, 
 Ref<TLShapedString> TLShapedAttributedString::substr(int64_t p_start, int64_t p_end, int p_trim) const {
 
 	Ref<TLShapedAttributedString> ret;
-#ifdef GODOT_MODULE
 	ret.instance();
-#else
-	ret = Ref<TLShapedAttributedString>::__internal_constructor(TLShapedAttributedString::_new());
-#endif
 	ret->base_direction = base_direction;
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;

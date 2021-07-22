@@ -1,6 +1,6 @@
 [binaries]
-c = 'i686-linux-gnu-gcc-9'
-cpp = 'i686-linux-gnu-g++-9'
+c = 'i686-linux-gnu-gcc'
+cpp = 'i686-linux-gnu-g++'
 ar = 'i686-linux-gnu-ar'
 strip = 'i686-linux-gnu-strip'
 pkgconfig = 'pkg-config'
@@ -11,7 +11,7 @@ cpu_family = 'x86'
 cpu = 'i686'
 endian = 'little'
 
-[properties]
+[built-in options]
 c_args = ['-march=i686', '-fPIC']
 cpp_args = ['-march=i686', '-fPIC']
 c_link_args = ['-march=i686']

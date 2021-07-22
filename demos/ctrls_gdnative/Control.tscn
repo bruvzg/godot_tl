@@ -72,7 +72,6 @@ language = "en"
 preserve_control = false
 attribute_dict = [ {
 "format": {
-
 },
 "index": "0"
 }, {
@@ -84,13 +83,11 @@ attribute_dict = [ {
 "index": "4"
 }, {
 "format": {
-
 },
 "index": "5"
 }, {
 "index": "0",
 "style": {
-
 }
 }, {
 "index": "1",
@@ -100,7 +97,6 @@ attribute_dict = [ {
 }, {
 "index": "2",
 "style": {
-
 }
 } ]
 base_font = SubResource( 9 )
@@ -187,5 +183,7 @@ selectable = true
 paragraphs/0 = SubResource( 12 )
 
 [node name="Button" type="Button" parent="TLRichTextEdit"]
-margin_right = 12.0
-margin_bottom = 20.0
+margin_left = 45.375
+margin_top = 4.0
+margin_right = 65.375
+margin_bottom = 24.0

@@ -1183,11 +1183,7 @@ std::vector<int> TLShapedString::break_lines(float p_width, TextBreak p_flags) c
 Ref<TLShapedString> TLShapedString::substr(int64_t p_start, int64_t p_end, int p_trim) const {
 
 	Ref<TLShapedString> ret;
-#ifdef GODOT_MODULE
 	ret.instance();
-#else
-	ret = Ref<TLShapedString>::__internal_constructor(TLShapedString::_new());
-#endif
 	ret->base_direction = base_direction;
 	ret->para_direction = para_direction;
 	ret->base_font = base_font;
