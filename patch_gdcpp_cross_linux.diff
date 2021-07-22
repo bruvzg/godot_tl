@@ -1,0 +1,18 @@
+diff --git a/SConstruct b/SConstruct
+index 1f06a0a..a91a5b5 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -212,13 +212,6 @@ if env['platform'] == 'linux' or env['platform'] == 'freebsd':
+     elif env['target'] == 'release':
+         env.Append(CCFLAGS=['-O3'])
+ 
+-    if env['bits'] == '64':
+-        env.Append(CCFLAGS=['-m64'])
+-        env.Append(LINKFLAGS=['-m64'])
+-    elif env['bits'] == '32':
+-        env.Append(CCFLAGS=['-m32'])
+-        env.Append(LINKFLAGS=['-m32'])
+-
+ elif env['platform'] == 'osx':
+     # Use Clang on macOS by default
+     env['CXX'] = 'clang++'
