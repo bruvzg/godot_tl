@@ -183,7 +183,7 @@ index 39a825ea73..65470aed09 100644
  	DefaultFont->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> DefaultFontBold;
-+	Ref<TLDynamicFontData> DefaultFontBold;
++	Ref<TLDynamicFontFace> DefaultFontBold;
  	DefaultFontBold.instance();
 -	DefaultFontBold->set_antialiased(font_antialiased);
  	DefaultFontBold->set_hinting(font_hinting);
@@ -191,7 +191,7 @@ index 39a825ea73..65470aed09 100644
  	DefaultFontBold->set_force_autohinter(true); // just looks better..i think?
  
 -	Ref<DynamicFontData> FontFallback;
-+	Ref<TLDynamicFontData> FontFallback;
++	Ref<TLDynamicFontFace> FontFallback;
  	FontFallback.instance();
 -	FontFallback->set_antialiased(font_antialiased);
  	FontFallback->set_hinting(font_hinting);
@@ -199,7 +199,7 @@ index 39a825ea73..65470aed09 100644
  	FontFallback->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> FontJapanese;
-+	Ref<TLDynamicFontData> FontJapanese;
++	Ref<TLDynamicFontFace> FontJapanese;
  	FontJapanese.instance();
 -	FontJapanese->set_antialiased(font_antialiased);
  	FontJapanese->set_hinting(font_hinting);
@@ -207,7 +207,7 @@ index 39a825ea73..65470aed09 100644
  	FontJapanese->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> FontArabic;
-+	Ref<TLDynamicFontData> FontArabic;
++	Ref<TLDynamicFontFace> FontArabic;
  	FontArabic.instance();
 -	FontArabic->set_antialiased(font_antialiased);
  	FontArabic->set_hinting(font_hinting);
@@ -215,7 +215,7 @@ index 39a825ea73..65470aed09 100644
  	FontArabic->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> FontHebrew;
-+	Ref<TLDynamicFontData> FontHebrew;
++	Ref<TLDynamicFontFace> FontHebrew;
  	FontHebrew.instance();
 -	FontHebrew->set_antialiased(font_antialiased);
  	FontHebrew->set_hinting(font_hinting);
@@ -223,7 +223,7 @@ index 39a825ea73..65470aed09 100644
  	FontHebrew->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> FontThai;
-+	Ref<TLDynamicFontData> FontThai;
++	Ref<TLDynamicFontFace> FontThai;
  	FontThai.instance();
 -	FontThai->set_antialiased(font_antialiased);
  	FontThai->set_hinting(font_hinting);
@@ -231,7 +231,7 @@ index 39a825ea73..65470aed09 100644
  	FontThai->set_force_autohinter(true); //just looks better..i think?
  
 -	Ref<DynamicFontData> FontHindi;
-+	Ref<TLDynamicFontData> FontHindi;
++	Ref<TLDynamicFontFace> FontHindi;
  	FontHindi.instance();
 -	FontHindi->set_antialiased(font_antialiased);
  	FontHindi->set_hinting(font_hinting);
@@ -241,7 +241,7 @@ index 39a825ea73..65470aed09 100644
  	/* Hack */
  
 -	Ref<DynamicFontData> dfmono;
-+	Ref<TLDynamicFontData> dfmono;
++	Ref<TLDynamicFontFace> dfmono;
  	dfmono.instance();
 -	dfmono->set_antialiased(font_antialiased);
  	dfmono->set_hinting(font_hinting);

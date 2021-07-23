@@ -1,0 +1,80 @@
+Editor
+======
+
+macOS:
+    BUILD_NAME=gdtl scons platform=osx tools=yes tests=no target=release_debug use_font_wrapper=yes arch=arm64 -j8
+    BUILD_NAME=gdtl scons platform=osx tools=yes tests=no target=release_debug use_font_wrapper=yes arch=x86_64 -j8
+
+Windows:
+    BUILD_NAME=gdtl scons platform=windows use_mingw=yes tools=yes tests=no target=release_debug use_font_wrapper=yes bits=64 -j8
+
+Linux:
+    BUILD_NAME=gdtl scons platform=x11 tools=yes tests=no target=release_debug use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=x86-64" LINKFLAGS="-march=x86-64" CC=x86_64-linux-gnu-gcc CXX=x86_64-linux-gnu-g++ AR=x86_64-linux-gnu-ar RANLIB=x86_64-linux-gnu-ranlib
+    // BUILD_NAME=gdtl scons platform=x11 tools=yes tests=no target=release_debug use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=arm64-v8" LINKFLAGS="-march=arm64-v8" CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib
+
+Templates
+=========
+
+macOS:
+    BUILD_NAME=gdtl scons platform=osx tools=no tests=no target=release_debug use_font_wrapper=yes arch=arm64 -j8
+    BUILD_NAME=gdtl scons platform=osx tools=no tests=no target=release_debug use_font_wrapper=yes arch=x86_64 -j8
+
+    BUILD_NAME=gdtl scons platform=osx tools=no tests=no target=release use_font_wrapper=yes arch=arm64 -j8
+    BUILD_NAME=gdtl scons platform=osx tools=no tests=no target=release use_font_wrapper=yes arch=x86_64 -j8
+
+Windows:
+    BUILD_NAME=gdtl scons platform=windows use_mingw=yes tools=no tests=no target=release_debug use_font_wrapper=yes bits=64 -j8
+    BUILD_NAME=gdtl scons platform=windows use_mingw=yes tools=no tests=no target=release_debug use_font_wrapper=yes bits=32 -j8
+
+    BUILD_NAME=gdtl scons platform=windows use_mingw=yes tools=no tests=no target=release use_font_wrapper=yes bits=64 -j8
+    BUILD_NAME=gdtl scons platform=windows use_mingw=yes tools=no tests=no target=release use_font_wrapper=yes bits=32 -j8
+
+Linux:
+    BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release_debug use_font_wrapper=yes bits=32 -j8 CCFLAGS="-march=i686" LINKFLAGS="-march=i686" CC=i686-linux-gnu-gcc CXX=i686-linux-gnu-g++ AR=i686-linux-gnu-ar RANLIB=i686-linux-gnu-ranlib
+    BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release_debug use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=x86-64" LINKFLAGS="-march=x86-64" CC=x86_64-linux-gnu-gcc CXX=x86_64-linux-gnu-g++ AR=x86_64-linux-gnu-ar RANLIB=x86_64-linux-gnu-ranlib
+
+    // BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release_debug use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=armv7" LINKFLAGS="-march=armv7" CC=armv7-linux-gnu-gcc CXX=armv7-linux-gnu-g++ AR=armv7-linux-gnu-ar RANLIB=armv7-linux-gnu-ranlib
+    // BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release_debug use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=arm64-v8" LINKFLAGS="-march=arm64-v8" CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib
+
+    BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release use_font_wrapper=yes bits=32 -j8 CCFLAGS="-march=i686" LINKFLAGS="-march=i686" CC=i686-linux-gnu-gcc CXX=i686-linux-gnu-g++ AR=i686-linux-gnu-ar RANLIB=i686-linux-gnu-ranlib
+    BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=x86-64" LINKFLAGS="-march=x86-64" CC=x86_64-linux-gnu-gcc CXX=x86_64-linux-gnu-g++ AR=x86_64-linux-gnu-ar RANLIB=x86_64-linux-gnu-ranlib
+
+    // BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=armv7" LINKFLAGS="-march=armv7" CC=armv7-linux-gnu-gcc CXX=armv7-linux-gnu-g++ AR=armv7-linux-gnu-ar RANLIB=armv7-linux-gnu-ranlib
+    // BUILD_NAME=gdtl scons platform=x11 tools=no tests=no target=release use_font_wrapper=yes bits=64 -j8 CCFLAGS="-march=arm64-v8" LINKFLAGS="-march=arm64-v8" CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib
+
+iOS:
+    BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release_debug use_font_wrapper=yes arch=arm64 simulator=no -j8
+    BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release_debug use_font_wrapper=yes arch=x86_64 simulator=yes -j8
+    // BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release_debug use_font_wrapper=yes arch=arm64 simulator=yes -j8
+
+    BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release use_font_wrapper=yes arch=arm64 simulator=no -j8
+    BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release use_font_wrapper=yes arch=x86_64 simulator=yes -j8
+    // BUILD_NAME=gdtl scons platform=iphone tools=no tests=no target=release use_font_wrapper=yes arch=arm64 simulator=yes -j8
+
+Android:
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+    export ANDROID_NDK_ROOT=/Volumes/Backup/SDKs/Android/ndk/21.4.7075529
+    export ANDROID_SDK_ROOT=/Volumes/Backup/SDKs/Android
+
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release_debug use_font_wrapper=yes android_arch=armv7 -j8
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release_debug use_font_wrapper=yes android_arch=arm64v8 -j8
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release_debug use_font_wrapper=yes android_arch=x86_64 -j8
+
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release use_font_wrapper=yes android_arch=armv7 -j8
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release use_font_wrapper=yes android_arch=arm64v8 -j8
+    BUILD_NAME=gdtl scons platform=android tools=no tests=no target=release use_font_wrapper=yes android_arch=x86_64 -j8
+
+    cd platform/android/java
+    ./gradlew generateGodotTemplates
+
+Web:
+    emsdk activate
+
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no target=release_debug use_font_wrapper=yes -j8
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no target=release use_font_wrapper=yes -j8
+
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no threads_enabled=yes target=release_debug use_font_wrapper=yes -j8
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no threads_enabled=yes target=release use_font_wrapper=yes -j8
+
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no gdnative_enabled=yes target=release_debug use_font_wrapper=yes -j8
+    BUILD_NAME=gdtl scons platform=javascript tools=no tests=no gdnative_enabled=yes target=release use_font_wrapper=yes -j8

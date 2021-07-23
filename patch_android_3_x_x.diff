@@ -1,0 +1,15 @@
+diff --git a/platform/android/java/lib/build.gradle b/platform/android/java/lib/build.gradle
+old mode 100644
+new mode 100755
+index 663ba73d40..478425d223
+--- a/platform/android/java/lib/build.gradle
++++ b/platform/android/java/lib/build.gradle
+@@ -106,7 +106,7 @@ android {
+         def taskName = getSconsTaskName(buildType)
+         tasks.create(name: taskName, type: Exec) {
+             executable sconsExecutableFile.absolutePath
+-            args "--directory=${pathToRootDir}", "platform=android", "target=${releaseTarget}", "android_arch=${defaultAbi}", "-j" + Runtime.runtime.availableProcessors()
++            args "BUILD_NAME=gdtl", "--directory=${pathToRootDir}", "use_font_wrapper=yes", "platform=android", "target=${releaseTarget}", "android_arch=${defaultAbi}", "-j" + Runtime.runtime.availableProcessors()
+         }
+ 
+         // Schedule the tasks so the generated libs are present before the aar file is packaged.
