@@ -1039,7 +1039,7 @@ std::vector<hb_script_t> TLDynamicFontFace::unicode_scripts_supported() const {
 			return f_at_s->unicode_scripts_supported();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINTS("Font not loaded!");
 	return std::vector<hb_script_t>();
 }
 
@@ -1061,7 +1061,7 @@ double TLDynamicFontFace::get_ascent(int p_size) const {
 			return f_at_s->get_ascent();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINTS("Font not loaded!");
 	return 0.0f;
 }
 
@@ -1083,7 +1083,7 @@ double TLDynamicFontFace::get_descent(int p_size) const {
 			return f_at_s->get_descent();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINTS("Font not loaded!");
 	return 0.0f;
 }
 
@@ -1105,7 +1105,7 @@ double TLDynamicFontFace::get_height(int p_size) const {
 			return f_at_s->get_height();
 		}
 	}
-	WARN_PRINTS("Font not loaded!")
+	WARN_PRINTS("Font not loaded!");
 	return 0.0f;
 }
 

@@ -22,6 +22,16 @@ namespace godot {};
 #define GLOBAL_CONST(m_text) m_text
 
 #include "core/core_string_names.h"
+#include "core/error_macros.h"
+
+#ifndef ERR_PRINTS
+#define ERR_PRINTS ERR_PRINT
+#endif
+
+#ifndef WARN_PRINTS
+#define WARN_PRINTS WARN_PRINT
+#endif
+
 #define _CHANGED CoreStringNames::get_singleton()->changed
 
 #else
