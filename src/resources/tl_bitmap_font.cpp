@@ -306,7 +306,7 @@ void TLBitmapFontFace::draw_glyph(RID p_canvas_item, const Point2 p_pos, uint32_
 
 		VisualServer::get_singleton()->canvas_item_add_texture_rect_region(p_canvas_item, Rect2(p_pos + gl.align * scale, gl.uv.size * scale), texture_cache[gl.id]->get_rid(), gl.uv, p_modulate, false, RID(), false);
 	} else {
-		WARN_PRINTS("Font not loaded or glyph not found!")
+		WARN_PRINTS("Font not loaded or glyph not found!");
 	}
 }
 

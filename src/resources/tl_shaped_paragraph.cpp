@@ -55,7 +55,7 @@ void TLShapedParagraph::copy_properties(Ref<TLShapedParagraph> p_source) {
 
 void TLShapedParagraph::_line_change_warning() {
 
-	WARN_PRINTS("DO NOT EDIT")
+	WARN_PRINTS("DO NOT EDIT");
 	_update_paragraph(); //regenerate changed lines
 }
 

@@ -955,7 +955,7 @@ Vector2 TLShapedAttributedString::draw_cluster(RID p_canvas_item, const Point2 p
 	} else if (visual[p_index].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 		ofs += Vector2(visual[p_index].width, 0);
 	} else {
-		WARN_PRINTS("Invalid cluster type")
+		WARN_PRINTS("Invalid cluster type");
 	}
 
 	return ofs;
@@ -1051,7 +1051,7 @@ void TLShapedAttributedString::draw(RID p_canvas_item, const Point2 p_position, 
 		} else if (visual[i].cl_type == (int)_CLUSTER_TYPE_SKIP) {
 			ofs += Vector2(visual[i].width, 0);
 		} else {
-			WARN_PRINTS("Invalid cluster type")
+			WARN_PRINTS("Invalid cluster type");
 		}
 	}
 }
@@ -1214,7 +1214,7 @@ Array TLShapedAttributedString::save_attributes_dict() const {
 					run["relp_valign"] = sit->get();
 				} break;
 				default: {
-					ERR_PRINTS("Invalid format attribute")
+					ERR_PRINTS("Invalid format attribute");
 				} break;
 			}
 		}
